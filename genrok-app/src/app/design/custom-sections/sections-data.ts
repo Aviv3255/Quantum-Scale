@@ -423,38 +423,6 @@ export const sectionsData: Section[] = [
 
   // ========== PREMIUM TESTIMONIALS ==========
   {
-    id: 'testimonial-elegant-center',
-    name: 'Testimonial - Elegant',
-    category: 'Testimonials',
-    description: 'Centered testimonial with premium styling',
-    thumbnail: '',
-    fields: [
-      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'The attention to detail is remarkable. Every piece feels like it was made specifically for me. This is what true luxury should feel like.' },
-      { id: 'author', label: 'Author Name', type: 'text', defaultValue: 'Alexandra Chen' },
-      { id: 'title', label: 'Author Title', type: 'text', defaultValue: 'Verified Buyer' },
-    ],
-    generateHtml: (v) => `<div class="${uid('testec')}" style="background:linear-gradient(135deg,#fafafa 0%,#fff 50%,#fafafa 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
-  <style>
-    .${uid('testec')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('testec')}-wrap { max-width: 800px; margin: 0 auto; padding: 100px 48px; text-align: center; }
-    .${uid('testec')}-stars { font-size: 20px; letter-spacing: 6px; margin-bottom: 32px; background: linear-gradient(135deg, #D4AF37, #F5E7A3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .${uid('testec')} blockquote { font-size: 26px; font-weight: 300; line-height: 1.6; color: #1a1a1a; font-style: italic; margin-bottom: 40px; letter-spacing: -0.01em; }
-    .${uid('testec')}-author strong { display: block; font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; letter-spacing: 0.05em; }
-    .${uid('testec')}-author span { font-size: 13px; color: #999; letter-spacing: 0.1em; text-transform: uppercase; }
-    @media (max-width: 768px) { .${uid('testec')}-wrap { padding: 64px 24px; } .${uid('testec')} blockquote { font-size: 20px; } }
-    @media (max-width: 480px) { .${uid('testec')}-wrap { padding: 48px 16px; } .${uid('testec')} blockquote { font-size: 18px; margin-bottom: 32px; } .${uid('testec')}-stars { font-size: 16px; margin-bottom: 24px; } }
-  </style>
-  <div class="${uid('testec')}-wrap">
-    <div class="${uid('testec')}-stars">★★★★★</div>
-    <blockquote>"${v.quote}"</blockquote>
-    <div class="${uid('testec')}-author">
-      <strong>${v.author}</strong>
-      <span>${v.title}</span>
-    </div>
-  </div>
-</div>`
-  },
-  {
     id: 'testimonial-cards-premium',
     name: 'Testimonial - Cards',
     category: 'Testimonials',
@@ -1415,43 +1383,6 @@ export const sectionsData: Section[] = [
 </div>`
   },
   {
-    id: 'hero-gradient-mesh',
-    name: 'Hero - Gradient Mesh',
-    category: 'Hero',
-    description: 'Animated colorful mesh gradient background',
-    thumbnail: '',
-    fields: [
-      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'ARTIFICIAL' },
-      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Intelligence meets creativity' },
-      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Explore Now' },
-    ],
-    generateHtml: (v) => `<div class="${uid('hmesh')}" style="background:#0a0a0a;min-height:500px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
-  <style>
-    .${uid('hmesh')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('hmesh')}-orb1 { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,200,255,0.4) 0%, transparent 70%); top: -20%; right: -10%; animation: ${uid('hmesh')}-float1 12s ease-in-out infinite; }
-    .${uid('hmesh')}-orb2 { position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(150,50,255,0.4) 0%, transparent 70%); bottom: -20%; left: -10%; animation: ${uid('hmesh')}-float2 10s ease-in-out infinite; }
-    .${uid('hmesh')}-orb3 { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,100,150,0.3) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: ${uid('hmesh')}-pulse 8s ease-in-out infinite; }
-    .${uid('hmesh')}-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
-    .${uid('hmesh')}-title { font-size: 80px; font-weight: 800; letter-spacing: 0.2em; color: #fff; line-height: 1; margin-bottom: 16px; text-shadow: 0 0 60px rgba(0,200,255,0.5); }
-    .${uid('hmesh')}-sub { font-size: 20px; color: rgba(255,255,255,0.7); margin-bottom: 40px; }
-    .${uid('hmesh')}-btn { display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #00c8ff 0%, #9932ff 100%); color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; }
-    .${uid('hmesh')}-btn:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(0,200,255,0.4); }
-    @keyframes ${uid('hmesh')}-float1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, 30px); } }
-    @keyframes ${uid('hmesh')}-float2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
-    @keyframes ${uid('hmesh')}-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; } }
-    @media (max-width: 768px) { .${uid('hmesh')}-title { font-size: 40px; letter-spacing: 0.1em; } }
-  </style>
-  <div class="${uid('hmesh')}-orb1"></div>
-  <div class="${uid('hmesh')}-orb2"></div>
-  <div class="${uid('hmesh')}-orb3"></div>
-  <div class="${uid('hmesh')}-wrap">
-    <h1 class="${uid('hmesh')}-title">${v.headline}</h1>
-    <p class="${uid('hmesh')}-sub">${v.subtext}</p>
-    <a href="#" class="${uid('hmesh')}-btn">${v.btnText}</a>
-  </div>
-</div>`
-  },
-  {
     id: 'hero-floating-images',
     name: 'Hero - Floating Images',
     category: 'Hero',
@@ -1557,49 +1488,6 @@ export const sectionsData: Section[] = [
     </div>
     <div class="${uid('hsplit')}-image">
       <img src="${v.image}" alt="Fashion">
-    </div>
-  </div>
-</div>`
-  },
-  {
-    id: 'hero-3d-cards',
-    name: 'Hero - 3D Cards',
-    category: 'Hero',
-    description: 'Perspective rotating cards with 3D effect',
-    thumbnail: '',
-    fields: [
-      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Ready to Transform Your Management?' },
-      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Experience the future of finance with our cutting-edge SaaS platform.' },
-      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Download app' },
-    ],
-    generateHtml: (v) => `<div class="${uid('h3d')}" style="background:linear-gradient(180deg,#0f1419 0%,#1a2332 100%);min-height:500px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
-  <style>
-    .${uid('h3d')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('h3d')}-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 80px 24px; align-items: center; }
-    .${uid('h3d')}-content { max-width: 480px; }
-    .${uid('h3d')}-title { font-size: 42px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 20px; }
-    .${uid('h3d')}-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; }
-    .${uid('h3d')}-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #3b82f6; color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
-    .${uid('h3d')}-btn:hover { background: #2563eb; transform: translateY(-2px); }
-    .${uid('h3d')}-cards { perspective: 1000px; position: relative; height: 350px; }
-    .${uid('h3d')}-card { position: absolute; width: 280px; height: 180px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); padding: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
-    .${uid('h3d')}-card:nth-child(1) { top: 0; left: 0; transform: rotateY(-15deg) rotateX(5deg); animation: ${uid('h3d')}-float1 6s ease-in-out infinite; }
-    .${uid('h3d')}-card:nth-child(2) { top: 80px; left: 100px; transform: rotateY(-10deg) rotateX(5deg); animation: ${uid('h3d')}-float2 6s ease-in-out infinite; z-index: 1; }
-    .${uid('h3d')}-card-title { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
-    .${uid('h3d')}-card-value { font-size: 28px; font-weight: 700; color: #fff; }
-    @keyframes ${uid('h3d')}-float1 { 0%, 100% { transform: rotateY(-15deg) rotateX(5deg) translateY(0); } 50% { transform: rotateY(-15deg) rotateX(5deg) translateY(-10px); } }
-    @keyframes ${uid('h3d')}-float2 { 0%, 100% { transform: rotateY(-10deg) rotateX(5deg) translateY(0); } 50% { transform: rotateY(-10deg) rotateX(5deg) translateY(-15px); } }
-    @media (max-width: 900px) { .${uid('h3d')}-wrap { grid-template-columns: 1fr; } .${uid('h3d')}-cards { display: none; } }
-  </style>
-  <div class="${uid('h3d')}-wrap">
-    <div class="${uid('h3d')}-content">
-      <h1 class="${uid('h3d')}-title">${v.headline}</h1>
-      <p class="${uid('h3d')}-sub">${v.subtext}</p>
-      <a href="#" class="${uid('h3d')}-btn">${v.btnText} →</a>
-    </div>
-    <div class="${uid('h3d')}-cards">
-      <div class="${uid('h3d')}-card"><div class="${uid('h3d')}-card-title">Total Revenue</div><div class="${uid('h3d')}-card-value">$142,384</div></div>
-      <div class="${uid('h3d')}-card"><div class="${uid('h3d')}-card-title">Active Users</div><div class="${uid('h3d')}-card-value">12,847</div></div>
     </div>
   </div>
 </div>`
@@ -1924,37 +1812,6 @@ export const sectionsData: Section[] = [
       <div class="${uid('tcar')}-card"><div class="${uid('tcar')}-stars">★★★★★</div><div class="${uid('tcar')}-quote">"The best investment we've made this year. ROI was visible within the first month."</div><div class="${uid('tcar')}-author"><img class="${uid('tcar')}-avatar" src="https://i.pravatar.cc/100?img=2" alt=""><div><div class="${uid('tcar')}-name">Michael Chen</div><div class="${uid('tcar')}-role">CEO, TechStart</div></div></div></div>
       <div class="${uid('tcar')}-card"><div class="${uid('tcar')}-stars">★★★★★</div><div class="${uid('tcar')}-quote">"Outstanding support team and the features keep getting better. Highly recommend!"</div><div class="${uid('tcar')}-author"><img class="${uid('tcar')}-avatar" src="https://i.pravatar.cc/100?img=3" alt=""><div><div class="${uid('tcar')}-name">Emily Davis</div><div class="${uid('tcar')}-role">Product Manager</div></div></div></div>
     </div>
-  </div>
-</div>`
-  },
-  {
-    id: 'testimonial-spotlight',
-    name: 'Testimonials - Quote Spotlight',
-    category: 'Testimonials',
-    description: 'Large centered quote with spotlight effect',
-    thumbnail: '',
-    fields: [
-      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'This platform has revolutionized the way we work. The intuitive interface and powerful features have boosted our productivity by 300%.' },
-      { id: 'author', label: 'Author Name', type: 'text', defaultValue: 'Alexandra Rivera' },
-      { id: 'role', label: 'Author Role', type: 'text', defaultValue: 'VP of Engineering, Fortune 500' },
-    ],
-    generateHtml: (v) => `<div class="${uid('tspot')}" style="background:#0a0a0a;min-height:450px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
-  <style>
-    .${uid('tspot')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tspot')}::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(100,150,255,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: ${uid('tspot')}-pulse 6s ease-in-out infinite; }
-    .${uid('tspot')}-wrap { max-width: 800px; margin: 0 auto; padding: 80px 24px; text-align: center; position: relative; z-index: 1; }
-    .${uid('tspot')}-quote-mark { font-size: 80px; color: #333; line-height: 1; margin-bottom: 24px; }
-    .${uid('tspot')}-quote { font-size: 28px; font-weight: 400; color: #fff; line-height: 1.5; margin-bottom: 40px; font-style: italic; }
-    .${uid('tspot')}-author { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
-    .${uid('tspot')}-role { font-size: 14px; color: rgba(255,255,255,0.5); }
-    @keyframes ${uid('tspot')}-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.25; } }
-    @media (max-width: 768px) { .${uid('tspot')}-quote { font-size: 20px; } }
-  </style>
-  <div class="${uid('tspot')}-wrap">
-    <div class="${uid('tspot')}-quote-mark">"</div>
-    <p class="${uid('tspot')}-quote">${v.quote}</p>
-    <div class="${uid('tspot')}-author">${v.author}</div>
-    <div class="${uid('tspot')}-role">${v.role}</div>
   </div>
 </div>`
   },
@@ -2291,37 +2148,6 @@ export const sectionsData: Section[] = [
       <div><div class="${uid('fdark')}-col-title">Support</div><div class="${uid('fdark')}-links"><a href="#">Help Center</a><a href="#">Contact</a><a href="#">Status</a><a href="#">Terms</a></div></div>
     </div>
     <div class="${uid('fdark')}-bottom"><div class="${uid('fdark')}-copy">© 2025 ${v.brandName}. All rights reserved.</div></div>
-  </div>
-</div>`
-  },
-  {
-    id: 'footer-minimal-center',
-    name: 'Footer - Minimal Centered',
-    category: 'Footer',
-    description: 'Clean centered minimal footer',
-    thumbnail: '',
-    fields: [
-      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'Brand' },
-    ],
-    generateHtml: (v) => `<div class="${uid('fmin')}" style="background:#fafafa;border-top:1px solid #f0f0f0;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
-  <style>
-    .${uid('fmin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('fmin')}-wrap { max-width: 800px; margin: 0 auto; padding: 60px 24px; text-align: center; }
-    .${uid('fmin')}-logo { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 24px; }
-    .${uid('fmin')}-links { display: flex; gap: 32px; justify-content: center; margin-bottom: 32px; }
-    .${uid('fmin')}-links a { font-size: 14px; color: #666; text-decoration: none; transition: color 0.2s; }
-    .${uid('fmin')}-links a:hover { color: #1a1a1a; }
-    .${uid('fmin')}-social { display: flex; gap: 20px; justify-content: center; margin-bottom: 32px; }
-    .${uid('fmin')}-social a { font-size: 18px; color: #666; text-decoration: none; transition: color 0.2s; }
-    .${uid('fmin')}-social a:hover { color: #1a1a1a; }
-    .${uid('fmin')}-copy { font-size: 13px; color: #999; }
-    @media (max-width: 500px) { .${uid('fmin')}-links { flex-wrap: wrap; gap: 16px; } }
-  </style>
-  <div class="${uid('fmin')}-wrap">
-    <div class="${uid('fmin')}-logo">${v.brandName}</div>
-    <div class="${uid('fmin')}-links"><a href="#">Home</a><a href="#">Shop</a><a href="#">About</a><a href="#">Contact</a><a href="#">FAQ</a></div>
-    <div class="${uid('fmin')}-social"><a href="#">Twitter</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
-    <div class="${uid('fmin')}-copy">© 2025 ${v.brandName}. Made with care.</div>
   </div>
 </div>`
   },
@@ -3472,57 +3298,6 @@ export const sectionsData: Section[] = [
         </div>
       </div>
     </div>
-  </div>
-</div>`
-  },
-
-  // 7. How It Works Steps
-  {
-    id: 'how-it-works-steps',
-    name: 'Features - How It Works',
-    category: 'Features',
-    description: 'Step-by-step process with numbered badges and illustrations',
-    thumbnail: '',
-    fields: [
-      { id: 'heading', label: 'Heading', type: 'text', defaultValue: 'How it works' },
-      { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Get started' },
-      { id: 'buttonLink', label: 'Button Link', type: 'url', defaultValue: '#' },
-      { id: 'step1Image', label: 'Step 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(11).png' },
-      { id: 'step1Text', label: 'Step 1 Text', type: 'textarea', defaultValue: "Start with quick online assessment to identify your pet's health problems" },
-      { id: 'step2Image', label: 'Step 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(12).png' },
-      { id: 'step2Text', label: 'Step 2 Text', type: 'textarea', defaultValue: 'Get personalised treatment plan and insights based on health data' },
-      { id: 'step3Image', label: 'Step 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(13).png' },
-      { id: 'step3Text', label: 'Step 3 Text', type: 'textarea', defaultValue: 'Track your health score to monitor the progress and stay in control' },
-      { id: 'step4Image', label: 'Step 4 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(14).png' },
-      { id: 'step4Text', label: 'Step 4 Text', type: 'textarea', defaultValue: 'Ask our friendly vets or Rio: AI Assistant if you have any questions' },
-      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fef9c3' },
-      { id: 'buttonBg', label: 'Button Background', type: 'color', defaultValue: '#1a1a1a' },
-    ],
-    generateHtml: (v) => `<div class="${uid('hiw')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <style>
-    .${uid('hiw')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('hiw')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; text-align: center; }
-    .${uid('hiw')}-heading { font-size: 42px; font-weight: 700; color: #1a1a1a; margin-bottom: 60px; }
-    .${uid('hiw')}-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-bottom: 48px; }
-    .${uid('hiw')}-step { position: relative; background: #fff; border-radius: 20px; padding: 60px 24px 32px; }
-    .${uid('hiw')}-badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); width: 36px; height: 36px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
-    .${uid('hiw')}-img { width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 12px; overflow: hidden; }
-    .${uid('hiw')}-img img { width: 100%; height: 100%; object-fit: cover; }
-    .${uid('hiw')}-text { font-size: 14px; color: #666; line-height: 1.6; text-align: center; }
-    .${uid('hiw')}-btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 32px; background: ${v.buttonBg}; color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; border-radius: 50px; transition: all 0.3s; }
-    .${uid('hiw')}-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-    @media (max-width: 900px) { .${uid('hiw')}-steps { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .${uid('hiw')}-steps { grid-template-columns: 1fr; } }
-  </style>
-  <div class="${uid('hiw')}-wrap">
-    <h2 class="${uid('hiw')}-heading">${v.heading}</h2>
-    <div class="${uid('hiw')}-steps">
-      <div class="${uid('hiw')}-step"><div class="${uid('hiw')}-badge">1</div><div class="${uid('hiw')}-img"><img src="${v.step1Image}" alt=""></div><p class="${uid('hiw')}-text">${v.step1Text}</p></div>
-      <div class="${uid('hiw')}-step"><div class="${uid('hiw')}-badge">2</div><div class="${uid('hiw')}-img"><img src="${v.step2Image}" alt=""></div><p class="${uid('hiw')}-text">${v.step2Text}</p></div>
-      <div class="${uid('hiw')}-step"><div class="${uid('hiw')}-badge">3</div><div class="${uid('hiw')}-img"><img src="${v.step3Image}" alt=""></div><p class="${uid('hiw')}-text">${v.step3Text}</p></div>
-      <div class="${uid('hiw')}-step"><div class="${uid('hiw')}-badge">4</div><div class="${uid('hiw')}-img"><img src="${v.step4Image}" alt=""></div><p class="${uid('hiw')}-text">${v.step4Text}</p></div>
-    </div>
-    <a href="${v.buttonLink}" class="${uid('hiw')}-btn">${v.buttonText} →</a>
   </div>
 </div>`
   },
@@ -5412,6 +5187,4058 @@ export const sectionsData: Section[] = [
   </div>
 </div>`
   },
+
+  // ========== INTERACTIVE COMPONENTS (21st.dev) ==========
+  {
+    id: 'display-cards-stacked',
+    name: 'Display Cards - Stacked',
+    category: 'Interactive',
+    description: 'Stacked skewed cards with beautiful hover animations',
+    thumbnail: '',
+    fields: [
+      { id: 'card1Icon', label: 'Card 1 Icon', type: 'text', defaultValue: '✨' },
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Featured' },
+      { id: 'card1Desc', label: 'Card 1 Description', type: 'text', defaultValue: 'Discover amazing content' },
+      { id: 'card1Date', label: 'Card 1 Date', type: 'text', defaultValue: 'Just now' },
+      { id: 'card2Icon', label: 'Card 2 Icon', type: 'text', defaultValue: '🚀' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Trending' },
+      { id: 'card2Desc', label: 'Card 2 Description', type: 'text', defaultValue: 'Popular this week' },
+      { id: 'card2Date', label: 'Card 2 Date', type: 'text', defaultValue: '2 hours ago' },
+      { id: 'card3Icon', label: 'Card 3 Icon', type: 'text', defaultValue: '💎' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Premium' },
+      { id: 'card3Desc', label: 'Card 3 Description', type: 'text', defaultValue: 'Exclusive premium content' },
+      { id: 'card3Date', label: 'Card 3 Date', type: 'text', defaultValue: '1 day ago' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+      { id: 'cardBg', label: 'Card Background', type: 'color', defaultValue: '#1a1a2e' },
+    ],
+    generateHtml: (v) => `<div class="${uid('dcstack')}" style="background:${v.bgColor};min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;display:flex;align-items:center;justify-content:center;padding:60px 20px;">
+  <style>
+    .${uid('dcstack')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('dcstack')}-grid { display: grid; grid-template-areas: 'stack'; place-items: center; }
+    .${uid('dcstack')}-card {
+      grid-area: stack;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 22rem;
+      height: 9rem;
+      padding: 16px 20px;
+      background: ${v.cardBg};
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      transform: skewY(-8deg);
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    .${uid('dcstack')}-card::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: -5%;
+      height: 110%;
+      width: 20rem;
+      background: linear-gradient(to left, ${v.bgColor}, transparent);
+      pointer-events: none;
+    }
+    .${uid('dcstack')}-card.c1 { z-index: 1; filter: grayscale(100%); }
+    .${uid('dcstack')}-card.c1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,10,0.5);
+      border-radius: 14px;
+      transition: opacity 0.7s;
+    }
+    .${uid('dcstack')}-card.c1:hover { transform: skewY(-8deg) translateY(-40px); filter: grayscale(0); }
+    .${uid('dcstack')}-card.c1:hover::before { opacity: 0; }
+    .${uid('dcstack')}-card.c2 { transform: skewY(-8deg) translateX(64px) translateY(40px); z-index: 2; filter: grayscale(100%); }
+    .${uid('dcstack')}-card.c2::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,10,0.5);
+      border-radius: 14px;
+      transition: opacity 0.7s;
+    }
+    .${uid('dcstack')}-card.c2:hover { transform: skewY(-8deg) translateX(64px) translateY(-4px); filter: grayscale(0); }
+    .${uid('dcstack')}-card.c2:hover::before { opacity: 0; }
+    .${uid('dcstack')}-card.c3 { transform: skewY(-8deg) translateX(128px) translateY(80px); z-index: 3; }
+    .${uid('dcstack')}-card.c3:hover { transform: skewY(-8deg) translateX(128px) translateY(40px); }
+    .${uid('dcstack')}-row { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+    .${uid('dcstack')}-icon { width: 28px; height: 28px; background: ${v.accentColor}33; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .${uid('dcstack')}-title { font-size: 18px; font-weight: 600; color: ${v.accentColor}; }
+    .${uid('dcstack')}-desc { font-size: 16px; color: #fff; white-space: nowrap; position: relative; z-index: 1; }
+    .${uid('dcstack')}-date { font-size: 14px; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+    @media (max-width: 768px) {
+      .${uid('dcstack')}-card { width: 18rem; height: 8rem; }
+      .${uid('dcstack')}-card.c2 { transform: skewY(-8deg) translateX(40px) translateY(40px); }
+      .${uid('dcstack')}-card.c2:hover { transform: skewY(-8deg) translateX(40px) translateY(-4px); }
+      .${uid('dcstack')}-card.c3 { transform: skewY(-8deg) translateX(80px) translateY(80px); }
+      .${uid('dcstack')}-card.c3:hover { transform: skewY(-8deg) translateX(80px) translateY(40px); }
+    }
+    @media (max-width: 480px) {
+      .${uid('dcstack')}-card { width: 16rem; height: 7rem; padding: 12px 16px; }
+      .${uid('dcstack')}-card.c2 { transform: skewY(-8deg) translateX(24px) translateY(32px); }
+      .${uid('dcstack')}-card.c3 { transform: skewY(-8deg) translateX(48px) translateY(64px); }
+      .${uid('dcstack')}-title { font-size: 16px; }
+      .${uid('dcstack')}-desc { font-size: 14px; }
+    }
+  </style>
+  <div class="${uid('dcstack')}-grid">
+    <div class="${uid('dcstack')}-card c1">
+      <div class="${uid('dcstack')}-row"><span class="${uid('dcstack')}-icon">${v.card1Icon}</span><span class="${uid('dcstack')}-title">${v.card1Title}</span></div>
+      <div class="${uid('dcstack')}-desc">${v.card1Desc}</div>
+      <div class="${uid('dcstack')}-date">${v.card1Date}</div>
+    </div>
+    <div class="${uid('dcstack')}-card c2">
+      <div class="${uid('dcstack')}-row"><span class="${uid('dcstack')}-icon">${v.card2Icon}</span><span class="${uid('dcstack')}-title">${v.card2Title}</span></div>
+      <div class="${uid('dcstack')}-desc">${v.card2Desc}</div>
+      <div class="${uid('dcstack')}-date">${v.card2Date}</div>
+    </div>
+    <div class="${uid('dcstack')}-card c3">
+      <div class="${uid('dcstack')}-row"><span class="${uid('dcstack')}-icon">${v.card3Icon}</span><span class="${uid('dcstack')}-title">${v.card3Title}</span></div>
+      <div class="${uid('dcstack')}-desc">${v.card3Desc}</div>
+      <div class="${uid('dcstack')}-date">${v.card3Date}</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  {
+    id: 'animated-underline-text',
+    name: 'Animated Underline Text',
+    category: 'Interactive',
+    description: 'Beautiful text with animated SVG underline effect',
+    thumbnail: '',
+    fields: [
+      { id: 'text', label: 'Headline Text', type: 'text', defaultValue: 'Discover Something Amazing' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'underlineColor', label: 'Underline Color', type: 'color', defaultValue: '#3b82f6' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+      { id: 'fontSize', label: 'Font Size (px)', type: 'number', defaultValue: '48' },
+      { id: 'animDuration', label: 'Animation Duration (s)', type: 'number', defaultValue: '1.5' },
+    ],
+    generateHtml: (v) => `<div class="${uid('anim-ul')}" style="background:${v.bgColor};min-height:400px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;display:flex;align-items:center;justify-content:center;padding:60px 20px;">
+  <style>
+    .${uid('anim-ul')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('anim-ul')}-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+    .${uid('anim-ul')}-inner { position: relative; display: inline-block; }
+    .${uid('anim-ul')}-text {
+      font-size: ${v.fontSize}px;
+      font-weight: 700;
+      color: ${v.textColor};
+      text-align: center;
+      animation: ${uid('anim-ul')}-fadeIn 0.6s ease-out forwards;
+      transition: transform 0.3s ease;
+    }
+    .${uid('anim-ul')}-inner:hover .${uid('anim-ul')}-text { transform: scale(1.02); }
+    .${uid('anim-ul')}-svg {
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+    }
+    .${uid('anim-ul')}-path {
+      stroke: ${v.underlineColor};
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: ${uid('anim-ul')}-draw ${v.animDuration}s ease-in-out forwards;
+      animation-delay: 0.3s;
+    }
+    .${uid('anim-ul')}-inner:hover .${uid('anim-ul')}-path {
+      animation: ${uid('anim-ul')}-wave 0.8s ease-in-out;
+    }
+    @keyframes ${uid('anim-ul')}-fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ${uid('anim-ul')}-draw {
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes ${uid('anim-ul')}-wave {
+      0%, 100% { d: path('M 0,10 Q 75,0 150,10 Q 225,20 300,10'); }
+      50% { d: path('M 0,10 Q 75,20 150,10 Q 225,0 300,10'); }
+    }
+    @media (max-width: 768px) {
+      .${uid('anim-ul')}-text { font-size: calc(${v.fontSize}px * 0.7); }
+    }
+    @media (max-width: 480px) {
+      .${uid('anim-ul')}-text { font-size: calc(${v.fontSize}px * 0.5); }
+    }
+  </style>
+  <div class="${uid('anim-ul')}-wrap">
+    <div class="${uid('anim-ul')}-inner">
+      <h1 class="${uid('anim-ul')}-text">${v.text}</h1>
+      <svg class="${uid('anim-ul')}-svg" viewBox="0 0 300 20" preserveAspectRatio="none">
+        <path class="${uid('anim-ul')}-path" d="M 0,10 Q 75,0 150,10 Q 225,20 300,10" />
+      </svg>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== CREATIVE PRICING (21st.dev) ==========
+  {
+    id: 'creative-pricing-handwritten',
+    name: 'Creative Pricing - Handwritten',
+    category: 'Pricing',
+    description: 'Playful hand-drawn style pricing cards with rotation effects',
+    thumbnail: '',
+    fields: [
+      { id: 'tag', label: 'Tag Text', type: 'text', defaultValue: 'Simple Pricing' },
+      { id: 'title', label: 'Title', type: 'text', defaultValue: 'Make Short Videos That Pop' },
+      { id: 'description', label: 'Description', type: 'text', defaultValue: 'Edit, enhance, and go viral in minutes' },
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Basic' },
+      { id: 'plan1Price', label: 'Plan 1 Price', type: 'text', defaultValue: '9' },
+      { id: 'plan1Desc', label: 'Plan 1 Description', type: 'text', defaultValue: 'For casual creators' },
+      { id: 'plan1Features', label: 'Plan 1 Features (comma separated)', type: 'textarea', defaultValue: '5 video exports/month,Basic templates,720p quality' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Pro' },
+      { id: 'plan2Price', label: 'Plan 2 Price', type: 'text', defaultValue: '29' },
+      { id: 'plan2Desc', label: 'Plan 2 Description', type: 'text', defaultValue: 'For serious creators' },
+      { id: 'plan2Features', label: 'Plan 2 Features (comma separated)', type: 'textarea', defaultValue: 'Unlimited exports,Premium templates,4K quality,Priority support' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Team' },
+      { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: '79' },
+      { id: 'plan3Desc', label: 'Plan 3 Description', type: 'text', defaultValue: 'For growing teams' },
+      { id: 'plan3Features', label: 'Plan 3 Features (comma separated)', type: 'textarea', defaultValue: 'Everything in Pro,Team collaboration,Analytics dashboard,Custom branding' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => `<div class="${uid('cphand')}" style="background:${v.bgColor};min-height:700px;font-family:'Caveat','Comic Sans MS',cursive,sans-serif;padding:60px 20px;">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+    .${uid('cphand')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('cphand')}-wrap { max-width: 1200px; margin: 0 auto; }
+    .${uid('cphand')}-header { text-align: center; margin-bottom: 60px; }
+    .${uid('cphand')}-tag { font-size: 24px; color: ${v.accentColor}; transform: rotate(-1deg); display: inline-block; margin-bottom: 16px; }
+    .${uid('cphand')}-title { font-size: 48px; font-weight: 700; color: #1a1a1a; transform: rotate(-1deg); position: relative; display: inline-block; }
+    .${uid('cphand')}-title::after { content: '✨'; position: absolute; right: -50px; top: -10px; font-size: 32px; transform: rotate(12deg); }
+    .${uid('cphand')}-title::before { content: '⭐'; position: absolute; left: -40px; bottom: -10px; font-size: 28px; transform: rotate(-12deg); color: ${v.accentColor}; }
+    .${uid('cphand')}-desc { font-size: 24px; color: #666; transform: rotate(-1deg); margin-top: 20px; }
+    .${uid('cphand')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .${uid('cphand')}-card { position: relative; background: #fff; border: 3px solid #1a1a1a; border-radius: 16px; padding: 32px; transition: all 0.3s ease; box-shadow: 6px 6px 0 #1a1a1a; }
+    .${uid('cphand')}-card:nth-child(1) { transform: rotate(-1deg); }
+    .${uid('cphand')}-card:nth-child(2) { transform: rotate(1deg); }
+    .${uid('cphand')}-card:nth-child(3) { transform: rotate(-2deg); }
+    .${uid('cphand')}-card:hover { box-shadow: 10px 10px 0 #1a1a1a; transform: translate(-4px, -4px) rotate(0deg); }
+    .${uid('cphand')}-card.popular::before { content: 'Popular!'; position: absolute; top: -12px; right: -12px; background: #fbbf24; color: #1a1a1a; padding: 6px 16px; border-radius: 20px; font-size: 16px; font-weight: 700; transform: rotate(12deg); border: 2px solid #1a1a1a; }
+    .${uid('cphand')}-icon { width: 48px; height: 48px; border: 3px solid #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+    .${uid('cphand')}-name { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .${uid('cphand')}-pdesc { font-size: 18px; color: #666; margin-bottom: 24px; }
+    .${uid('cphand')}-price { font-size: 48px; font-weight: 700; color: #1a1a1a; margin-bottom: 24px; }
+    .${uid('cphand')}-price span { font-size: 20px; color: #666; }
+    .${uid('cphand')}-features { list-style: none; margin-bottom: 24px; }
+    .${uid('cphand')}-features li { display: flex; align-items: center; gap: 12px; font-size: 20px; color: #1a1a1a; margin-bottom: 12px; }
+    .${uid('cphand')}-features li::before { content: '✓'; width: 24px; height: 24px; border: 2px solid #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .${uid('cphand')}-btn { width: 100%; padding: 16px; font-family: inherit; font-size: 20px; font-weight: 700; background: #f5f5f5; color: #1a1a1a; border: 3px solid #1a1a1a; border-radius: 12px; cursor: pointer; box-shadow: 4px 4px 0 #1a1a1a; transition: all 0.2s; }
+    .${uid('cphand')}-btn:hover { box-shadow: 6px 6px 0 #1a1a1a; transform: translate(-2px, -2px); }
+    .${uid('cphand')}-card.popular .${uid('cphand')}-btn { background: #fbbf24; }
+    @media (max-width: 900px) { .${uid('cphand')}-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; } .${uid('cphand')}-card { transform: none !important; } }
+    @media (max-width: 480px) { .${uid('cphand')}-title { font-size: 36px; } .${uid('cphand')}-price { font-size: 36px; } }
+  </style>
+  <div class="${uid('cphand')}-wrap">
+    <div class="${uid('cphand')}-header">
+      <div class="${uid('cphand')}-tag">${v.tag}</div>
+      <h2 class="${uid('cphand')}-title">${v.title}</h2>
+      <p class="${uid('cphand')}-desc">${v.description}</p>
+    </div>
+    <div class="${uid('cphand')}-grid">
+      <div class="${uid('cphand')}-card">
+        <div class="${uid('cphand')}-icon">✏️</div>
+        <h3 class="${uid('cphand')}-name">${v.plan1Name}</h3>
+        <p class="${uid('cphand')}-pdesc">${v.plan1Desc}</p>
+        <div class="${uid('cphand')}-price">$${v.plan1Price}<span>/month</span></div>
+        <ul class="${uid('cphand')}-features">${v.plan1Features.split(',').map((f: string) => '<li>' + f.trim() + '</li>').join('')}</ul>
+        <button class="${uid('cphand')}-btn">Get Started</button>
+      </div>
+      <div class="${uid('cphand')}-card popular">
+        <div class="${uid('cphand')}-icon">⭐</div>
+        <h3 class="${uid('cphand')}-name">${v.plan2Name}</h3>
+        <p class="${uid('cphand')}-pdesc">${v.plan2Desc}</p>
+        <div class="${uid('cphand')}-price">$${v.plan2Price}<span>/month</span></div>
+        <ul class="${uid('cphand')}-features">${v.plan2Features.split(',').map((f: string) => '<li>' + f.trim() + '</li>').join('')}</ul>
+        <button class="${uid('cphand')}-btn">Get Started</button>
+      </div>
+      <div class="${uid('cphand')}-card">
+        <div class="${uid('cphand')}-icon">✨</div>
+        <h3 class="${uid('cphand')}-name">${v.plan3Name}</h3>
+        <p class="${uid('cphand')}-pdesc">${v.plan3Desc}</p>
+        <div class="${uid('cphand')}-price">$${v.plan3Price}<span>/month</span></div>
+        <ul class="${uid('cphand')}-features">${v.plan3Features.split(',').map((f: string) => '<li>' + f.trim() + '</li>').join('')}</ul>
+        <button class="${uid('cphand')}-btn">Get Started</button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== PRICING CONTAINER WITH 3D CARDS (21st.dev) ==========
+  {
+    id: 'pricing-container-3d',
+    name: 'Pricing Container - 3D Cards',
+    category: 'Pricing',
+    description: 'Interactive 3D pricing cards with monthly/yearly toggle',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Title', type: 'text', defaultValue: 'Pricing Plans' },
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Starter' },
+      { id: 'plan1Monthly', label: 'Plan 1 Monthly Price', type: 'text', defaultValue: '19' },
+      { id: 'plan1Yearly', label: 'Plan 1 Yearly Price', type: 'text', defaultValue: '190' },
+      { id: 'plan1Features', label: 'Plan 1 Features (comma separated)', type: 'textarea', defaultValue: '5 Projects,10GB Storage,Basic Support' },
+      { id: 'plan1Color', label: 'Plan 1 Accent', type: 'color', defaultValue: '#3b82f6' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Professional' },
+      { id: 'plan2Monthly', label: 'Plan 2 Monthly Price', type: 'text', defaultValue: '49' },
+      { id: 'plan2Yearly', label: 'Plan 2 Yearly Price', type: 'text', defaultValue: '490' },
+      { id: 'plan2Features', label: 'Plan 2 Features (comma separated)', type: 'textarea', defaultValue: 'Unlimited Projects,100GB Storage,Priority Support,API Access' },
+      { id: 'plan2Color', label: 'Plan 2 Accent', type: 'color', defaultValue: '#8b5cf6' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'plan3Monthly', label: 'Plan 3 Monthly Price', type: 'text', defaultValue: '99' },
+      { id: 'plan3Yearly', label: 'Plan 3 Yearly Price', type: 'text', defaultValue: '990' },
+      { id: 'plan3Features', label: 'Plan 3 Features (comma separated)', type: 'textarea', defaultValue: 'Everything in Pro,Dedicated Support,Custom Integrations,SLA Guarantee' },
+      { id: 'plan3Color', label: 'Plan 3 Accent', type: 'color', defaultValue: '#ec4899' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f0f0f0' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pc3d')}" style="background:${v.bgColor};min-height:700px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:48px 24px;border-radius:12px;">
+  <style>
+    .${uid('pc3d')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('pc3d')}-header { text-align: center; margin-bottom: 32px; }
+    .${uid('pc3d')}-title { font-size: 40px; font-weight: 900; color: #1a1a1a; background: linear-gradient(to right, #fff, #f3f4f6); padding: 16px 32px; border-radius: 12px; border: 4px solid #1a1a1a; box-shadow: 8px 8px 0 rgba(0,0,0,0.9); display: inline-block; transition: all 0.2s; }
+    .${uid('pc3d')}-title:hover { transform: translate(2px, 2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.9); }
+    .${uid('pc3d')}-toggle { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 32px; }
+    .${uid('pc3d')}-toggle span { font-weight: 500; color: #666; }
+    .${uid('pc3d')}-toggle span.active { color: #1a1a1a; font-weight: 700; }
+    .${uid('pc3d')}-switch { width: 64px; height: 32px; background: #e5e7eb; border-radius: 16px; border: 2px solid #1a1a1a; position: relative; cursor: pointer; box-shadow: 2px 2px 0 rgba(0,0,0,0.9); }
+    .${uid('pc3d')}-switch::after { content: ''; position: absolute; width: 24px; height: 24px; background: #fff; border-radius: 50%; border: 2px solid #1a1a1a; top: 2px; left: 2px; transition: transform 0.3s; }
+    .${uid('pc3d')}-switch.yearly::after { transform: translateX(32px); }
+    .${uid('pc3d')}-save { color: #22c55e; font-weight: 600; font-size: 14px; }
+    .${uid('pc3d')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+    .${uid('pc3d')}-card { background: #fff; border-radius: 12px; padding: 24px; border: 3px solid #1a1a1a; box-shadow: 6px 6px 0 rgba(0,0,0,0.9); transition: all 0.2s; position: relative; }
+    .${uid('pc3d')}-card:hover { box-shadow: 8px 8px 0 rgba(0,0,0,0.9); transform: translate(-2px, -2px); }
+    .${uid('pc3d')}-badge { position: absolute; top: -12px; right: -12px; width: 64px; height: 64px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #1a1a1a; box-shadow: 3px 3px 0 rgba(0,0,0,0.9); color: #fff; animation: ${uid('pc3d')}-bounce 2s infinite; }
+    .${uid('pc3d')}-badge .price { font-size: 18px; font-weight: 900; }
+    .${uid('pc3d')}-badge .period { font-size: 10px; font-weight: 700; }
+    @keyframes ${uid('pc3d')}-bounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(5deg); } }
+    .${uid('pc3d')}-name { font-size: 22px; font-weight: 900; color: #1a1a1a; margin-bottom: 8px; }
+    .${uid('pc3d')}-popular { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; color: #fff; border: 2px solid #1a1a1a; box-shadow: 2px 2px 0 rgba(0,0,0,0.9); animation: ${uid('pc3d')}-pulse 2s infinite; }
+    @keyframes ${uid('pc3d')}-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .${uid('pc3d')}-features { margin: 20px 0; }
+    .${uid('pc3d')}-feature { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f9fafb; border-radius: 8px; border: 2px solid #1a1a1a; box-shadow: 2px 2px 0 rgba(0,0,0,0.9); margin-bottom: 8px; font-size: 14px; font-weight: 700; color: #1a1a1a; transition: all 0.2s; }
+    .${uid('pc3d')}-feature:hover { transform: translateX(5px); }
+    .${uid('pc3d')}-feature .check { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; border: 1px solid #1a1a1a; }
+    .${uid('pc3d')}-btn { width: 100%; padding: 12px; font-size: 14px; font-weight: 900; color: #fff; border: 2px solid #1a1a1a; border-radius: 8px; cursor: pointer; box-shadow: 4px 4px 0 rgba(0,0,0,0.9); transition: all 0.2s; }
+    .${uid('pc3d')}-btn:hover { box-shadow: 6px 6px 0 rgba(0,0,0,0.9); transform: translate(-2px, -2px); }
+    .${uid('pc3d')}-btn:active { box-shadow: 2px 2px 0 rgba(0,0,0,0.9); transform: translate(2px, 2px); }
+    @media (max-width: 900px) { .${uid('pc3d')}-grid { grid-template-columns: 1fr; max-width: 400px; } }
+    @media (max-width: 480px) { .${uid('pc3d')}-title { font-size: 28px; padding: 12px 20px; } }
+  </style>
+  <div class="${uid('pc3d')}-header">
+    <h1 class="${uid('pc3d')}-title">${v.title}</h1>
+  </div>
+  <div class="${uid('pc3d')}-toggle">
+    <span class="active">Monthly</span>
+    <div class="${uid('pc3d')}-switch" onclick="this.classList.toggle('yearly')"></div>
+    <span>Yearly</span>
+    <span class="${uid('pc3d')}-save">Save 20%</span>
+  </div>
+  <div class="${uid('pc3d')}-grid">
+    <div class="${uid('pc3d')}-card">
+      <div class="${uid('pc3d')}-badge" style="background:${v.plan1Color}"><span class="price">$${v.plan1Monthly}</span><span class="period">/mo</span></div>
+      <h3 class="${uid('pc3d')}-name">${v.plan1Name}</h3>
+      <div class="${uid('pc3d')}-features">${v.plan1Features.split(',').map((f: string) => '<div class="' + uid('pc3d') + '-feature"><span class="check" style="background:' + v.plan1Color + '">✓</span>' + f.trim() + '</div>').join('')}</div>
+      <button class="${uid('pc3d')}-btn" style="background:${v.plan1Color}">GET STARTED →</button>
+    </div>
+    <div class="${uid('pc3d')}-card">
+      <div class="${uid('pc3d')}-badge" style="background:${v.plan2Color}"><span class="price">$${v.plan2Monthly}</span><span class="period">/mo</span></div>
+      <h3 class="${uid('pc3d')}-name">${v.plan2Name}</h3>
+      <span class="${uid('pc3d')}-popular" style="background:${v.plan2Color}">POPULAR</span>
+      <div class="${uid('pc3d')}-features">${v.plan2Features.split(',').map((f: string) => '<div class="' + uid('pc3d') + '-feature"><span class="check" style="background:' + v.plan2Color + '">✓</span>' + f.trim() + '</div>').join('')}</div>
+      <button class="${uid('pc3d')}-btn" style="background:${v.plan2Color}">GET STARTED →</button>
+    </div>
+    <div class="${uid('pc3d')}-card">
+      <div class="${uid('pc3d')}-badge" style="background:${v.plan3Color}"><span class="price">$${v.plan3Monthly}</span><span class="period">/mo</span></div>
+      <h3 class="${uid('pc3d')}-name">${v.plan3Name}</h3>
+      <div class="${uid('pc3d')}-features">${v.plan3Features.split(',').map((f: string) => '<div class="' + uid('pc3d') + '-feature"><span class="check" style="background:' + v.plan3Color + '">✓</span>' + f.trim() + '</div>').join('')}</div>
+      <button class="${uid('pc3d')}-btn" style="background:${v.plan3Color}">GET STARTED →</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== GLOW EFFECT HERO (21st.dev) ==========
+  {
+    id: 'glow-effect-hero',
+    name: 'Glow Effect Hero',
+    category: 'Hero',
+    description: 'Stunning animated glow background with rotating colors',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Experience the Future' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Immerse yourself in a world of endless possibilities' },
+      { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Get Started' },
+      { id: 'color1', label: 'Glow Color 1', type: 'color', defaultValue: '#ff5733' },
+      { id: 'color2', label: 'Glow Color 2', type: 'color', defaultValue: '#33ff57' },
+      { id: 'color3', label: 'Glow Color 3', type: 'color', defaultValue: '#3357ff' },
+      { id: 'color4', label: 'Glow Color 4', type: 'color', defaultValue: '#f1c40f' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+      { id: 'animDuration', label: 'Animation Duration (s)', type: 'number', defaultValue: '5' },
+    ],
+    generateHtml: (v) => `<div class="${uid('glow')}" style="background:${v.bgColor};min-height:600px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+  <style>
+    .${uid('glow')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('glow')}-bg {
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg at 50% 50%, ${v.color1}, ${v.color2}, ${v.color3}, ${v.color4}, ${v.color1});
+      animation: ${uid('glow')}-rotate ${v.animDuration}s linear infinite;
+      filter: blur(80px);
+      opacity: 0.6;
+    }
+    @keyframes ${uid('glow')}-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .${uid('glow')}-content { position: relative; z-index: 1; text-align: center; padding: 40px; }
+    .${uid('glow')}-headline { font-size: 56px; font-weight: 700; color: #fff; margin-bottom: 20px; text-shadow: 0 4px 30px rgba(0,0,0,0.5); }
+    .${uid('glow')}-sub { font-size: 20px; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .${uid('glow')}-btn { display: inline-block; padding: 16px 40px; font-size: 16px; font-weight: 600; color: #0a0a0a; background: #fff; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 30px rgba(255,255,255,0.3); }
+    .${uid('glow')}-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(255,255,255,0.4); }
+    @media (max-width: 768px) { .${uid('glow')}-headline { font-size: 36px; } .${uid('glow')}-sub { font-size: 16px; } }
+  </style>
+  <div class="${uid('glow')}-bg"></div>
+  <div class="${uid('glow')}-content">
+    <h1 class="${uid('glow')}-headline">${v.headline}</h1>
+    <p class="${uid('glow')}-sub">${v.subheadline}</p>
+    <button class="${uid('glow')}-btn">${v.buttonText}</button>
+  </div>
+</div>`
+  },
+
+  // ========== TESTIMONIAL CAROUSEL CARDS (21st.dev) ==========
+  {
+    id: 'testimonial-carousel-stack',
+    name: 'Testimonial Carousel - Stack',
+    category: 'Testimonials',
+    description: 'Draggable stacked card testimonials with smooth animations',
+    thumbnail: '',
+    fields: [
+      { id: 'test1Name', label: 'Testimonial 1 Name', type: 'text', defaultValue: 'Sarah Johnson' },
+      { id: 'test1Avatar', label: 'Testimonial 1 Avatar URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'test1Text', label: 'Testimonial 1 Text', type: 'textarea', defaultValue: 'This product completely transformed how I work. The attention to detail and quality is unmatched. Highly recommend!' },
+      { id: 'test2Name', label: 'Testimonial 2 Name', type: 'text', defaultValue: 'Michael Chen' },
+      { id: 'test2Avatar', label: 'Testimonial 2 Avatar URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Man%20in%20Blue%20Shirt.png' },
+      { id: 'test2Text', label: 'Testimonial 2 Text', type: 'textarea', defaultValue: 'Incredible experience from start to finish. The team went above and beyond to ensure everything was perfect.' },
+      { id: 'test3Name', label: 'Testimonial 3 Name', type: 'text', defaultValue: 'Emily Davis' },
+      { id: 'test3Avatar', label: 'Testimonial 3 Avatar URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/womans-elegant-hand-with-delicate%20(2).png' },
+      { id: 'test3Text', label: 'Testimonial 3 Text', type: 'textarea', defaultValue: 'Best investment I have ever made. The results speak for themselves. 5 stars all the way!' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f5f5f5' },
+      { id: 'cardBg', label: 'Card Background', type: 'color', defaultValue: '#ffffff' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tstack')}" style="background:${v.bgColor};min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;display:flex;align-items:center;justify-content:center;padding:60px 20px;">
+  <style>
+    .${uid('tstack')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tstack')}-wrap { position: relative; width: 320px; height: 280px; perspective: 1000px; }
+    .${uid('tstack')}-card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: ${v.cardBg};
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: grab;
+    }
+    .${uid('tstack')}-card:active { cursor: grabbing; }
+    .${uid('tstack')}-card:nth-child(1) { z-index: 3; transform: translateY(0) scale(1); }
+    .${uid('tstack')}-card:nth-child(2) { z-index: 2; transform: translateY(10px) scale(0.95) rotate(-2deg); opacity: 0.7; }
+    .${uid('tstack')}-card:nth-child(3) { z-index: 1; transform: translateY(20px) scale(0.9) rotate(-4deg); opacity: 0.4; }
+    .${uid('tstack')}-card:hover:nth-child(1) { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
+    .${uid('tstack')}-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid ${v.accentColor}; }
+    .${uid('tstack')}-name { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+    .${uid('tstack')}-text { font-size: 14px; color: #666; text-align: center; line-height: 1.6; }
+    .${uid('tstack')}-arrows { position: absolute; top: 12px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 16px; pointer-events: none; }
+    .${uid('tstack')}-arrow { font-size: 24px; color: #ccc; cursor: pointer; pointer-events: auto; transition: color 0.2s; }
+    .${uid('tstack')}-arrow:hover { color: ${v.accentColor}; }
+    .${uid('tstack')}-dots { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
+    .${uid('tstack')}-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; transition: background 0.3s; }
+    .${uid('tstack')}-dot.active { background: ${v.accentColor}; }
+    @media (max-width: 480px) { .${uid('tstack')}-wrap { width: 280px; height: 260px; } .${uid('tstack')}-card { padding: 24px; } }
+  </style>
+  <div>
+    <div class="${uid('tstack')}-wrap">
+      <div class="${uid('tstack')}-card">
+        <div class="${uid('tstack')}-arrows"><span class="${uid('tstack')}-arrow">←</span><span class="${uid('tstack')}-arrow">→</span></div>
+        <img src="${v.test1Avatar}" alt="${v.test1Name}" class="${uid('tstack')}-avatar" />
+        <h3 class="${uid('tstack')}-name">${v.test1Name}</h3>
+        <p class="${uid('tstack')}-text">${v.test1Text}</p>
+      </div>
+      <div class="${uid('tstack')}-card">
+        <img src="${v.test2Avatar}" alt="${v.test2Name}" class="${uid('tstack')}-avatar" />
+        <h3 class="${uid('tstack')}-name">${v.test2Name}</h3>
+        <p class="${uid('tstack')}-text">${v.test2Text}</p>
+      </div>
+      <div class="${uid('tstack')}-card">
+        <img src="${v.test3Avatar}" alt="${v.test3Name}" class="${uid('tstack')}-avatar" />
+        <h3 class="${uid('tstack')}-name">${v.test3Name}</h3>
+        <p class="${uid('tstack')}-text">${v.test3Text}</p>
+      </div>
+    </div>
+    <div class="${uid('tstack')}-dots">
+      <div class="${uid('tstack')}-dot active"></div>
+      <div class="${uid('tstack')}-dot"></div>
+      <div class="${uid('tstack')}-dot"></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== ANIMATED TABS (21st.dev) ==========
+  {
+    id: 'animated-tabs-content',
+    name: 'Animated Tabs',
+    category: 'Interactive',
+    description: 'Beautiful animated tabs with smooth transitions and blur effects',
+    thumbnail: '',
+    fields: [
+      { id: 'tab1Label', label: 'Tab 1 Label', type: 'text', defaultValue: 'Features' },
+      { id: 'tab1Title', label: 'Tab 1 Title', type: 'text', defaultValue: 'Powerful Features' },
+      { id: 'tab1Text', label: 'Tab 1 Text', type: 'textarea', defaultValue: 'Our platform offers cutting-edge features designed to streamline your workflow and boost productivity.' },
+      { id: 'tab1Image', label: 'Tab 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'tab2Label', label: 'Tab 2 Label', type: 'text', defaultValue: 'Benefits' },
+      { id: 'tab2Title', label: 'Tab 2 Title', type: 'text', defaultValue: 'Why Choose Us' },
+      { id: 'tab2Text', label: 'Tab 2 Text', type: 'textarea', defaultValue: 'Experience the difference with our premium solutions that deliver real results for your business.' },
+      { id: 'tab2Image', label: 'Tab 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'tab3Label', label: 'Tab 3 Label', type: 'text', defaultValue: 'Results' },
+      { id: 'tab3Title', label: 'Tab 3 Title', type: 'text', defaultValue: 'Proven Results' },
+      { id: 'tab3Text', label: 'Tab 3 Text', type: 'textarea', defaultValue: 'Join thousands of satisfied customers who have transformed their businesses with our solutions.' },
+      { id: 'tab3Image', label: 'Tab 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#1a1a2e' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('atabs')}" style="background:linear-gradient(135deg,${v.bgColor} 0%,#0f0f1a 100%);min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;display:flex;align-items:center;justify-content:center;padding:60px 20px;">
+  <style>
+    .${uid('atabs')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('atabs')}-wrap { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 8px; }
+    .${uid('atabs')}-nav { display: flex; gap: 8px; background: rgba(17,17,17,0.6); padding: 6px; border-radius: 12px; backdrop-filter: blur(10px); flex-wrap: wrap; }
+    .${uid('atabs')}-tab { position: relative; padding: 10px 20px; font-size: 14px; font-weight: 500; color: #fff; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+    .${uid('atabs')}-tab.active { background: rgba(17,17,17,0.8); box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    .${uid('atabs')}-tab:hover { background: rgba(255,255,255,0.1); }
+    .${uid('atabs')}-content { background: rgba(17,17,17,0.6); border-radius: 12px; padding: 24px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); min-height: 280px; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    .${uid('atabs')}-panel { display: none; animation: ${uid('atabs')}-fadeIn 0.5s ease; }
+    .${uid('atabs')}-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+    @keyframes ${uid('atabs')}-fadeIn { from { opacity: 0; transform: translateX(-10px) scale(0.95); filter: blur(10px); } to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); } }
+    .${uid('atabs')}-img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    .${uid('atabs')}-text h2 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .${uid('atabs')}-text p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    @media (max-width: 600px) { .${uid('atabs')}-panel.active { grid-template-columns: 1fr; } .${uid('atabs')}-img { height: 160px; } }
+  </style>
+  <div class="${uid('atabs')}-wrap">
+    <div class="${uid('atabs')}-nav">
+      <button class="${uid('atabs')}-tab active" onclick="this.parentElement.querySelectorAll('.${uid('atabs')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');this.closest('.${uid('atabs')}-wrap').querySelectorAll('.${uid('atabs')}-panel').forEach((p,i)=>{p.classList.remove('active');if(i===0)p.classList.add('active');})">${v.tab1Label}</button>
+      <button class="${uid('atabs')}-tab" onclick="this.parentElement.querySelectorAll('.${uid('atabs')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');this.closest('.${uid('atabs')}-wrap').querySelectorAll('.${uid('atabs')}-panel').forEach((p,i)=>{p.classList.remove('active');if(i===1)p.classList.add('active');})">${v.tab2Label}</button>
+      <button class="${uid('atabs')}-tab" onclick="this.parentElement.querySelectorAll('.${uid('atabs')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');this.closest('.${uid('atabs')}-wrap').querySelectorAll('.${uid('atabs')}-panel').forEach((p,i)=>{p.classList.remove('active');if(i===2)p.classList.add('active');})">${v.tab3Label}</button>
+    </div>
+    <div class="${uid('atabs')}-content">
+      <div class="${uid('atabs')}-panel active">
+        <img src="${v.tab1Image}" alt="${v.tab1Title}" class="${uid('atabs')}-img" />
+        <div class="${uid('atabs')}-text"><h2>${v.tab1Title}</h2><p>${v.tab1Text}</p></div>
+      </div>
+      <div class="${uid('atabs')}-panel">
+        <img src="${v.tab2Image}" alt="${v.tab2Title}" class="${uid('atabs')}-img" />
+        <div class="${uid('atabs')}-text"><h2>${v.tab2Title}</h2><p>${v.tab2Text}</p></div>
+      </div>
+      <div class="${uid('atabs')}-panel">
+        <img src="${v.tab3Image}" alt="${v.tab3Title}" class="${uid('atabs')}-img" />
+        <div class="${uid('atabs')}-text"><h2>${v.tab3Title}</h2><p>${v.tab3Text}</p></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== PREMIUM 21st.dev STYLE SECTIONS - BATCH 1 ==========
+
+  // 1. Luxury Hero with Feature Cards
+  {
+    id: 'hero-feature-cards',
+    name: 'Hero - Feature Cards Grid',
+    category: 'Hero',
+    description: 'Elegant hero section with animated feature cards below',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-feature-cards.jpg',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Curated for the Discerning Eye' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'Where timeless elegance meets contemporary design. Discover collections that transform spaces into sanctuaries.' },
+      { id: 'ctaText', label: 'CTA Button Text', type: 'text', defaultValue: 'Explore Collections' },
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Artisan Textiles' },
+      { id: 'card1Image', label: 'Card 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Bespoke Tailoring' },
+      { id: 'card2Image', label: 'Card 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Couture Essentials' },
+      { id: 'card3Image', label: 'Card 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#faf9f7' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hfc')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;">
+  <style>
+    .${uid('hfc')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hfc')}-wrap { max-width: 1100px; margin: 0 auto; }
+    .${uid('hfc')}-hero { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+    .${uid('hfc')}-title { font-size: 48px; font-weight: 700; color: #1a1a1a; line-height: 1.1; margin-bottom: 20px; animation: ${uid('hfc')}-fadeUp 0.6s ease-out; }
+    .${uid('hfc')}-sub { font-size: 18px; color: #666; line-height: 1.6; margin-bottom: 32px; animation: ${uid('hfc')}-fadeUp 0.6s ease-out 0.1s both; }
+    .${uid('hfc')}-btn { display: inline-block; padding: 16px 32px; background: ${v.accentColor}; color: #fff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s; animation: ${uid('hfc')}-fadeUp 0.6s ease-out 0.2s both; }
+    .${uid('hfc')}-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    .${uid('hfc')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('hfc')}-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); animation: ${uid('hfc')}-fadeUp 0.6s ease-out both; }
+    .${uid('hfc')}-card:nth-child(1) { animation-delay: 0.3s; }
+    .${uid('hfc')}-card:nth-child(2) { animation-delay: 0.4s; }
+    .${uid('hfc')}-card:nth-child(3) { animation-delay: 0.5s; }
+    .${uid('hfc')}-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+    .${uid('hfc')}-card img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform 0.4s; }
+    .${uid('hfc')}-card:hover img { transform: scale(1.05); }
+    .${uid('hfc')}-card-body { padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+    .${uid('hfc')}-card h3 { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+    .${uid('hfc')}-arrow { width: 40px; height: 40px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    .${uid('hfc')}-card:hover .${uid('hfc')}-arrow { background: ${v.accentColor}; }
+    .${uid('hfc')}-arrow svg { width: 20px; height: 20px; color: #666; transition: all 0.3s; }
+    .${uid('hfc')}-card:hover .${uid('hfc')}-arrow svg { color: #fff; transform: translateX(2px); }
+    @keyframes ${uid('hfc')}-fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) { .${uid('hfc')}-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; } .${uid('hfc')}-title { font-size: 36px; } }
+  </style>
+  <div class="${uid('hfc')}-wrap">
+    <div class="${uid('hfc')}-hero">
+      <h1 class="${uid('hfc')}-title">${v.headline}</h1>
+      <p class="${uid('hfc')}-sub">${v.subheadline}</p>
+      <a href="#" class="${uid('hfc')}-btn">${v.ctaText}</a>
+    </div>
+    <div class="${uid('hfc')}-grid">
+      <a href="#" class="${uid('hfc')}-card">
+        <img src="${v.card1Image}" alt="${v.card1Title}" />
+        <div class="${uid('hfc')}-card-body">
+          <h3>${v.card1Title}</h3>
+          <div class="${uid('hfc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+      <a href="#" class="${uid('hfc')}-card">
+        <img src="${v.card2Image}" alt="${v.card2Title}" />
+        <div class="${uid('hfc')}-card-body">
+          <h3>${v.card2Title}</h3>
+          <div class="${uid('hfc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+      <a href="#" class="${uid('hfc')}-card">
+        <img src="${v.card3Image}" alt="${v.card3Title}" />
+        <div class="${uid('hfc')}-card-body">
+          <h3>${v.card3Title}</h3>
+          <div class="${uid('hfc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 2. Logo Cloud with Infinite Slider
+  {
+    id: 'logo-cloud-infinite',
+    name: 'Logo Cloud - Infinite Scroll',
+    category: 'Trust',
+    description: 'Smooth infinite scrolling logo carousel with fade edges',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/logo-cloud.jpg',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Featured in the World\'s Finest Publications' },
+      { id: 'logo1', label: 'Logo 1 Text', type: 'text', defaultValue: 'VOGUE' },
+      { id: 'logo2', label: 'Logo 2 Text', type: 'text', defaultValue: 'ARCHITECTURAL DIGEST' },
+      { id: 'logo3', label: 'Logo 3 Text', type: 'text', defaultValue: 'ELLE DÉCOR' },
+      { id: 'logo4', label: 'Logo 4 Text', type: 'text', defaultValue: 'HARPER\'S BAZAAR' },
+      { id: 'logo5', label: 'Logo 5 Text', type: 'text', defaultValue: 'ROBB REPORT' },
+      { id: 'logo6', label: 'Logo 6 Text', type: 'text', defaultValue: 'TOWN & COUNTRY' },
+      { id: 'speed', label: 'Animation Speed (seconds)', type: 'number', defaultValue: '20' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Logo Text Color', type: 'color', defaultValue: '#9ca3af' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lci')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:48px 0;overflow:hidden;">
+  <style>
+    .${uid('lci')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('lci')}-title { text-align: center; font-size: 14px; font-weight: 500; color: #666; letter-spacing: 0.5px; margin-bottom: 32px; text-transform: uppercase; }
+    .${uid('lci')}-track { display: flex; width: max-content; animation: ${uid('lci')}-scroll ${v.speed}s linear infinite; }
+    .${uid('lci')}-track:hover { animation-play-state: paused; }
+    .${uid('lci')}-wrap { position: relative; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+    .${uid('lci')}-logo { display: flex; align-items: center; justify-content: center; padding: 0 42px; font-size: 20px; font-weight: 700; color: ${v.textColor}; letter-spacing: -0.5px; white-space: nowrap; transition: all 0.3s; }
+    .${uid('lci')}-logo:hover { color: #1a1a1a; transform: scale(1.05); }
+    @keyframes ${uid('lci')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  </style>
+  <p class="${uid('lci')}-title">${v.title}</p>
+  <div class="${uid('lci')}-wrap">
+    <div class="${uid('lci')}-track">
+      <span class="${uid('lci')}-logo">${v.logo1}</span>
+      <span class="${uid('lci')}-logo">${v.logo2}</span>
+      <span class="${uid('lci')}-logo">${v.logo3}</span>
+      <span class="${uid('lci')}-logo">${v.logo4}</span>
+      <span class="${uid('lci')}-logo">${v.logo5}</span>
+      <span class="${uid('lci')}-logo">${v.logo6}</span>
+      <span class="${uid('lci')}-logo">${v.logo1}</span>
+      <span class="${uid('lci')}-logo">${v.logo2}</span>
+      <span class="${uid('lci')}-logo">${v.logo3}</span>
+      <span class="${uid('lci')}-logo">${v.logo4}</span>
+      <span class="${uid('lci')}-logo">${v.logo5}</span>
+      <span class="${uid('lci')}-logo">${v.logo6}</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 3. Interactive Numbered Accordion
+  {
+    id: 'interactive-numbered-accordion',
+    name: 'Accordion - Numbered Interactive',
+    category: 'Interactive',
+    description: 'Sleek numbered accordion with animated indicators and hover effects',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/accordion.jpg',
+    fields: [
+      { id: 'item1Title', label: 'Item 1 Title', type: 'text', defaultValue: 'Consultation' },
+      { id: 'item1Content', label: 'Item 1 Content', type: 'textarea', defaultValue: 'Our design consultants visit your space to understand its architecture, light, and your vision for living.' },
+      { id: 'item2Title', label: 'Item 2 Title', type: 'text', defaultValue: 'Curation' },
+      { id: 'item2Content', label: 'Item 2 Content', type: 'textarea', defaultValue: 'We present a bespoke selection of pieces from our global network of master artisans and heritage ateliers.' },
+      { id: 'item3Title', label: 'Item 3 Title', type: 'text', defaultValue: 'Craftsmanship' },
+      { id: 'item3Content', label: 'Item 3 Content', type: 'textarea', defaultValue: 'Each piece is handcrafted to your specifications using time-honored techniques passed down through generations.' },
+      { id: 'item4Title', label: 'Item 4 Title', type: 'text', defaultValue: 'Installation' },
+      { id: 'item4Content', label: 'Item 4 Content', type: 'textarea', defaultValue: 'White-glove delivery and installation ensure every piece is placed with precision and care.' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ina')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;display:flex;align-items:center;justify-content:center;min-height:500px;">
+  <style>
+    .${uid('ina')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ina')}-wrap { width: 100%; max-width: 600px; }
+    .${uid('ina')}-item { border-bottom: 1px solid #e5e7eb; }
+    .${uid('ina')}-btn { width: 100%; display: flex; align-items: center; gap: 24px; padding: 20px 4px; background: none; border: none; cursor: pointer; text-align: left; position: relative; }
+    .${uid('ina')}-num { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+    .${uid('ina')}-num span { font-size: 14px; font-weight: 500; color: #9ca3af; transition: color 0.3s; z-index: 1; }
+    .${uid('ina')}-num::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: ${v.accentColor}; transform: scale(0); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .${uid('ina')}-item.active .${uid('ina')}-num::before { transform: scale(1); }
+    .${uid('ina')}-item.active .${uid('ina')}-num span { color: #fff; }
+    .${uid('ina')}-title { flex: 1; font-size: 24px; font-weight: 500; color: #9ca3af; transition: all 0.3s; }
+    .${uid('ina')}-item:hover .${uid('ina')}-title, .${uid('ina')}-item.active .${uid('ina')}-title { color: ${v.accentColor}; transform: translateX(4px); }
+    .${uid('ina')}-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .${uid('ina')}-icon svg { width: 16px; height: 16px; color: ${v.accentColor}; opacity: 0.4; transition: all 0.3s; }
+    .${uid('ina')}-item.active .${uid('ina')}-icon svg { transform: rotate(45deg); opacity: 1; }
+    .${uid('ina')}-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .${uid('ina')}-item.active .${uid('ina')}-content { max-height: 200px; }
+    .${uid('ina')}-text { padding: 0 4px 24px 64px; font-size: 16px; color: #666; line-height: 1.7; }
+    .${uid('ina')}-line { position: absolute; bottom: 0; left: 0; height: 1px; background: ${v.accentColor}; width: 0; transition: width 0.4s; }
+    .${uid('ina')}-item.active .${uid('ina')}-line, .${uid('ina')}-item:hover .${uid('ina')}-line { width: 100%; }
+    @media (max-width: 600px) { .${uid('ina')}-title { font-size: 20px; } .${uid('ina')}-text { padding-left: 64px; } }
+  </style>
+  <div class="${uid('ina')}-wrap">
+    <div class="${uid('ina')}-item active" onclick="this.parentElement.querySelectorAll('.${uid('ina')}-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">
+      <button class="${uid('ina')}-btn"><div class="${uid('ina')}-num"><span>01</span></div><h3 class="${uid('ina')}-title">${v.item1Title}</h3><div class="${uid('ina')}-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg></div><div class="${uid('ina')}-line"></div></button>
+      <div class="${uid('ina')}-content"><p class="${uid('ina')}-text">${v.item1Content}</p></div>
+    </div>
+    <div class="${uid('ina')}-item" onclick="this.parentElement.querySelectorAll('.${uid('ina')}-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">
+      <button class="${uid('ina')}-btn"><div class="${uid('ina')}-num"><span>02</span></div><h3 class="${uid('ina')}-title">${v.item2Title}</h3><div class="${uid('ina')}-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg></div><div class="${uid('ina')}-line"></div></button>
+      <div class="${uid('ina')}-content"><p class="${uid('ina')}-text">${v.item2Content}</p></div>
+    </div>
+    <div class="${uid('ina')}-item" onclick="this.parentElement.querySelectorAll('.${uid('ina')}-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">
+      <button class="${uid('ina')}-btn"><div class="${uid('ina')}-num"><span>03</span></div><h3 class="${uid('ina')}-title">${v.item3Title}</h3><div class="${uid('ina')}-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg></div><div class="${uid('ina')}-line"></div></button>
+      <div class="${uid('ina')}-content"><p class="${uid('ina')}-text">${v.item3Content}</p></div>
+    </div>
+    <div class="${uid('ina')}-item" onclick="this.parentElement.querySelectorAll('.${uid('ina')}-item').forEach(i=>i.classList.remove('active'));this.classList.add('active')">
+      <button class="${uid('ina')}-btn"><div class="${uid('ina')}-num"><span>04</span></div><h3 class="${uid('ina')}-title">${v.item4Title}</h3><div class="${uid('ina')}-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1v14M1 8h14"/></svg></div><div class="${uid('ina')}-line"></div></button>
+      <div class="${uid('ina')}-content"><p class="${uid('ina')}-text">${v.item4Content}</p></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 4. Editorial Testimonial with Navigation
+  {
+    id: 'testimonial-editorial',
+    name: 'Testimonial - Editorial Style',
+    category: 'Testimonials',
+    description: 'Large format editorial testimonial with elegant navigation',
+    thumbnail: '',
+    fields: [
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'The attention to detail and creative vision transformed our entire brand identity completely.' },
+      { id: 'author1', label: 'Author 1 Name', type: 'text', defaultValue: 'Sarah Chen' },
+      { id: 'role1', label: 'Author 1 Role', type: 'text', defaultValue: 'Creative Director' },
+      { id: 'company1', label: 'Author 1 Company', type: 'text', defaultValue: 'Studio Nova' },
+      { id: 'image1', label: 'Author 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'Working with them felt like a true creative partnership from the very first conversation.' },
+      { id: 'author2', label: 'Author 2 Name', type: 'text', defaultValue: 'Marcus Webb' },
+      { id: 'role2', label: 'Author 2 Role', type: 'text', defaultValue: 'Head of Design' },
+      { id: 'company2', label: 'Author 2 Company', type: 'text', defaultValue: 'Minimal Co' },
+      { id: 'image2', label: 'Author 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ted')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;">
+  <style>
+    .${uid('ted')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ted')}-wrap { max-width: 700px; margin: 0 auto; }
+    .${uid('ted')}-main { display: flex; align-items: flex-start; gap: 32px; }
+    .${uid('ted')}-num { font-size: 120px; font-weight: 200; color: rgba(0,0,0,0.08); line-height: 1; font-variant-numeric: tabular-nums; transition: all 0.5s; user-select: none; }
+    .${uid('ted')}-content { flex: 1; padding-top: 24px; }
+    .${uid('ted')}-quote { font-size: 28px; font-weight: 300; color: #1a1a1a; line-height: 1.4; letter-spacing: -0.5px; margin-bottom: 40px; transition: all 0.4s; }
+    .${uid('ted')}-author { display: flex; align-items: center; gap: 16px; }
+    .${uid('ted')}-avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(0,0,0,0.1); transition: all 0.3s; }
+    .${uid('ted')}-avatar:hover { border-color: #1a1a1a; transform: scale(1.05); }
+    .${uid('ted')}-avatar img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: filter 0.3s; }
+    .${uid('ted')}-avatar:hover img { filter: grayscale(0); }
+    .${uid('ted')}-info p:first-child { font-weight: 500; color: #1a1a1a; }
+    .${uid('ted')}-info p:last-child { font-size: 14px; color: #666; }
+    .${uid('ted')}-info span { margin: 0 8px; color: rgba(0,0,0,0.2); }
+    .${uid('ted')}-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 48px; }
+    .${uid('ted')}-dots { display: flex; align-items: center; gap: 24px; }
+    .${uid('ted')}-dots-inner { display: flex; gap: 12px; }
+    .${uid('ted')}-dot { width: 24px; height: 1px; background: rgba(0,0,0,0.2); cursor: pointer; transition: all 0.4s; }
+    .${uid('ted')}-dot.active { width: 48px; background: #1a1a1a; }
+    .${uid('ted')}-dot:hover { background: rgba(0,0,0,0.5); }
+    .${uid('ted')}-counter { font-size: 12px; color: #666; letter-spacing: 2px; text-transform: uppercase; }
+    .${uid('ted')}-arrows { display: flex; gap: 4px; }
+    .${uid('ted')}-arrow { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; }
+    .${uid('ted')}-arrow:hover { color: #1a1a1a; background: rgba(0,0,0,0.05); }
+    .${uid('ted')}-arrow svg { width: 20px; height: 20px; }
+    .${uid('ted')}-slide { display: none; }
+    .${uid('ted')}-slide.active { display: block; animation: ${uid('ted')}-fadeIn 0.5s ease; }
+    @keyframes ${uid('ted')}-fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    @media (max-width: 600px) { .${uid('ted')}-num { font-size: 80px; } .${uid('ted')}-quote { font-size: 22px; } .${uid('ted')}-main { flex-direction: column; gap: 0; } }
+  </style>
+  <div class="${uid('ted')}-wrap">
+    <div class="${uid('ted')}-main">
+      <span class="${uid('ted')}-num" id="${uid('ted')}-numDisplay">01</span>
+      <div class="${uid('ted')}-content">
+        <div class="${uid('ted')}-slide active" data-index="0">
+          <blockquote class="${uid('ted')}-quote">"${v.quote1}"</blockquote>
+          <div class="${uid('ted')}-author">
+            <div class="${uid('ted')}-avatar"><img src="${v.image1}" alt="${v.author1}"></div>
+            <div class="${uid('ted')}-info"><p>${v.author1}</p><p>${v.role1}<span>/</span>${v.company1}</p></div>
+          </div>
+        </div>
+        <div class="${uid('ted')}-slide" data-index="1">
+          <blockquote class="${uid('ted')}-quote">"${v.quote2}"</blockquote>
+          <div class="${uid('ted')}-author">
+            <div class="${uid('ted')}-avatar"><img src="${v.image2}" alt="${v.author2}"></div>
+            <div class="${uid('ted')}-info"><p>${v.author2}</p><p>${v.role2}<span>/</span>${v.company2}</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('ted')}-nav">
+      <div class="${uid('ted')}-dots">
+        <div class="${uid('ted')}-dots-inner">
+          <div class="${uid('ted')}-dot active" onclick="document.querySelectorAll('.${uid('ted')}-slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-slide')[0].classList.add('active');document.querySelectorAll('.${uid('ted')}-dot').forEach(d=>d.classList.remove('active'));this.classList.add('active');document.getElementById('${uid('ted')}-numDisplay').textContent='01'"></div>
+          <div class="${uid('ted')}-dot" onclick="document.querySelectorAll('.${uid('ted')}-slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-slide')[1].classList.add('active');document.querySelectorAll('.${uid('ted')}-dot').forEach(d=>d.classList.remove('active'));this.classList.add('active');document.getElementById('${uid('ted')}-numDisplay').textContent='02'"></div>
+        </div>
+        <span class="${uid('ted')}-counter">01 / 02</span>
+      </div>
+      <div class="${uid('ted')}-arrows">
+        <div class="${uid('ted')}-arrow" onclick="document.querySelectorAll('.${uid('ted')}-slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-slide')[0].classList.add('active');document.querySelectorAll('.${uid('ted')}-dot').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-dot')[0].classList.add('active');document.getElementById('${uid('ted')}-numDisplay').textContent='01'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="${uid('ted')}-arrow" onclick="document.querySelectorAll('.${uid('ted')}-slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-slide')[1].classList.add('active');document.querySelectorAll('.${uid('ted')}-dot').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.${uid('ted')}-dot')[1].classList.add('active');document.getElementById('${uid('ted')}-numDisplay').textContent='02'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 5. Minimal Testimonial with Avatars
+  {
+    id: 'testimonial-minimal-avatars',
+    name: 'Testimonial - Minimal Avatars',
+    category: 'Testimonials',
+    description: 'Clean minimal testimonial with clickable avatar selection',
+    thumbnail: '',
+    fields: [
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'Working with them transformed our entire brand identity. The attention to detail was exceptional.' },
+      { id: 'name1', label: 'Name 1', type: 'text', defaultValue: 'Sarah Chen' },
+      { id: 'role1', label: 'Role 1', type: 'text', defaultValue: 'CEO at Elevate' },
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'A rare talent who combines strategic thinking with flawless execution. Highly recommended.' },
+      { id: 'name2', label: 'Name 2', type: 'text', defaultValue: 'Marcus Johnson' },
+      { id: 'role2', label: 'Role 2', type: 'text', defaultValue: 'Design Lead at Scale' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'The most seamless collaboration I have experienced. They truly understand modern design.' },
+      { id: 'name3', label: 'Name 3', type: 'text', defaultValue: 'Elena Voss' },
+      { id: 'role3', label: 'Role 3', type: 'text', defaultValue: 'Founder at Craft' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tma')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;">
+  <style>
+    .${uid('tma')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tma')}-wrap { max-width: 600px; margin: 0 auto; }
+    .${uid('tma')}-quotes { position: relative; min-height: 80px; margin-bottom: 48px; }
+    .${uid('tma')}-quote { position: absolute; inset: 0; font-size: 22px; font-weight: 300; color: #1a1a1a; line-height: 1.5; opacity: 0; transform: translateY(16px); filter: blur(4px); transition: all 0.5s ease; pointer-events: none; }
+    .${uid('tma')}-quote.active { opacity: 1; transform: translateY(0); filter: blur(0); pointer-events: auto; }
+    .${uid('tma')}-row { display: flex; align-items: center; gap: 24px; }
+    .${uid('tma')}-avatars { display: flex; margin-left: -8px; }
+    .${uid('tma')}-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; margin-left: -8px; cursor: pointer; transition: all 0.3s; filter: grayscale(100%); }
+    .${uid('tma')}-avatar.active { transform: scale(1.15); z-index: 10; filter: grayscale(0); }
+    .${uid('tma')}-avatar:hover { filter: grayscale(0); transform: scale(1.1); }
+    .${uid('tma')}-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('tma')}-divider { width: 1px; height: 32px; background: #e5e7eb; }
+    .${uid('tma')}-info { position: relative; flex: 1; min-height: 44px; }
+    .${uid('tma')}-author { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateX(-8px); transition: all 0.4s; pointer-events: none; }
+    .${uid('tma')}-author.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+    .${uid('tma')}-author .name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .${uid('tma')}-author .role { font-size: 12px; color: #666; }
+  </style>
+  <div class="${uid('tma')}-wrap">
+    <div class="${uid('tma')}-quotes">
+      <p class="${uid('tma')}-quote active" data-index="0">"${v.quote1}"</p>
+      <p class="${uid('tma')}-quote" data-index="1">"${v.quote2}"</p>
+      <p class="${uid('tma')}-quote" data-index="2">"${v.quote3}"</p>
+    </div>
+    <div class="${uid('tma')}-row">
+      <div class="${uid('tma')}-avatars">
+        <div class="${uid('tma')}-avatar active" onclick="const w=this.closest('.${uid('tma')}-wrap');w.querySelectorAll('.${uid('tma')}-quote').forEach(q=>q.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-quote')[0].classList.add('active');w.querySelectorAll('.${uid('tma')}-avatar').forEach(a=>a.classList.remove('active'));this.classList.add('active');w.querySelectorAll('.${uid('tma')}-author').forEach(a=>a.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-author')[0].classList.add('active')"><img src="${v.image1}" alt="${v.name1}"></div>
+        <div class="${uid('tma')}-avatar" onclick="const w=this.closest('.${uid('tma')}-wrap');w.querySelectorAll('.${uid('tma')}-quote').forEach(q=>q.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-quote')[1].classList.add('active');w.querySelectorAll('.${uid('tma')}-avatar').forEach(a=>a.classList.remove('active'));this.classList.add('active');w.querySelectorAll('.${uid('tma')}-author').forEach(a=>a.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-author')[1].classList.add('active')"><img src="${v.image2}" alt="${v.name2}"></div>
+        <div class="${uid('tma')}-avatar" onclick="const w=this.closest('.${uid('tma')}-wrap');w.querySelectorAll('.${uid('tma')}-quote').forEach(q=>q.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-quote')[2].classList.add('active');w.querySelectorAll('.${uid('tma')}-avatar').forEach(a=>a.classList.remove('active'));this.classList.add('active');w.querySelectorAll('.${uid('tma')}-author').forEach(a=>a.classList.remove('active'));w.querySelectorAll('.${uid('tma')}-author')[2].classList.add('active')"><img src="${v.image3}" alt="${v.name3}"></div>
+      </div>
+      <div class="${uid('tma')}-divider"></div>
+      <div class="${uid('tma')}-info">
+        <div class="${uid('tma')}-author active"><span class="name">${v.name1}</span><span class="role">${v.role1}</span></div>
+        <div class="${uid('tma')}-author"><span class="name">${v.name2}</span><span class="role">${v.role2}</span></div>
+        <div class="${uid('tma')}-author"><span class="name">${v.name3}</span><span class="role">${v.role3}</span></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 6. Feature Showcase with Tabs
+  {
+    id: 'feature-showcase-tabs',
+    name: 'Feature Showcase - Tabs',
+    category: 'Features',
+    description: 'Split layout with accordion steps and tabbed image showcase',
+    thumbnail: '',
+    fields: [
+      { id: 'eyebrow', label: 'Eyebrow Text', type: 'text', defaultValue: 'The Atelier Experience' },
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'From Vision to Heirloom' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Every masterpiece begins with understanding. Our bespoke process transforms your aspirations into pieces that transcend generations.' },
+      { id: 'stat1', label: 'Stat Badge 1', type: 'text', defaultValue: 'Made to Order' },
+      { id: 'stat2', label: 'Stat Badge 2', type: 'text', defaultValue: '6-8 Week Craft' },
+      { id: 'stat3', label: 'Stat Badge 3', type: 'text', defaultValue: 'Lifetime Care' },
+      { id: 'step1Title', label: 'Step 1 Title', type: 'text', defaultValue: 'Private Consultation' },
+      { id: 'step1Text', label: 'Step 1 Text', type: 'textarea', defaultValue: 'Begin with an intimate session where our design director learns your aesthetic language, lifestyle, and the story you wish your space to tell.' },
+      { id: 'step2Title', label: 'Step 2 Title', type: 'text', defaultValue: 'Material Selection' },
+      { id: 'step2Text', label: 'Step 2 Text', type: 'textarea', defaultValue: 'Touch and experience our curated collection of rare textiles, aged leathers, and ethically-sourced materials from heritage mills worldwide.' },
+      { id: 'step3Title', label: 'Step 3 Title', type: 'text', defaultValue: 'Artisan Creation' },
+      { id: 'step3Text', label: 'Step 3 Text', type: 'textarea', defaultValue: 'Watch as master craftsmen bring your vision to life using techniques passed down through generations, with your name etched in our atelier records.' },
+      { id: 'tab1Label', label: 'Tab 1 Label', type: 'text', defaultValue: 'Silks' },
+      { id: 'tab1Image', label: 'Tab 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'tab2Label', label: 'Tab 2 Label', type: 'text', defaultValue: 'Leathers' },
+      { id: 'tab2Image', label: 'Tab 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'tab3Label', label: 'Tab 3 Label', type: 'text', defaultValue: 'Linens' },
+      { id: 'tab3Image', label: 'Tab 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fst')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;">
+  <style>
+    .${uid('fst')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fst')}-wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .${uid('fst')}-eyebrow { display: inline-block; font-size: 12px; font-weight: 500; color: #666; padding: 6px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 16px; }
+    .${uid('fst')}-title { font-size: 42px; font-weight: 700; color: #1a1a1a; line-height: 1.1; margin-bottom: 16px; }
+    .${uid('fst')}-desc { font-size: 16px; color: #666; line-height: 1.6; margin-bottom: 20px; }
+    .${uid('fst')}-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+    .${uid('fst')}-stat { font-size: 13px; padding: 6px 12px; background: #f3f4f6; border-radius: 6px; color: #1a1a1a; }
+    .${uid('fst')}-steps { border-top: 1px solid #e5e7eb; }
+    .${uid('fst')}-step { border-bottom: 1px solid #e5e7eb; }
+    .${uid('fst')}-step-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 16px 0; background: none; border: none; cursor: pointer; text-align: left; }
+    .${uid('fst')}-step-title { font-size: 16px; font-weight: 500; color: #1a1a1a; }
+    .${uid('fst')}-step-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; }
+    .${uid('fst')}-step.active .${uid('fst')}-step-icon { transform: rotate(180deg); }
+    .${uid('fst')}-step-icon svg { width: 16px; height: 16px; color: #666; }
+    .${uid('fst')}-step-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; }
+    .${uid('fst')}-step.active .${uid('fst')}-step-content { max-height: 120px; }
+    .${uid('fst')}-step-text { padding-bottom: 16px; font-size: 14px; color: #666; line-height: 1.6; }
+    .${uid('fst')}-btns { display: flex; gap: 12px; margin-top: 24px; }
+    .${uid('fst')}-btn { padding: 12px 24px; font-size: 14px; font-weight: 500; border-radius: 8px; text-decoration: none; transition: all 0.3s; }
+    .${uid('fst')}-btn.primary { background: #1a1a1a; color: #fff; }
+    .${uid('fst')}-btn.secondary { background: transparent; color: #1a1a1a; border: 1px solid #e5e7eb; }
+    .${uid('fst')}-btn:hover { transform: translateY(-2px); }
+    .${uid('fst')}-panel { position: relative; background: rgba(0,0,0,0.02); border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; height: 500px; }
+    .${uid('fst')}-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+    .${uid('fst')}-img.active { opacity: 1; }
+    .${uid('fst')}-tabs { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; padding: 6px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: 12px; border: 1px solid #e5e7eb; }
+    .${uid('fst')}-tab { padding: 8px 16px; font-size: 13px; font-weight: 500; color: #666; background: transparent; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+    .${uid('fst')}-tab.active { background: #1a1a1a; color: #fff; }
+    @media (max-width: 900px) { .${uid('fst')}-wrap { grid-template-columns: 1fr; } .${uid('fst')}-panel { height: 400px; } .${uid('fst')}-title { font-size: 32px; } }
+  </style>
+  <div class="${uid('fst')}-wrap">
+    <div class="${uid('fst')}-left">
+      <span class="${uid('fst')}-eyebrow">${v.eyebrow}</span>
+      <h2 class="${uid('fst')}-title">${v.headline}</h2>
+      <p class="${uid('fst')}-desc">${v.description}</p>
+      <div class="${uid('fst')}-stats"><span class="${uid('fst')}-stat">${v.stat1}</span><span class="${uid('fst')}-stat">${v.stat2}</span><span class="${uid('fst')}-stat">${v.stat3}</span></div>
+      <div class="${uid('fst')}-steps">
+        <div class="${uid('fst')}-step active" onclick="this.parentElement.querySelectorAll('.${uid('fst')}-step').forEach(s=>s.classList.remove('active'));this.classList.add('active')">
+          <button class="${uid('fst')}-step-btn"><span class="${uid('fst')}-step-title">${v.step1Title}</span><div class="${uid('fst')}-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg></div></button>
+          <div class="${uid('fst')}-step-content"><p class="${uid('fst')}-step-text">${v.step1Text}</p></div>
+        </div>
+        <div class="${uid('fst')}-step" onclick="this.parentElement.querySelectorAll('.${uid('fst')}-step').forEach(s=>s.classList.remove('active'));this.classList.add('active')">
+          <button class="${uid('fst')}-step-btn"><span class="${uid('fst')}-step-title">${v.step2Title}</span><div class="${uid('fst')}-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg></div></button>
+          <div class="${uid('fst')}-step-content"><p class="${uid('fst')}-step-text">${v.step2Text}</p></div>
+        </div>
+        <div class="${uid('fst')}-step" onclick="this.parentElement.querySelectorAll('.${uid('fst')}-step').forEach(s=>s.classList.remove('active'));this.classList.add('active')">
+          <button class="${uid('fst')}-step-btn"><span class="${uid('fst')}-step-title">${v.step3Title}</span><div class="${uid('fst')}-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg></div></button>
+          <div class="${uid('fst')}-step-content"><p class="${uid('fst')}-step-text">${v.step3Text}</p></div>
+        </div>
+      </div>
+      <div class="${uid('fst')}-btns"><a href="#" class="${uid('fst')}-btn primary">Get Started</a><a href="#" class="${uid('fst')}-btn secondary">View Examples</a></div>
+    </div>
+    <div class="${uid('fst')}-panel">
+      <img src="${v.tab1Image}" alt="${v.tab1Label}" class="${uid('fst')}-img active" data-tab="0">
+      <img src="${v.tab2Image}" alt="${v.tab2Label}" class="${uid('fst')}-img" data-tab="1">
+      <img src="${v.tab3Image}" alt="${v.tab3Label}" class="${uid('fst')}-img" data-tab="2">
+      <div class="${uid('fst')}-tabs">
+        <button class="${uid('fst')}-tab active" onclick="this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img').forEach(i=>i.classList.remove('active'));this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img')[0].classList.add('active');this.parentElement.querySelectorAll('.${uid('fst')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${v.tab1Label}</button>
+        <button class="${uid('fst')}-tab" onclick="this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img').forEach(i=>i.classList.remove('active'));this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img')[1].classList.add('active');this.parentElement.querySelectorAll('.${uid('fst')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${v.tab2Label}</button>
+        <button class="${uid('fst')}-tab" onclick="this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img').forEach(i=>i.classList.remove('active'));this.closest('.${uid('fst')}-panel').querySelectorAll('.${uid('fst')}-img')[2].classList.add('active');this.parentElement.querySelectorAll('.${uid('fst')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${v.tab3Label}</button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 7. Animated Card Stack - EXACT 1:1 from 21st.dev/r/moazamtrade/animate-card-animation
+  {
+    id: 'animated-card-stack',
+    name: 'Animated Card Stack',
+    category: 'Interactive',
+    description: 'Stacked cards with shuffle animation on button click',
+    thumbnail: '',
+    fields: [
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Cashmere Collection' },
+      { id: 'card1Desc', label: 'Card 1 Description', type: 'text', defaultValue: 'Luxury Home Textiles' },
+      { id: 'card1Image', label: 'Card 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Milano Furniture' },
+      { id: 'card2Desc', label: 'Card 2 Description', type: 'text', defaultValue: 'Italian Design Excellence' },
+      { id: 'card2Image', label: 'Card 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-sofa-image.png' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Artisan Textiles' },
+      { id: 'card3Desc', label: 'Card 3 Description', type: 'text', defaultValue: 'Heritage Craftsmanship' },
+      { id: 'card3Image', label: 'Card 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('acs')}-section">
+  <style>
+    .${uid('acs')}-section { background: ${v.bgColor}; padding: 8px 0 0 0; font-family: system-ui, -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+    .${uid('acs')}-stack { position: relative; height: 380px; width: 100%; max-width: 644px; overflow: hidden; }
+    .${uid('acs')}-card { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; display: flex; height: 280px; width: 324px; align-items: center; justify-content: center; overflow: hidden; border-radius: 12px 12px 0 0; border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-top: 1px solid #e5e7eb; background: #fff; padding: 4px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); will-change: transform; transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); }
+    .${uid('acs')}-card:nth-child(1) { z-index: 3; transform: translateX(-50%) translateY(12px) scale(1); }
+    .${uid('acs')}-card:nth-child(2) { z-index: 2; transform: translateX(-50%) translateY(-16px) scale(0.95); }
+    .${uid('acs')}-card:nth-child(3) { z-index: 1; transform: translateX(-50%) translateY(-44px) scale(0.9); }
+    .${uid('acs')}-card.exit { transform: translateX(-50%) translateY(340px) scale(1) !important; z-index: 10 !important; }
+    .${uid('acs')}-card-inner { display: flex; height: 100%; width: 100%; flex-direction: column; gap: 16px; }
+    .${uid('acs')}-img-wrap { display: flex; height: 200px; width: 100%; align-items: center; justify-content: center; overflow: hidden; border-radius: 12px; outline: 1px solid rgba(0,0,0,0.1); outline-offset: -1px; }
+    .${uid('acs')}-img { height: 100%; width: 100%; object-fit: cover; user-select: none; }
+    .${uid('acs')}-content { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 0 12px 24px 12px; }
+    .${uid('acs')}-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+    .${uid('acs')}-title { font-weight: 500; color: #1a1a1a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .${uid('acs')}-desc { color: #6b7280; }
+    .${uid('acs')}-read { display: flex; height: 40px; flex-shrink: 0; cursor: pointer; user-select: none; align-items: center; gap: 2px; border-radius: 9999px; background: #1a1a1a; padding-left: 16px; padding-right: 12px; font-size: 14px; font-weight: 500; color: #fff; text-decoration: none; }
+    .${uid('acs')}-read svg { width: 16px; height: 16px; }
+    .${uid('acs')}-controls { position: relative; z-index: 10; margin-top: -1px; display: flex; width: 100%; max-width: 644px; align-items: center; justify-content: center; border-top: 1px solid #e5e7eb; padding: 16px 0; }
+    .${uid('acs')}-btn { display: flex; height: 36px; cursor: pointer; user-select: none; align-items: center; justify-content: center; gap: 4px; overflow: hidden; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; padding: 0 12px; font-weight: 500; color: #6b7280; transition: all 0.2s; }
+    .${uid('acs')}-btn:hover { background: #f9fafb; }
+    .${uid('acs')}-btn:active { transform: scale(0.98); }
+    @media (min-width: 640px) { .${uid('acs')}-card { width: 512px; } }
+  </style>
+  <div class="${uid('acs')}-stack" id="${uid('acs')}-stack">
+    <div class="${uid('acs')}-card">
+      <div class="${uid('acs')}-card-inner">
+        <div class="${uid('acs')}-img-wrap">
+          <img src="${v.card1Image}" alt="${v.card1Title}" class="${uid('acs')}-img" />
+        </div>
+        <div class="${uid('acs')}-content">
+          <div class="${uid('acs')}-info">
+            <span class="${uid('acs')}-title">${v.card1Title}</span>
+            <span class="${uid('acs')}-desc">${v.card1Desc}</span>
+          </div>
+          <a href="#" class="${uid('acs')}-read">Read<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M9.5 18L15.5 12L9.5 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('acs')}-card">
+      <div class="${uid('acs')}-card-inner">
+        <div class="${uid('acs')}-img-wrap">
+          <img src="${v.card2Image}" alt="${v.card2Title}" class="${uid('acs')}-img" />
+        </div>
+        <div class="${uid('acs')}-content">
+          <div class="${uid('acs')}-info">
+            <span class="${uid('acs')}-title">${v.card2Title}</span>
+            <span class="${uid('acs')}-desc">${v.card2Desc}</span>
+          </div>
+          <a href="#" class="${uid('acs')}-read">Read<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M9.5 18L15.5 12L9.5 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('acs')}-card">
+      <div class="${uid('acs')}-card-inner">
+        <div class="${uid('acs')}-img-wrap">
+          <img src="${v.card3Image}" alt="${v.card3Title}" class="${uid('acs')}-img" />
+        </div>
+        <div class="${uid('acs')}-content">
+          <div class="${uid('acs')}-info">
+            <span class="${uid('acs')}-title">${v.card3Title}</span>
+            <span class="${uid('acs')}-desc">${v.card3Desc}</span>
+          </div>
+          <a href="#" class="${uid('acs')}-read">Read<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M9.5 18L15.5 12L9.5 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="${uid('acs')}-controls">
+    <button class="${uid('acs')}-btn" onclick="const stack=document.getElementById('${uid('acs')}-stack');const cards=Array.from(stack.children);const first=cards[0];first.classList.add('exit');setTimeout(()=>{first.classList.remove('exit');stack.appendChild(first);const newCards=Array.from(stack.children);newCards.forEach((c,i)=>{c.style.zIndex=3-i;c.style.transform=i===0?'translateX(-50%) translateY(12px) scale(1)':i===1?'translateX(-50%) translateY(-16px) scale(0.95)':'translateX(-50%) translateY(-44px) scale(0.9)'});},1000)">Animate</button>
+  </div>
+</div>`
+  },
+
+  // 8. Twitter/X Style Testimonial Cards
+  {
+    id: 'testimonial-twitter-cards',
+    name: 'Testimonial - Social Cards',
+    category: 'Testimonials',
+    description: 'Stacked skewed testimonial cards with social media styling',
+    thumbnail: '',
+    fields: [
+      { id: 'card1Name', label: 'Card 1 Name', type: 'text', defaultValue: 'Victoria St. Claire' },
+      { id: 'card1Handle', label: 'Card 1 Handle', type: 'text', defaultValue: '@victoriastclaire' },
+      { id: 'card1Content', label: 'Card 1 Content', type: 'textarea', defaultValue: 'The cashmere throw from @MaisonElegance arrived. I\'ve never felt anything this luxurious. This is what old-money quality feels like. Absolutely exquisite.' },
+      { id: 'card1Date', label: 'Card 1 Date', type: 'text', defaultValue: 'Jan 15, 2025' },
+      { id: 'card1Likes', label: 'Card 1 Likes', type: 'text', defaultValue: '2,847' },
+      { id: 'card2Name', label: 'Card 2 Name', type: 'text', defaultValue: 'James Whitmore III' },
+      { id: 'card2Handle', label: 'Card 2 Handle', type: 'text', defaultValue: '@jwhitmore' },
+      { id: 'card2Content', label: 'Card 2 Content', type: 'textarea', defaultValue: 'My interior designer said she\'d never seen this level of craftsmanship. The bespoke velvet chairs exceeded every expectation. Worth the 8-week wait.' },
+      { id: 'card2Date', label: 'Card 2 Date', type: 'text', defaultValue: 'Jan 14, 2025' },
+      { id: 'card2Likes', label: 'Card 2 Likes', type: 'text', defaultValue: '1,923' },
+      { id: 'card3Name', label: 'Card 3 Name', type: 'text', defaultValue: 'Alexandra Montague' },
+      { id: 'card3Handle', label: 'Card 3 Handle', type: 'text', defaultValue: '@alexandra_m' },
+      { id: 'card3Content', label: 'Card 3 Content', type: 'textarea', defaultValue: 'Finally, a brand that understands true luxury isn\'t loud—it\'s whispered. The quality speaks for itself. My Hamptons home is transformed.' },
+      { id: 'card3Date', label: 'Card 3 Date', type: 'text', defaultValue: 'Jan 13, 2025' },
+      { id: 'card3Likes', label: 'Card 3 Likes', type: 'text', defaultValue: '3,156' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ttc')}" style="background:${v.bgColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;padding:80px 24px;display:flex;align-items:center;justify-content:center;min-height:500px;">
+  <style>
+    .${uid('ttc')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ttc')}-stack { display: grid; grid-template-areas: 'stack'; place-items: center; }
+    .${uid('ttc')}-card { grid-area: stack; position: relative; display: flex; flex-direction: column; width: 320px; min-height: 180px; padding: 16px 20px; background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; transform: skewY(-8deg); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .${uid('ttc')}-card::after { content: ''; position: absolute; right: -4px; top: -5%; height: 110%; width: 300px; background: linear-gradient(to left, ${v.bgColor}, transparent); pointer-events: none; }
+    .${uid('ttc')}-card:nth-child(1) { z-index: 1; filter: grayscale(100%); }
+    .${uid('ttc')}-card:nth-child(1)::before { content: ''; position: absolute; inset: 0; background: rgba(250,250,250,0.5); border-radius: 14px; transition: opacity 0.5s; }
+    .${uid('ttc')}-card:nth-child(1):hover { transform: skewY(-8deg) translateY(-40px); filter: grayscale(0); }
+    .${uid('ttc')}-card:nth-child(1):hover::before { opacity: 0; }
+    .${uid('ttc')}-card:nth-child(2) { transform: skewY(-8deg) translateX(64px) translateY(40px); z-index: 2; filter: grayscale(100%); }
+    .${uid('ttc')}-card:nth-child(2)::before { content: ''; position: absolute; inset: 0; background: rgba(250,250,250,0.5); border-radius: 14px; transition: opacity 0.5s; }
+    .${uid('ttc')}-card:nth-child(2):hover { transform: skewY(-8deg) translateX(64px) translateY(0); filter: grayscale(0); }
+    .${uid('ttc')}-card:nth-child(2):hover::before { opacity: 0; }
+    .${uid('ttc')}-card:nth-child(3) { transform: skewY(-8deg) translateX(128px) translateY(80px); z-index: 3; }
+    .${uid('ttc')}-card:nth-child(3):hover { transform: skewY(-8deg) translateX(128px) translateY(40px); }
+    .${uid('ttc')}-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; position: relative; z-index: 1; }
+    .${uid('ttc')}-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 600; flex-shrink: 0; }
+    .${uid('ttc')}-meta { flex: 1; min-width: 0; }
+    .${uid('ttc')}-name { display: flex; align-items: center; gap: 4px; font-weight: 600; color: #1a1a1a; font-size: 14px; }
+    .${uid('ttc')}-verified { width: 16px; height: 16px; color: #1d9bf0; }
+    .${uid('ttc')}-handle { font-size: 13px; color: #666; }
+    .${uid('ttc')}-icon { color: #1a1a1a; }
+    .${uid('ttc')}-icon svg { width: 18px; height: 18px; }
+    .${uid('ttc')}-content { font-size: 14px; color: #1a1a1a; line-height: 1.5; margin-bottom: 12px; position: relative; z-index: 1; }
+    .${uid('ttc')}-footer { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #666; margin-top: auto; position: relative; z-index: 1; }
+    .${uid('ttc')}-stats { display: flex; align-items: center; gap: 16px; }
+    .${uid('ttc')}-stat { display: flex; align-items: center; gap: 4px; }
+    .${uid('ttc')}-stat svg { width: 16px; height: 16px; }
+    @media (max-width: 600px) { .${uid('ttc')}-card { width: 260px; } .${uid('ttc')}-card:nth-child(2) { transform: skewY(-8deg) translateX(40px) translateY(32px); } .${uid('ttc')}-card:nth-child(3) { transform: skewY(-8deg) translateX(80px) translateY(64px); } }
+  </style>
+  <div class="${uid('ttc')}-stack">
+    <div class="${uid('ttc')}-card">
+      <div class="${uid('ttc')}-header">
+        <div class="${uid('ttc')}-avatar">${v.card1Name.charAt(0)}</div>
+        <div class="${uid('ttc')}-meta"><div class="${uid('ttc')}-name">${v.card1Name}<svg class="${uid('ttc')}-verified" viewBox="0 0 22 22" fill="#1d9bf0"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div><span class="${uid('ttc')}-handle">${v.card1Handle}</span></div>
+        <div class="${uid('ttc')}-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+      </div>
+      <p class="${uid('ttc')}-content">${v.card1Content}</p>
+      <div class="${uid('ttc')}-footer"><span>${v.card1Date}</span><div class="${uid('ttc')}-stats"><span class="${uid('ttc')}-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>${v.card1Likes}</span></div></div>
+    </div>
+    <div class="${uid('ttc')}-card">
+      <div class="${uid('ttc')}-header">
+        <div class="${uid('ttc')}-avatar">${v.card2Name.charAt(0)}</div>
+        <div class="${uid('ttc')}-meta"><div class="${uid('ttc')}-name">${v.card2Name}<svg class="${uid('ttc')}-verified" viewBox="0 0 22 22" fill="#1d9bf0"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div><span class="${uid('ttc')}-handle">${v.card2Handle}</span></div>
+        <div class="${uid('ttc')}-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+      </div>
+      <p class="${uid('ttc')}-content">${v.card2Content}</p>
+      <div class="${uid('ttc')}-footer"><span>${v.card2Date}</span><div class="${uid('ttc')}-stats"><span class="${uid('ttc')}-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>${v.card2Likes}</span></div></div>
+    </div>
+    <div class="${uid('ttc')}-card">
+      <div class="${uid('ttc')}-header">
+        <div class="${uid('ttc')}-avatar">${v.card3Name.charAt(0)}</div>
+        <div class="${uid('ttc')}-meta"><div class="${uid('ttc')}-name">${v.card3Name}<svg class="${uid('ttc')}-verified" viewBox="0 0 22 22" fill="#1d9bf0"><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></div><span class="${uid('ttc')}-handle">${v.card3Handle}</span></div>
+        <div class="${uid('ttc')}-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+      </div>
+      <p class="${uid('ttc')}-content">${v.card3Content}</p>
+      <div class="${uid('ttc')}-footer"><span>${v.card3Date}</span><div class="${uid('ttc')}-stats"><span class="${uid('ttc')}-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>${v.card3Likes}</span></div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Image Carousel Hero - 21st.dev style
+  {
+    id: 'hero-image-carousel',
+    name: 'Image Carousel Hero',
+    category: 'Hero',
+    description: 'Dynamic hero with auto-scrolling image showcase and gradient text',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-carousel.jpg',
+    fields: [
+      { id: 'badge', label: 'Badge Text', type: 'text', defaultValue: 'The Spring Collection Has Arrived' },
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Where Heritage Meets Modern Elegance' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Discover pieces that tell a story—each creation born from centuries of craftsmanship, reimagined for the contemporary connoisseur.' },
+      { id: 'primaryBtn', label: 'Primary Button', type: 'text', defaultValue: 'Explore Collection' },
+      { id: 'secondaryBtn', label: 'Secondary Button', type: 'text', defaultValue: 'Book Private Viewing' },
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/carousel-1.jpg' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/carousel-2.jpg' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/carousel-3.jpg' },
+      { id: 'image4', label: 'Image 4', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/carousel-4.jpg' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#000000' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#a855f7' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hic')}-section">
+  <style>
+    .${uid('hic')}-section { min-height: 100vh; background: ${v.bgColor}; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; position: relative; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('hic')}-content { text-align: center; max-width: 800px; margin-bottom: 60px; position: relative; z-index: 2; }
+    .${uid('hic')}-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); border-radius: 50px; padding: 8px 20px; font-size: 14px; color: ${v.accentColor}; margin-bottom: 32px; }
+    .${uid('hic')}-badge::before { content: '✦'; }
+    .${uid('hic')}-headline { font-size: clamp(40px, 8vw, 72px); font-weight: 700; color: #fff; line-height: 1.1; margin: 0 0 24px; background: linear-gradient(135deg, #fff 0%, ${v.accentColor} 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .${uid('hic')}-subheadline { font-size: 18px; color: rgba(255,255,255,0.7); line-height: 1.6; margin: 0 0 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .${uid('hic')}-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .${uid('hic')}-btn-primary { background: linear-gradient(135deg, ${v.accentColor}, #f472b6); color: #fff; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 600; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s; }
+    .${uid('hic')}-btn-primary:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(168,85,247,0.4); }
+    .${uid('hic')}-btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.3s; }
+    .${uid('hic')}-btn-secondary:hover { background: rgba(255,255,255,0.2); }
+    .${uid('hic')}-carousel { display: flex; gap: 20px; animation: ${uid('hic')}-scroll 20s linear infinite; width: max-content; }
+    .${uid('hic')}-carousel-wrapper { width: 100%; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+    .${uid('hic')}-image { width: 300px; height: 200px; border-radius: 16px; object-fit: cover; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    @keyframes ${uid('hic')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @media (max-width: 600px) { .${uid('hic')}-image { width: 200px; height: 140px; } .${uid('hic')}-buttons { flex-direction: column; align-items: stretch; } }
+  </style>
+  <div class="${uid('hic')}-content">
+    <div class="${uid('hic')}-badge">${v.badge}</div>
+    <h1 class="${uid('hic')}-headline">${v.headline}</h1>
+    <p class="${uid('hic')}-subheadline">${v.subheadline}</p>
+    <div class="${uid('hic')}-buttons">
+      <a href="#" class="${uid('hic')}-btn-primary">${v.primaryBtn}</a>
+      <a href="#" class="${uid('hic')}-btn-secondary">${v.secondaryBtn}</a>
+    </div>
+  </div>
+  <div class="${uid('hic')}-carousel-wrapper">
+    <div class="${uid('hic')}-carousel">
+      <img class="${uid('hic')}-image" src="${v.image1}" alt="Showcase 1" />
+      <img class="${uid('hic')}-image" src="${v.image2}" alt="Showcase 2" />
+      <img class="${uid('hic')}-image" src="${v.image3}" alt="Showcase 3" />
+      <img class="${uid('hic')}-image" src="${v.image4}" alt="Showcase 4" />
+      <img class="${uid('hic')}-image" src="${v.image1}" alt="Showcase 1" />
+      <img class="${uid('hic')}-image" src="${v.image2}" alt="Showcase 2" />
+      <img class="${uid('hic')}-image" src="${v.image3}" alt="Showcase 3" />
+      <img class="${uid('hic')}-image" src="${v.image4}" alt="Showcase 4" />
+    </div>
+  </div>
+</div>`
+  },
+
+  // 3D Folder - EXACT 1:1 from 21st.dev/r/jatin-yadav05/3d-folder
+  {
+    id: 'folder-3d-projects',
+    name: '3D Animated Folder',
+    category: 'Interactive',
+    description: 'Folder that opens on hover to reveal project cards with images',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/folder-3d.jpg',
+    fields: [
+      { id: 'folderTitle', label: 'Folder Title', type: 'text', defaultValue: 'Collections' },
+      { id: 'project1Title', label: 'Project 1 Title', type: 'text', defaultValue: 'Cashmere' },
+      { id: 'project1Image', label: 'Project 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'project2Title', label: 'Project 2 Title', type: 'text', defaultValue: 'Furniture' },
+      { id: 'project2Image', label: 'Project 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-sofa-image.png' },
+      { id: 'project3Title', label: 'Project 3 Title', type: 'text', defaultValue: 'Textiles' },
+      { id: 'project3Image', label: 'Project 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'accentColor', label: 'Accent/Folder Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('f3d')}-section">
+  <style>
+    .${uid('f3d')}-section { background: ${v.bgColor}; padding: 60px 24px; display: flex; align-items: center; justify-content: center; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('f3d')}-container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; border-radius: 16px; cursor: pointer; background: #fff; border: 1px solid #e5e7eb; transition: all 0.5s ease-out; min-width: 280px; min-height: 320px; }
+    .${uid('f3d')}-container:hover { box-shadow: 0 25px 50px -12px rgba(184,134,11,0.1); border-color: rgba(184,134,11,0.3); }
+    .${uid('f3d')}-glow { position: absolute; inset: 0; border-radius: 16px; background: radial-gradient(circle at 50% 70%, ${v.accentColor} 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; pointer-events: none; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-glow { opacity: 0.08; }
+    .${uid('f3d')}-folder-area { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; height: 160px; width: 200px; perspective: 1000px; }
+    .${uid('f3d')}-folder-back { position: absolute; width: 128px; height: 96px; background: linear-gradient(135deg, ${v.accentColor} 0%, #d97706 100%); border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transform-origin: bottom center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-folder-back { transform: rotateX(-15deg); }
+    .${uid('f3d')}-folder-tab { position: absolute; width: 48px; height: 16px; background: ${v.accentColor}; border-radius: 6px 6px 0 0; top: calc(50% - 48px - 12px); left: calc(50% - 64px + 16px); transform-origin: bottom center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-folder-tab { transform: rotateX(-25deg) translateY(-2px); }
+    .${uid('f3d')}-cards-area { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 20; }
+    .${uid('f3d')}-card { position: absolute; width: 80px; height: 112px; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); background: #fff; border: 1px solid #e5e7eb; cursor: pointer; left: -40px; top: -56px; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; }
+    .${uid('f3d')}-card:hover { box-shadow: 0 0 0 2px rgba(184,134,11,0.5); }
+    .${uid('f3d')}-card:nth-child(1) { z-index: 10; }
+    .${uid('f3d')}-card:nth-child(2) { z-index: 9; }
+    .${uid('f3d')}-card:nth-child(3) { z-index: 8; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-card:nth-child(1) { opacity: 1; transform: translateY(-90px) translateX(-55px) rotate(-12deg) scale(1); transition-delay: 0ms; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-card:nth-child(2) { opacity: 1; transform: translateY(-90px) translateX(0px) rotate(0deg) scale(1); transition-delay: 80ms; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-card:nth-child(3) { opacity: 1; transform: translateY(-90px) translateX(55px) rotate(12deg) scale(1); transition-delay: 160ms; }
+    .${uid('f3d')}-card-img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('f3d')}-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%); }
+    .${uid('f3d')}-card-title { position: absolute; bottom: 6px; left: 6px; right: 6px; font-size: 10px; font-weight: 500; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .${uid('f3d')}-folder-front { position: absolute; width: 128px; height: 96px; background: linear-gradient(135deg, ${v.accentColor} 0%, #f59e0b 100%); border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); top: calc(50% - 48px + 4px); transform-origin: bottom center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 30; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-folder-front { transform: rotateX(25deg) translateY(8px); }
+    .${uid('f3d')}-folder-shine { position: absolute; width: 128px; height: 96px; border-radius: 8px; overflow: hidden; pointer-events: none; background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%); top: calc(50% - 48px + 4px); transform-origin: bottom center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 31; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-folder-shine { transform: rotateX(25deg) translateY(8px); }
+    .${uid('f3d')}-title { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-top: 16px; transition: transform 0.3s; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-title { transform: translateY(4px); }
+    .${uid('f3d')}-count { font-size: 14px; color: #6b7280; transition: opacity 0.3s; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-count { opacity: 0.7; }
+    .${uid('f3d')}-hint { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; opacity: 0.6; transition: all 0.3s; }
+    .${uid('f3d')}-container:hover .${uid('f3d')}-hint { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  </style>
+  <div class="${uid('f3d')}-container">
+    <div class="${uid('f3d')}-glow"></div>
+    <div class="${uid('f3d')}-folder-area">
+      <div class="${uid('f3d')}-folder-back"></div>
+      <div class="${uid('f3d')}-folder-tab"></div>
+      <div class="${uid('f3d')}-cards-area">
+        <div class="${uid('f3d')}-card">
+          <img src="${v.project1Image}" alt="${v.project1Title}" class="${uid('f3d')}-card-img" />
+          <div class="${uid('f3d')}-card-overlay"></div>
+          <p class="${uid('f3d')}-card-title">${v.project1Title}</p>
+        </div>
+        <div class="${uid('f3d')}-card">
+          <img src="${v.project2Image}" alt="${v.project2Title}" class="${uid('f3d')}-card-img" />
+          <div class="${uid('f3d')}-card-overlay"></div>
+          <p class="${uid('f3d')}-card-title">${v.project2Title}</p>
+        </div>
+        <div class="${uid('f3d')}-card">
+          <img src="${v.project3Image}" alt="${v.project3Title}" class="${uid('f3d')}-card-img" />
+          <div class="${uid('f3d')}-card-overlay"></div>
+          <p class="${uid('f3d')}-card-title">${v.project3Title}</p>
+        </div>
+      </div>
+      <div class="${uid('f3d')}-folder-front"></div>
+      <div class="${uid('f3d')}-folder-shine"></div>
+    </div>
+    <h3 class="${uid('f3d')}-title">${v.folderTitle}</h3>
+    <p class="${uid('f3d')}-count">3 projects</p>
+    <div class="${uid('f3d')}-hint"><span>Hover to explore</span></div>
+  </div>
+</div>`
+  },
+
+  // Reports Carousel - 21st.dev style
+  {
+    id: 'reports-carousel',
+    name: 'Reports Carousel',
+    category: 'Interactive',
+    description: 'Draggable horizontal carousel showcasing annual reports or documents',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/reports-carousel.jpg',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Seasonal Lookbooks' },
+      { id: 'subtitle', label: 'Subtitle', type: 'text', defaultValue: 'A journey through our design philosophy and collections' },
+      { id: 'report1Year', label: 'Report 1 Year', type: 'text', defaultValue: '2025' },
+      { id: 'report1Title', label: 'Report 1 Title', type: 'text', defaultValue: 'The Spring Awakening' },
+      { id: 'report2Year', label: 'Report 2 Year', type: 'text', defaultValue: '2024' },
+      { id: 'report2Title', label: 'Report 2 Title', type: 'text', defaultValue: 'Winter Opulence' },
+      { id: 'report3Year', label: 'Report 3 Year', type: 'text', defaultValue: '2024' },
+      { id: 'report3Title', label: 'Report 3 Title', type: 'text', defaultValue: 'Autumn Heritage' },
+      { id: 'report4Year', label: 'Report 4 Year', type: 'text', defaultValue: '2024' },
+      { id: 'report4Title', label: 'Report 4 Title', type: 'text', defaultValue: 'Summer Riviera' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('rpc')}-section">
+  <style>
+    .${uid('rpc')}-section { min-height: 80vh; background: ${v.bgColor}; padding: 80px 0; font-family: system-ui, -apple-system, sans-serif; overflow: hidden; }
+    .${uid('rpc')}-header { text-align: center; padding: 0 24px; margin-bottom: 60px; }
+    .${uid('rpc')}-title { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: #1a1a1a; margin: 0 0 16px; }
+    .${uid('rpc')}-subtitle { font-size: 18px; color: #64748b; margin: 0; }
+    .${uid('rpc')}-track { display: flex; gap: 32px; padding: 20px 60px; cursor: grab; user-select: none; }
+    .${uid('rpc')}-track:active { cursor: grabbing; }
+    .${uid('rpc')}-card { flex-shrink: 0; width: 280px; height: 380px; background: linear-gradient(145deg, #fff, #f1f5f9); border-radius: 20px; padding: 32px; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.08); transition: transform 0.4s, box-shadow 0.4s; position: relative; overflow: hidden; }
+    .${uid('rpc')}-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, ${v.accentColor}, #8b5cf6); }
+    .${uid('rpc')}-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .${uid('rpc')}-year { font-size: 64px; font-weight: 800; color: ${v.accentColor}; opacity: 0.2; line-height: 1; margin-bottom: 20px; }
+    .${uid('rpc')}-card-title { font-size: 20px; font-weight: 600; color: #1a1a1a; margin: 0 0 16px; }
+    .${uid('rpc')}-card-desc { font-size: 14px; color: #64748b; line-height: 1.6; margin: 0 0 auto; }
+    .${uid('rpc')}-download { display: inline-flex; align-items: center; gap: 8px; color: ${v.accentColor}; font-size: 14px; font-weight: 600; text-decoration: none; margin-top: 24px; }
+    .${uid('rpc')}-download:hover { text-decoration: underline; }
+    .${uid('rpc')}-download svg { width: 16px; height: 16px; }
+    .${uid('rpc')}-hint { text-align: center; margin-top: 40px; font-size: 14px; color: #94a3b8; }
+  </style>
+  <div class="${uid('rpc')}-header">
+    <h2 class="${uid('rpc')}-title">${v.title}</h2>
+    <p class="${uid('rpc')}-subtitle">${v.subtitle}</p>
+  </div>
+  <div class="${uid('rpc')}-track">
+    <div class="${uid('rpc')}-card">
+      <span class="${uid('rpc')}-year">${v.report1Year}</span>
+      <h3 class="${uid('rpc')}-card-title">${v.report1Title}</h3>
+      <p class="${uid('rpc')}-card-desc">A comprehensive overview of our strategic initiatives, financial performance, and future outlook.</p>
+      <a href="#" class="${uid('rpc')}-download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Report</a>
+    </div>
+    <div class="${uid('rpc')}-card">
+      <span class="${uid('rpc')}-year">${v.report2Year}</span>
+      <h3 class="${uid('rpc')}-card-title">${v.report2Title}</h3>
+      <p class="${uid('rpc')}-card-desc">Key milestones achieved and lessons learned as we expanded into new markets.</p>
+      <a href="#" class="${uid('rpc')}-download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Report</a>
+    </div>
+    <div class="${uid('rpc')}-card">
+      <span class="${uid('rpc')}-year">${v.report3Year}</span>
+      <h3 class="${uid('rpc')}-card-title">${v.report3Title}</h3>
+      <p class="${uid('rpc')}-card-desc">How we embraced technology to revolutionize our operations and customer experience.</p>
+      <a href="#" class="${uid('rpc')}-download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Report</a>
+    </div>
+    <div class="${uid('rpc')}-card">
+      <span class="${uid('rpc')}-year">${v.report4Year}</span>
+      <h3 class="${uid('rpc')}-card-title">${v.report4Title}</h3>
+      <p class="${uid('rpc')}-card-desc">The beginning of our journey, establishing core values and building the foundation.</p>
+      <a href="#" class="${uid('rpc')}-download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Report</a>
+    </div>
+  </div>
+  <p class="${uid('rpc')}-hint">← Drag to explore →</p>
+</div>`
+  },
+
+  // Product Detail Page - 21st.dev style
+  {
+    id: 'product-detail-showcase',
+    name: 'Product Detail Showcase',
+    category: 'Product',
+    description: 'Full product detail page with image gallery and purchase options',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/product-detail.jpg',
+    fields: [
+      { id: 'productName', label: 'Product Name', type: 'text', defaultValue: 'Mongolian Cashmere Throw Blanket' },
+      { id: 'productDesc', label: 'Product Description', type: 'textarea', defaultValue: 'Woven from the finest Grade-A Mongolian cashmere, this heirloom-quality throw represents 200 hours of artisan craftsmanship. Each piece is individually numbered and comes with a certificate of authenticity from our master weavers.' },
+      { id: 'price', label: 'Price', type: 'text', defaultValue: '$1,890' },
+      { id: 'originalPrice', label: 'Original Price', type: 'text', defaultValue: '$2,450' },
+      { id: 'rating', label: 'Rating', type: 'text', defaultValue: '5.0' },
+      { id: 'reviews', label: 'Reviews Count', type: 'text', defaultValue: '847' },
+      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Grade-A Cashmere' },
+      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Hand-Finished Edges' },
+      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Lifetime Warranty' },
+      { id: 'productImage', label: 'Product Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/headphones.jpg' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#000000' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pds')}-section">
+  <style>
+    .${uid('pds')}-section { min-height: 100vh; background: #fff; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('pds')}-container { max-width: 1200px; margin: 0 auto; padding: 60px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .${uid('pds')}-gallery { position: sticky; top: 40px; }
+    .${uid('pds')}-main-image { width: 100%; aspect-ratio: 1; background: #f8f8f8; border-radius: 24px; overflow: hidden; margin-bottom: 16px; }
+    .${uid('pds')}-main-image img { width: 100%; height: 100%; object-fit: contain; padding: 40px; }
+    .${uid('pds')}-thumbnails { display: flex; gap: 12px; }
+    .${uid('pds')}-thumb { width: 80px; height: 80px; background: #f8f8f8; border-radius: 12px; border: 2px solid transparent; cursor: pointer; transition: border-color 0.3s; }
+    .${uid('pds')}-thumb.active, .${uid('pds')}-thumb:hover { border-color: ${v.accentColor}; }
+    .${uid('pds')}-info { padding-top: 20px; }
+    .${uid('pds')}-badge { display: inline-block; background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+    .${uid('pds')}-name { font-size: clamp(28px, 4vw, 40px); font-weight: 700; color: #1a1a1a; margin: 0 0 16px; line-height: 1.2; }
+    .${uid('pds')}-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+    .${uid('pds')}-stars { display: flex; gap: 2px; color: #fbbf24; }
+    .${uid('pds')}-stars svg { width: 18px; height: 18px; }
+    .${uid('pds')}-rating-text { font-size: 14px; color: #666; }
+    .${uid('pds')}-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; }
+    .${uid('pds')}-price { font-size: 36px; font-weight: 700; color: ${v.accentColor}; }
+    .${uid('pds')}-original { font-size: 20px; color: #999; text-decoration: line-through; }
+    .${uid('pds')}-desc { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+    .${uid('pds')}-features { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .${uid('pds')}-feature { display: flex; align-items: center; gap: 8px; background: #f8f8f8; padding: 12px 16px; border-radius: 12px; font-size: 14px; color: #1a1a1a; }
+    .${uid('pds')}-feature svg { width: 18px; height: 18px; color: #22c55e; }
+    .${uid('pds')}-actions { display: flex; gap: 12px; }
+    .${uid('pds')}-btn-buy { flex: 1; background: ${v.accentColor}; color: #fff; padding: 18px 32px; border-radius: 14px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .${uid('pds')}-btn-buy:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .${uid('pds')}-btn-cart { background: #f8f8f8; color: #1a1a1a; padding: 18px; border-radius: 14px; border: none; cursor: pointer; transition: background 0.3s; }
+    .${uid('pds')}-btn-cart:hover { background: #f0f0f0; }
+    .${uid('pds')}-btn-cart svg { width: 24px; height: 24px; }
+    @media (max-width: 768px) { .${uid('pds')}-container { grid-template-columns: 1fr; gap: 40px; } .${uid('pds')}-gallery { position: static; } }
+  </style>
+  <div class="${uid('pds')}-container">
+    <div class="${uid('pds')}-gallery">
+      <div class="${uid('pds')}-main-image"><img src="${v.productImage}" alt="${v.productName}" /></div>
+      <div class="${uid('pds')}-thumbnails">
+        <div class="${uid('pds')}-thumb active"></div>
+        <div class="${uid('pds')}-thumb"></div>
+        <div class="${uid('pds')}-thumb"></div>
+        <div class="${uid('pds')}-thumb"></div>
+      </div>
+    </div>
+    <div class="${uid('pds')}-info">
+      <span class="${uid('pds')}-badge">In Stock</span>
+      <h1 class="${uid('pds')}-name">${v.productName}</h1>
+      <div class="${uid('pds')}-rating">
+        <div class="${uid('pds')}-stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>').join('')}</div>
+        <span class="${uid('pds')}-rating-text">${v.rating} · ${v.reviews} reviews</span>
+      </div>
+      <div class="${uid('pds')}-price-row">
+        <span class="${uid('pds')}-price">${v.price}</span>
+        <span class="${uid('pds')}-original">${v.originalPrice}</span>
+      </div>
+      <p class="${uid('pds')}-desc">${v.productDesc}</p>
+      <div class="${uid('pds')}-features">
+        <div class="${uid('pds')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>${v.feature1}</div>
+        <div class="${uid('pds')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>${v.feature2}</div>
+        <div class="${uid('pds')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>${v.feature3}</div>
+      </div>
+      <div class="${uid('pds')}-actions">
+        <button class="${uid('pds')}-btn-buy">Buy Now</button>
+        <button class="${uid('pds')}-btn-cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Team Section Grid - 21st.dev style
+  {
+    id: 'team-section-grid',
+    name: 'Team Section Grid',
+    category: 'Features',
+    description: 'Clean team grid with social links and role badges',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/team-grid.jpg',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Our Master Artisans' },
+      { id: 'subtitle', label: 'Subtitle', type: 'text', defaultValue: 'Generations of expertise dedicated to perfecting your vision' },
+      { id: 'member1Name', label: 'Member 1 Name', type: 'text', defaultValue: 'Isabella Fontaine' },
+      { id: 'member1Role', label: 'Member 1 Role', type: 'text', defaultValue: 'Creative Director' },
+      { id: 'member1Image', label: 'Member 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/team-1.jpg' },
+      { id: 'member2Name', label: 'Member 2 Name', type: 'text', defaultValue: 'Alessandro Ricci' },
+      { id: 'member2Role', label: 'Member 2 Role', type: 'text', defaultValue: 'Master Upholsterer' },
+      { id: 'member2Image', label: 'Member 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/team-2.jpg' },
+      { id: 'member3Name', label: 'Member 3 Name', type: 'text', defaultValue: 'Marguerite Beaumont' },
+      { id: 'member3Role', label: 'Member 3 Role', type: 'text', defaultValue: 'Textile Curator' },
+      { id: 'member3Image', label: 'Member 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/team-3.jpg' },
+      { id: 'member4Name', label: 'Member 4 Name', type: 'text', defaultValue: 'Henrik Larsson' },
+      { id: 'member4Role', label: 'Member 4 Role', type: 'text', defaultValue: 'Heritage Craftsman' },
+      { id: 'member4Image', label: 'Member 4 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/team-4.jpg' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tsg')}-section">
+  <style>
+    .${uid('tsg')}-section { padding: 100px 24px; background: #fff; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('tsg')}-container { max-width: 1200px; margin: 0 auto; }
+    .${uid('tsg')}-header { text-align: center; margin-bottom: 64px; }
+    .${uid('tsg')}-title { font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: #1a1a1a; margin: 0 0 16px; }
+    .${uid('tsg')}-subtitle { font-size: 18px; color: #64748b; margin: 0; }
+    .${uid('tsg')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .${uid('tsg')}-card { background: #f8fafc; border-radius: 20px; overflow: hidden; transition: transform 0.4s, box-shadow 0.4s; }
+    .${uid('tsg')}-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .${uid('tsg')}-image { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); overflow: hidden; }
+    .${uid('tsg')}-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .${uid('tsg')}-card:hover .${uid('tsg')}-image img { transform: scale(1.1); }
+    .${uid('tsg')}-info { padding: 24px; text-align: center; }
+    .${uid('tsg')}-name { font-size: 18px; font-weight: 600; color: #1a1a1a; margin: 0 0 4px; }
+    .${uid('tsg')}-role { font-size: 14px; color: ${v.accentColor}; font-weight: 500; margin: 0 0 16px; }
+    .${uid('tsg')}-socials { display: flex; justify-content: center; gap: 12px; }
+    .${uid('tsg')}-social { width: 36px; height: 36px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; color: #64748b; transition: all 0.3s; text-decoration: none; }
+    .${uid('tsg')}-social:hover { background: ${v.accentColor}; color: #fff; }
+    .${uid('tsg')}-social svg { width: 16px; height: 16px; }
+    @media (max-width: 900px) { .${uid('tsg')}-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .${uid('tsg')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('tsg')}-container">
+    <div class="${uid('tsg')}-header">
+      <h2 class="${uid('tsg')}-title">${v.title}</h2>
+      <p class="${uid('tsg')}-subtitle">${v.subtitle}</p>
+    </div>
+    <div class="${uid('tsg')}-grid">
+      <div class="${uid('tsg')}-card">
+        <div class="${uid('tsg')}-image"><img src="${v.member1Image}" alt="${v.member1Name}" /></div>
+        <div class="${uid('tsg')}-info">
+          <h3 class="${uid('tsg')}-name">${v.member1Name}</h3>
+          <p class="${uid('tsg')}-role">${v.member1Role}</p>
+          <div class="${uid('tsg')}-socials">
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('tsg')}-card">
+        <div class="${uid('tsg')}-image"><img src="${v.member2Image}" alt="${v.member2Name}" /></div>
+        <div class="${uid('tsg')}-info">
+          <h3 class="${uid('tsg')}-name">${v.member2Name}</h3>
+          <p class="${uid('tsg')}-role">${v.member2Role}</p>
+          <div class="${uid('tsg')}-socials">
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('tsg')}-card">
+        <div class="${uid('tsg')}-image"><img src="${v.member3Image}" alt="${v.member3Name}" /></div>
+        <div class="${uid('tsg')}-info">
+          <h3 class="${uid('tsg')}-name">${v.member3Name}</h3>
+          <p class="${uid('tsg')}-role">${v.member3Role}</p>
+          <div class="${uid('tsg')}-socials">
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('tsg')}-card">
+        <div class="${uid('tsg')}-image"><img src="${v.member4Image}" alt="${v.member4Name}" /></div>
+        <div class="${uid('tsg')}-info">
+          <h3 class="${uid('tsg')}-name">${v.member4Name}</h3>
+          <p class="${uid('tsg')}-role">${v.member4Role}</p>
+          <div class="${uid('tsg')}-socials">
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="#" class="${uid('tsg')}-social"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Product Drop Card - 21st.dev style
+  {
+    id: 'product-drop-card',
+    name: 'Product Drop Card',
+    category: 'Product',
+    description: 'Premium product launch card with countdown and animated effects',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/product-drop.jpg',
+    fields: [
+      { id: 'dropLabel', label: 'Drop Label', type: 'text', defaultValue: 'Atelier Exclusive · Only 50 Made' },
+      { id: 'productName', label: 'Product Name', type: 'text', defaultValue: 'The Venetian Silk Robe' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Hand-sewn from rare Venetian silk, this heirloom robe features 22k gold-thread embroidery by master artisans. Each numbered piece requires 180 hours of meticulous craftsmanship.' },
+      { id: 'price', label: 'Price', type: 'text', defaultValue: '$4,890' },
+      { id: 'releaseDate', label: 'Release Date', type: 'text', defaultValue: 'March 15, 2025' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Reserve Your Piece' },
+      { id: 'productImage', label: 'Product Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/product-drop-img.jpg' },
+      { id: 'bgGradient1', label: 'Gradient Color 1', type: 'color', defaultValue: '#0a0a0a' },
+      { id: 'bgGradient2', label: 'Gradient Color 2', type: 'color', defaultValue: '#1a1510' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pdc')}-section">
+  <style>
+    .${uid('pdc')}-section { min-height: 100vh; background: linear-gradient(135deg, ${v.bgGradient1} 0%, ${v.bgGradient2} 100%); display: flex; align-items: center; justify-content: center; padding: 60px 24px; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('pdc')}-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 32px; max-width: 500px; width: 100%; overflow: hidden; position: relative; }
+    .${uid('pdc')}-card::before { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: conic-gradient(from 0deg, transparent, ${v.accentColor}, transparent 30%); animation: ${uid('pdc')}-rotate 4s linear infinite; opacity: 0; transition: opacity 0.5s; }
+    .${uid('pdc')}-card:hover::before { opacity: 1; }
+    @keyframes ${uid('pdc')}-rotate { 100% { transform: rotate(360deg); } }
+    .${uid('pdc')}-inner { position: relative; background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,27,75,0.9)); border-radius: 31px; padding: 40px; }
+    .${uid('pdc')}-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, ${v.accentColor}, #ec4899); padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px; }
+    .${uid('pdc')}-badge::before { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: ${uid('pdc')}-pulse 1.5s ease infinite; }
+    @keyframes ${uid('pdc')}-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .${uid('pdc')}-image { width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(236,72,153,0.2)); border-radius: 20px; margin-bottom: 32px; overflow: hidden; }
+    .${uid('pdc')}-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .${uid('pdc')}-card:hover .${uid('pdc')}-image img { transform: scale(1.05); }
+    .${uid('pdc')}-name { font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 12px; }
+    .${uid('pdc')}-desc { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0 0 24px; }
+    .${uid('pdc')}-meta { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px; }
+    .${uid('pdc')}-price { font-size: 28px; font-weight: 700; color: #fff; }
+    .${uid('pdc')}-date { font-size: 14px; color: rgba(255,255,255,0.5); }
+    .${uid('pdc')}-date span { display: block; font-size: 16px; color: ${v.accentColor}; font-weight: 600; margin-top: 4px; }
+    .${uid('pdc')}-cta { width: 100%; background: linear-gradient(135deg, ${v.accentColor}, #ec4899); color: #fff; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .${uid('pdc')}-cta:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(168,85,247,0.4); }
+  </style>
+  <div class="${uid('pdc')}-card">
+    <div class="${uid('pdc')}-inner">
+      <div class="${uid('pdc')}-badge">${v.dropLabel}</div>
+      <div class="${uid('pdc')}-image"><img src="${v.productImage}" alt="${v.productName}" /></div>
+      <h2 class="${uid('pdc')}-name">${v.productName}</h2>
+      <p class="${uid('pdc')}-desc">${v.description}</p>
+      <div class="${uid('pdc')}-meta">
+        <div class="${uid('pdc')}-price">${v.price}</div>
+        <div class="${uid('pdc')}-date">Drops on<span>${v.releaseDate}</span></div>
+      </div>
+      <button class="${uid('pdc')}-cta">${v.ctaText}</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Financial Hero - 21st.dev style
+  {
+    id: 'hero-financial',
+    name: 'Financial Hero',
+    category: 'Hero',
+    description: 'Professional financial services hero with trust indicators and stats',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/financial-hero.jpg',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Invest in Pieces That Appreciate' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Our curated collection of investment-grade furniture and textiles has outperformed traditional assets by 340% over the past decade. True luxury doesn\'t depreciate—it becomes legacy.' },
+      { id: 'primaryBtn', label: 'Primary Button', type: 'text', defaultValue: 'View Investment Pieces' },
+      { id: 'secondaryBtn', label: 'Secondary Button', type: 'text', defaultValue: 'Speak to an Advisor' },
+      { id: 'stat1Value', label: 'Stat 1 Value', type: 'text', defaultValue: '340%' },
+      { id: 'stat1Label', label: 'Stat 1 Label', type: 'text', defaultValue: '10-Year Appreciation' },
+      { id: 'stat2Value', label: 'Stat 2 Value', type: 'text', defaultValue: '47' },
+      { id: 'stat2Label', label: 'Stat 2 Label', type: 'text', defaultValue: 'Heritage Craftsmen' },
+      { id: 'stat3Value', label: 'Stat 3 Value', type: 'text', defaultValue: '1847' },
+      { id: 'stat3Label', label: 'Stat 3 Label', type: 'text', defaultValue: 'Year Established' },
+      { id: 'trustText', label: 'Trust Badge Text', type: 'text', defaultValue: 'Certified Authentic · Insured Worldwide · White Glove Service' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fh')}-section">
+  <style>
+    .${uid('fh')}-section { min-height: 100vh; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%); display: flex; flex-direction: column; justify-content: center; padding: 80px 24px; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('fh')}-container { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .${uid('fh')}-content { text-align: center; max-width: 800px; margin: 0 auto 60px; }
+    .${uid('fh')}-trust { display: inline-flex; align-items: center; gap: 8px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 50px; padding: 10px 20px; font-size: 13px; color: ${v.accentColor}; margin-bottom: 32px; font-weight: 500; }
+    .${uid('fh')}-trust svg { width: 16px; height: 16px; }
+    .${uid('fh')}-headline { font-size: clamp(40px, 6vw, 64px); font-weight: 700; color: #1a1a1a; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.02em; }
+    .${uid('fh')}-subheadline { font-size: 20px; color: #64748b; line-height: 1.6; margin: 0 0 40px; }
+    .${uid('fh')}-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .${uid('fh')}-btn-primary { background: ${v.accentColor}; color: #fff; padding: 18px 36px; border-radius: 14px; font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.3s; box-shadow: 0 10px 30px rgba(16,185,129,0.3); }
+    .${uid('fh')}-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(16,185,129,0.4); }
+    .${uid('fh')}-btn-secondary { background: #fff; color: #1a1a1a; padding: 18px 36px; border-radius: 14px; font-size: 16px; font-weight: 600; text-decoration: none; border: 1px solid #e2e8f0; transition: all 0.3s; }
+    .${uid('fh')}-btn-secondary:hover { border-color: #cbd5e1; background: #f8fafc; }
+    .${uid('fh')}-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 700px; margin: 0 auto; padding: 60px 40px; background: #fff; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.06); }
+    .${uid('fh')}-stat { text-align: center; }
+    .${uid('fh')}-stat-value { font-size: 36px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .${uid('fh')}-stat-label { font-size: 14px; color: #64748b; font-weight: 500; }
+    @media (max-width: 600px) { .${uid('fh')}-stats { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px; } .${uid('fh')}-buttons { flex-direction: column; align-items: stretch; } }
+  </style>
+  <div class="${uid('fh')}-container">
+    <div class="${uid('fh')}-content">
+      <div class="${uid('fh')}-trust"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>${v.trustText}</div>
+      <h1 class="${uid('fh')}-headline">${v.headline}</h1>
+      <p class="${uid('fh')}-subheadline">${v.subheadline}</p>
+      <div class="${uid('fh')}-buttons">
+        <a href="#" class="${uid('fh')}-btn-primary">${v.primaryBtn}</a>
+        <a href="#" class="${uid('fh')}-btn-secondary">${v.secondaryBtn}</a>
+      </div>
+    </div>
+    <div class="${uid('fh')}-stats">
+      <div class="${uid('fh')}-stat">
+        <div class="${uid('fh')}-stat-value">${v.stat1Value}</div>
+        <div class="${uid('fh')}-stat-label">${v.stat1Label}</div>
+      </div>
+      <div class="${uid('fh')}-stat">
+        <div class="${uid('fh')}-stat-value">${v.stat2Value}</div>
+        <div class="${uid('fh')}-stat-label">${v.stat2Label}</div>
+      </div>
+      <div class="${uid('fh')}-stat">
+        <div class="${uid('fh')}-stat-value">${v.stat3Value}</div>
+        <div class="${uid('fh')}-stat-label">${v.stat3Label}</div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Statistics Card with Bar Charts - 21st.dev style
+  {
+    id: 'statistics-bar-chart',
+    name: 'Statistics Bar Chart',
+    category: 'Features',
+    description: 'Animated statistics card with visual bar chart representation',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/stats-chart.jpg',
+    fields: [
+      { id: 'title', label: 'Card Title', type: 'text', defaultValue: 'Our Commitment to Excellence' },
+      { id: 'subtitle', label: 'Subtitle', type: 'text', defaultValue: 'What sets our atelier apart' },
+      { id: 'metric1Label', label: 'Metric 1 Label', type: 'text', defaultValue: 'Client Satisfaction' },
+      { id: 'metric1Value', label: 'Metric 1 Value', type: 'text', defaultValue: '98%' },
+      { id: 'metric1Width', label: 'Metric 1 Bar Width (0-100)', type: 'number', defaultValue: '98' },
+      { id: 'metric2Label', label: 'Metric 2 Label', type: 'text', defaultValue: 'Repeat Collectors' },
+      { id: 'metric2Value', label: 'Metric 2 Value', type: 'text', defaultValue: '94%' },
+      { id: 'metric2Width', label: 'Metric 2 Bar Width (0-100)', type: 'number', defaultValue: '94' },
+      { id: 'metric3Label', label: 'Metric 3 Label', type: 'text', defaultValue: 'Artisan Retention' },
+      { id: 'metric3Value', label: 'Metric 3 Value', type: 'text', defaultValue: '100%' },
+      { id: 'metric3Width', label: 'Metric 3 Bar Width (0-100)', type: 'number', defaultValue: '100' },
+      { id: 'metric4Label', label: 'Metric 4 Label', type: 'text', defaultValue: 'Heirloom Quality' },
+      { id: 'metric4Value', label: 'Metric 4 Value', type: 'text', defaultValue: '100%' },
+      { id: 'metric4Width', label: 'Metric 4 Bar Width (0-100)', type: 'number', defaultValue: '100' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('sbc')}-section">
+  <style>
+    .${uid('sbc')}-section { min-height: 60vh; background: ${v.bgColor}; display: flex; align-items: center; justify-content: center; padding: 60px 24px; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('sbc')}-card { background: #fff; border-radius: 24px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+    .${uid('sbc')}-header { margin-bottom: 32px; }
+    .${uid('sbc')}-title { font-size: 24px; font-weight: 700; color: #1a1a1a; margin: 0 0 8px; }
+    .${uid('sbc')}-subtitle { font-size: 14px; color: #64748b; margin: 0; }
+    .${uid('sbc')}-metrics { display: flex; flex-direction: column; gap: 24px; }
+    .${uid('sbc')}-metric { }
+    .${uid('sbc')}-metric-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .${uid('sbc')}-metric-label { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .${uid('sbc')}-metric-value { font-size: 14px; font-weight: 600; color: ${v.accentColor}; }
+    .${uid('sbc')}-bar-bg { height: 12px; background: #f1f5f9; border-radius: 6px; overflow: hidden; }
+    .${uid('sbc')}-bar { height: 100%; background: linear-gradient(90deg, ${v.accentColor}, #a855f7); border-radius: 6px; transition: width 1s ease-out; }
+    .${uid('sbc')}-metric:nth-child(1) .${uid('sbc')}-bar { width: ${v.metric1Width}%; animation: ${uid('sbc')}-grow1 1.5s ease-out; }
+    .${uid('sbc')}-metric:nth-child(2) .${uid('sbc')}-bar { width: ${v.metric2Width}%; animation: ${uid('sbc')}-grow2 1.5s ease-out 0.1s both; }
+    .${uid('sbc')}-metric:nth-child(3) .${uid('sbc')}-bar { width: ${v.metric3Width}%; animation: ${uid('sbc')}-grow3 1.5s ease-out 0.2s both; }
+    .${uid('sbc')}-metric:nth-child(4) .${uid('sbc')}-bar { width: ${v.metric4Width}%; animation: ${uid('sbc')}-grow4 1.5s ease-out 0.3s both; }
+    @keyframes ${uid('sbc')}-grow1 { from { width: 0; } to { width: ${v.metric1Width}%; } }
+    @keyframes ${uid('sbc')}-grow2 { from { width: 0; } to { width: ${v.metric2Width}%; } }
+    @keyframes ${uid('sbc')}-grow3 { from { width: 0; } to { width: ${v.metric3Width}%; } }
+    @keyframes ${uid('sbc')}-grow4 { from { width: 0; } to { width: ${v.metric4Width}%; } }
+  </style>
+  <div class="${uid('sbc')}-card">
+    <div class="${uid('sbc')}-header">
+      <h3 class="${uid('sbc')}-title">${v.title}</h3>
+      <p class="${uid('sbc')}-subtitle">${v.subtitle}</p>
+    </div>
+    <div class="${uid('sbc')}-metrics">
+      <div class="${uid('sbc')}-metric">
+        <div class="${uid('sbc')}-metric-header">
+          <span class="${uid('sbc')}-metric-label">${v.metric1Label}</span>
+          <span class="${uid('sbc')}-metric-value">${v.metric1Value}</span>
+        </div>
+        <div class="${uid('sbc')}-bar-bg"><div class="${uid('sbc')}-bar"></div></div>
+      </div>
+      <div class="${uid('sbc')}-metric">
+        <div class="${uid('sbc')}-metric-header">
+          <span class="${uid('sbc')}-metric-label">${v.metric2Label}</span>
+          <span class="${uid('sbc')}-metric-value">${v.metric2Value}</span>
+        </div>
+        <div class="${uid('sbc')}-bar-bg"><div class="${uid('sbc')}-bar"></div></div>
+      </div>
+      <div class="${uid('sbc')}-metric">
+        <div class="${uid('sbc')}-metric-header">
+          <span class="${uid('sbc')}-metric-label">${v.metric3Label}</span>
+          <span class="${uid('sbc')}-metric-value">${v.metric3Value}</span>
+        </div>
+        <div class="${uid('sbc')}-bar-bg"><div class="${uid('sbc')}-bar"></div></div>
+      </div>
+      <div class="${uid('sbc')}-metric">
+        <div class="${uid('sbc')}-metric-header">
+          <span class="${uid('sbc')}-metric-label">${v.metric4Label}</span>
+          <span class="${uid('sbc')}-metric-value">${v.metric4Value}</span>
+        </div>
+        <div class="${uid('sbc')}-bar-bg"><div class="${uid('sbc')}-bar"></div></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== PREMIUM 21st.dev LUXURY SECTIONS - BATCH 3 ==========
+
+  // 1. Statistics Card - Luxury Performance Metrics
+  {
+    id: 'luxury-stats-comparison',
+    name: 'Statistics - Luxury Brand Comparison',
+    category: 'Features',
+    description: 'Animated bar chart comparing brand performance with elegant styling',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/stats-comparison.jpg',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Excellence Isn\'t Claimed. It\'s Proven.' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'When discerning clients compare, the numbers speak with unmistakable clarity.' },
+      { id: 'brand1Name', label: 'Competitor 1 Name', type: 'text', defaultValue: 'Generic Imports' },
+      { id: 'brand1Value', label: 'Competitor 1 Value', type: 'number', defaultValue: '35' },
+      { id: 'brand2Name', label: 'Competitor 2 Name', type: 'text', defaultValue: 'Fast Fashion' },
+      { id: 'brand2Value', label: 'Competitor 2 Value', type: 'number', defaultValue: '28' },
+      { id: 'ourBrandName', label: 'Your Brand Name', type: 'text', defaultValue: 'MAISON ÉLÉGANCE' },
+      { id: 'ourBrandValue', label: 'Your Brand Value', type: 'number', defaultValue: '97' },
+      { id: 'brand4Name', label: 'Competitor 3 Name', type: 'text', defaultValue: 'Mass Market' },
+      { id: 'brand4Value', label: 'Competitor 3 Value', type: 'number', defaultValue: '42' },
+      { id: 'metricLabel', label: 'Metric Label', type: 'text', defaultValue: 'Customer Satisfaction' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lsc')}-section">
+  <style>
+    .${uid('lsc')}-section { min-height: 100vh; background: ${v.bgColor}; padding: 100px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'SF Pro Display', -apple-system, sans-serif; }
+    .${uid('lsc')}-header { text-align: center; max-width: 700px; margin-bottom: 80px; }
+    .${uid('lsc')}-title { font-size: clamp(36px, 5vw, 56px); font-weight: 300; color: #fff; line-height: 1.2; margin: 0 0 24px; letter-spacing: -0.02em; }
+    .${uid('lsc')}-sub { font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.7; margin: 0; }
+    .${uid('lsc')}-chart { display: flex; align-items: flex-end; justify-content: center; gap: clamp(12px, 3vw, 32px); height: 400px; max-width: 900px; width: 100%; }
+    .${uid('lsc')}-bar-wrap { flex: 1; max-width: 160px; display: flex; flex-direction: column; align-items: center; height: 100%; }
+    .${uid('lsc')}-bar-container { width: 100%; height: 100%; background: rgba(255,255,255,0.03); border-radius: 24px; overflow: hidden; position: relative; display: flex; align-items: flex-end; }
+    .${uid('lsc')}-bar { width: 100%; border-radius: 24px 24px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 20px; animation: ${uid('lsc')}-grow 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; transform-origin: bottom; }
+    .${uid('lsc')}-bar.competitor { background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); }
+    .${uid('lsc')}-bar.highlight { background: linear-gradient(180deg, ${v.accentColor} 0%, rgba(184,134,11,0.6) 100%); box-shadow: 0 -20px 60px rgba(184,134,11,0.4); }
+    .${uid('lsc')}-value { font-size: 28px; font-weight: 600; color: #fff; }
+    .${uid('lsc')}-bar.highlight .${uid('lsc')}-value { color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .${uid('lsc')}-label { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; text-transform: uppercase; letter-spacing: 0.1em; }
+    .${uid('lsc')}-bar-wrap.highlight .${uid('lsc')}-label { color: ${v.accentColor}; font-weight: 600; }
+    .${uid('lsc')}-tooltip { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); background: ${v.accentColor}; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; white-space: nowrap; opacity: 0; animation: ${uid('lsc')}-tooltip 0.5s ease-out 1.5s forwards; }
+    .${uid('lsc')}-tooltip::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border: 8px solid transparent; border-top-color: ${v.accentColor}; }
+    .${uid('lsc')}-metric { margin-top: 60px; font-size: 14px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.2em; }
+    @keyframes ${uid('lsc')}-grow { from { height: 0; } }
+    @keyframes ${uid('lsc')}-tooltip { to { opacity: 1; } }
+    @media (max-width: 600px) { .${uid('lsc')}-chart { height: 300px; } .${uid('lsc')}-value { font-size: 20px; } }
+  </style>
+  <div class="${uid('lsc')}-header">
+    <h2 class="${uid('lsc')}-title">${v.headline}</h2>
+    <p class="${uid('lsc')}-sub">${v.subheadline}</p>
+  </div>
+  <div class="${uid('lsc')}-chart">
+    <div class="${uid('lsc')}-bar-wrap">
+      <div class="${uid('lsc')}-bar-container">
+        <div class="${uid('lsc')}-bar competitor" style="height: ${v.brand1Value}%;">
+          <span class="${uid('lsc')}-value">${v.brand1Value}%</span>
+        </div>
+      </div>
+      <p class="${uid('lsc')}-label">${v.brand1Name}</p>
+    </div>
+    <div class="${uid('lsc')}-bar-wrap">
+      <div class="${uid('lsc')}-bar-container">
+        <div class="${uid('lsc')}-bar competitor" style="height: ${v.brand2Value}%;">
+          <span class="${uid('lsc')}-value">${v.brand2Value}%</span>
+        </div>
+      </div>
+      <p class="${uid('lsc')}-label">${v.brand2Name}</p>
+    </div>
+    <div class="${uid('lsc')}-bar-wrap highlight">
+      <div class="${uid('lsc')}-bar-container">
+        <div class="${uid('lsc')}-tooltip">${v.metricLabel}</div>
+        <div class="${uid('lsc')}-bar highlight" style="height: ${v.ourBrandValue}%;">
+          <span class="${uid('lsc')}-value">${v.ourBrandValue}%</span>
+        </div>
+      </div>
+      <p class="${uid('lsc')}-label">${v.ourBrandName}</p>
+    </div>
+    <div class="${uid('lsc')}-bar-wrap">
+      <div class="${uid('lsc')}-bar-container">
+        <div class="${uid('lsc')}-bar competitor" style="height: ${v.brand4Value}%;">
+          <span class="${uid('lsc')}-value">${v.brand4Value}%</span>
+        </div>
+      </div>
+      <p class="${uid('lsc')}-label">${v.brand4Name}</p>
+    </div>
+  </div>
+  <p class="${uid('lsc')}-metric">Measuring: ${v.metricLabel}</p>
+</div>`
+  },
+
+  // 2. Offer Carousel - EXACT 1:1 from 21st.dev/r/ravikatiyar162/offer-carousel
+  {
+    id: 'offer-carousel',
+    name: 'Offer Carousel',
+    category: 'Product',
+    description: 'Horizontal scrolling offer cards with hover animations',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/offers-carousel.jpg',
+    fields: [
+      { id: 'offer1Image', label: 'Offer 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'offer1Tag', label: 'Offer 1 Tag', type: 'text', defaultValue: 'Limited Edition' },
+      { id: 'offer1Title', label: 'Offer 1 Title', type: 'text', defaultValue: 'Cashmere Collection' },
+      { id: 'offer1Desc', label: 'Offer 1 Description', type: 'text', defaultValue: 'Hand-selected Grade-A Mongolian cashmere' },
+      { id: 'offer1Brand', label: 'Offer 1 Brand', type: 'text', defaultValue: 'Maison Élite' },
+      { id: 'offer1Code', label: 'Offer 1 Promo Code', type: 'text', defaultValue: 'LUXE40' },
+      { id: 'offer1Logo', label: 'Offer 1 Brand Logo', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/brand-logo-1.png' },
+      { id: 'offer2Image', label: 'Offer 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-sofa-image.png' },
+      { id: 'offer2Tag', label: 'Offer 2 Tag', type: 'text', defaultValue: 'New Arrival' },
+      { id: 'offer2Title', label: 'Offer 2 Title', type: 'text', defaultValue: 'Milano Furniture' },
+      { id: 'offer2Desc', label: 'Offer 2 Description', type: 'text', defaultValue: 'Italian-crafted velvet sofas and chairs' },
+      { id: 'offer2Brand', label: 'Offer 2 Brand', type: 'text', defaultValue: 'Casa Moderna' },
+      { id: 'offer2Code', label: 'Offer 2 Promo Code', type: 'text', defaultValue: 'MILANO25' },
+      { id: 'offer2Logo', label: 'Offer 2 Brand Logo', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/brand-logo-2.png' },
+      { id: 'offer3Image', label: 'Offer 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'offer3Tag', label: 'Offer 3 Tag', type: 'text', defaultValue: 'Exclusive' },
+      { id: 'offer3Title', label: 'Offer 3 Title', type: 'text', defaultValue: 'Artisan Textiles' },
+      { id: 'offer3Desc', label: 'Offer 3 Description', type: 'text', defaultValue: 'Hand-woven linens from heritage mills' },
+      { id: 'offer3Brand', label: 'Offer 3 Brand', type: 'text', defaultValue: 'Heritage Home' },
+      { id: 'offer3Code', label: 'Offer 3 Promo Code', type: 'text', defaultValue: 'ARTISAN30' },
+      { id: 'offer3Logo', label: 'Offer 3 Brand Logo', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/brand-logo-3.png' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'cardBgColor', label: 'Card Background', type: 'color', defaultValue: '#ffffff' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ofc')}-section">
+  <style>
+    .${uid('ofc')}-section { background: ${v.bgColor}; padding: 60px 24px; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('ofc')}-wrapper { position: relative; width: 100%; }
+    .${uid('ofc')}-wrapper:hover .${uid('ofc')}-nav { opacity: 1; }
+    .${uid('ofc')}-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s, background 0.3s; }
+    .${uid('ofc')}-nav:hover { background: rgba(255,255,255,0.8); }
+    .${uid('ofc')}-nav-left { left: 0; }
+    .${uid('ofc')}-nav-right { right: 0; }
+    .${uid('ofc')}-nav svg { width: 24px; height: 24px; color: #1a1a1a; }
+    .${uid('ofc')}-scroll { display: flex; gap: 24px; overflow-x: auto; padding: 16px 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .${uid('ofc')}-scroll::-webkit-scrollbar { display: none; }
+    .${uid('ofc')}-card { position: relative; flex-shrink: 0; width: 300px; height: 380px; border-radius: 16px; overflow: hidden; scroll-snap-align: start; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+    .${uid('ofc')}-card:hover { transform: translateY(-8px); }
+    .${uid('ofc')}-card-img { position: absolute; inset: 0; width: 100%; height: 50%; object-fit: cover; transition: transform 0.5s; }
+    .${uid('ofc')}-card:hover .${uid('ofc')}-card-img { transform: scale(1.1); }
+    .${uid('ofc')}-card-content { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: ${v.cardBgColor}; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+    .${uid('ofc')}-card-top { display: flex; flex-direction: column; gap: 8px; }
+    .${uid('ofc')}-tag { display: flex; align-items: center; font-size: 12px; color: #6b7280; }
+    .${uid('ofc')}-tag svg { width: 16px; height: 16px; margin-right: 8px; color: ${v.accentColor}; }
+    .${uid('ofc')}-card-title { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.2; margin: 0; }
+    .${uid('ofc')}-card-desc { font-size: 14px; color: #6b7280; margin: 0; }
+    .${uid('ofc')}-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid #e5e7eb; }
+    .${uid('ofc')}-brand { display: flex; align-items: center; gap: 12px; }
+    .${uid('ofc')}-brand-logo { width: 32px; height: 32px; border-radius: 50%; background: #f3f4f6; object-fit: cover; }
+    .${uid('ofc')}-brand-info { display: flex; flex-direction: column; }
+    .${uid('ofc')}-brand-name { font-size: 12px; font-weight: 600; color: #1a1a1a; }
+    .${uid('ofc')}-brand-code { font-size: 12px; color: #6b7280; }
+    .${uid('ofc')}-arrow { width: 32px; height: 32px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.3s; }
+    .${uid('ofc')}-card:hover .${uid('ofc')}-arrow { transform: rotate(-45deg); background: ${v.accentColor}; color: #fff; }
+    .${uid('ofc')}-arrow svg { width: 16px; height: 16px; }
+  </style>
+  <div class="${uid('ofc')}-wrapper">
+    <button class="${uid('ofc')}-nav ${uid('ofc')}-nav-left" onclick="this.parentElement.querySelector('.${uid('ofc')}-scroll').scrollBy({left:-240,behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="${uid('ofc')}-scroll">
+      <a href="#" class="${uid('ofc')}-card">
+        <img src="${v.offer1Image}" alt="${v.offer1Title}" class="${uid('ofc')}-card-img" />
+        <div class="${uid('ofc')}-card-content">
+          <div class="${uid('ofc')}-card-top">
+            <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer1Tag}</div>
+            <h3 class="${uid('ofc')}-card-title">${v.offer1Title}</h3>
+            <p class="${uid('ofc')}-card-desc">${v.offer1Desc}</p>
+          </div>
+          <div class="${uid('ofc')}-card-footer">
+            <div class="${uid('ofc')}-brand">
+              <img src="${v.offer1Logo}" alt="${v.offer1Brand}" class="${uid('ofc')}-brand-logo" />
+              <div class="${uid('ofc')}-brand-info">
+                <span class="${uid('ofc')}-brand-name">${v.offer1Brand}</span>
+                <span class="${uid('ofc')}-brand-code">${v.offer1Code}</span>
+              </div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="${uid('ofc')}-card">
+        <img src="${v.offer2Image}" alt="${v.offer2Title}" class="${uid('ofc')}-card-img" />
+        <div class="${uid('ofc')}-card-content">
+          <div class="${uid('ofc')}-card-top">
+            <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer2Tag}</div>
+            <h3 class="${uid('ofc')}-card-title">${v.offer2Title}</h3>
+            <p class="${uid('ofc')}-card-desc">${v.offer2Desc}</p>
+          </div>
+          <div class="${uid('ofc')}-card-footer">
+            <div class="${uid('ofc')}-brand">
+              <img src="${v.offer2Logo}" alt="${v.offer2Brand}" class="${uid('ofc')}-brand-logo" />
+              <div class="${uid('ofc')}-brand-info">
+                <span class="${uid('ofc')}-brand-name">${v.offer2Brand}</span>
+                <span class="${uid('ofc')}-brand-code">${v.offer2Code}</span>
+              </div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="${uid('ofc')}-card">
+        <img src="${v.offer3Image}" alt="${v.offer3Title}" class="${uid('ofc')}-card-img" />
+        <div class="${uid('ofc')}-card-content">
+          <div class="${uid('ofc')}-card-top">
+            <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer3Tag}</div>
+            <h3 class="${uid('ofc')}-card-title">${v.offer3Title}</h3>
+            <p class="${uid('ofc')}-card-desc">${v.offer3Desc}</p>
+          </div>
+          <div class="${uid('ofc')}-card-footer">
+            <div class="${uid('ofc')}-brand">
+              <img src="${v.offer3Logo}" alt="${v.offer3Brand}" class="${uid('ofc')}-brand-logo" />
+              <div class="${uid('ofc')}-brand-info">
+                <span class="${uid('ofc')}-brand-name">${v.offer3Brand}</span>
+                <span class="${uid('ofc')}-brand-code">${v.offer3Code}</span>
+              </div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <button class="${uid('ofc')}-nav ${uid('ofc')}-nav-right" onclick="this.parentElement.querySelector('.${uid('ofc')}-scroll').scrollBy({left:240,behavior:'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>`
+  },
+
+  // 3. Luxury Journey Roadmap
+  {
+    id: 'luxury-journey-roadmap',
+    name: 'Journey - Craftsmanship Roadmap',
+    category: 'Story',
+    description: 'Animated milestone roadmap showcasing brand journey',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/roadmap.jpg',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'A Legacy of Craftsmanship' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'From raw material to your home—every piece tells a story of dedication, artistry, and uncompromising standards.' },
+      { id: 'step1Title', label: 'Step 1 Title', type: 'text', defaultValue: 'Sourcing Excellence' },
+      { id: 'step1Desc', label: 'Step 1 Description', type: 'text', defaultValue: 'Hand-selected materials from heritage suppliers' },
+      { id: 'step2Title', label: 'Step 2 Title', type: 'text', defaultValue: 'Master Artisans' },
+      { id: 'step2Desc', label: 'Step 2 Description', type: 'text', defaultValue: 'Crafted by third-generation specialists' },
+      { id: 'step3Title', label: 'Step 3 Title', type: 'text', defaultValue: 'Quality Assurance' },
+      { id: 'step3Desc', label: 'Step 3 Description', type: 'text', defaultValue: '47-point inspection before approval' },
+      { id: 'step4Title', label: 'Step 4 Title', type: 'text', defaultValue: 'White Glove Delivery' },
+      { id: 'step4Desc', label: 'Step 4 Description', type: 'text', defaultValue: 'Personally delivered and installed' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#faf9f7' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ljr')}-section">
+  <style>
+    .${uid('ljr')}-section { min-height: 100vh; background: ${v.bgColor}; padding: 100px 24px; font-family: 'SF Pro Display', -apple-system, sans-serif; }
+    .${uid('ljr')}-header { text-align: center; max-width: 650px; margin: 0 auto 80px; }
+    .${uid('ljr')}-title { font-size: clamp(36px, 5vw, 52px); font-weight: 300; color: #1a1a1a; line-height: 1.2; margin: 0 0 20px; letter-spacing: -0.02em; }
+    .${uid('ljr')}-sub { font-size: 18px; color: #666; line-height: 1.7; margin: 0; }
+    .${uid('ljr')}-timeline { max-width: 900px; margin: 0 auto; position: relative; }
+    .${uid('ljr')}-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, transparent 0%, ${v.accentColor} 10%, ${v.accentColor} 90%, transparent 100%); transform: translateX(-50%); }
+    .${uid('ljr')}-step { display: flex; align-items: center; margin-bottom: 60px; opacity: 0; animation: ${uid('ljr')}-fadeIn 0.8s ease-out forwards; }
+    .${uid('ljr')}-step:nth-child(1) { animation-delay: 0.2s; }
+    .${uid('ljr')}-step:nth-child(2) { animation-delay: 0.4s; flex-direction: row-reverse; }
+    .${uid('ljr')}-step:nth-child(3) { animation-delay: 0.6s; }
+    .${uid('ljr')}-step:nth-child(4) { animation-delay: 0.8s; flex-direction: row-reverse; }
+    .${uid('ljr')}-content { flex: 1; padding: 0 40px; }
+    .${uid('ljr')}-step:nth-child(odd) .${uid('ljr')}-content { text-align: right; }
+    .${uid('ljr')}-step:nth-child(even) .${uid('ljr')}-content { text-align: left; }
+    .${uid('ljr')}-number { width: 60px; height: 60px; background: #fff; border: 2px solid ${v.accentColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: ${v.accentColor}; position: relative; z-index: 2; box-shadow: 0 10px 30px rgba(184,134,11,0.15); }
+    .${uid('ljr')}-step-title { font-size: 24px; font-weight: 500; color: #1a1a1a; margin: 0 0 8px; }
+    .${uid('ljr')}-step-desc { font-size: 16px; color: #666; margin: 0; line-height: 1.6; }
+    .${uid('ljr')}-spacer { flex: 1; }
+    @keyframes ${uid('ljr')}-fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) {
+      .${uid('ljr')}-line { left: 30px; }
+      .${uid('ljr')}-step, .${uid('ljr')}-step:nth-child(2), .${uid('ljr')}-step:nth-child(4) { flex-direction: row; }
+      .${uid('ljr')}-spacer { display: none; }
+      .${uid('ljr')}-content, .${uid('ljr')}-step:nth-child(odd) .${uid('ljr')}-content { text-align: left; padding-left: 30px; }
+      .${uid('ljr')}-number { flex-shrink: 0; }
+    }
+  </style>
+  <div class="${uid('ljr')}-header">
+    <h2 class="${uid('ljr')}-title">${v.headline}</h2>
+    <p class="${uid('ljr')}-sub">${v.subheadline}</p>
+  </div>
+  <div class="${uid('ljr')}-timeline">
+    <div class="${uid('ljr')}-line"></div>
+    <div class="${uid('ljr')}-step">
+      <div class="${uid('ljr')}-content">
+        <h3 class="${uid('ljr')}-step-title">${v.step1Title}</h3>
+        <p class="${uid('ljr')}-step-desc">${v.step1Desc}</p>
+      </div>
+      <div class="${uid('ljr')}-number">01</div>
+      <div class="${uid('ljr')}-spacer"></div>
+    </div>
+    <div class="${uid('ljr')}-step">
+      <div class="${uid('ljr')}-content">
+        <h3 class="${uid('ljr')}-step-title">${v.step2Title}</h3>
+        <p class="${uid('ljr')}-step-desc">${v.step2Desc}</p>
+      </div>
+      <div class="${uid('ljr')}-number">02</div>
+      <div class="${uid('ljr')}-spacer"></div>
+    </div>
+    <div class="${uid('ljr')}-step">
+      <div class="${uid('ljr')}-content">
+        <h3 class="${uid('ljr')}-step-title">${v.step3Title}</h3>
+        <p class="${uid('ljr')}-step-desc">${v.step3Desc}</p>
+      </div>
+      <div class="${uid('ljr')}-number">03</div>
+      <div class="${uid('ljr')}-spacer"></div>
+    </div>
+    <div class="${uid('ljr')}-step">
+      <div class="${uid('ljr')}-content">
+        <h3 class="${uid('ljr')}-step-title">${v.step4Title}</h3>
+        <p class="${uid('ljr')}-step-desc">${v.step4Desc}</p>
+      </div>
+      <div class="${uid('ljr')}-number">04</div>
+      <div class="${uid('ljr')}-spacer"></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 4. Luxury Full-Bleed Hero
+  {
+    id: 'luxury-fullbleed-hero',
+    name: 'Hero - Cinematic Full-Bleed',
+    category: 'Hero',
+    description: 'Full-screen hero with cinematic background and waitlist signup',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/fullbleed-hero.jpg',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'MAISON ÉLITE' },
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Where Luxury Meets Legacy' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'Curated collections for those who understand that true elegance is timeless. Join 12,000+ connoisseurs who refuse to compromise.' },
+      { id: 'userCount', label: 'User Count', type: 'text', defaultValue: '12,847' },
+      { id: 'ctaText', label: 'CTA Button Text', type: 'text', defaultValue: 'Request Access' },
+      { id: 'placeholder', label: 'Email Placeholder', type: 'text', defaultValue: 'Enter your email' },
+      { id: 'bgImage', label: 'Background Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxury-living-room.jpg' },
+      { id: 'overlayOpacity', label: 'Overlay Opacity (0-100)', type: 'number', defaultValue: '50' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lfh')}-section">
+  <style>
+    .${uid('lfh')}-section { min-height: 100vh; position: relative; font-family: 'SF Pro Display', -apple-system, sans-serif; color: #fff; display: flex; flex-direction: column; }
+    .${uid('lfh')}-bg { position: absolute; inset: 0; background: url('${v.bgImage}') center/cover no-repeat; }
+    .${uid('lfh')}-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,${parseInt(v.overlayOpacity)/100}) 0%, rgba(0,0,0,${parseInt(v.overlayOpacity)/100 * 0.7}) 100%); }
+    .${uid('lfh')}-header { position: relative; z-index: 10; padding: 32px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .${uid('lfh')}-brand { font-size: 28px; font-weight: 700; letter-spacing: 0.1em; }
+    .${uid('lfh')}-nav { display: flex; gap: 40px; }
+    .${uid('lfh')}-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; letter-spacing: 0.05em; transition: color 0.3s; }
+    .${uid('lfh')}-nav a:hover { color: ${v.accentColor}; }
+    .${uid('lfh')}-main { flex: 1; position: relative; z-index: 10; display: flex; align-items: center; padding: 60px 40px; }
+    .${uid('lfh')}-content { max-width: 600px; }
+    .${uid('lfh')}-social { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .${uid('lfh')}-avatars { display: flex; }
+    .${uid('lfh')}-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); margin-left: -10px; background: linear-gradient(135deg, ${v.accentColor}, #D4A853); }
+    .${uid('lfh')}-avatar:first-child { margin-left: 0; }
+    .${uid('lfh')}-social-text { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .${uid('lfh')}-title { font-size: clamp(42px, 7vw, 72px); font-weight: 300; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.02em; }
+    .${uid('lfh')}-sub { font-size: 18px; color: rgba(255,255,255,0.75); line-height: 1.7; margin: 0 0 40px; max-width: 500px; }
+    .${uid('lfh')}-form { display: flex; max-width: 450px; }
+    .${uid('lfh')}-input { flex: 1; padding: 18px 24px; border: none; border-radius: 0; font-size: 16px; background: #fff; color: #1a1a1a; }
+    .${uid('lfh')}-input::placeholder { color: #999; }
+    .${uid('lfh')}-btn { padding: 18px 32px; background: ${v.accentColor}; color: #fff; border: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+    .${uid('lfh')}-btn:hover { background: #9A7209; }
+    .${uid('lfh')}-footer { position: relative; z-index: 10; padding: 32px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .${uid('lfh')}-version { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; }
+    @media (max-width: 768px) {
+      .${uid('lfh')}-nav { display: none; }
+      .${uid('lfh')}-form { flex-direction: column; }
+      .${uid('lfh')}-input, .${uid('lfh')}-btn { width: 100%; }
+    }
+  </style>
+  <div class="${uid('lfh')}-bg"></div>
+  <header class="${uid('lfh')}-header">
+    <div class="${uid('lfh')}-brand">${v.brandName}</div>
+    <nav class="${uid('lfh')}-nav">
+      <a href="#">Collections</a>
+      <a href="#">Heritage</a>
+      <a href="#">Atelier</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+  <main class="${uid('lfh')}-main">
+    <div class="${uid('lfh')}-content">
+      <div class="${uid('lfh')}-social">
+        <div class="${uid('lfh')}-avatars">
+          <div class="${uid('lfh')}-avatar"></div>
+          <div class="${uid('lfh')}-avatar"></div>
+          <div class="${uid('lfh')}-avatar"></div>
+        </div>
+        <p class="${uid('lfh')}-social-text">${v.userCount} members have joined</p>
+      </div>
+      <h1 class="${uid('lfh')}-title">${v.headline}</h1>
+      <p class="${uid('lfh')}-sub">${v.subheadline}</p>
+      <form class="${uid('lfh')}-form">
+        <input type="email" class="${uid('lfh')}-input" placeholder="${v.placeholder}" />
+        <button type="submit" class="${uid('lfh')}-btn">${v.ctaText}</button>
+      </form>
+    </div>
+  </main>
+  <footer class="${uid('lfh')}-footer">
+    <span class="${uid('lfh')}-version">SPRING COLLECTION 2025</span>
+  </footer>
+</div>`
+  },
+
+  // 5. Floating Elements Hero
+  {
+    id: 'floating-luxury-hero',
+    name: 'Hero - Floating Elegance',
+    category: 'Hero',
+    description: 'Elegant hero with floating decorative elements and swirl lines',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/floating-hero.jpg',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'The Art of Living Beautifully' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'Every piece in our collection is a conversation between heritage craftsmanship and contemporary elegance. Welcome to a world where your home becomes your sanctuary.' },
+      { id: 'image1', label: 'Floating Image 1', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'image2', label: 'Floating Image 2', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-sofa-image.png' },
+      { id: 'image3', label: 'Floating Image 3', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#C4A77D' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fdfcfa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('flh')}-section">
+  <style>
+    .${uid('flh')}-section { min-height: 80vh; background: ${v.bgColor}; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 80px 24px; font-family: 'SF Pro Display', -apple-system, sans-serif; }
+    .${uid('flh')}-swirl { position: absolute; stroke: ${v.accentColor}; opacity: 0.15; }
+    .${uid('flh')}-swirl-1 { top: 0; left: 0; transform: translate(-30%, -30%); width: 600px; height: 600px; }
+    .${uid('flh')}-swirl-2 { bottom: 0; right: 0; transform: translate(30%, 30%); width: 700px; height: 700px; }
+    .${uid('flh')}-float { position: absolute; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); animation: ${uid('flh')}-float 6s ease-in-out infinite; }
+    .${uid('flh')}-float img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('flh')}-float-1 { width: 180px; height: 220px; top: 10%; left: 8%; animation-delay: 0s; }
+    .${uid('flh')}-float-2 { width: 200px; height: 250px; top: 15%; right: 10%; animation-delay: -2s; }
+    .${uid('flh')}-float-3 { width: 160px; height: 200px; bottom: 15%; left: 15%; animation-delay: -4s; }
+    .${uid('flh')}-content { position: relative; z-index: 10; text-align: center; max-width: 650px; }
+    .${uid('flh')}-title { font-size: clamp(36px, 6vw, 60px); font-weight: 300; color: ${v.accentColor}; line-height: 1.2; margin: 0 0 24px; letter-spacing: -0.02em; }
+    .${uid('flh')}-sub { font-size: 18px; color: #666; line-height: 1.8; margin: 0; }
+    @keyframes ${uid('flh')}-float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
+    @media (max-width: 768px) { .${uid('flh')}-float { display: none; } }
+  </style>
+  <svg class="${uid('flh')}-swirl ${uid('flh')}-swirl-1" viewBox="0 0 600 600" fill="none">
+    <path d="M515 181C378 52 129 136 51 294C-27 451 126 600 126 600" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <svg class="${uid('flh')}-swirl ${uid('flh')}-swirl-2" viewBox="0 0 700 700" fill="none">
+    <path d="M27 528C194 690 480 637 594 452C709 267 544 2 544 2" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <div class="${uid('flh')}-float ${uid('flh')}-float-1"><img src="${v.image1}" alt="Luxury item" /></div>
+  <div class="${uid('flh')}-float ${uid('flh')}-float-2"><img src="${v.image2}" alt="Luxury item" /></div>
+  <div class="${uid('flh')}-float ${uid('flh')}-float-3"><img src="${v.image3}" alt="Luxury item" /></div>
+  <div class="${uid('flh')}-content">
+    <h1 class="${uid('flh')}-title">${v.headline}</h1>
+    <p class="${uid('flh')}-sub">${v.subheadline}</p>
+  </div>
+</div>`
+  },
+
+  // 6. Animated Feature Card Grid
+  {
+    id: 'luxury-feature-cards',
+    name: 'Features - Animated Luxury Cards',
+    category: 'Features',
+    description: 'Three animated feature cards with hover effects and gradient backgrounds',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/feature-cards.jpg',
+    fields: [
+      { id: 'card1Index', label: 'Card 1 Index', type: 'text', defaultValue: '001' },
+      { id: 'card1Tag', label: 'Card 1 Tag', type: 'text', defaultValue: 'Heritage' },
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Materials sourced from century-old European mills' },
+      { id: 'card1Image', label: 'Card 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'card2Index', label: 'Card 2 Index', type: 'text', defaultValue: '002' },
+      { id: 'card2Tag', label: 'Card 2 Tag', type: 'text', defaultValue: 'Artisanship' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Each piece hand-finished by master craftsmen' },
+      { id: 'card2Image', label: 'Card 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png' },
+      { id: 'card3Index', label: 'Card 3 Index', type: 'text', defaultValue: '003' },
+      { id: 'card3Tag', label: 'Card 3 Tag', type: 'text', defaultValue: 'Sustainability' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Eco-conscious production with zero-waste commitment' },
+      { id: 'card3Image', label: 'Card 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'color1', label: 'Card 1 Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'color2', label: 'Card 2 Color', type: 'color', defaultValue: '#7C3AED' },
+      { id: 'color3', label: 'Card 3 Color', type: 'color', defaultValue: '#0EA5E9' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lfc')}-section">
+  <style>
+    .${uid('lfc')}-section { background: ${v.bgColor}; padding: 100px 24px; font-family: 'SF Pro Display', -apple-system, sans-serif; }
+    .${uid('lfc')}-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .${uid('lfc')}-card { position: relative; height: 420px; border-radius: 24px; overflow: hidden; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+    .${uid('lfc')}-card:hover { transform: translateY(-12px); box-shadow: 0 24px 50px rgba(0,0,0,0.12); }
+    .${uid('lfc')}-gradient { position: absolute; inset: 0; opacity: 0.15; transition: opacity 0.4s; }
+    .${uid('lfc')}-card:hover .${uid('lfc')}-gradient { opacity: 0.25; }
+    .${uid('lfc')}-card-1 .${uid('lfc')}-gradient { background: radial-gradient(circle at 50% 30%, ${v.color1} 0%, transparent 70%); }
+    .${uid('lfc')}-card-2 .${uid('lfc')}-gradient { background: radial-gradient(circle at 50% 30%, ${v.color2} 0%, transparent 70%); }
+    .${uid('lfc')}-card-3 .${uid('lfc')}-gradient { background: radial-gradient(circle at 50% 30%, ${v.color3} 0%, transparent 70%); }
+    .${uid('lfc')}-index { position: absolute; top: 24px; left: 24px; font-family: monospace; font-size: 16px; font-weight: 700; color: #999; }
+    .${uid('lfc')}-image { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); width: 160px; height: 160px; object-fit: contain; transition: all 0.4s; }
+    .${uid('lfc')}-card:hover .${uid('lfc')}-image { transform: translate(-50%, -70%) scale(1.15); }
+    .${uid('lfc')}-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 16px; margin: 16px; }
+    .${uid('lfc')}-tag { display: inline-block; padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+    .${uid('lfc')}-card-1 .${uid('lfc')}-tag { background: rgba(184,134,11,0.1); color: ${v.color1}; }
+    .${uid('lfc')}-card-2 .${uid('lfc')}-tag { background: rgba(124,58,237,0.1); color: ${v.color2}; }
+    .${uid('lfc')}-card-3 .${uid('lfc')}-tag { background: rgba(14,165,233,0.1); color: ${v.color3}; }
+    .${uid('lfc')}-title { font-size: 16px; color: #1a1a1a; line-height: 1.5; margin: 0; }
+    @media (max-width: 900px) { .${uid('lfc')}-grid { grid-template-columns: 1fr; max-width: 380px; } }
+  </style>
+  <div class="${uid('lfc')}-grid">
+    <div class="${uid('lfc')}-card ${uid('lfc')}-card-1">
+      <div class="${uid('lfc')}-gradient"></div>
+      <span class="${uid('lfc')}-index">${v.card1Index}</span>
+      <img class="${uid('lfc')}-image" src="${v.card1Image}" alt="${v.card1Tag}" />
+      <div class="${uid('lfc')}-content">
+        <span class="${uid('lfc')}-tag">${v.card1Tag}</span>
+        <p class="${uid('lfc')}-title">${v.card1Title}</p>
+      </div>
+    </div>
+    <div class="${uid('lfc')}-card ${uid('lfc')}-card-2">
+      <div class="${uid('lfc')}-gradient"></div>
+      <span class="${uid('lfc')}-index">${v.card2Index}</span>
+      <img class="${uid('lfc')}-image" src="${v.card2Image}" alt="${v.card2Tag}" />
+      <div class="${uid('lfc')}-content">
+        <span class="${uid('lfc')}-tag">${v.card2Tag}</span>
+        <p class="${uid('lfc')}-title">${v.card2Title}</p>
+      </div>
+    </div>
+    <div class="${uid('lfc')}-card ${uid('lfc')}-card-3">
+      <div class="${uid('lfc')}-gradient"></div>
+      <span class="${uid('lfc')}-index">${v.card3Index}</span>
+      <img class="${uid('lfc')}-image" src="${v.card3Image}" alt="${v.card3Tag}" />
+      <div class="${uid('lfc')}-content">
+        <span class="${uid('lfc')}-tag">${v.card3Tag}</span>
+        <p class="${uid('lfc')}-title">${v.card3Title}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 7. Vertical Offer Cards Carousel
+  {
+    id: 'luxury-offer-vertical',
+    name: 'Carousel - Editorial Offers',
+    category: 'Product',
+    description: 'Vertical scrolling offer cards with editorial styling',
+    thumbnail: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/offer-vertical.jpg',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'The Curator\'s Selection' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Hand-picked pieces chosen by our design team' },
+      { id: 'offer1Image', label: 'Offer 1 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png' },
+      { id: 'offer1Tag', label: 'Offer 1 Tag', type: 'text', defaultValue: 'New Arrival' },
+      { id: 'offer1Title', label: 'Offer 1 Title', type: 'text', defaultValue: 'Milano Silk Collection' },
+      { id: 'offer1Desc', label: 'Offer 1 Description', type: 'text', defaultValue: 'Hand-woven Italian silk with platinum thread accents' },
+      { id: 'offer2Image', label: 'Offer 2 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/hero-sofa-image.png' },
+      { id: 'offer2Tag', label: 'Offer 2 Tag', type: 'text', defaultValue: 'Limited Edition' },
+      { id: 'offer2Title', label: 'Offer 2 Title', type: 'text', defaultValue: 'Artisan Velvet Sofa' },
+      { id: 'offer2Desc', label: 'Offer 2 Description', type: 'text', defaultValue: 'Only 50 pieces worldwide. Museum-quality craftsmanship.' },
+      { id: 'offer3Image', label: 'Offer 3 Image', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png' },
+      { id: 'offer3Tag', label: 'Offer 3 Tag', type: 'text', defaultValue: 'Exclusive' },
+      { id: 'offer3Title', label: 'Offer 3 Title', type: 'text', defaultValue: 'Couture Linen Ensemble' },
+      { id: 'offer3Desc', label: 'Offer 3 Description', type: 'text', defaultValue: 'Belgian linen, tailored to perfection in Paris' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#B8860B' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lov')}-section">
+  <style>
+    .${uid('lov')}-section { background: ${v.bgColor}; padding: 100px 24px; font-family: 'SF Pro Display', -apple-system, sans-serif; }
+    .${uid('lov')}-header { text-align: center; margin-bottom: 60px; }
+    .${uid('lov')}-title { font-size: clamp(32px, 5vw, 48px); font-weight: 300; color: #fff; margin: 0 0 12px; letter-spacing: -0.02em; }
+    .${uid('lov')}-sub { font-size: 16px; color: rgba(255,255,255,0.5); margin: 0; }
+    .${uid('lov')}-carousel { display: flex; gap: 24px; overflow-x: auto; padding: 20px 0; max-width: 1200px; margin: 0 auto; scrollbar-width: none; scroll-snap-type: x mandatory; }
+    .${uid('lov')}-carousel::-webkit-scrollbar { display: none; }
+    .${uid('lov')}-card { flex: 0 0 320px; height: 450px; border-radius: 20px; overflow: hidden; position: relative; scroll-snap-align: start; cursor: pointer; }
+    .${uid('lov')}-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.9) 100%); z-index: 1; }
+    .${uid('lov')}-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .${uid('lov')}-card:hover img { transform: scale(1.08); }
+    .${uid('lov')}-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 30px; z-index: 2; }
+    .${uid('lov')}-tag { display: inline-flex; align-items: center; gap: 8px; background: ${v.accentColor}; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .${uid('lov')}-card-title { font-size: 24px; font-weight: 500; color: #fff; margin: 0 0 8px; line-height: 1.3; }
+    .${uid('lov')}-card-desc { font-size: 14px; color: rgba(255,255,255,0.7); margin: 0 0 20px; line-height: 1.6; }
+    .${uid('lov')}-arrow { width: 48px; height: 48px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: all 0.3s; }
+    .${uid('lov')}-card:hover .${uid('lov')}-arrow { background: ${v.accentColor}; border-color: ${v.accentColor}; transform: rotate(-45deg); }
+    @media (max-width: 768px) { .${uid('lov')}-card { flex: 0 0 280px; height: 400px; } }
+  </style>
+  <div class="${uid('lov')}-header">
+    <h2 class="${uid('lov')}-title">${v.headline}</h2>
+    <p class="${uid('lov')}-sub">${v.subheadline}</p>
+  </div>
+  <div class="${uid('lov')}-carousel">
+    <div class="${uid('lov')}-card">
+      <img src="${v.offer1Image}" alt="${v.offer1Title}" />
+      <div class="${uid('lov')}-card-content">
+        <span class="${uid('lov')}-tag">✦ ${v.offer1Tag}</span>
+        <h3 class="${uid('lov')}-card-title">${v.offer1Title}</h3>
+        <p class="${uid('lov')}-card-desc">${v.offer1Desc}</p>
+        <div class="${uid('lov')}-arrow">→</div>
+      </div>
+    </div>
+    <div class="${uid('lov')}-card">
+      <img src="${v.offer2Image}" alt="${v.offer2Title}" />
+      <div class="${uid('lov')}-card-content">
+        <span class="${uid('lov')}-tag">✦ ${v.offer2Tag}</span>
+        <h3 class="${uid('lov')}-card-title">${v.offer2Title}</h3>
+        <p class="${uid('lov')}-card-desc">${v.offer2Desc}</p>
+        <div class="${uid('lov')}-arrow">→</div>
+      </div>
+    </div>
+    <div class="${uid('lov')}-card">
+      <img src="${v.offer3Image}" alt="${v.offer3Title}" />
+      <div class="${uid('lov')}-card-content">
+        <span class="${uid('lov')}-tag">✦ ${v.offer3Tag}</span>
+        <h3 class="${uid('lov')}-card-title">${v.offer3Title}</h3>
+        <p class="${uid('lov')}-card-desc">${v.offer3Desc}</p>
+        <div class="${uid('lov')}-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // Split Testimonial - EXACT 1:1 from 21st.dev/r/jatin-yadav05/split-testimonial
+  {
+    id: 'split-testimonial',
+    name: 'Split Testimonial',
+    category: 'Testimonials',
+    description: 'Quote on left, image on right with click to navigate between testimonials',
+    thumbnail: '',
+    fields: [
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'A rare talent who bridges the gap between aesthetics and functionality with remarkable precision.' },
+      { id: 'name1', label: 'Name 1', type: 'text', defaultValue: 'Victoria Ashworth' },
+      { id: 'role1', label: 'Role 1', type: 'text', defaultValue: 'Design Director' },
+      { id: 'company1', label: 'Company 1', type: 'text', defaultValue: 'Maison Élite' },
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/testimonial-1.jpg' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'Every piece tells a story. Working together elevated our entire brand experience.' },
+      { id: 'name2', label: 'Name 2', type: 'text', defaultValue: 'James Sterling' },
+      { id: 'role2', label: 'Role 2', type: 'text', defaultValue: 'Creative Lead' },
+      { id: 'company2', label: 'Company 2', type: 'text', defaultValue: 'Heritage Home' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/testimonial-2.jpg' },
+      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'Transforms complex problems into elegant, intuitive solutions that customers love.' },
+      { id: 'name3', label: 'Name 3', type: 'text', defaultValue: 'Elena Beaumont' },
+      { id: 'role3', label: 'Role 3', type: 'text', defaultValue: 'Head of Product' },
+      { id: 'company3', label: 'Company 3', type: 'text', defaultValue: 'Casa Moderna' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/testimonial-3.jpg' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('spt')}-section" id="${uid('spt')}-section">
+  <style>
+    .${uid('spt')}-section { background: ${v.bgColor}; padding: 80px 24px; font-family: system-ui, -apple-system, sans-serif; }
+    .${uid('spt')}-container { max-width: 1024px; margin: 0 auto; position: relative; }
+    .${uid('spt')}-grid { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; cursor: pointer; }
+    .${uid('spt')}-content { display: flex; flex-direction: column; gap: 32px; }
+    .${uid('spt')}-company { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b7280; }
+    .${uid('spt')}-company-line { width: 32px; height: 1px; background: rgba(107,114,128,0.5); }
+    .${uid('spt')}-quote { font-size: clamp(24px, 4vw, 36px); font-weight: 300; line-height: 1.3; letter-spacing: -0.01em; color: #1a1a1a; margin: 0; transition: opacity 0.5s, transform 0.5s; }
+    .${uid('spt')}-author { display: flex; align-items: center; gap: 16px; }
+    .${uid('spt')}-author-line { width: 40px; height: 1px; background: rgba(26,26,26,0.2); }
+    .${uid('spt')}-author-info { display: flex; flex-direction: column; }
+    .${uid('spt')}-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .${uid('spt')}-role { font-size: 12px; color: #6b7280; }
+    .${uid('spt')}-visual { position: relative; width: 192px; height: 256px; }
+    .${uid('spt')}-image-wrap { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; border: 1px solid rgba(229,231,235,0.5); }
+    .${uid('spt')}-image { width: 100%; height: 100%; object-fit: cover; transition: filter 0.6s, transform 0.6s; }
+    .${uid('spt')}-next { position: absolute; bottom: -48px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6b7280; opacity: 0; transition: opacity 0.2s, transform 0.2s; }
+    .${uid('spt')}-grid:hover .${uid('spt')}-next { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .${uid('spt')}-next svg { width: 12px; height: 12px; }
+    .${uid('spt')}-dots { position: absolute; bottom: -64px; left: 0; display: flex; align-items: center; gap: 12px; }
+    .${uid('spt')}-dot { position: relative; padding: 4px; cursor: pointer; background: none; border: none; }
+    .${uid('spt')}-dot-inner { display: block; width: 8px; height: 8px; border-radius: 50%; background: rgba(107,114,128,0.3); transition: all 0.3s; transform: scale(0.75); }
+    .${uid('spt')}-dot:hover .${uid('spt')}-dot-inner { background: rgba(107,114,128,0.5); transform: scale(1); }
+    .${uid('spt')}-dot.active .${uid('spt')}-dot-inner { background: #1a1a1a; transform: scale(1); }
+    .${uid('spt')}-dot.active::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(26,26,26,0.3); border-radius: 50%; }
+    .${uid('spt')}-data { display: none; }
+    @media (max-width: 768px) { .${uid('spt')}-grid { grid-template-columns: 1fr; gap: 32px; } .${uid('spt')}-visual { width: 100%; max-width: 280px; height: 320px; margin: 0 auto; } .${uid('spt')}-dots { bottom: -80px; left: 50%; transform: translateX(-50%); } }
+  </style>
+  <div class="${uid('spt')}-data" id="${uid('spt')}-data" data-testimonials='[{"quote":"${v.quote1.replace(/"/g, '\\"')}","name":"${v.name1}","role":"${v.role1}","company":"${v.company1}","image":"${v.image1}"},{"quote":"${v.quote2.replace(/"/g, '\\"')}","name":"${v.name2}","role":"${v.role2}","company":"${v.company2}","image":"${v.image2}"},{"quote":"${v.quote3.replace(/"/g, '\\"')}","name":"${v.name3}","role":"${v.role3}","company":"${v.company3}","image":"${v.image3}"}]'></div>
+  <div class="${uid('spt')}-container">
+    <div class="${uid('spt')}-grid" onclick="(function(){const section=document.getElementById('${uid('spt')}-section');const data=JSON.parse(document.getElementById('${uid('spt')}-data').dataset.testimonials);let idx=parseInt(section.dataset.idx||'0');idx=(idx+1)%data.length;section.dataset.idx=idx;const t=data[idx];section.querySelector('.${uid('spt')}-company-text').textContent=t.company;section.querySelector('.${uid('spt')}-quote').textContent=t.quote;section.querySelector('.${uid('spt')}-name').textContent=t.name;section.querySelector('.${uid('spt')}-role').textContent=t.role;section.querySelector('.${uid('spt')}-image').src=t.image;section.querySelectorAll('.${uid('spt')}-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));})()">
+      <div class="${uid('spt')}-content">
+        <div class="${uid('spt')}-company">
+          <span class="${uid('spt')}-company-line"></span>
+          <span class="${uid('spt')}-company-text">${v.company1}</span>
+        </div>
+        <blockquote class="${uid('spt')}-quote">${v.quote1}</blockquote>
+        <div class="${uid('spt')}-author">
+          <div class="${uid('spt')}-author-line"></div>
+          <div class="${uid('spt')}-author-info">
+            <p class="${uid('spt')}-name">${v.name1}</p>
+            <p class="${uid('spt')}-role">${v.role1}</p>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('spt')}-visual">
+        <div class="${uid('spt')}-image-wrap">
+          <img src="${v.image1}" alt="${v.name1}" class="${uid('spt')}-image" />
+        </div>
+        <div class="${uid('spt')}-next">
+          <span>Next</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('spt')}-dots">
+      <button class="${uid('spt')}-dot active" onclick="event.stopPropagation();(function(idx){const section=document.getElementById('${uid('spt')}-section');const data=JSON.parse(document.getElementById('${uid('spt')}-data').dataset.testimonials);section.dataset.idx=idx;const t=data[idx];section.querySelector('.${uid('spt')}-company-text').textContent=t.company;section.querySelector('.${uid('spt')}-quote').textContent=t.quote;section.querySelector('.${uid('spt')}-name').textContent=t.name;section.querySelector('.${uid('spt')}-role').textContent=t.role;section.querySelector('.${uid('spt')}-image').src=t.image;section.querySelectorAll('.${uid('spt')}-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));})(0)"><span class="${uid('spt')}-dot-inner"></span></button>
+      <button class="${uid('spt')}-dot" onclick="event.stopPropagation();(function(idx){const section=document.getElementById('${uid('spt')}-section');const data=JSON.parse(document.getElementById('${uid('spt')}-data').dataset.testimonials);section.dataset.idx=idx;const t=data[idx];section.querySelector('.${uid('spt')}-company-text').textContent=t.company;section.querySelector('.${uid('spt')}-quote').textContent=t.quote;section.querySelector('.${uid('spt')}-name').textContent=t.name;section.querySelector('.${uid('spt')}-role').textContent=t.role;section.querySelector('.${uid('spt')}-image').src=t.image;section.querySelectorAll('.${uid('spt')}-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));})(1)"><span class="${uid('spt')}-dot-inner"></span></button>
+      <button class="${uid('spt')}-dot" onclick="event.stopPropagation();(function(idx){const section=document.getElementById('${uid('spt')}-section');const data=JSON.parse(document.getElementById('${uid('spt')}-data').dataset.testimonials);section.dataset.idx=idx;const t=data[idx];section.querySelector('.${uid('spt')}-company-text').textContent=t.company;section.querySelector('.${uid('spt')}-quote').textContent=t.quote;section.querySelector('.${uid('spt')}-name').textContent=t.name;section.querySelector('.${uid('spt')}-role').textContent=t.role;section.querySelector('.${uid('spt')}-image').src=t.image;section.querySelectorAll('.${uid('spt')}-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));})(2)"><span class="${uid('spt')}-dot-inner"></span></button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== 21ST.DEV PREMIUM COMPONENTS ==========
+
+  // 1. Spatial Product Showcase (daiv09)
+  {
+    id: 'spatial-product-showcase',
+    name: 'Spatial Product Showcase',
+    category: 'Product',
+    description: 'High-fidelity hero section for dual-state products with fluid layout transitions and reactive gradients',
+    thumbnail: '',
+    fields: [
+      { id: 'leftImage', label: 'Left Product Image', type: 'image', defaultValue: 'https://ik.imagekit.io/kqmrslzuq/SOUND/left-earbud.png' },
+      { id: 'leftSubtitle', label: 'Left Subtitle', type: 'text', defaultValue: 'LEFT EARBUD' },
+      { id: 'leftTitle', label: 'Left Title', type: 'text', defaultValue: 'Spatial Anchor' },
+      { id: 'leftDesc', label: 'Left Description', type: 'textarea', defaultValue: 'The primary node for binaural synchronization. Handles low-latency transmission and anchors the spatial audio soundstage.' },
+      { id: 'leftFeature1Label', label: 'Left Feature 1 Label', type: 'text', defaultValue: 'Latency' },
+      { id: 'leftFeature1Value', label: 'Left Feature 1 Value (%)', type: 'number', defaultValue: '12' },
+      { id: 'leftFeature2Label', label: 'Left Feature 2 Label', type: 'text', defaultValue: 'Sync Rate' },
+      { id: 'leftFeature2Value', label: 'Left Feature 2 Value (%)', type: 'number', defaultValue: '98' },
+      { id: 'leftBattery', label: 'Left Battery (%)', type: 'number', defaultValue: '82' },
+      { id: 'rightImage', label: 'Right Product Image', type: 'image', defaultValue: 'https://ik.imagekit.io/kqmrslzuq/SOUND/right-earbud.png' },
+      { id: 'rightSubtitle', label: 'Right Subtitle', type: 'text', defaultValue: 'RIGHT EARBUD' },
+      { id: 'rightTitle', label: 'Right Title', type: 'text', defaultValue: 'Vocal Clarity' },
+      { id: 'rightDesc', label: 'Right Description', type: 'textarea', defaultValue: 'Optimized for high-frequency detail and voice pickup. Contains the beamforming microphone array for crystal clear calls.' },
+      { id: 'rightFeature1Label', label: 'Right Feature 1 Label', type: 'text', defaultValue: 'Bitrate' },
+      { id: 'rightFeature1Value', label: 'Right Feature 1 Value (%)', type: 'number', defaultValue: '94' },
+      { id: 'rightFeature2Label', label: 'Right Feature 2 Label', type: 'text', defaultValue: 'Clarifier' },
+      { id: 'rightFeature2Value', label: 'Right Feature 2 Value (%)', type: 'number', defaultValue: '88' },
+      { id: 'rightBattery', label: 'Right Battery (%)', type: 'number', defaultValue: '74' },
+    ],
+    generateHtml: (v) => `<div class="${uid('sps')}" id="${uid('sps')}-container" data-active="left">
+  <style>
+    .${uid('sps')} { position:relative; min-height:100vh; width:100%; background:#000; color:#f4f4f5; overflow:hidden; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .${uid('sps')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('sps')}-bg { position:fixed; inset:0; pointer-events:none; transition:all 1.2s cubic-bezier(0.16,1,0.3,1); }
+    .${uid('sps')}-bg.left { background:radial-gradient(circle at 0% 50%, rgba(59,130,246,0.15), transparent 50%); }
+    .${uid('sps')}-bg.right { background:radial-gradient(circle at 100% 50%, rgba(16,185,129,0.15), transparent 50%); }
+    .${uid('sps')}-main { position:relative; z-index:10; width:100%; padding:24px; display:flex; flex-direction:column; align-items:center; justify-content:center; max-width:80rem; margin:0 auto; }
+    .${uid('sps')}-content { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:48px; width:100%; transition:all 0.9s cubic-bezier(0.25,0.1,0.25,1); }
+    @media(min-width:768px) { .${uid('sps')}-content { flex-direction:row; gap:128px; } .${uid('sps')}-content.right { flex-direction:row-reverse; } }
+    .${uid('sps')}-visual { position:relative; flex-shrink:0; }
+    .${uid('sps')}-ring { position:absolute; inset:-20%; border-radius:50%; border:1px dashed rgba(255,255,255,0.1); animation:${uid('sps')}-rotate 20s linear infinite; }
+    .${uid('sps')}-ring.left { border-left-color:rgba(59,130,246,0.5); }
+    .${uid('sps')}-ring.right { border-right-color:rgba(16,185,129,0.5); }
+    .${uid('sps')}-glow { position:absolute; inset:0; border-radius:50%; filter:blur(32px); opacity:0.4; animation:${uid('sps')}-pulse 4s ease-in-out infinite; }
+    .${uid('sps')}-glow.left { background:linear-gradient(to bottom right, #2563eb, #312e81); }
+    .${uid('sps')}-glow.right { background:linear-gradient(to bottom right, #059669, #0f766e); }
+    .${uid('sps')}-img-wrap { position:relative; height:320px; width:320px; border-radius:50%; border:1px solid rgba(255,255,255,0.05); box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center; overflow:hidden; background:rgba(0,0,0,0.2); backdrop-filter:blur(8px); }
+    @media(min-width:768px) { .${uid('sps')}-img-wrap { height:450px; width:450px; } }
+    .${uid('sps')}-float { position:relative; z-index:10; width:100%; height:100%; display:flex; align-items:center; justify-content:center; animation:${uid('sps')}-float 6s ease-in-out infinite; }
+    .${uid('sps')}-img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 20px 50px rgba(0,0,0,0.5)); padding:16px; transition:all 0.5s cubic-bezier(0.25,0.1,0.25,1); opacity:1; transform:scale(1) rotate(0deg) translateX(0); }
+    .${uid('sps')}-img.entering { opacity:0; transform:scale(1.5) rotate(-30deg) translateX(-80px); filter:blur(15px); }
+    .${uid('sps')}-img.entering-right { transform:scale(1.5) rotate(30deg) translateX(80px); }
+    .${uid('sps')}-status { position:absolute; bottom:-32px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+    .${uid('sps')}-status-inner { display:flex; align-items:center; gap:8px; font-size:12px; text-transform:uppercase; letter-spacing:0.2em; color:#71717a; background:rgba(9,9,11,0.8); padding:8px 16px; border-radius:9999px; border:1px solid rgba(255,255,255,0.05); backdrop-filter:blur(8px); }
+    .${uid('sps')}-status-dot { height:6px; width:6px; border-radius:50%; animation:${uid('sps')}-blink 2s ease-in-out infinite; }
+    .${uid('sps')}-status-dot.left { background:#3b82f6; }
+    .${uid('sps')}-status-dot.right { background:#10b981; }
+    .${uid('sps')}-details { width:100%; max-width:28rem; transition:opacity 0.3s, transform 0.3s; }
+    .${uid('sps')}-details.left { text-align:left; }
+    .${uid('sps')}-details.right { text-align:right; }
+    .${uid('sps')}-subtitle { font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.2em; color:#71717a; margin-bottom:8px; }
+    .${uid('sps')}-title { font-size:36px; font-weight:700; letter-spacing:-0.025em; margin-bottom:8px; background:linear-gradient(to bottom, #fff, #71717a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    @media(min-width:768px) { .${uid('sps')}-title { font-size:48px; } }
+    .${uid('sps')}-desc { color:#a1a1aa; margin-bottom:32px; line-height:1.6; }
+    .${uid('sps')}-features { width:100%; background:rgba(24,24,27,0.4); padding:24px; border-radius:16px; border:1px solid rgba(255,255,255,0.05); backdrop-filter:blur(8px); }
+    .${uid('sps')}-feature { margin-bottom:24px; }
+    .${uid('sps')}-feature:last-child { margin-bottom:0; }
+    .${uid('sps')}-feature-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; font-size:14px; }
+    .${uid('sps')}-details.right .${uid('sps')}-feature-header { flex-direction:row-reverse; }
+    .${uid('sps')}-feature-label { display:flex; align-items:center; gap:8px; color:#e4e4e7; }
+    .${uid('sps')}-feature-label svg { width:16px; height:16px; }
+    .${uid('sps')}-feature-value { font-family:monospace; font-size:12px; color:#71717a; }
+    .${uid('sps')}-bar { position:relative; height:8px; width:100%; background:#27272a; border-radius:9999px; overflow:hidden; }
+    .${uid('sps')}-bar-fill { position:absolute; top:0; bottom:0; border-radius:9999px; opacity:0.8; transition:width 1s ease-out; }
+    .${uid('sps')}-bar-fill.left { left:0; background:#3b82f6; }
+    .${uid('sps')}-bar-fill.right { right:0; background:#10b981; }
+    .${uid('sps')}-specs { padding-top:16px; display:flex; }
+    .${uid('sps')}-details.left .${uid('sps')}-specs { justify-content:flex-start; }
+    .${uid('sps')}-details.right .${uid('sps')}-specs { justify-content:flex-end; }
+    .${uid('sps')}-specs-btn { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:#d4d4d8; background:none; border:none; cursor:pointer; transition:color 0.2s; }
+    .${uid('sps')}-specs-btn:hover { color:#fff; }
+    .${uid('sps')}-specs-btn:hover svg:last-child { transform:translateX(4px); }
+    .${uid('sps')}-specs-btn svg { width:14px; height:14px; transition:transform 0.2s; }
+    .${uid('sps')}-battery { margin-top:24px; display:flex; align-items:center; gap:12px; color:#71717a; }
+    .${uid('sps')}-details.right .${uid('sps')}-battery { flex-direction:row-reverse; }
+    .${uid('sps')}-battery svg { width:16px; height:16px; }
+    .${uid('sps')}-battery span { font-size:14px; font-weight:500; }
+    .${uid('sps')}-switcher { position:fixed; bottom:48px; left:0; right:0; display:flex; justify-content:center; z-index:50; pointer-events:none; }
+    .${uid('sps')}-switcher-inner { pointer-events:auto; display:flex; align-items:center; gap:4px; padding:6px; border-radius:9999px; background:rgba(24,24,27,0.8); backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,0.1); box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+    .${uid('sps')}-switch-btn { position:relative; width:96px; height:48px; border-radius:9999px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; background:none; border:none; cursor:pointer; color:#71717a; transition:color 0.3s; }
+    .${uid('sps')}-switch-btn:hover { color:#d4d4d8; }
+    .${uid('sps')}-switch-btn.active { color:#fff; }
+    .${uid('sps')}-switch-btn.active::before { content:''; position:absolute; inset:0; border-radius:9999px; background:linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.1); }
+    .${uid('sps')}-switch-btn.active::after { content:''; position:absolute; bottom:-4px; height:4px; width:24px; border-radius:9999px; background:linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent); }
+    .${uid('sps')}-switch-btn span { position:relative; z-index:10; }
+    @keyframes ${uid('sps')}-rotate { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    @keyframes ${uid('sps')}-pulse { 0%, 100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+    @keyframes ${uid('sps')}-float { 0%, 100% { transform:translateY(-10px); } 50% { transform:translateY(10px); } }
+    @keyframes ${uid('sps')}-blink { 0%, 100% { opacity:1; } 50% { opacity:0.5; } }
+  </style>
+  <div class="${uid('sps')}-bg left" id="${uid('sps')}-bg"></div>
+  <main class="${uid('sps')}-main">
+    <div class="${uid('sps')}-content" id="${uid('sps')}-content">
+      <div class="${uid('sps')}-visual">
+        <div class="${uid('sps')}-ring left" id="${uid('sps')}-ring"></div>
+        <div class="${uid('sps')}-glow left" id="${uid('sps')}-glow"></div>
+        <div class="${uid('sps')}-img-wrap">
+          <div class="${uid('sps')}-float">
+            <img src="${v.leftImage}" alt="Product" class="${uid('sps')}-img" id="${uid('sps')}-img" />
+          </div>
+        </div>
+        <div class="${uid('sps')}-status">
+          <div class="${uid('sps')}-status-inner">
+            <span class="${uid('sps')}-status-dot left" id="${uid('sps')}-dot"></span>
+            <span>Connected</span>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('sps')}-details left" id="${uid('sps')}-details">
+        <h2 class="${uid('sps')}-subtitle" id="${uid('sps')}-subtitle">${v.leftSubtitle}</h2>
+        <h1 class="${uid('sps')}-title" id="${uid('sps')}-title">${v.leftTitle}</h1>
+        <p class="${uid('sps')}-desc" id="${uid('sps')}-desc">${v.leftDesc}</p>
+        <div class="${uid('sps')}-features">
+          <div class="${uid('sps')}-feature">
+            <div class="${uid('sps')}-feature-header">
+              <div class="${uid('sps')}-feature-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span id="${uid('sps')}-f1label">${v.leftFeature1Label}</span>
+              </div>
+              <span class="${uid('sps')}-feature-value" id="${uid('sps')}-f1val">${v.leftFeature1Value}%</span>
+            </div>
+            <div class="${uid('sps')}-bar">
+              <div class="${uid('sps')}-bar-fill left" id="${uid('sps')}-bar1" style="width:${v.leftFeature1Value}%"></div>
+            </div>
+          </div>
+          <div class="${uid('sps')}-feature">
+            <div class="${uid('sps')}-feature-header">
+              <div class="${uid('sps')}-feature-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+                <span id="${uid('sps')}-f2label">${v.leftFeature2Label}</span>
+              </div>
+              <span class="${uid('sps')}-feature-value" id="${uid('sps')}-f2val">${v.leftFeature2Value}%</span>
+            </div>
+            <div class="${uid('sps')}-bar">
+              <div class="${uid('sps')}-bar-fill left" id="${uid('sps')}-bar2" style="width:${v.leftFeature2Value}%"></div>
+            </div>
+          </div>
+          <div class="${uid('sps')}-specs">
+            <button class="${uid('sps')}-specs-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+              View Specs
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="${uid('sps')}-battery">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg>
+          <span id="${uid('sps')}-battery">${v.leftBattery}% Charge</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div class="${uid('sps')}-switcher">
+    <div class="${uid('sps')}-switcher-inner">
+      <button class="${uid('sps')}-switch-btn active" id="${uid('sps')}-btn-left" onclick="(function(){
+        const c=document.getElementById('${uid('sps')}-container');
+        if(c.dataset.active==='left')return;
+        c.dataset.active='left';
+        document.getElementById('${uid('sps')}-bg').className='${uid('sps')}-bg left';
+        document.getElementById('${uid('sps')}-content').className='${uid('sps')}-content';
+        document.getElementById('${uid('sps')}-ring').className='${uid('sps')}-ring left';
+        document.getElementById('${uid('sps')}-glow').className='${uid('sps')}-glow left';
+        document.getElementById('${uid('sps')}-dot').className='${uid('sps')}-status-dot left';
+        document.getElementById('${uid('sps')}-details').className='${uid('sps')}-details left';
+        document.getElementById('${uid('sps')}-bar1').className='${uid('sps')}-bar-fill left';
+        document.getElementById('${uid('sps')}-bar2').className='${uid('sps')}-bar-fill left';
+        const img=document.getElementById('${uid('sps')}-img');
+        img.className='${uid('sps')}-img entering';
+        setTimeout(()=>{img.src='${v.leftImage}';img.className='${uid('sps')}-img';},300);
+        document.getElementById('${uid('sps')}-subtitle').textContent='${v.leftSubtitle}';
+        document.getElementById('${uid('sps')}-title').textContent='${v.leftTitle}';
+        document.getElementById('${uid('sps')}-desc').textContent='${v.leftDesc}';
+        document.getElementById('${uid('sps')}-f1label').textContent='${v.leftFeature1Label}';
+        document.getElementById('${uid('sps')}-f1val').textContent='${v.leftFeature1Value}%';
+        document.getElementById('${uid('sps')}-bar1').style.width='${v.leftFeature1Value}%';
+        document.getElementById('${uid('sps')}-f2label').textContent='${v.leftFeature2Label}';
+        document.getElementById('${uid('sps')}-f2val').textContent='${v.leftFeature2Value}%';
+        document.getElementById('${uid('sps')}-bar2').style.width='${v.leftFeature2Value}%';
+        document.getElementById('${uid('sps')}-battery').textContent='${v.leftBattery}% Charge';
+        document.getElementById('${uid('sps')}-btn-left').classList.add('active');
+        document.getElementById('${uid('sps')}-btn-right').classList.remove('active');
+      })()"><span>Left</span></button>
+      <button class="${uid('sps')}-switch-btn" id="${uid('sps')}-btn-right" onclick="(function(){
+        const c=document.getElementById('${uid('sps')}-container');
+        if(c.dataset.active==='right')return;
+        c.dataset.active='right';
+        document.getElementById('${uid('sps')}-bg').className='${uid('sps')}-bg right';
+        document.getElementById('${uid('sps')}-content').className='${uid('sps')}-content right';
+        document.getElementById('${uid('sps')}-ring').className='${uid('sps')}-ring right';
+        document.getElementById('${uid('sps')}-glow').className='${uid('sps')}-glow right';
+        document.getElementById('${uid('sps')}-dot').className='${uid('sps')}-status-dot right';
+        document.getElementById('${uid('sps')}-details').className='${uid('sps')}-details right';
+        document.getElementById('${uid('sps')}-bar1').className='${uid('sps')}-bar-fill right';
+        document.getElementById('${uid('sps')}-bar2').className='${uid('sps')}-bar-fill right';
+        const img=document.getElementById('${uid('sps')}-img');
+        img.className='${uid('sps')}-img entering entering-right';
+        setTimeout(()=>{img.src='${v.rightImage}';img.className='${uid('sps')}-img';},300);
+        document.getElementById('${uid('sps')}-subtitle').textContent='${v.rightSubtitle}';
+        document.getElementById('${uid('sps')}-title').textContent='${v.rightTitle}';
+        document.getElementById('${uid('sps')}-desc').textContent='${v.rightDesc}';
+        document.getElementById('${uid('sps')}-f1label').textContent='${v.rightFeature1Label}';
+        document.getElementById('${uid('sps')}-f1val').textContent='${v.rightFeature1Value}%';
+        document.getElementById('${uid('sps')}-bar1').style.width='${v.rightFeature1Value}%';
+        document.getElementById('${uid('sps')}-f2label').textContent='${v.rightFeature2Label}';
+        document.getElementById('${uid('sps')}-f2val').textContent='${v.rightFeature2Value}%';
+        document.getElementById('${uid('sps')}-bar2').style.width='${v.rightFeature2Value}%';
+        document.getElementById('${uid('sps')}-battery').textContent='${v.rightBattery}% Charge';
+        document.getElementById('${uid('sps')}-btn-right').classList.add('active');
+        document.getElementById('${uid('sps')}-btn-left').classList.remove('active');
+      })()"><span>Right</span></button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 2. Product Card with Color Variants (Systaliko UI)
+  {
+    id: 'product-card-colors',
+    name: 'Product Card - Color Variants',
+    category: 'Product',
+    description: 'Product card with multiple color variants and hover image swap',
+    thumbnail: '',
+    fields: [
+      { id: 'color1', label: 'Color 1 (hex)', type: 'text', defaultValue: '#93ABC1' },
+      { id: 'color1Image1', label: 'Color 1 - Image 1', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51o1onb4djL._AC_SY695_.jpg' },
+      { id: 'color1Image2', label: 'Color 1 - Image 2 (hover)', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51M6NgQBmhL._AC_SY695_.jpg' },
+      { id: 'color2', label: 'Color 2 (hex)', type: 'text', defaultValue: '#BBCBC3' },
+      { id: 'color2Image1', label: 'Color 2 - Image 1', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51bfzTuf2cL._AC_SY695_.jpg' },
+      { id: 'color2Image2', label: 'Color 2 - Image 2 (hover)', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51Xm87WBX1L._AC_SY695_.jpg' },
+      { id: 'color3', label: 'Color 3 (hex)', type: 'text', defaultValue: '#DE9C5E' },
+      { id: 'color3Image1', label: 'Color 3 - Image 1', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/61++XRhgaTL._AC_SY695_.jpg' },
+      { id: 'color3Image2', label: 'Color 3 - Image 2 (hover)', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51WRTVpnh0L._AC_SY695_.jpg' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pcc')}" id="${uid('pcc')}-container" data-active="0" data-hover="0">
+  <style>
+    .${uid('pcc')} { display:flex; align-items:center; justify-content:center; min-height:400px; padding:24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('pcc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pcc')}-card { position:relative; width:256px; padding:16px 16px 24px; }
+    .${uid('pcc')}-images { position:relative; aspect-ratio:16/9; width:100%; overflow:hidden; cursor:pointer; }
+    .${uid('pcc')}-img-wrap { position:absolute; inset:0; opacity:0; transition:opacity 0.3s ease; }
+    .${uid('pcc')}-img-wrap.active { opacity:1; }
+    .${uid('pcc')}-img { width:100%; height:100%; object-fit:contain; transition:opacity 0.3s ease; }
+    .${uid('pcc')}-img.hover { position:absolute; inset:0; opacity:0; }
+    .${uid('pcc')}-images:hover .${uid('pcc')}-img.hover { opacity:1; }
+    .${uid('pcc')}-images:hover .${uid('pcc')}-img.main { opacity:0; }
+    .${uid('pcc')}-colors { display:flex; gap:8px; padding:8px 0; margin-top:8px; }
+    .${uid('pcc')}-color { position:relative; width:16px; height:16px; border-radius:50%; border:1px solid #e5e5e5; cursor:pointer; appearance:none; background:none; }
+    .${uid('pcc')}-color::before { content:''; position:absolute; inset:-2px; border-radius:50%; border:1px solid transparent; transition:border-color 0.2s; }
+    .${uid('pcc')}-color.active::before { border-color:#6b7280; }
+  </style>
+  <div class="${uid('pcc')}-card">
+    <div class="${uid('pcc')}-images" onmouseenter="document.getElementById('${uid('pcc')}-container').dataset.hover='1'" onmouseleave="document.getElementById('${uid('pcc')}-container').dataset.hover='0'">
+      <div class="${uid('pcc')}-img-wrap active" id="${uid('pcc')}-wrap-0">
+        <img src="${v.color1Image1}" alt="Product" class="${uid('pcc')}-img main" />
+        <img src="${v.color1Image2}" alt="Product hover" class="${uid('pcc')}-img hover" />
+      </div>
+      <div class="${uid('pcc')}-img-wrap" id="${uid('pcc')}-wrap-1">
+        <img src="${v.color2Image1}" alt="Product" class="${uid('pcc')}-img main" />
+        <img src="${v.color2Image2}" alt="Product hover" class="${uid('pcc')}-img hover" />
+      </div>
+      <div class="${uid('pcc')}-img-wrap" id="${uid('pcc')}-wrap-2">
+        <img src="${v.color3Image1}" alt="Product" class="${uid('pcc')}-img main" />
+        <img src="${v.color3Image2}" alt="Product hover" class="${uid('pcc')}-img hover" />
+      </div>
+    </div>
+    <div class="${uid('pcc')}-colors">
+      <button class="${uid('pcc')}-color active" id="${uid('pcc')}-btn-0" style="background-color:${v.color1}" title="Color 1" onmouseenter="(function(){
+        const c=document.getElementById('${uid('pcc')}-container');
+        c.dataset.active='0';
+        document.querySelectorAll('.${uid('pcc')}-img-wrap').forEach((w,i)=>w.classList.toggle('active',i===0));
+        document.querySelectorAll('.${uid('pcc')}-color').forEach((b,i)=>b.classList.toggle('active',i===0));
+      })()"></button>
+      <button class="${uid('pcc')}-color" id="${uid('pcc')}-btn-1" style="background-color:${v.color2}" title="Color 2" onmouseenter="(function(){
+        const c=document.getElementById('${uid('pcc')}-container');
+        c.dataset.active='1';
+        document.querySelectorAll('.${uid('pcc')}-img-wrap').forEach((w,i)=>w.classList.toggle('active',i===1));
+        document.querySelectorAll('.${uid('pcc')}-color').forEach((b,i)=>b.classList.toggle('active',i===1));
+      })()"></button>
+      <button class="${uid('pcc')}-color" id="${uid('pcc')}-btn-2" style="background-color:${v.color3}" title="Color 3" onmouseenter="(function(){
+        const c=document.getElementById('${uid('pcc')}-container');
+        c.dataset.active='2';
+        document.querySelectorAll('.${uid('pcc')}-img-wrap').forEach((w,i)=>w.classList.toggle('active',i===2));
+        document.querySelectorAll('.${uid('pcc')}-color').forEach((b,i)=>b.classList.toggle('active',i===2));
+      })()"></button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 3. Animated Live Visitor Counter (hedevelope)
+  {
+    id: 'live-visitor-counter',
+    name: 'Live Visitor Counter',
+    category: 'Trust',
+    description: 'Animated counter showing live visitors viewing this product - perfect social proof',
+    thumbnail: '',
+    fields: [
+      { id: 'count', label: 'Visitor Count', type: 'number', defaultValue: '24' },
+      { id: 'label', label: 'Label Text', type: 'text', defaultValue: 'people are viewing this right now' },
+      { id: 'dotColor', label: 'Dot Color', type: 'color', defaultValue: '#22c55e' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lvc')}">
+  <style>
+    .${uid('lvc')} { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; background:#fafafa; border:1px solid #e5e5e5; border-radius:9999px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size:14px; color:#374151; }
+    .${uid('lvc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('lvc')}-dot { position:relative; width:8px; height:8px; border-radius:50%; background:${v.dotColor}; }
+    .${uid('lvc')}-dot::before { content:''; position:absolute; inset:-4px; border-radius:50%; background:${v.dotColor}; opacity:0.3; animation:${uid('lvc')}-ping 1.5s cubic-bezier(0,0,0.2,1) infinite; }
+    .${uid('lvc')}-count { font-weight:700; color:#111827; font-variant-numeric:tabular-nums; }
+    @keyframes ${uid('lvc')}-ping { 0% { transform:scale(1); opacity:0.3; } 75%, 100% { transform:scale(2); opacity:0; } }
+  </style>
+  <span class="${uid('lvc')}-dot"></span>
+  <span class="${uid('lvc')}-count">${v.count}</span>
+  <span>${v.label}</span>
+</div>`
+  },
+
+  // 4. Logo Carousel / Trust Badges (cult-ui)
+  {
+    id: 'logo-carousel-trust',
+    name: 'Logo Carousel - Trust Badges',
+    category: 'Trust',
+    description: 'Infinite scrolling logo carousel for partner/brand logos',
+    thumbnail: '',
+    fields: [
+      { id: 'logo1', label: 'Logo 1 URL', type: 'image', defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
+      { id: 'logo2', label: 'Logo 2 URL', type: 'image', defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
+      { id: 'logo3', label: 'Logo 3 URL', type: 'image', defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
+      { id: 'logo4', label: 'Logo 4 URL', type: 'image', defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg' },
+      { id: 'logo5', label: 'Logo 5 URL', type: 'image', defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
+      { id: 'speed', label: 'Animation Speed (seconds)', type: 'number', defaultValue: '30' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lct')}" style="background:${v.bgColor}">
+  <style>
+    .${uid('lct')} { overflow:hidden; padding:40px 0; position:relative; }
+    .${uid('lct')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('lct')}::before, .${uid('lct')}::after { content:''; position:absolute; top:0; bottom:0; width:100px; z-index:2; pointer-events:none; }
+    .${uid('lct')}::before { left:0; background:linear-gradient(to right, ${v.bgColor}, transparent); }
+    .${uid('lct')}::after { right:0; background:linear-gradient(to left, ${v.bgColor}, transparent); }
+    .${uid('lct')}-track { display:flex; width:max-content; animation:${uid('lct')}-scroll ${v.speed}s linear infinite; }
+    .${uid('lct')}-track:hover { animation-play-state:paused; }
+    .${uid('lct')}-logo { height:40px; width:auto; max-width:120px; object-fit:contain; margin:0 40px; filter:grayscale(100%); opacity:0.6; transition:all 0.3s ease; }
+    .${uid('lct')}-logo:hover { filter:grayscale(0%); opacity:1; }
+    @keyframes ${uid('lct')}-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  </style>
+  <div class="${uid('lct')}-track">
+    <img src="${v.logo1}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo2}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo3}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo4}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo5}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo1}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo2}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo3}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo4}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo5}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo1}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo2}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo3}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo4}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo5}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo1}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo2}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo3}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo4}" alt="Partner" class="${uid('lct')}-logo" />
+    <img src="${v.logo5}" alt="Partner" class="${uid('lct')}-logo" />
+  </div>
+</div>`
+  },
+
+  // 5. Pricing Toggle (ln-dev7)
+  {
+    id: 'pricing-toggle-cards',
+    name: 'Pricing Toggle Cards',
+    category: 'Pricing',
+    description: 'Monthly/Yearly pricing toggle with animated cards',
+    thumbnail: '',
+    fields: [
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Starter' },
+      { id: 'plan1MonthlyPrice', label: 'Plan 1 Monthly Price', type: 'text', defaultValue: '$9' },
+      { id: 'plan1YearlyPrice', label: 'Plan 1 Yearly Price', type: 'text', defaultValue: '$90' },
+      { id: 'plan1Feature1', label: 'Plan 1 Feature 1', type: 'text', defaultValue: '5 Products' },
+      { id: 'plan1Feature2', label: 'Plan 1 Feature 2', type: 'text', defaultValue: 'Basic Analytics' },
+      { id: 'plan1Feature3', label: 'Plan 1 Feature 3', type: 'text', defaultValue: 'Email Support' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Professional' },
+      { id: 'plan2MonthlyPrice', label: 'Plan 2 Monthly Price', type: 'text', defaultValue: '$29' },
+      { id: 'plan2YearlyPrice', label: 'Plan 2 Yearly Price', type: 'text', defaultValue: '$290' },
+      { id: 'plan2Feature1', label: 'Plan 2 Feature 1', type: 'text', defaultValue: 'Unlimited Products' },
+      { id: 'plan2Feature2', label: 'Plan 2 Feature 2', type: 'text', defaultValue: 'Advanced Analytics' },
+      { id: 'plan2Feature3', label: 'Plan 2 Feature 3', type: 'text', defaultValue: 'Priority Support' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'plan3MonthlyPrice', label: 'Plan 3 Monthly Price', type: 'text', defaultValue: '$99' },
+      { id: 'plan3YearlyPrice', label: 'Plan 3 Yearly Price', type: 'text', defaultValue: '$990' },
+      { id: 'plan3Feature1', label: 'Plan 3 Feature 1', type: 'text', defaultValue: 'Custom Solutions' },
+      { id: 'plan3Feature2', label: 'Plan 3 Feature 2', type: 'text', defaultValue: 'Dedicated Manager' },
+      { id: 'plan3Feature3', label: 'Plan 3 Feature 3', type: 'text', defaultValue: '24/7 Support' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ptc')}" id="${uid('ptc')}-section" data-billing="monthly">
+  <style>
+    .${uid('ptc')} { padding:64px 24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('ptc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ptc')}-header { text-align:center; margin-bottom:48px; }
+    .${uid('ptc')}-title { font-size:36px; font-weight:700; color:#111827; margin-bottom:16px; }
+    .${uid('ptc')}-toggle { display:inline-flex; align-items:center; gap:12px; padding:4px; background:#f3f4f6; border-radius:9999px; }
+    .${uid('ptc')}-toggle-btn { padding:10px 20px; border-radius:9999px; border:none; background:transparent; font-size:14px; font-weight:500; color:#6b7280; cursor:pointer; transition:all 0.2s; }
+    .${uid('ptc')}-toggle-btn.active { background:#fff; color:#111827; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+    .${uid('ptc')}-cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; max-width:1000px; margin:0 auto; }
+    .${uid('ptc')}-card { background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:32px; transition:all 0.3s; }
+    .${uid('ptc')}-card:hover { border-color:#3b82f6; box-shadow:0 20px 40px -12px rgba(59,130,246,0.15); }
+    .${uid('ptc')}-card.popular { border-color:#3b82f6; position:relative; }
+    .${uid('ptc')}-card.popular::before { content:'Popular'; position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#3b82f6; color:#fff; font-size:12px; font-weight:600; padding:4px 12px; border-radius:9999px; }
+    .${uid('ptc')}-plan { font-size:18px; font-weight:600; color:#111827; margin-bottom:8px; }
+    .${uid('ptc')}-price { font-size:48px; font-weight:700; color:#111827; line-height:1; margin-bottom:4px; }
+    .${uid('ptc')}-period { font-size:14px; color:#6b7280; margin-bottom:24px; }
+    .${uid('ptc')}-features { list-style:none; margin-bottom:24px; }
+    .${uid('ptc')}-feature { display:flex; align-items:center; gap:12px; padding:8px 0; font-size:14px; color:#374151; }
+    .${uid('ptc')}-feature svg { width:20px; height:20px; color:#22c55e; flex-shrink:0; }
+    .${uid('ptc')}-btn { width:100%; padding:12px 24px; background:#111827; color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:background 0.2s; }
+    .${uid('ptc')}-btn:hover { background:#374151; }
+    .${uid('ptc')}-card.popular .${uid('ptc')}-btn { background:#3b82f6; }
+    .${uid('ptc')}-card.popular .${uid('ptc')}-btn:hover { background:#2563eb; }
+  </style>
+  <div class="${uid('ptc')}-header">
+    <h2 class="${uid('ptc')}-title">Choose Your Plan</h2>
+    <div class="${uid('ptc')}-toggle">
+      <button class="${uid('ptc')}-toggle-btn active" id="${uid('ptc')}-monthly" onclick="(function(){
+        document.getElementById('${uid('ptc')}-section').dataset.billing='monthly';
+        document.getElementById('${uid('ptc')}-monthly').classList.add('active');
+        document.getElementById('${uid('ptc')}-yearly').classList.remove('active');
+        document.getElementById('${uid('ptc')}-price1').textContent='${v.plan1MonthlyPrice}';
+        document.getElementById('${uid('ptc')}-price2').textContent='${v.plan2MonthlyPrice}';
+        document.getElementById('${uid('ptc')}-price3').textContent='${v.plan3MonthlyPrice}';
+        document.querySelectorAll('.${uid('ptc')}-period').forEach(p=>p.textContent='/month');
+      })()">Monthly</button>
+      <button class="${uid('ptc')}-toggle-btn" id="${uid('ptc')}-yearly" onclick="(function(){
+        document.getElementById('${uid('ptc')}-section').dataset.billing='yearly';
+        document.getElementById('${uid('ptc')}-yearly').classList.add('active');
+        document.getElementById('${uid('ptc')}-monthly').classList.remove('active');
+        document.getElementById('${uid('ptc')}-price1').textContent='${v.plan1YearlyPrice}';
+        document.getElementById('${uid('ptc')}-price2').textContent='${v.plan2YearlyPrice}';
+        document.getElementById('${uid('ptc')}-price3').textContent='${v.plan3YearlyPrice}';
+        document.querySelectorAll('.${uid('ptc')}-period').forEach(p=>p.textContent='/year');
+      })()">Yearly</button>
+    </div>
+  </div>
+  <div class="${uid('ptc')}-cards">
+    <div class="${uid('ptc')}-card">
+      <h3 class="${uid('ptc')}-plan">${v.plan1Name}</h3>
+      <div class="${uid('ptc')}-price" id="${uid('ptc')}-price1">${v.plan1MonthlyPrice}</div>
+      <div class="${uid('ptc')}-period">/month</div>
+      <ul class="${uid('ptc')}-features">
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature1}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature2}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature3}</li>
+      </ul>
+      <button class="${uid('ptc')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('ptc')}-card popular">
+      <h3 class="${uid('ptc')}-plan">${v.plan2Name}</h3>
+      <div class="${uid('ptc')}-price" id="${uid('ptc')}-price2">${v.plan2MonthlyPrice}</div>
+      <div class="${uid('ptc')}-period">/month</div>
+      <ul class="${uid('ptc')}-features">
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature1}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature2}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature3}</li>
+      </ul>
+      <button class="${uid('ptc')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('ptc')}-card">
+      <h3 class="${uid('ptc')}-plan">${v.plan3Name}</h3>
+      <div class="${uid('ptc')}-price" id="${uid('ptc')}-price3">${v.plan3MonthlyPrice}</div>
+      <div class="${uid('ptc')}-period">/month</div>
+      <ul class="${uid('ptc')}-features">
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature1}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature2}</li>
+        <li class="${uid('ptc')}-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature3}</li>
+      </ul>
+      <button class="${uid('ptc')}-btn">Get Started</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 6. Estimated Arrival Shipping (hedevelope)
+  {
+    id: 'estimated-arrival',
+    name: 'Estimated Arrival',
+    category: 'Product',
+    description: 'Shipping estimated arrival display with animated progress',
+    thumbnail: '',
+    fields: [
+      { id: 'startDate', label: 'Start Date', type: 'text', defaultValue: 'Jan 20' },
+      { id: 'endDate', label: 'End Date', type: 'text', defaultValue: 'Jan 25' },
+      { id: 'shippingLabel', label: 'Shipping Label', type: 'text', defaultValue: 'Free Express Shipping' },
+      { id: 'progress', label: 'Progress (%)', type: 'number', defaultValue: '65' },
+    ],
+    generateHtml: (v) => `<div class="${uid('eta')}">
+  <style>
+    .${uid('eta')} { display:flex; flex-direction:column; gap:12px; padding:20px; background:#fff; border:1px solid #e5e7eb; border-radius:12px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; max-width:320px; }
+    .${uid('eta')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('eta')}-header { display:flex; align-items:center; justify-content:space-between; }
+    .${uid('eta')}-label { font-size:14px; font-weight:500; color:#374151; }
+    .${uid('eta')}-dates { font-size:14px; font-weight:600; color:#111827; }
+    .${uid('eta')}-bar { position:relative; height:8px; background:#e5e7eb; border-radius:9999px; overflow:hidden; }
+    .${uid('eta')}-fill { height:100%; background:linear-gradient(90deg, #22c55e, #16a34a); border-radius:9999px; transition:width 1s ease-out; position:relative; }
+    .${uid('eta')}-fill::after { content:''; position:absolute; right:0; top:50%; transform:translateY(-50%); width:16px; height:16px; background:#fff; border:3px solid #16a34a; border-radius:50%; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+    .${uid('eta')}-shipping { display:flex; align-items:center; gap:8px; font-size:13px; color:#6b7280; }
+    .${uid('eta')}-shipping svg { width:16px; height:16px; color:#22c55e; }
+  </style>
+  <div class="${uid('eta')}-header">
+    <span class="${uid('eta')}-label">Estimated Arrival</span>
+    <span class="${uid('eta')}-dates">${v.startDate} - ${v.endDate}</span>
+  </div>
+  <div class="${uid('eta')}-bar">
+    <div class="${uid('eta')}-fill" style="width:${v.progress}%"></div>
+  </div>
+  <div class="${uid('eta')}-shipping">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    ${v.shippingLabel}
+  </div>
+</div>`
+  },
+
+  // 7. Testimonial Card Grid (avanishverma4)
+  {
+    id: 'testimonial-grid-v2',
+    name: 'Testimonial Grid V2',
+    category: 'Testimonials',
+    description: 'Multi-card testimonial grid with clean modern design',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'What our users say' },
+      { id: 'subtitle', label: 'Section Subtitle', type: 'text', defaultValue: 'Discover how thousands of teams streamline their operations with our platform.' },
+      { id: 't1Quote', label: 'Testimonial 1 Quote', type: 'textarea', defaultValue: 'Implementing this SDP was smooth and quick. The customizable, user-friendly interface made team training effortless.' },
+      { id: 't1Name', label: 'Testimonial 1 Name', type: 'text', defaultValue: 'Sarah Chen' },
+      { id: 't1Role', label: 'Testimonial 1 Role', type: 'text', defaultValue: 'Product Manager' },
+      { id: 't2Quote', label: 'Testimonial 2 Quote', type: 'textarea', defaultValue: 'The default features and quick setup helped transform my customer business operations significantly.' },
+      { id: 't2Name', label: 'Testimonial 2 Name', type: 'text', defaultValue: 'Alex Rivera' },
+      { id: 't2Role', label: 'Testimonial 2 Role', type: 'text', defaultValue: 'Tech Lead' },
+      { id: 't3Quote', label: 'Testimonial 3 Quote', type: 'textarea', defaultValue: 'The support team is exceptional, guiding us through setup and providing ongoing assistance.' },
+      { id: 't3Name', label: 'Testimonial 3 Name', type: 'text', defaultValue: 'James Wilson' },
+      { id: 't3Role', label: 'Testimonial 3 Role', type: 'text', defaultValue: 'Operations Director' },
+      { id: 't4Quote', label: 'Testimonial 4 Quote', type: 'textarea', defaultValue: 'Our business functions improved with a user-friendly design and positive customer support experience.' },
+      { id: 't4Name', label: 'Testimonial 4 Name', type: 'text', defaultValue: 'Maria Santos' },
+      { id: 't4Role', label: 'Testimonial 4 Role', type: 'text', defaultValue: 'CEO' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tgv')}">
+  <style>
+    .${uid('tgv')} { padding:64px 24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('tgv')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('tgv')}-header { text-align:center; margin-bottom:48px; }
+    .${uid('tgv')}-badge { display:inline-block; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:#6b7280; margin-bottom:12px; }
+    .${uid('tgv')}-title { font-size:32px; font-weight:700; color:#111827; margin-bottom:16px; }
+    .${uid('tgv')}-subtitle { font-size:16px; color:#6b7280; max-width:600px; margin:0 auto; line-height:1.6; }
+    .${uid('tgv')}-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; max-width:1200px; margin:0 auto; }
+    .${uid('tgv')}-card { background:#fafafa; border:1px solid #e5e7eb; border-radius:12px; padding:24px; transition:all 0.3s; }
+    .${uid('tgv')}-card:hover { border-color:#d1d5db; box-shadow:0 10px 40px -10px rgba(0,0,0,0.1); }
+    .${uid('tgv')}-quote { font-size:15px; color:#374151; line-height:1.7; margin-bottom:20px; }
+    .${uid('tgv')}-author { display:flex; align-items:center; gap:12px; }
+    .${uid('tgv')}-avatar { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:600; font-size:14px; }
+    .${uid('tgv')}-info { }
+    .${uid('tgv')}-name { font-size:14px; font-weight:600; color:#111827; }
+    .${uid('tgv')}-role { font-size:13px; color:#6b7280; }
+  </style>
+  <div class="${uid('tgv')}-header">
+    <span class="${uid('tgv')}-badge">Testimonials</span>
+    <h2 class="${uid('tgv')}-title">${v.title}</h2>
+    <p class="${uid('tgv')}-subtitle">${v.subtitle}</p>
+  </div>
+  <div class="${uid('tgv')}-grid">
+    <div class="${uid('tgv')}-card">
+      <p class="${uid('tgv')}-quote">"${v.t1Quote}"</p>
+      <div class="${uid('tgv')}-author">
+        <div class="${uid('tgv')}-avatar">${v.t1Name.charAt(0)}</div>
+        <div class="${uid('tgv')}-info">
+          <div class="${uid('tgv')}-name">${v.t1Name}</div>
+          <div class="${uid('tgv')}-role">${v.t1Role}</div>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('tgv')}-card">
+      <p class="${uid('tgv')}-quote">"${v.t2Quote}"</p>
+      <div class="${uid('tgv')}-author">
+        <div class="${uid('tgv')}-avatar">${v.t2Name.charAt(0)}</div>
+        <div class="${uid('tgv')}-info">
+          <div class="${uid('tgv')}-name">${v.t2Name}</div>
+          <div class="${uid('tgv')}-role">${v.t2Role}</div>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('tgv')}-card">
+      <p class="${uid('tgv')}-quote">"${v.t3Quote}"</p>
+      <div class="${uid('tgv')}-author">
+        <div class="${uid('tgv')}-avatar">${v.t3Name.charAt(0)}</div>
+        <div class="${uid('tgv')}-info">
+          <div class="${uid('tgv')}-name">${v.t3Name}</div>
+          <div class="${uid('tgv')}-role">${v.t3Role}</div>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('tgv')}-card">
+      <p class="${uid('tgv')}-quote">"${v.t4Quote}"</p>
+      <div class="${uid('tgv')}-author">
+        <div class="${uid('tgv')}-avatar">${v.t4Name.charAt(0)}</div>
+        <div class="${uid('tgv')}-info">
+          <div class="${uid('tgv')}-name">${v.t4Name}</div>
+          <div class="${uid('tgv')}-role">${v.t4Role}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 8. Feature Spotlight (jatin-yadav05)
+  {
+    id: 'feature-spotlight',
+    name: 'Feature Spotlight',
+    category: 'Features',
+    description: 'Single feature highlight with icon, title, and description',
+    thumbnail: '',
+    fields: [
+      { id: 'icon', label: 'Icon (emoji or SVG)', type: 'text', defaultValue: '✨' },
+      { id: 'title', label: 'Feature Title', type: 'text', defaultValue: 'Lightning Fast' },
+      { id: 'description', label: 'Feature Description', type: 'textarea', defaultValue: 'Experience blazing fast performance with our optimized infrastructure. Every millisecond counts.' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f8fafc' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fsp')}" style="--accent:${v.accentColor}">
+  <style>
+    .${uid('fsp')} { display:flex; align-items:center; justify-content:center; padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('fsp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fsp')}-card { text-align:center; max-width:400px; padding:40px; background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); transition:all 0.3s; }
+    .${uid('fsp')}-card:hover { transform:translateY(-4px); box-shadow:0 20px 40px -12px rgba(0,0,0,0.15); }
+    .${uid('fsp')}-icon { width:64px; height:64px; margin:0 auto 20px; background:linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #fff)); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:28px; }
+    .${uid('fsp')}-title { font-size:24px; font-weight:700; color:#111827; margin-bottom:12px; }
+    .${uid('fsp')}-desc { font-size:15px; color:#6b7280; line-height:1.7; }
+  </style>
+  <div class="${uid('fsp')}-card">
+    <div class="${uid('fsp')}-icon">${v.icon}</div>
+    <h3 class="${uid('fsp')}-title">${v.title}</h3>
+    <p class="${uid('fsp')}-desc">${v.description}</p>
+  </div>
+</div>`
+  },
+
+  // 9. Bento Grid Features (avanishverma4)
+  {
+    id: 'bento-grid-features',
+    name: 'Bento Grid Features',
+    category: 'Features',
+    description: 'Modern bento-style grid layout for features',
+    thumbnail: '',
+    fields: [
+      { id: 'title1', label: 'Feature 1 Title', type: 'text', defaultValue: 'Analytics Dashboard' },
+      { id: 'desc1', label: 'Feature 1 Description', type: 'text', defaultValue: 'Track your metrics in real-time' },
+      { id: 'title2', label: 'Feature 2 Title', type: 'text', defaultValue: 'Cloud Storage' },
+      { id: 'desc2', label: 'Feature 2 Description', type: 'text', defaultValue: 'Secure unlimited storage' },
+      { id: 'title3', label: 'Feature 3 Title', type: 'text', defaultValue: 'Team Collaboration' },
+      { id: 'desc3', label: 'Feature 3 Description', type: 'text', defaultValue: 'Work together seamlessly' },
+      { id: 'title4', label: 'Feature 4 Title', type: 'text', defaultValue: 'API Integration' },
+      { id: 'desc4', label: 'Feature 4 Description', type: 'text', defaultValue: 'Connect with 100+ apps' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bgf')}">
+  <style>
+    .${uid('bgf')} { padding:64px 24px; background:#f8fafc; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('bgf')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('bgf')}-grid { display:grid; grid-template-columns:repeat(4, 1fr); grid-template-rows:repeat(2, 200px); gap:16px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px) { .${uid('bgf')}-grid { grid-template-columns:1fr 1fr; grid-template-rows:repeat(4, 180px); } }
+    .${uid('bgf')}-card { background:#fff; border-radius:16px; padding:24px; border:1px solid #e5e7eb; display:flex; flex-direction:column; justify-content:flex-end; transition:all 0.3s; position:relative; overflow:hidden; }
+    .${uid('bgf')}-card:hover { border-color:#3b82f6; transform:translateY(-2px); }
+    .${uid('bgf')}-card:nth-child(1) { grid-column:span 2; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#fff; border:none; }
+    .${uid('bgf')}-card:nth-child(1) .${uid('bgf')}-title, .${uid('bgf')}-card:nth-child(1) .${uid('bgf')}-desc { color:#fff; }
+    .${uid('bgf')}-card:nth-child(1) .${uid('bgf')}-desc { opacity:0.9; }
+    .${uid('bgf')}-card:nth-child(4) { grid-column:span 2; }
+    @media(max-width:768px) { .${uid('bgf')}-card:nth-child(1), .${uid('bgf')}-card:nth-child(4) { grid-column:span 2; } }
+    .${uid('bgf')}-icon { width:48px; height:48px; background:#f3f4f6; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:auto; }
+    .${uid('bgf')}-card:nth-child(1) .${uid('bgf')}-icon { background:rgba(255,255,255,0.2); }
+    .${uid('bgf')}-title { font-size:18px; font-weight:600; color:#111827; margin-bottom:4px; }
+    .${uid('bgf')}-desc { font-size:14px; color:#6b7280; }
+  </style>
+  <div class="${uid('bgf')}-grid">
+    <div class="${uid('bgf')}-card">
+      <div class="${uid('bgf')}-icon">📊</div>
+      <h3 class="${uid('bgf')}-title">${v.title1}</h3>
+      <p class="${uid('bgf')}-desc">${v.desc1}</p>
+    </div>
+    <div class="${uid('bgf')}-card">
+      <div class="${uid('bgf')}-icon">☁️</div>
+      <h3 class="${uid('bgf')}-title">${v.title2}</h3>
+      <p class="${uid('bgf')}-desc">${v.desc2}</p>
+    </div>
+    <div class="${uid('bgf')}-card">
+      <div class="${uid('bgf')}-icon">👥</div>
+      <h3 class="${uid('bgf')}-title">${v.title3}</h3>
+      <p class="${uid('bgf')}-desc">${v.desc3}</p>
+    </div>
+    <div class="${uid('bgf')}-card">
+      <div class="${uid('bgf')}-icon">🔗</div>
+      <h3 class="${uid('bgf')}-title">${v.title4}</h3>
+      <p class="${uid('bgf')}-desc">${v.desc4}</p>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 10. Marketing Badges (jatin-yadav05)
+  {
+    id: 'marketing-badges',
+    name: 'Marketing Badges',
+    category: 'Trust',
+    description: 'Trust badges and labels for product pages',
+    thumbnail: '',
+    fields: [
+      { id: 'badge1', label: 'Badge 1 Text', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'badge2', label: 'Badge 2 Text', type: 'text', defaultValue: '30-Day Returns' },
+      { id: 'badge3', label: 'Badge 3 Text', type: 'text', defaultValue: '2-Year Warranty' },
+      { id: 'badge4', label: 'Badge 4 Text', type: 'text', defaultValue: 'Secure Checkout' },
+    ],
+    generateHtml: (v) => `<div class="${uid('mkb')}">
+  <style>
+    .${uid('mkb')} { display:flex; flex-wrap:wrap; gap:12px; padding:24px; justify-content:center; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('mkb')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('mkb')}-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:8px; font-size:13px; font-weight:500; color:#374151; transition:all 0.2s; }
+    .${uid('mkb')}-badge:hover { border-color:#3b82f6; background:#eff6ff; }
+    .${uid('mkb')}-badge svg { width:18px; height:18px; color:#22c55e; }
+  </style>
+  <div class="${uid('mkb')}-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    ${v.badge1}
+  </div>
+  <div class="${uid('mkb')}-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M21 6C20 3.5 17 2 13.5 2 7.2 2 2 7.2 2 13.5S7.2 25 13.5 25c4.5 0 8.5-2.6 10.3-6.5"/></svg>
+    ${v.badge2}
+  </div>
+  <div class="${uid('mkb')}-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    ${v.badge3}
+  </div>
+  <div class="${uid('mkb')}-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    ${v.badge4}
+  </div>
+</div>`
+  },
+
+  // 11. 3D Photo Carousel (cult-ui)
+  {
+    id: '3d-photo-carousel',
+    name: '3D Photo Carousel',
+    category: 'Gallery',
+    description: 'A stunning 3D cylinder carousel with draggable rotation and click-to-expand',
+    thumbnail: '',
+    fields: [
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=400&fit=crop' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=400&fit=crop' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=300&h=400&fit=crop' },
+      { id: 'image4', label: 'Image 4', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&h=400&fit=crop' },
+      { id: 'image5', label: 'Image 5', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&h=400&fit=crop' },
+      { id: 'image6', label: 'Image 6', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&h=400&fit=crop' },
+      { id: 'image7', label: 'Image 7', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=300&h=400&fit=crop' },
+      { id: 'image8', label: 'Image 8', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=300&h=400&fit=crop' },
+    ],
+    generateHtml: (v) => `<div class="${uid('3dc')}">
+  <style>
+    .${uid('3dc')} { padding:40px 0; background:#fafafa; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('3dc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('3dc')}-scene { width:100%; height:500px; perspective:1000px; display:flex; align-items:center; justify-content:center; cursor:grab; user-select:none; }
+    .${uid('3dc')}-scene:active { cursor:grabbing; }
+    .${uid('3dc')}-carousel { position:relative; width:200px; height:280px; transform-style:preserve-3d; transition:transform 0.1s ease-out; }
+    .${uid('3dc')}-card { position:absolute; width:200px; height:280px; backface-visibility:hidden; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.15); transition:transform 0.3s, box-shadow 0.3s; }
+    .${uid('3dc')}-card:hover { box-shadow:0 15px 40px rgba(0,0,0,0.25); }
+    .${uid('3dc')}-card img { width:100%; height:100%; object-fit:cover; pointer-events:none; }
+    .${uid('3dc')}-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:1000; cursor:pointer; }
+    .${uid('3dc')}-overlay.active { display:flex; }
+    .${uid('3dc')}-overlay img { max-width:90%; max-height:90%; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.5); animation:${uid('3dc')}-zoomIn 0.3s ease-out; }
+    @keyframes ${uid('3dc')}-zoomIn { from { transform:scale(0.5); opacity:0; } to { transform:scale(1); opacity:1; } }
+  </style>
+  <div class="${uid('3dc')}-scene" id="${uid('3dc')}-scene">
+    <div class="${uid('3dc')}-carousel" id="${uid('3dc')}-carousel">
+      <div class="${uid('3dc')}-card" style="transform:rotateY(0deg) translateZ(300px);"><img src="${v.image1}" alt="Photo 1" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(45deg) translateZ(300px);"><img src="${v.image2}" alt="Photo 2" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(90deg) translateZ(300px);"><img src="${v.image3}" alt="Photo 3" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(135deg) translateZ(300px);"><img src="${v.image4}" alt="Photo 4" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(180deg) translateZ(300px);"><img src="${v.image5}" alt="Photo 5" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(225deg) translateZ(300px);"><img src="${v.image6}" alt="Photo 6" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(270deg) translateZ(300px);"><img src="${v.image7}" alt="Photo 7" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+      <div class="${uid('3dc')}-card" style="transform:rotateY(315deg) translateZ(300px);"><img src="${v.image8}" alt="Photo 8" onclick="document.getElementById('${uid('3dc')}-overlay').classList.add('active');document.getElementById('${uid('3dc')}-fullimg').src=this.src;"></div>
+    </div>
+  </div>
+  <div class="${uid('3dc')}-overlay" id="${uid('3dc')}-overlay" onclick="this.classList.remove('active');">
+    <img id="${uid('3dc')}-fullimg" src="" alt="Full size">
+  </div>
+  <script>
+    (function(){
+      var scene = document.getElementById('${uid('3dc')}-scene');
+      var carousel = document.getElementById('${uid('3dc')}-carousel');
+      var rotation = 0;
+      var isDragging = false;
+      var startX = 0;
+      var startRotation = 0;
+      scene.addEventListener('mousedown', function(e) { isDragging = true; startX = e.clientX; startRotation = rotation; scene.style.cursor = 'grabbing'; });
+      document.addEventListener('mousemove', function(e) { if (!isDragging) return; var delta = e.clientX - startX; rotation = startRotation + delta * 0.3; carousel.style.transform = 'rotateY(' + rotation + 'deg)'; });
+      document.addEventListener('mouseup', function() { isDragging = false; scene.style.cursor = 'grab'; });
+      scene.addEventListener('touchstart', function(e) { isDragging = true; startX = e.touches[0].clientX; startRotation = rotation; });
+      document.addEventListener('touchmove', function(e) { if (!isDragging) return; var delta = e.touches[0].clientX - startX; rotation = startRotation + delta * 0.3; carousel.style.transform = 'rotateY(' + rotation + 'deg)'; });
+      document.addEventListener('touchend', function() { isDragging = false; });
+    })();
+  </script>
+</div>`
+  },
+
+  // 12. Offer Carousel (ravikatiyar)
+  {
+    id: 'deals-offer-carousel',
+    name: 'Deals Offer Carousel',
+    category: 'Product',
+    description: 'Horizontal scrolling carousel for showcasing deals and offers with brand logos',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Deals of the Day' },
+      { id: 'offer1Img', label: 'Offer 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&h=250&fit=crop' },
+      { id: 'offer1Tag', label: 'Offer 1 Tag', type: 'text', defaultValue: 'Discount' },
+      { id: 'offer1Title', label: 'Offer 1 Title', type: 'text', defaultValue: 'Up to $300 OFF' },
+      { id: 'offer1Desc', label: 'Offer 1 Description', type: 'text', defaultValue: 'On International Flights' },
+      { id: 'offer1Brand', label: 'Offer 1 Brand', type: 'text', defaultValue: 'TravelPro' },
+      { id: 'offer1Code', label: 'Offer 1 Code', type: 'text', defaultValue: 'FLY300' },
+      { id: 'offer2Img', label: 'Offer 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=250&fit=crop' },
+      { id: 'offer2Tag', label: 'Offer 2 Tag', type: 'text', defaultValue: 'Discount' },
+      { id: 'offer2Title', label: 'Offer 2 Title', type: 'text', defaultValue: 'Save $75' },
+      { id: 'offer2Desc', label: 'Offer 2 Description', type: 'text', defaultValue: 'On orders $299+' },
+      { id: 'offer2Brand', label: 'Offer 2 Brand', type: 'text', defaultValue: 'FoodHub' },
+      { id: 'offer2Code', label: 'Offer 2 Code', type: 'text', defaultValue: 'SAVE75' },
+      { id: 'offer3Img', label: 'Offer 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=250&fit=crop' },
+      { id: 'offer3Tag', label: 'Offer 3 Tag', type: 'text', defaultValue: 'Exclusive' },
+      { id: 'offer3Title', label: 'Offer 3 Title', type: 'text', defaultValue: 'Flat $50 OFF' },
+      { id: 'offer3Desc', label: 'Offer 3 Description', type: 'text', defaultValue: 'Premium Membership' },
+      { id: 'offer3Brand', label: 'Offer 3 Brand', type: 'text', defaultValue: 'StreamPlus' },
+      { id: 'offer3Code', label: 'Offer 3 Code', type: 'text', defaultValue: 'STREAM50' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ofc')}">
+  <style>
+    .${uid('ofc')} { padding:40px 24px; background:#fff; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ofc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ofc')}-title { font-size:28px; font-weight:700; color:#111; margin-bottom:24px; }
+    .${uid('ofc')}-wrapper { position:relative; }
+    .${uid('ofc')}-scroll { display:flex; gap:20px; overflow-x:auto; scroll-behavior:smooth; padding:8px 0; scrollbar-width:none; -ms-overflow-style:none; }
+    .${uid('ofc')}-scroll::-webkit-scrollbar { display:none; }
+    .${uid('ofc')}-card { min-width:280px; max-width:280px; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); transition:transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+    .${uid('ofc')}-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+    .${uid('ofc')}-img { width:100%; height:160px; object-fit:cover; }
+    .${uid('ofc')}-content { padding:16px; }
+    .${uid('ofc')}-tag { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; color:#7c3aed; margin-bottom:8px; }
+    .${uid('ofc')}-tag svg { width:14px; height:14px; }
+    .${uid('ofc')}-heading { font-size:18px; font-weight:700; color:#111; margin-bottom:4px; }
+    .${uid('ofc')}-desc { font-size:14px; color:#6b7280; margin-bottom:16px; }
+    .${uid('ofc')}-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid #f3f4f6; }
+    .${uid('ofc')}-brand { display:flex; align-items:center; gap:10px; }
+    .${uid('ofc')}-brand-icon { width:36px; height:36px; background:#f3f4f6; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#374151; }
+    .${uid('ofc')}-brand-info p:first-child { font-size:13px; font-weight:600; color:#111; }
+    .${uid('ofc')}-brand-info p:last-child { font-size:11px; color:#9ca3af; font-family:monospace; }
+    .${uid('ofc')}-arrow { width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:#9ca3af; }
+    .${uid('ofc')}-nav { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; background:#fff; border:1px solid #e5e7eb; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10; transition:all 0.2s; }
+    .${uid('ofc')}-nav:hover { background:#f9fafb; border-color:#d1d5db; }
+    .${uid('ofc')}-nav.left { left:-20px; }
+    .${uid('ofc')}-nav.right { right:-20px; }
+    @media(max-width:640px) { .${uid('ofc')}-nav { display:none; } }
+  </style>
+  <h2 class="${uid('ofc')}-title">${v.title}</h2>
+  <div class="${uid('ofc')}-wrapper">
+    <button class="${uid('ofc')}-nav left" onclick="document.getElementById('${uid('ofc')}-scroll').scrollBy({left:-300,behavior:'smooth'})">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="${uid('ofc')}-scroll" id="${uid('ofc')}-scroll">
+      <div class="${uid('ofc')}-card">
+        <img class="${uid('ofc')}-img" src="${v.offer1Img}" alt="${v.offer1Title}">
+        <div class="${uid('ofc')}-content">
+          <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer1Tag}</div>
+          <h3 class="${uid('ofc')}-heading">${v.offer1Title}</h3>
+          <p class="${uid('ofc')}-desc">${v.offer1Desc}</p>
+          <div class="${uid('ofc')}-footer">
+            <div class="${uid('ofc')}-brand">
+              <div class="${uid('ofc')}-brand-icon">${v.offer1Brand.charAt(0)}</div>
+              <div class="${uid('ofc')}-brand-info"><p>${v.offer1Brand}</p><p>${v.offer1Code}</p></div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('ofc')}-card">
+        <img class="${uid('ofc')}-img" src="${v.offer2Img}" alt="${v.offer2Title}">
+        <div class="${uid('ofc')}-content">
+          <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer2Tag}</div>
+          <h3 class="${uid('ofc')}-heading">${v.offer2Title}</h3>
+          <p class="${uid('ofc')}-desc">${v.offer2Desc}</p>
+          <div class="${uid('ofc')}-footer">
+            <div class="${uid('ofc')}-brand">
+              <div class="${uid('ofc')}-brand-icon">${v.offer2Brand.charAt(0)}</div>
+              <div class="${uid('ofc')}-brand-info"><p>${v.offer2Brand}</p><p>${v.offer2Code}</p></div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('ofc')}-card">
+        <img class="${uid('ofc')}-img" src="${v.offer3Img}" alt="${v.offer3Title}">
+        <div class="${uid('ofc')}-content">
+          <div class="${uid('ofc')}-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>${v.offer3Tag}</div>
+          <h3 class="${uid('ofc')}-heading">${v.offer3Title}</h3>
+          <p class="${uid('ofc')}-desc">${v.offer3Desc}</p>
+          <div class="${uid('ofc')}-footer">
+            <div class="${uid('ofc')}-brand">
+              <div class="${uid('ofc')}-brand-icon">${v.offer3Brand.charAt(0)}</div>
+              <div class="${uid('ofc')}-brand-info"><p>${v.offer3Brand}</p><p>${v.offer3Code}</p></div>
+            </div>
+            <div class="${uid('ofc')}-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="${uid('ofc')}-nav right" onclick="document.getElementById('${uid('ofc')}-scroll').scrollBy({left:300,behavior:'smooth'})">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>`
+  },
+
+  // 13. Creative Pricing (kokonutd style)
+  {
+    id: 'creative-pricing',
+    name: 'Creative Pricing',
+    category: 'Pricing',
+    description: 'Modern pricing cards with gradient backgrounds and hover animations',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Choose Your Plan' },
+      { id: 'subtitle', label: 'Subtitle', type: 'text', defaultValue: 'Start free, upgrade when you need' },
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Starter' },
+      { id: 'plan1Price', label: 'Plan 1 Price', type: 'text', defaultValue: '$0' },
+      { id: 'plan1Period', label: 'Plan 1 Period', type: 'text', defaultValue: '/month' },
+      { id: 'plan1Feature1', label: 'Plan 1 Feature 1', type: 'text', defaultValue: '5 Projects' },
+      { id: 'plan1Feature2', label: 'Plan 1 Feature 2', type: 'text', defaultValue: '1GB Storage' },
+      { id: 'plan1Feature3', label: 'Plan 1 Feature 3', type: 'text', defaultValue: 'Basic Support' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Professional' },
+      { id: 'plan2Price', label: 'Plan 2 Price', type: 'text', defaultValue: '$29' },
+      { id: 'plan2Period', label: 'Plan 2 Period', type: 'text', defaultValue: '/month' },
+      { id: 'plan2Feature1', label: 'Plan 2 Feature 1', type: 'text', defaultValue: 'Unlimited Projects' },
+      { id: 'plan2Feature2', label: 'Plan 2 Feature 2', type: 'text', defaultValue: '100GB Storage' },
+      { id: 'plan2Feature3', label: 'Plan 2 Feature 3', type: 'text', defaultValue: 'Priority Support' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: '$99' },
+      { id: 'plan3Period', label: 'Plan 3 Period', type: 'text', defaultValue: '/month' },
+      { id: 'plan3Feature1', label: 'Plan 3 Feature 1', type: 'text', defaultValue: 'Everything in Pro' },
+      { id: 'plan3Feature2', label: 'Plan 3 Feature 2', type: 'text', defaultValue: 'Custom Integrations' },
+      { id: 'plan3Feature3', label: 'Plan 3 Feature 3', type: 'text', defaultValue: 'Dedicated Manager' },
+      { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Get Started' },
+    ],
+    generateHtml: (v) => `<div class="${uid('crp')}">
+  <style>
+    .${uid('crp')} { padding:80px 24px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('crp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('crp')}-header { text-align:center; margin-bottom:48px; }
+    .${uid('crp')}-title { font-size:42px; font-weight:800; color:#fff; margin-bottom:12px; }
+    .${uid('crp')}-subtitle { font-size:18px; color:rgba(255,255,255,0.8); }
+    .${uid('crp')}-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; max-width:1100px; margin:0 auto; }
+    @media(max-width:900px) { .${uid('crp')}-grid { grid-template-columns:1fr; max-width:400px; } }
+    .${uid('crp')}-card { background:rgba(255,255,255,0.95); border-radius:24px; padding:40px 32px; position:relative; transition:transform 0.3s, box-shadow 0.3s; }
+    .${uid('crp')}-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+    .${uid('crp')}-card.featured { background:#fff; transform:scale(1.05); box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+    .${uid('crp')}-card.featured:hover { transform:scale(1.05) translateY(-8px); }
+    .${uid('crp')}-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg, #f59e0b, #ef4444); color:#fff; font-size:12px; font-weight:600; padding:6px 16px; border-radius:20px; }
+    .${uid('crp')}-plan { font-size:14px; font-weight:600; color:#7c3aed; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    .${uid('crp')}-price { display:flex; align-items:baseline; gap:4px; margin-bottom:24px; }
+    .${uid('crp')}-amount { font-size:48px; font-weight:800; color:#111; }
+    .${uid('crp')}-period { font-size:16px; color:#6b7280; }
+    .${uid('crp')}-features { list-style:none; margin-bottom:32px; }
+    .${uid('crp')}-features li { display:flex; align-items:center; gap:12px; padding:12px 0; color:#374151; font-size:15px; border-bottom:1px solid #f3f4f6; }
+    .${uid('crp')}-features li:last-child { border-bottom:none; }
+    .${uid('crp')}-features svg { width:20px; height:20px; color:#10b981; flex-shrink:0; }
+    .${uid('crp')}-btn { width:100%; padding:16px 24px; background:#111; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; transition:all 0.3s; }
+    .${uid('crp')}-btn:hover { background:#374151; transform:translateY(-2px); }
+    .${uid('crp')}-card.featured .${uid('crp')}-btn { background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  </style>
+  <div class="${uid('crp')}-header">
+    <h2 class="${uid('crp')}-title">${v.title}</h2>
+    <p class="${uid('crp')}-subtitle">${v.subtitle}</p>
+  </div>
+  <div class="${uid('crp')}-grid">
+    <div class="${uid('crp')}-card">
+      <div class="${uid('crp')}-plan">${v.plan1Name}</div>
+      <div class="${uid('crp')}-price"><span class="${uid('crp')}-amount">${v.plan1Price}</span><span class="${uid('crp')}-period">${v.plan1Period}</span></div>
+      <ul class="${uid('crp')}-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature1}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature2}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan1Feature3}</li>
+      </ul>
+      <button class="${uid('crp')}-btn">${v.buttonText}</button>
+    </div>
+    <div class="${uid('crp')}-card featured">
+      <div class="${uid('crp')}-badge">Most Popular</div>
+      <div class="${uid('crp')}-plan">${v.plan2Name}</div>
+      <div class="${uid('crp')}-price"><span class="${uid('crp')}-amount">${v.plan2Price}</span><span class="${uid('crp')}-period">${v.plan2Period}</span></div>
+      <ul class="${uid('crp')}-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature1}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature2}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan2Feature3}</li>
+      </ul>
+      <button class="${uid('crp')}-btn">${v.buttonText}</button>
+    </div>
+    <div class="${uid('crp')}-card">
+      <div class="${uid('crp')}-plan">${v.plan3Name}</div>
+      <div class="${uid('crp')}-price"><span class="${uid('crp')}-amount">${v.plan3Price}</span><span class="${uid('crp')}-period">${v.plan3Period}</span></div>
+      <ul class="${uid('crp')}-features">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature1}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature2}</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${v.plan3Feature3}</li>
+      </ul>
+      <button class="${uid('crp')}-btn">${v.buttonText}</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 14. Dark Gradient Pricing (vaib215 style)
+  {
+    id: 'dark-gradient-pricing',
+    name: 'Dark Gradient Pricing',
+    category: 'Pricing',
+    description: 'Sleek dark pricing cards with neon accents and glass morphism',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'Pricing Plans' },
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Basic' },
+      { id: 'plan1Price', label: 'Plan 1 Price', type: 'text', defaultValue: '$9' },
+      { id: 'plan1Features', label: 'Plan 1 Features (comma sep)', type: 'textarea', defaultValue: '10 Projects,5GB Storage,Email Support,Basic Analytics' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Pro' },
+      { id: 'plan2Price', label: 'Plan 2 Price', type: 'text', defaultValue: '$29' },
+      { id: 'plan2Features', label: 'Plan 2 Features (comma sep)', type: 'textarea', defaultValue: 'Unlimited Projects,50GB Storage,Priority Support,Advanced Analytics,API Access' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Team' },
+      { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: '$79' },
+      { id: 'plan3Features', label: 'Plan 3 Features (comma sep)', type: 'textarea', defaultValue: 'Everything in Pro,Team Collaboration,Custom Domains,White-label,Dedicated Support' },
+    ],
+    generateHtml: (v) => `<div class="${uid('dgp')}">
+  <style>
+    .${uid('dgp')} { padding:80px 24px; background:linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%); font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('dgp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('dgp')}-title { text-align:center; font-size:40px; font-weight:700; color:#fff; margin-bottom:48px; }
+    .${uid('dgp')}-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; max-width:1100px; margin:0 auto; }
+    @media(max-width:900px) { .${uid('dgp')}-grid { grid-template-columns:1fr; max-width:400px; } }
+    .${uid('dgp')}-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:32px; position:relative; overflow:hidden; transition:all 0.4s; }
+    .${uid('dgp')}-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef); opacity:0; transition:opacity 0.3s; }
+    .${uid('dgp')}-card:hover { border-color:rgba(139,92,246,0.5); transform:translateY(-4px); }
+    .${uid('dgp')}-card:hover::before { opacity:1; }
+    .${uid('dgp')}-card.featured { border-color:rgba(139,92,246,0.5); }
+    .${uid('dgp')}-card.featured::before { opacity:1; }
+    .${uid('dgp')}-name { font-size:18px; font-weight:600; color:rgba(255,255,255,0.7); margin-bottom:16px; }
+    .${uid('dgp')}-price { font-size:52px; font-weight:800; color:#fff; margin-bottom:8px; }
+    .${uid('dgp')}-price span { font-size:16px; font-weight:400; color:rgba(255,255,255,0.5); }
+    .${uid('dgp')}-divider { height:1px; background:rgba(255,255,255,0.1); margin:24px 0; }
+    .${uid('dgp')}-features { list-style:none; }
+    .${uid('dgp')}-features li { display:flex; align-items:center; gap:12px; padding:10px 0; color:rgba(255,255,255,0.8); font-size:14px; }
+    .${uid('dgp')}-features svg { width:18px; height:18px; color:#8b5cf6; }
+    .${uid('dgp')}-btn { width:100%; margin-top:24px; padding:14px; background:transparent; border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:10px; font-size:15px; font-weight:500; cursor:pointer; transition:all 0.3s; }
+    .${uid('dgp')}-btn:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); }
+    .${uid('dgp')}-card.featured .${uid('dgp')}-btn { background:linear-gradient(135deg, #6366f1, #8b5cf6); border:none; }
+    .${uid('dgp')}-card.featured .${uid('dgp')}-btn:hover { opacity:0.9; }
+  </style>
+  <h2 class="${uid('dgp')}-title">${v.title}</h2>
+  <div class="${uid('dgp')}-grid">
+    <div class="${uid('dgp')}-card">
+      <div class="${uid('dgp')}-name">${v.plan1Name}</div>
+      <div class="${uid('dgp')}-price">${v.plan1Price}<span>/mo</span></div>
+      <div class="${uid('dgp')}-divider"></div>
+      <ul class="${uid('dgp')}-features">
+        ${v.plan1Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('dgp')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('dgp')}-card featured">
+      <div class="${uid('dgp')}-name">${v.plan2Name}</div>
+      <div class="${uid('dgp')}-price">${v.plan2Price}<span>/mo</span></div>
+      <div class="${uid('dgp')}-divider"></div>
+      <ul class="${uid('dgp')}-features">
+        ${v.plan2Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('dgp')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('dgp')}-card">
+      <div class="${uid('dgp')}-name">${v.plan3Name}</div>
+      <div class="${uid('dgp')}-price">${v.plan3Price}<span>/mo</span></div>
+      <div class="${uid('dgp')}-divider"></div>
+      <ul class="${uid('dgp')}-features">
+        ${v.plan3Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('dgp')}-btn">Get Started</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 15. Premium Testimonials (dhileepkumargm)
+  {
+    id: 'premium-testimonials',
+    name: 'Premium Testimonials',
+    category: 'Testimonials',
+    description: 'Elegant testimonial carousel with large photos and smooth transitions',
+    thumbnail: '',
+    fields: [
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'This product has completely transformed how we work. The intuitive design and powerful features have made our team 10x more productive.' },
+      { id: 'author1', label: 'Author 1', type: 'text', defaultValue: 'Sarah Johnson' },
+      { id: 'role1', label: 'Role 1', type: 'text', defaultValue: 'CEO at TechCorp' },
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'Absolutely incredible experience. The customer support team went above and beyond to help us succeed. Highly recommended!' },
+      { id: 'author2', label: 'Author 2', type: 'text', defaultValue: 'Michael Chen' },
+      { id: 'role2', label: 'Role 2', type: 'text', defaultValue: 'Founder at StartupX' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face' },
+      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'The best investment we have made for our business. ROI was visible within the first month. Game changer!' },
+      { id: 'author3', label: 'Author 3', type: 'text', defaultValue: 'Emily Davis' },
+      { id: 'role3', label: 'Role 3', type: 'text', defaultValue: 'Marketing Director' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face' },
+    ],
+    generateHtml: (v) => `<div class="${uid('prt')}">
+  <style>
+    .${uid('prt')} { padding:80px 24px; background:linear-gradient(180deg, #fafafa 0%, #f5f5f7 100%); font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('prt')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('prt')}-container { max-width:800px; margin:0 auto; position:relative; }
+    .${uid('prt')}-slide { display:none; text-align:center; animation:${uid('prt')}-fadeIn 0.5s ease; }
+    .${uid('prt')}-slide.active { display:block; }
+    @keyframes ${uid('prt')}-fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .${uid('prt')}-quote { font-size:28px; font-weight:400; color:#1d1d1f; line-height:1.5; margin-bottom:40px; position:relative; }
+    .${uid('prt')}-quote::before { content:'"'; position:absolute; top:-40px; left:50%; transform:translateX(-50%); font-size:120px; color:#e5e5e5; font-family:Georgia,serif; line-height:1; z-index:0; }
+    .${uid('prt')}-author { display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .${uid('prt')}-avatar { width:80px; height:80px; border-radius:50%; object-fit:cover; border:4px solid #fff; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+    .${uid('prt')}-name { font-size:18px; font-weight:600; color:#1d1d1f; }
+    .${uid('prt')}-role { font-size:14px; color:#86868b; }
+    .${uid('prt')}-nav { display:flex; justify-content:center; gap:12px; margin-top:40px; }
+    .${uid('prt')}-dot { width:10px; height:10px; border-radius:50%; background:#d1d1d6; border:none; cursor:pointer; transition:all 0.3s; }
+    .${uid('prt')}-dot.active { background:#1d1d1f; transform:scale(1.2); }
+    .${uid('prt')}-arrows { position:absolute; top:50%; width:100%; display:flex; justify-content:space-between; transform:translateY(-50%); pointer-events:none; }
+    .${uid('prt')}-arrow { width:48px; height:48px; border-radius:50%; background:#fff; border:1px solid #e5e5e5; display:flex; align-items:center; justify-content:center; cursor:pointer; pointer-events:auto; transition:all 0.3s; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .${uid('prt')}-arrow:hover { background:#f5f5f7; border-color:#d1d1d6; }
+    @media(max-width:900px) { .${uid('prt')}-arrows { display:none; } .${uid('prt')}-quote { font-size:22px; } }
+  </style>
+  <div class="${uid('prt')}-container">
+    <div class="${uid('prt')}-arrows">
+      <button class="${uid('prt')}-arrow" onclick="(function(){var slides=document.querySelectorAll('.${uid('prt')}-slide');var dots=document.querySelectorAll('.${uid('prt')}-dot');var current=Array.from(slides).findIndex(s=>s.classList.contains('active'));slides[current].classList.remove('active');dots[current].classList.remove('active');var prev=(current-1+slides.length)%slides.length;slides[prev].classList.add('active');dots[prev].classList.add('active');})()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="${uid('prt')}-arrow" onclick="(function(){var slides=document.querySelectorAll('.${uid('prt')}-slide');var dots=document.querySelectorAll('.${uid('prt')}-dot');var current=Array.from(slides).findIndex(s=>s.classList.contains('active'));slides[current].classList.remove('active');dots[current].classList.remove('active');var next=(current+1)%slides.length;slides[next].classList.add('active');dots[next].classList.add('active');})()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="${uid('prt')}-slide active">
+      <p class="${uid('prt')}-quote">${v.quote1}</p>
+      <div class="${uid('prt')}-author">
+        <img class="${uid('prt')}-avatar" src="${v.image1}" alt="${v.author1}">
+        <div class="${uid('prt')}-name">${v.author1}</div>
+        <div class="${uid('prt')}-role">${v.role1}</div>
+      </div>
+    </div>
+    <div class="${uid('prt')}-slide">
+      <p class="${uid('prt')}-quote">${v.quote2}</p>
+      <div class="${uid('prt')}-author">
+        <img class="${uid('prt')}-avatar" src="${v.image2}" alt="${v.author2}">
+        <div class="${uid('prt')}-name">${v.author2}</div>
+        <div class="${uid('prt')}-role">${v.role2}</div>
+      </div>
+    </div>
+    <div class="${uid('prt')}-slide">
+      <p class="${uid('prt')}-quote">${v.quote3}</p>
+      <div class="${uid('prt')}-author">
+        <img class="${uid('prt')}-avatar" src="${v.image3}" alt="${v.author3}">
+        <div class="${uid('prt')}-name">${v.author3}</div>
+        <div class="${uid('prt')}-role">${v.role3}</div>
+      </div>
+    </div>
+    <div class="${uid('prt')}-nav">
+      <button class="${uid('prt')}-dot active" onclick="document.querySelectorAll('.${uid('prt')}-slide').forEach((s,i)=>{s.classList.toggle('active',i===0);});document.querySelectorAll('.${uid('prt')}-dot').forEach((d,i)=>{d.classList.toggle('active',i===0);});"></button>
+      <button class="${uid('prt')}-dot" onclick="document.querySelectorAll('.${uid('prt')}-slide').forEach((s,i)=>{s.classList.toggle('active',i===1);});document.querySelectorAll('.${uid('prt')}-dot').forEach((d,i)=>{d.classList.toggle('active',i===1);});"></button>
+      <button class="${uid('prt')}-dot" onclick="document.querySelectorAll('.${uid('prt')}-slide').forEach((s,i)=>{s.classList.toggle('active',i===2);});document.querySelectorAll('.${uid('prt')}-dot').forEach((d,i)=>{d.classList.toggle('active',i===2);});"></button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 16. Retro Testimonial Carousel (ishamsu)
+  {
+    id: 'retro-testimonial-carousel',
+    name: 'Retro Testimonial Carousel',
+    category: 'Testimonials',
+    description: 'Vintage-style testimonial cards with stacked card animation effect',
+    thumbnail: '',
+    fields: [
+      { id: 'title', label: 'Section Title', type: 'text', defaultValue: 'What Our Customers Say' },
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'Outstanding service! The team delivered beyond our expectations.' },
+      { id: 'author1', label: 'Author 1', type: 'text', defaultValue: 'Alex Turner' },
+      { id: 'company1', label: 'Company 1', type: 'text', defaultValue: 'Design Studio' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'A game-changing platform that simplified our entire workflow.' },
+      { id: 'author2', label: 'Author 2', type: 'text', defaultValue: 'Maria Garcia' },
+      { id: 'company2', label: 'Company 2', type: 'text', defaultValue: 'Creative Agency' },
+      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'Best decision we made this year. Highly recommend to everyone!' },
+      { id: 'author3', label: 'Author 3', type: 'text', defaultValue: 'James Wilson' },
+      { id: 'company3', label: 'Company 3', type: 'text', defaultValue: 'Tech Innovations' },
+    ],
+    generateHtml: (v) => `<div class="${uid('rtc')}">
+  <style>
+    .${uid('rtc')} { padding:80px 24px; background:#f5f0e8; font-family:'Georgia',serif; }
+    .${uid('rtc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('rtc')}-title { text-align:center; font-size:36px; font-weight:400; color:#2d2d2d; margin-bottom:48px; font-style:italic; }
+    .${uid('rtc')}-container { max-width:600px; margin:0 auto; position:relative; height:320px; }
+    .${uid('rtc')}-card { position:absolute; width:100%; background:#fff; border-radius:8px; padding:40px; box-shadow:0 4px 20px rgba(0,0,0,0.1); transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .${uid('rtc')}-card:nth-child(1) { z-index:3; transform:translateY(0) scale(1); opacity:1; }
+    .${uid('rtc')}-card:nth-child(2) { z-index:2; transform:translateY(20px) scale(0.95); opacity:0.7; }
+    .${uid('rtc')}-card:nth-child(3) { z-index:1; transform:translateY(40px) scale(0.9); opacity:0.4; }
+    .${uid('rtc')}-quote { font-size:20px; line-height:1.7; color:#4a4a4a; margin-bottom:32px; font-style:italic; position:relative; padding-left:30px; }
+    .${uid('rtc')}-quote::before { content:'"'; position:absolute; left:0; top:-10px; font-size:60px; color:#d4a574; font-family:Georgia,serif; line-height:1; }
+    .${uid('rtc')}-author { border-top:1px solid #e5e5e5; padding-top:20px; }
+    .${uid('rtc')}-name { font-size:16px; font-weight:600; color:#2d2d2d; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('rtc')}-company { font-size:14px; color:#888; font-family:'Inter',-apple-system,sans-serif; margin-top:4px; }
+    .${uid('rtc')}-nav { display:flex; justify-content:center; gap:16px; margin-top:60px; }
+    .${uid('rtc')}-btn { width:48px; height:48px; border-radius:50%; background:#2d2d2d; border:none; color:#fff; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; }
+    .${uid('rtc')}-btn:hover { background:#d4a574; transform:scale(1.1); }
+  </style>
+  <h2 class="${uid('rtc')}-title">${v.title}</h2>
+  <div class="${uid('rtc')}-container" id="${uid('rtc')}-container">
+    <div class="${uid('rtc')}-card">
+      <p class="${uid('rtc')}-quote">${v.quote1}</p>
+      <div class="${uid('rtc')}-author">
+        <div class="${uid('rtc')}-name">${v.author1}</div>
+        <div class="${uid('rtc')}-company">${v.company1}</div>
+      </div>
+    </div>
+    <div class="${uid('rtc')}-card">
+      <p class="${uid('rtc')}-quote">${v.quote2}</p>
+      <div class="${uid('rtc')}-author">
+        <div class="${uid('rtc')}-name">${v.author2}</div>
+        <div class="${uid('rtc')}-company">${v.company2}</div>
+      </div>
+    </div>
+    <div class="${uid('rtc')}-card">
+      <p class="${uid('rtc')}-quote">${v.quote3}</p>
+      <div class="${uid('rtc')}-author">
+        <div class="${uid('rtc')}-name">${v.author3}</div>
+        <div class="${uid('rtc')}-company">${v.company3}</div>
+      </div>
+    </div>
+  </div>
+  <div class="${uid('rtc')}-nav">
+    <button class="${uid('rtc')}-btn" onclick="(function(){var c=document.getElementById('${uid('rtc')}-container');var cards=c.querySelectorAll('.${uid('rtc')}-card');c.insertBefore(cards[cards.length-1],cards[0]);})()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="${uid('rtc')}-btn" onclick="(function(){var c=document.getElementById('${uid('rtc')}-container');var cards=c.querySelectorAll('.${uid('rtc')}-card');c.appendChild(cards[0]);})()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>`
+  },
+
+  // 17. Infinite Logo Slider (motion-primitives)
+  {
+    id: 'infinite-logo-slider',
+    name: 'Infinite Logo Slider',
+    category: 'Brand',
+    description: 'Smooth infinite scrolling logo slider with pause on hover',
+    thumbnail: '',
+    fields: [
+      { id: 'speed', label: 'Animation Speed (seconds)', type: 'number', defaultValue: '30' },
+      { id: 'logo1', label: 'Logo 1 Text', type: 'text', defaultValue: 'Shopify' },
+      { id: 'logo2', label: 'Logo 2 Text', type: 'text', defaultValue: 'Stripe' },
+      { id: 'logo3', label: 'Logo 3 Text', type: 'text', defaultValue: 'Notion' },
+      { id: 'logo4', label: 'Logo 4 Text', type: 'text', defaultValue: 'Slack' },
+      { id: 'logo5', label: 'Logo 5 Text', type: 'text', defaultValue: 'Discord' },
+      { id: 'logo6', label: 'Logo 6 Text', type: 'text', defaultValue: 'Figma' },
+      { id: 'logo7', label: 'Logo 7 Text', type: 'text', defaultValue: 'Linear' },
+      { id: 'logo8', label: 'Logo 8 Text', type: 'text', defaultValue: 'Vercel' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ils')}">
+  <style>
+    .${uid('ils')} { padding:60px 0; background:#fff; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ils')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ils')}-track { display:flex; width:fit-content; animation:${uid('ils')}-scroll ${v.speed}s linear infinite; }
+    .${uid('ils')}:hover .${uid('ils')}-track { animation-play-state:paused; }
+    @keyframes ${uid('ils')}-scroll { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+    .${uid('ils')}-item { display:flex; align-items:center; justify-content:center; padding:0 48px; height:80px; font-size:24px; font-weight:700; color:#9ca3af; transition:color 0.3s; white-space:nowrap; }
+    .${uid('ils')}-item:hover { color:#111; }
+    .${uid('ils')}-fade { position:absolute; top:0; bottom:0; width:200px; pointer-events:none; z-index:10; }
+    .${uid('ils')}-fade.left { left:0; background:linear-gradient(90deg, #fff, transparent); }
+    .${uid('ils')}-fade.right { right:0; background:linear-gradient(-90deg, #fff, transparent); }
+    .${uid('ils')}-wrapper { position:relative; }
+  </style>
+  <div class="${uid('ils')}-wrapper">
+    <div class="${uid('ils')}-fade left"></div>
+    <div class="${uid('ils')}-fade right"></div>
+    <div class="${uid('ils')}-track">
+      <div class="${uid('ils')}-item">${v.logo1}</div>
+      <div class="${uid('ils')}-item">${v.logo2}</div>
+      <div class="${uid('ils')}-item">${v.logo3}</div>
+      <div class="${uid('ils')}-item">${v.logo4}</div>
+      <div class="${uid('ils')}-item">${v.logo5}</div>
+      <div class="${uid('ils')}-item">${v.logo6}</div>
+      <div class="${uid('ils')}-item">${v.logo7}</div>
+      <div class="${uid('ils')}-item">${v.logo8}</div>
+      <div class="${uid('ils')}-item">${v.logo1}</div>
+      <div class="${uid('ils')}-item">${v.logo2}</div>
+      <div class="${uid('ils')}-item">${v.logo3}</div>
+      <div class="${uid('ils')}-item">${v.logo4}</div>
+      <div class="${uid('ils')}-item">${v.logo5}</div>
+      <div class="${uid('ils')}-item">${v.logo6}</div>
+      <div class="${uid('ils')}-item">${v.logo7}</div>
+      <div class="${uid('ils')}-item">${v.logo8}</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 18. Feature Carousel (cult-ui)
+  {
+    id: 'feature-carousel-21st',
+    name: 'Feature Carousel',
+    category: 'Features',
+    description: 'Interactive feature carousel with image and text panels',
+    thumbnail: '',
+    fields: [
+      { id: 'feature1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Lightning Fast' },
+      { id: 'feature1Desc', label: 'Feature 1 Description', type: 'textarea', defaultValue: 'Optimized for speed with instant page loads and smooth animations throughout the entire experience.' },
+      { id: 'feature1Img', label: 'Feature 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop' },
+      { id: 'feature2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Secure by Default' },
+      { id: 'feature2Desc', label: 'Feature 2 Description', type: 'textarea', defaultValue: 'Enterprise-grade security with end-to-end encryption and compliance with industry standards.' },
+      { id: 'feature2Img', label: 'Feature 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&h=400&fit=crop' },
+      { id: 'feature3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Scalable Infrastructure' },
+      { id: 'feature3Desc', label: 'Feature 3 Description', type: 'textarea', defaultValue: 'Built to grow with your business, handling millions of requests without breaking a sweat.' },
+      { id: 'feature3Img', label: 'Feature 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fcr')}">
+  <style>
+    .${uid('fcr')} { padding:80px 24px; background:#0a0a0a; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fcr')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fcr')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+    @media(max-width:900px) { .${uid('fcr')}-container { grid-template-columns:1fr; } }
+    .${uid('fcr')}-content { }
+    .${uid('fcr')}-tabs { display:flex; flex-direction:column; gap:0; }
+    .${uid('fcr')}-tab { padding:24px; border-left:2px solid #333; cursor:pointer; transition:all 0.3s; }
+    .${uid('fcr')}-tab:hover { background:rgba(255,255,255,0.02); }
+    .${uid('fcr')}-tab.active { border-left-color:#fff; background:rgba(255,255,255,0.05); }
+    .${uid('fcr')}-tab-title { font-size:20px; font-weight:600; color:#fff; margin-bottom:8px; }
+    .${uid('fcr')}-tab-desc { font-size:14px; color:#9ca3af; line-height:1.6; display:none; }
+    .${uid('fcr')}-tab.active .${uid('fcr')}-tab-desc { display:block; animation:${uid('fcr')}-fadeIn 0.3s ease; }
+    @keyframes ${uid('fcr')}-fadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+    .${uid('fcr')}-visual { position:relative; aspect-ratio:3/2; border-radius:16px; overflow:hidden; }
+    .${uid('fcr')}-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.5s ease; }
+    .${uid('fcr')}-img.active { opacity:1; }
+  </style>
+  <div class="${uid('fcr')}-container">
+    <div class="${uid('fcr')}-content">
+      <div class="${uid('fcr')}-tabs">
+        <div class="${uid('fcr')}-tab active" onclick="document.querySelectorAll('.${uid('fcr')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.${uid('fcr')}-img').forEach((img,i)=>img.classList.toggle('active',i===0));">
+          <h3 class="${uid('fcr')}-tab-title">${v.feature1Title}</h3>
+          <p class="${uid('fcr')}-tab-desc">${v.feature1Desc}</p>
+        </div>
+        <div class="${uid('fcr')}-tab" onclick="document.querySelectorAll('.${uid('fcr')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.${uid('fcr')}-img').forEach((img,i)=>img.classList.toggle('active',i===1));">
+          <h3 class="${uid('fcr')}-tab-title">${v.feature2Title}</h3>
+          <p class="${uid('fcr')}-tab-desc">${v.feature2Desc}</p>
+        </div>
+        <div class="${uid('fcr')}-tab" onclick="document.querySelectorAll('.${uid('fcr')}-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');document.querySelectorAll('.${uid('fcr')}-img').forEach((img,i)=>img.classList.toggle('active',i===2));">
+          <h3 class="${uid('fcr')}-tab-title">${v.feature3Title}</h3>
+          <p class="${uid('fcr')}-tab-desc">${v.feature3Desc}</p>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('fcr')}-visual">
+      <img class="${uid('fcr')}-img active" src="${v.feature1Img}" alt="${v.feature1Title}">
+      <img class="${uid('fcr')}-img" src="${v.feature2Img}" alt="${v.feature2Title}">
+      <img class="${uid('fcr')}-img" src="${v.feature3Img}" alt="${v.feature3Title}">
+    </div>
+  </div>
+</div>`
+  },
+
+  // 19. Animated Glassy Pricing (easemize)
+  {
+    id: 'glassy-pricing',
+    name: 'Glassy Pricing',
+    category: 'Pricing',
+    description: 'Glassmorphism pricing cards with animated gradients and glow effects',
+    thumbnail: '',
+    fields: [
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Hobby' },
+      { id: 'plan1Price', label: 'Plan 1 Price', type: 'text', defaultValue: 'Free' },
+      { id: 'plan1Desc', label: 'Plan 1 Description', type: 'text', defaultValue: 'Perfect for side projects' },
+      { id: 'plan1Features', label: 'Plan 1 Features (comma sep)', type: 'textarea', defaultValue: '3 Projects,Basic Analytics,Community Support' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Pro' },
+      { id: 'plan2Price', label: 'Plan 2 Price', type: 'text', defaultValue: '$19/mo' },
+      { id: 'plan2Desc', label: 'Plan 2 Description', type: 'text', defaultValue: 'For growing businesses' },
+      { id: 'plan2Features', label: 'Plan 2 Features (comma sep)', type: 'textarea', defaultValue: 'Unlimited Projects,Advanced Analytics,Priority Support,Custom Domain,API Access' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: 'Custom' },
+      { id: 'plan3Desc', label: 'Plan 3 Description', type: 'text', defaultValue: 'For large organizations' },
+      { id: 'plan3Features', label: 'Plan 3 Features (comma sep)', type: 'textarea', defaultValue: 'Everything in Pro,SSO & SAML,Dedicated Manager,SLA Guarantee,Custom Integrations' },
+    ],
+    generateHtml: (v) => `<div class="${uid('glp')}">
+  <style>
+    .${uid('glp')} { padding:80px 24px; background:linear-gradient(135deg, #1e1e2f 0%, #0f0f1a 50%, #1a1a2e 100%); font-family:'Inter',-apple-system,sans-serif; position:relative; overflow:hidden; }
+    .${uid('glp')}::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(99,102,241,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(236,72,153,0.1) 0%, transparent 50%); animation:${uid('glp')}-float 20s ease-in-out infinite; }
+    @keyframes ${uid('glp')}-float { 0%, 100% { transform:translate(0,0) rotate(0deg); } 50% { transform:translate(30px, 30px) rotate(5deg); } }
+    .${uid('glp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('glp')}-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+    @media(max-width:900px) { .${uid('glp')}-grid { grid-template-columns:1fr; max-width:400px; } }
+    .${uid('glp')}-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:32px; transition:all 0.4s; }
+    .${uid('glp')}-card:hover { transform:translateY(-8px); border-color:rgba(255,255,255,0.2); box-shadow:0 20px 40px rgba(0,0,0,0.3), 0 0 60px rgba(99,102,241,0.1); }
+    .${uid('glp')}-card.featured { background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2)); border-color:rgba(99,102,241,0.3); }
+    .${uid('glp')}-name { font-size:14px; font-weight:600; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+    .${uid('glp')}-price { font-size:40px; font-weight:700; color:#fff; margin-bottom:8px; }
+    .${uid('glp')}-desc { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:24px; }
+    .${uid('glp')}-features { list-style:none; margin-bottom:32px; }
+    .${uid('glp')}-features li { display:flex; align-items:center; gap:12px; padding:12px 0; color:rgba(255,255,255,0.8); font-size:14px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .${uid('glp')}-features li:last-child { border-bottom:none; }
+    .${uid('glp')}-features svg { width:18px; height:18px; color:#6366f1; }
+    .${uid('glp')}-btn { width:100%; padding:14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:12px; font-size:15px; font-weight:500; cursor:pointer; transition:all 0.3s; }
+    .${uid('glp')}-btn:hover { background:rgba(255,255,255,0.15); }
+    .${uid('glp')}-card.featured .${uid('glp')}-btn { background:linear-gradient(135deg, #6366f1, #ec4899); border:none; }
+  </style>
+  <div class="${uid('glp')}-grid">
+    <div class="${uid('glp')}-card">
+      <div class="${uid('glp')}-name">${v.plan1Name}</div>
+      <div class="${uid('glp')}-price">${v.plan1Price}</div>
+      <div class="${uid('glp')}-desc">${v.plan1Desc}</div>
+      <ul class="${uid('glp')}-features">
+        ${v.plan1Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('glp')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('glp')}-card featured">
+      <div class="${uid('glp')}-name">${v.plan2Name}</div>
+      <div class="${uid('glp')}-price">${v.plan2Price}</div>
+      <div class="${uid('glp')}-desc">${v.plan2Desc}</div>
+      <ul class="${uid('glp')}-features">
+        ${v.plan2Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('glp')}-btn">Get Started</button>
+    </div>
+    <div class="${uid('glp')}-card">
+      <div class="${uid('glp')}-name">${v.plan3Name}</div>
+      <div class="${uid('glp')}-price">${v.plan3Price}</div>
+      <div class="${uid('glp')}-desc">${v.plan3Desc}</div>
+      <ul class="${uid('glp')}-features">
+        ${v.plan3Features.split(',').map((f: string) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f.trim()}</li>`).join('')}
+      </ul>
+      <button class="${uid('glp')}-btn">Contact Sales</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 20. Design Testimonial (jatin-yadav05)
+  {
+    id: 'design-testimonial',
+    name: 'Design Testimonial',
+    category: 'Testimonials',
+    description: 'Clean modern testimonial with side-by-side layout and rating stars',
+    thumbnail: '',
+    fields: [
+      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'Working with this team was an absolute pleasure. They understood our vision from day one and delivered a product that exceeded all our expectations. The attention to detail and commitment to quality is unmatched.' },
+      { id: 'author', label: 'Author Name', type: 'text', defaultValue: 'Jennifer Smith' },
+      { id: 'role', label: 'Author Role', type: 'text', defaultValue: 'Head of Product' },
+      { id: 'company', label: 'Company', type: 'text', defaultValue: 'Acme Inc.' },
+      { id: 'image', label: 'Author Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face' },
+      { id: 'rating', label: 'Rating (1-5)', type: 'number', defaultValue: '5' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f8fafc' },
+    ],
+    generateHtml: (v) => `<div class="${uid('dst')}">
+  <style>
+    .${uid('dst')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('dst')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('dst')}-container { max-width:1000px; margin:0 auto; display:grid; grid-template-columns:1fr 1.5fr; gap:64px; align-items:center; }
+    @media(max-width:768px) { .${uid('dst')}-container { grid-template-columns:1fr; gap:40px; text-align:center; } }
+    .${uid('dst')}-image { position:relative; }
+    .${uid('dst')}-img { width:100%; max-width:320px; aspect-ratio:1; object-fit:cover; border-radius:24px; box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+    @media(max-width:768px) { .${uid('dst')}-img { margin:0 auto; } }
+    .${uid('dst')}-content { }
+    .${uid('dst')}-stars { display:flex; gap:4px; margin-bottom:24px; }
+    @media(max-width:768px) { .${uid('dst')}-stars { justify-content:center; } }
+    .${uid('dst')}-star { width:24px; height:24px; color:#fbbf24; }
+    .${uid('dst')}-star.empty { color:#e5e7eb; }
+    .${uid('dst')}-quote { font-size:24px; line-height:1.6; color:#1f2937; margin-bottom:32px; font-weight:400; }
+    .${uid('dst')}-author { display:flex; flex-direction:column; gap:4px; }
+    @media(max-width:768px) { .${uid('dst')}-author { align-items:center; } }
+    .${uid('dst')}-name { font-size:18px; font-weight:600; color:#111827; }
+    .${uid('dst')}-role { font-size:14px; color:#6b7280; }
+  </style>
+  <div class="${uid('dst')}-container">
+    <div class="${uid('dst')}-image">
+      <img class="${uid('dst')}-img" src="${v.image}" alt="${v.author}">
+    </div>
+    <div class="${uid('dst')}-content">
+      <div class="${uid('dst')}-stars">
+        ${Array.from({length: 5}, (_, i) => `<svg class="${uid('dst')}-star${i < parseInt(v.rating) ? '' : ' empty'}" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}
+      </div>
+      <blockquote class="${uid('dst')}-quote">"${v.quote}"</blockquote>
+      <div class="${uid('dst')}-author">
+        <div class="${uid('dst')}-name">${v.author}</div>
+        <div class="${uid('dst')}-role">${v.role}, ${v.company}</div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
 ];
 
 // Categories with counts - auto-calculated
@@ -5446,4 +9273,5 @@ export const categories = [
   { id: 'Banner', name: 'Banner', count: categoryCounts['Banner'] || 0 },
   { id: 'Collection', name: 'Collection', count: categoryCounts['Collection'] || 0 },
   { id: 'Footer', name: 'Footer', count: categoryCounts['Footer'] || 0 },
+  { id: 'Interactive', name: 'Interactive', count: categoryCounts['Interactive'] || 0 },
 ];

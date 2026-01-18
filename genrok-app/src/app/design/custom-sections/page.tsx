@@ -9,7 +9,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { sectionsData, categories } from './sections-data';
 import { Section, CustomizableField } from './types';
 
-// Grid card preview component - renders scaled HTML in iframe
+// Grid card preview component - renders scaled HTML in iframe (responsive)
 function GridPreview({
   html,
   isAnnouncement = false
@@ -18,12 +18,31 @@ function GridPreview({
   isAnnouncement?: boolean;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [scale, setScale] = useState(0.35);
 
-  const scale = isAnnouncement ? 0.7 : 0.35;
-  const containerHeight = isAnnouncement ? 120 : 240;
+  const containerHeight = isAnnouncement ? 100 : 200;
   const iframeWidth = 1200;
-  const iframeHeight = isAnnouncement ? 80 : 680;
+  const iframeHeight = isAnnouncement ? 80 : 600;
+
+  // Calculate scale based on container width
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateScale = () => {
+      const containerWidth = container.offsetWidth;
+      // Calculate scale to fit width with some padding
+      const newScale = Math.min((containerWidth - 16) / iframeWidth, isAnnouncement ? 0.8 : 0.4);
+      setScale(Math.max(newScale, 0.2)); // minimum scale of 0.2
+    };
+
+    updateScale();
+    const resizeObserver = new ResizeObserver(updateScale);
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
+  }, [isAnnouncement]);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -64,6 +83,7 @@ function GridPreview({
 
   return (
     <div
+      ref={containerRef}
       style={{
         width: '100%',
         height: `${containerHeight}px`,
