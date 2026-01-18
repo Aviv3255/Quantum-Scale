@@ -1788,8 +1788,8 @@ export const sectionsData: Section[] = [
       { id: 'image1', label: 'Image 1 URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Farmer%20in%20Strawberry%20Field.png' },
       { id: 'image2', label: 'Image 2 URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(11).png' },
       { id: 'image3', label: 'Image 3 URL', type: 'image', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(12).png' },
-      { id: 'gridGap', label: 'Grid Gap (px)', type: 'number', defaultValue: 60 },
-      { id: 'borderRadius', label: 'Border Radius (px)', type: 'number', defaultValue: 16 },
+      { id: 'gridGap', label: 'Grid Gap (px)', type: 'number', defaultValue: '60' },
+      { id: 'borderRadius', label: 'Border Radius (px)', type: 'number', defaultValue: '16' },
       { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
     ],
     generateHtml: (v) => `<div class="${uid('mosaic')}" style="background:linear-gradient(135deg,${v.bgColor} 0%,#1a1a2e 100%);min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
@@ -2054,7 +2054,7 @@ export const sectionsData: Section[] = [
       { id: 'product4Price', label: 'Product 4 Price', type: 'text', defaultValue: '$349.00' },
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Quick View' },
       { id: 'backgroundColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
-      { id: 'cardBorderRadius', label: 'Card Border Radius', type: 'number', defaultValue: 16 },
+      { id: 'cardBorderRadius', label: 'Card Border Radius', type: 'number', defaultValue: '16' },
     ],
     generateHtml: (v) => `<div class="${uid('phover')}" style="background:${v.backgroundColor};font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
