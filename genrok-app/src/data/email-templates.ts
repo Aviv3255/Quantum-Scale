@@ -74,6 +74,7 @@ const commonBrandFields: TemplateField[] = [
 
 // Premium email wrapper - $10,000 elite designer level
 // Based on top-tier brands like GOED, ARCADY - magazine-style emails that sell
+// Updated with Klaviyo hybrid markup for full drag-and-drop editing
 const premiumWrapper = (content: string) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,6 +106,8 @@ const premiumWrapper = (content: string) => `<!DOCTYPE html>
       .mobile-headline { font-size: 32px !important; }
       .mobile-subhead { font-size: 16px !important; }
     }
+    /* Klaviyo block styles for drag-and-drop editing */
+    .klaviyo-block { display: block; }
   </style>
 </head>
 <body style="margin:0; padding:0; background-color:#ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
@@ -119,34 +122,38 @@ const premiumWrapper = (content: string) => `<!DOCTYPE html>
         <!-- Email Container - No border radius for edge-to-edge design -->
         <table role="presentation" class="email-container" width="600" cellspacing="0" cellpadding="0" border="0" style="background:#ffffff;">
 
-          <!-- FULL WIDTH LOGO HEADER -->
+          <!-- LOGO HEADER - Klaviyo Editable Region -->
           <tr>
-            <td style="padding:0;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="padding:24px 0; text-align:center; border-bottom:1px solid #f0f0f0;">
-                    <img src="{{logo_url}}" alt="{{brand_name}}" style="max-width:100%; width:600px; height:auto; display:block;" />
-                  </td>
-                </tr>
-              </table>
+            <td data-klaviyo-region="true" data-klaviyo-region-width-pixels="600" style="padding:0;">
+              <div class="klaviyo-block klaviyo-image-block">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="padding:24px 0; text-align:center; border-bottom:1px solid #f0f0f0;">
+                      <img src="{{logo_url}}" alt="{{brand_name}}" style="max-width:100%; width:600px; height:auto; display:block;" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
           ${content}
         </table>
 
-        <!-- MINIMAL FOOTER -->
+        <!-- FOOTER - Klaviyo Editable Region -->
         <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            <td style="padding:32px 24px; text-align:center; border-top:1px solid #f0f0f0;">
-              <p style="margin:0 0 8px; color:#666666; font-size:12px; line-height:1.5; letter-spacing:0.02em; text-transform:uppercase;">
-                &copy; 2026 {{brand_name}}
-              </p>
-              <p style="margin:0; font-size:11px;">
-                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">Unsubscribe</a>
-                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">View Online</a>
-                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">Privacy</a>
-              </p>
+            <td data-klaviyo-region="true" data-klaviyo-region-width-pixels="600" style="padding:32px 24px; text-align:center; border-top:1px solid #f0f0f0;">
+              <div class="klaviyo-block klaviyo-text-block">
+                <p style="margin:0 0 8px; color:#666666; font-size:12px; line-height:1.5; letter-spacing:0.02em; text-transform:uppercase;">
+                  &copy; 2026 {{brand_name}}
+                </p>
+                <p style="margin:0; font-size:11px;">
+                  <a href="{% unsubscribe %}" style="color:#999999; text-decoration:underline; margin:0 12px;">Unsubscribe</a>
+                  <a href="{{ organization.url }}" style="color:#999999; text-decoration:underline; margin:0 12px;">View Online</a>
+                  <a href="{{ organization.url }}/privacy" style="color:#999999; text-decoration:underline; margin:0 12px;">Privacy</a>
+                </p>
+              </div>
             </td>
           </tr>
         </table>
@@ -178,10 +185,10 @@ const abandonedCart1: EmailTemplate = {
     { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'COMPLETE ORDER', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
+          <!-- HERO IMAGE - Klaviyo Editable Region -->
           <tr>
-            <td style="padding:0; position:relative;">
-              <div style="position:relative;">
+            <td data-klaviyo-region="true" data-klaviyo-region-width-pixels="600" style="padding:0; position:relative;">
+              <div class="klaviyo-block klaviyo-image-block" style="position:relative;">
                 <!-- Hero Image -->
                 <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
 
@@ -189,26 +196,30 @@ const abandonedCart1: EmailTemplate = {
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
                   <tr>
                     <td style="padding:60px 40px; vertical-align:center; text-align:center;">
-                      <p style="margin:0 0 8px; font-size:14px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
-                        Don't miss out
-                      </p>
-                      <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:600; color:#ffffff; line-height:1.1; letter-spacing:-0.02em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
-                        {{headline}}
-                      </h1>
-                      <p class="mobile-subhead" style="margin:0 0 32px; font-size:18px; color:#ffffff; line-height:1.5; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
-                        {{subheadline}}
-                      </p>
+                      <div class="klaviyo-block klaviyo-text-block">
+                        <p style="margin:0 0 8px; font-size:14px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                          Don't miss out
+                        </p>
+                        <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:600; color:#ffffff; line-height:1.1; letter-spacing:-0.02em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                          {{headline}}
+                        </h1>
+                        <p class="mobile-subhead" style="margin:0 0 32px; font-size:18px; color:#ffffff; line-height:1.5; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                          {{subheadline}}
+                        </p>
+                      </div>
 
                       <!-- CTA Button - Pill style -->
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                        <tr>
-                          <td style="border-radius:50px; background:#ffffff;">
-                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
-                              {{cta_text}}
-                            </a>
-                          </td>
-                        </tr>
-                      </table>
+                      <div class="klaviyo-block klaviyo-button-block">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                          <tr>
+                            <td style="border-radius:50px; background:#ffffff;">
+                              <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                                {{cta_text}}
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
                     </td>
                   </tr>
                 </table>
@@ -216,18 +227,33 @@ const abandonedCart1: EmailTemplate = {
             </td>
           </tr>
 
-          <!-- CONTENT SECTION -->
+          <!-- CONTENT SECTION - Klaviyo Editable Region -->
           <tr>
-            <td style="padding:48px 40px; text-align:center; background:#fafafa;">
-              <h2 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:28px; font-weight:500; color:#1a1a1a; line-height:1.3;">
-                Cart Mode: Activated
-              </h2>
-              <p style="margin:0 0 24px; font-size:16px; color:#666666; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
-                Hey {{customer_name}}, your curated selection is ready and waiting. Complete your order before these items sell out.
-              </p>
-              <a href="{{cta_url}}" style="display:inline-block; font-size:14px; font-weight:600; color:#000000; text-decoration:underline; letter-spacing:0.05em;">
-                View My Cart →
-              </a>
+            <td data-klaviyo-region="true" data-klaviyo-region-width-pixels="600" style="padding:48px 40px; text-align:center; background:#fafafa;">
+              <div class="klaviyo-block klaviyo-text-block">
+                <h2 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:28px; font-weight:500; color:#1a1a1a; line-height:1.3;">
+                  Cart Mode: Activated
+                </h2>
+                <p style="margin:0 0 24px; font-size:16px; color:#666666; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                  Hey {{customer_name}}, your curated selection is ready and waiting. Complete your order before these items sell out.
+                </p>
+              </div>
+              <div class="klaviyo-block klaviyo-button-block">
+                <a href="{{cta_url}}" style="display:inline-block; font-size:14px; font-weight:600; color:#000000; text-decoration:underline; letter-spacing:0.05em;">
+                  View My Cart →
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- DYNAMIC PRODUCT BLOCK PLACEHOLDER - Klaviyo Editable Region -->
+          <tr>
+            <td data-klaviyo-region="true" data-klaviyo-region-width-pixels="600" style="padding:24px 40px; background:#ffffff;">
+              <div class="klaviyo-block klaviyo-text-block" style="text-align:center; padding:40px 20px; border:2px dashed #e0e0e0; border-radius:8px; color:#999;">
+                <p style="margin:0; font-size:14px;">
+                  ✨ Drag a Dynamic Product Block here in Klaviyo to show cart items
+                </p>
+              </div>
             </td>
           </tr>
   `),
