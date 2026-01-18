@@ -22,13 +22,6 @@ import {
   Gift,
   Save,
   Info,
-  Key,
-  Upload,
-  Loader2,
-  AlertCircle,
-  CheckCircle,
-  Eye,
-  EyeOff,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -39,7 +32,6 @@ const DEFAULT_LOGO_URL = 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/ob
 
 // LocalStorage keys
 const BRAND_SETTINGS_KEY = 'quantum-scale-email-brand-settings';
-const KLAVIYO_API_KEY_STORAGE = 'quantum-scale-klaviyo-api-key';
 
 interface BrandSettings {
   brandName: string;
@@ -158,16 +150,6 @@ export default function EmailSmsPage() {
   const [brandSettingsSaved, setBrandSettingsSaved] = useState(false);
   const [brandSettingsOpen, setBrandSettingsOpen] = useState(false);
 
-  // Klaviyo integration state
-  const [klaviyoApiKey, setKlaviyoApiKey] = useState('');
-  const [showApiKey, setShowApiKey] = useState(false);
-  const [isPushingToKlaviyo, setIsPushingToKlaviyo] = useState(false);
-  const [klaviyoResult, setKlaviyoResult] = useState<{
-    success: boolean;
-    message: string;
-    templateId?: string;
-  } | null>(null);
-
   // Brand settings (saved to localStorage)
   const [brandSettings, setBrandSettings] = useState<BrandSettings>({
     brandName: 'Your Brand',
@@ -193,11 +175,6 @@ export default function EmailSmsPage() {
       }
     }
 
-    // Load Klaviyo API key
-    const savedApiKey = localStorage.getItem(KLAVIYO_API_KEY_STORAGE);
-    if (savedApiKey) {
-      setKlaviyoApiKey(savedApiKey);
-    }
   }, []);
 
   // Save brand settings to localStorage
@@ -264,70 +241,6 @@ export default function EmailSmsPage() {
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
-    }
-  };
-
-  // Save Klaviyo API key to localStorage
-  const saveKlaviyoApiKey = (key: string) => {
-    setKlaviyoApiKey(key);
-    if (key) {
-      localStorage.setItem(KLAVIYO_API_KEY_STORAGE, key);
-    } else {
-      localStorage.removeItem(KLAVIYO_API_KEY_STORAGE);
-    }
-  };
-
-  // Push template to Klaviyo
-  const pushToKlaviyo = async () => {
-    if (!klaviyoApiKey) {
-      setKlaviyoResult({
-        success: false,
-        message: 'Please enter your Klaviyo API key first',
-      });
-      return;
-    }
-
-    setIsPushingToKlaviyo(true);
-    setKlaviyoResult(null);
-
-    try {
-      const templateName = `${selectedTemplate.name} - ${brandSettings.brandName} - ${new Date().toLocaleDateString()}`;
-
-      const response = await fetch('/api/klaviyo/push-template', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          apiKey: klaviyoApiKey,
-          templateName,
-          html: generatedHtml,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setKlaviyoResult({
-          success: true,
-          message: 'Template added to Klaviyo!',
-          templateId: data.klaviyoTemplateId,
-        });
-      } else {
-        setKlaviyoResult({
-          success: false,
-          message: data.error || 'Failed to add template to Klaviyo',
-        });
-      }
-    } catch (err) {
-      setKlaviyoResult({
-        success: false,
-        message: err instanceof Error ? err.message : 'Network error occurred',
-      });
-    } finally {
-      setIsPushingToKlaviyo(false);
-      // Clear result after 5 seconds
-      setTimeout(() => setKlaviyoResult(null), 5000);
     }
   };
 
@@ -553,50 +466,6 @@ export default function EmailSmsPage() {
                   </div>
                 </div>
 
-                {/* Klaviyo API Integration */}
-                <div className="mt-6 pt-4 border-t border-[var(--border-light)]">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Key size={16} className="text-[var(--accent-gold)]" />
-                    <h3 className="font-semibold text-[var(--text-primary)]">Klaviyo Integration</h3>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs font-medium text-[var(--text-muted)] mb-1">
-                        Private API Key
-                        <span className="text-[var(--accent-gold)] ml-1">(Required for one-click push)</span>
-                      </label>
-                      <div className="flex gap-2">
-                        <div className="relative flex-1">
-                          <input
-                            type={showApiKey ? 'text' : 'password'}
-                            value={klaviyoApiKey}
-                            onChange={(e) => saveKlaviyoApiKey(e.target.value)}
-                            className="w-full px-3 py-2 pr-10 rounded-lg border border-[var(--border-light)] bg-white text-sm font-mono"
-                            placeholder="pk_xxxxxxxxxxxxxxxxxxxxx"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowApiKey(!showApiKey)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                          >
-                            {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
-                          </button>
-                        </div>
-                      </div>
-                      <p className="text-xs text-[var(--text-muted)] mt-2">
-                        Find your API key in Klaviyo → Settings → API Keys → Create Private API Key
-                      </p>
-                    </div>
-                    <div className="flex items-end">
-                      <div className="p-4 bg-[var(--bg-secondary)] rounded-lg flex-1">
-                        <p className="text-xs text-[var(--text-secondary)]">
-                          <span className="font-medium">Tip:</span> Create a Private API Key with <span className="font-mono bg-white px-1 rounded">templates:write</span> scope for one-click template push.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Save Button */}
                 <div className="mt-6 pt-4 border-t border-[var(--border-light)] flex items-center justify-between">
                   <p className="text-xs text-[var(--text-muted)]">
@@ -768,57 +637,14 @@ export default function EmailSmsPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={copyHtml}
-                    className="btn btn-secondary flex items-center gap-2"
-                  >
-                    {copied ? <Check size={16} /> : <Copy size={16} />}
-                    {copied ? 'Copied!' : 'Copy HTML'}
-                  </button>
-                  <button
-                    onClick={pushToKlaviyo}
-                    disabled={isPushingToKlaviyo}
-                    className="btn btn-primary flex items-center gap-2 disabled:opacity-50"
-                    title={klaviyoApiKey ? 'Push template to Klaviyo' : 'Set API key in Brand Settings first'}
-                  >
-                    {isPushingToKlaviyo ? (
-                      <Loader2 size={16} className="animate-spin" />
-                    ) : (
-                      <Upload size={16} />
-                    )}
-                    {isPushingToKlaviyo ? 'Pushing...' : 'Add to Klaviyo'}
-                  </button>
-                </div>
-              </div>
-
-              {/* Klaviyo Result Toast */}
-              {klaviyoResult && (
-                <div
-                  className={`mx-4 mt-2 p-3 rounded-lg flex items-center gap-2 text-sm ${
-                    klaviyoResult.success
-                      ? 'bg-green-50 text-green-800 border border-green-200'
-                      : 'bg-red-50 text-red-800 border border-red-200'
-                  }`}
+                <button
+                  onClick={copyHtml}
+                  className="btn btn-primary flex items-center gap-2"
                 >
-                  {klaviyoResult.success ? (
-                    <CheckCircle size={16} className="text-green-600 flex-shrink-0" />
-                  ) : (
-                    <AlertCircle size={16} className="text-red-600 flex-shrink-0" />
-                  )}
-                  <span className="flex-1">{klaviyoResult.message}</span>
-                  {klaviyoResult.success && (
-                    <a
-                      href="https://www.klaviyo.com/email-templates"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-green-700 underline hover:no-underline flex items-center gap-1"
-                    >
-                      Open in Klaviyo <ExternalLink size={12} />
-                    </a>
-                  )}
-                </div>
-              )}
+                  {copied ? <Check size={16} /> : <Copy size={16} />}
+                  {copied ? 'Copied!' : 'Copy HTML'}
+                </button>
+              </div>
 
               {/* Preview Content */}
               <div
