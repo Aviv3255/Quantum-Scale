@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #8b5cf6; --accent-dark: #7c3aed; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
+    :root { --accent: #88da1c; --accent-dark: #6fb816; --accent-light: #a3e635; --accent-rgb: 136, 218, 28; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -41,145 +38,39 @@
       id: 'blind-spot-effect',
       title: 'The Blind Spot Effect',
       description: 'Why the most powerful persuasion is the persuasion you never see coming.',
-      accentColor: '#8b5cf6',
+      accentColor: '#88da1c',
       duration: '7 min',
       nextLesson: { id: 'ocpb-formula', title: 'The OCPB Formula', teaser: 'The 4-part framework for crafting irresistible offers that convert.' }
     };
 
-    // Tool config for Grapevine
-    const TOOL_CONFIG = {
-      name: 'Grapevine',
-      logo: 'https://cdn.shopify.com/app-store/listing_images/61b8d79a2abde5bfe1edfeaab1bea7fb/icon/CN6e2L6r1_oCEAE=.png',
-      link: 'https://apps.shopify.com/grapevine-post-purchase-surveys',
-      tagline: 'Post-Purchase Surveys'
-    };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    let __isAdmin = false;
-
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      // ========== PART 1: THE THEORY ==========
       { type: 'welcome', learningGoals: ['Why your brain has a literal blind spot - and what it teaches about persuasion', 'The 4 cognitive biases that drive every purchase decision', 'How to speak the language your customer\'s brain actually understands'] },
-      { type: 'hook', headline: 'Your brain has been lying to you since birth.', subtext: 'There\'s a spot in your eye where the optic nerve connects. No vision. Complete darkness. But you\'ve never noticed it. Why? Your brain fills in what it cannot see - automatically, invisibly, perfectly. Your customers\' brains work the same way. They make decisions using shortcuts you never see. This is the Blind Spot Effect.' },
-      { type: 'content', title: 'The Hidden Decision Engine', body: 'Here\'s what neuroscience reveals: 95% of your brain\'s processing happens outside your awareness. You think you\'re making rational choices, but the real decisions happen before conscious thought even begins. These aren\'t bugs in the system - they\'re features. Mental shortcuts that evolved over millions of years to help humans survive. Today, they\'re the invisible levers of human behavior.' },
-      { type: 'brain-split', title: 'The Subconscious Split' },
-      { type: 'content', title: 'Cognitive Biases: Not Bugs. Features.', body: 'Your customers aren\'t irrational. They\'re running on mental shortcuts called cognitive biases - lightning-fast decision patterns that help the brain process thousands of choices per day. Understanding these biases isn\'t manipulation. It\'s speaking the native language of the human brain. When you align your message with how the brain actually works, your copy stops feeling like marketing and starts feeling like truth.' },
-      { type: 'bias-grid', title: 'The 4 Master Biases for eCommerce' },
-      { type: 'example', scenario: 'Pet Supplies Store - Halo Effect', before: { label: 'Generic Product Page', text: '"Premium Dog Food - High Quality Ingredients - $39.99 - Order Now"' }, after: { label: 'Halo Effect Applied', text: 'Clean hero image: happy golden retriever in sunlight. Minimalist design. White space. Premium typography. Price unchanged: $39.99. Conversion rate: +127%. Why? The design created a halo that made customers assume premium ingredients without reading a word.' }, insight: 'Beautiful design isn\'t decoration. It\'s a cognitive bias trigger that changes perception of value.' },
-      { type: 'content', title: 'Anchoring: The First Number Wins', body: 'Your brain can\'t help it. The first number you see becomes the reference point for every judgment that follows. Show a $1,000 price first? Suddenly $497 feels like a bargain. This isn\'t trickery - it\'s how the brain processes relative value. Premium brands understand this. Budget brands ignore it. Which one are you?' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4', characterPosition: 'left'},
-      { type: 'anchoring-demo', title: 'The Anchoring Effect in Action' },
-      { type: 'example', scenario: 'Jewelry Store - Anchoring', before: { label: 'Single Price Only', text: '"Handcrafted Silver Bracelet - $79 - Shop Now"' }, after: { label: 'Strategic Anchoring', text: '"Handcrafted Silver Bracelet - Was $189 - Now $79 (Limited Time) - Save $110 Today"' }, insight: 'Same product. Same price. Different perception. The $189 anchor makes $79 feel irresistible.' },
-      { type: 'content', title: 'Loss Aversion: The 2x Multiplier', body: 'Nobel Prize-winning research proves it: humans feel losses twice as intensely as equivalent gains. Losing $100 hurts more than gaining $100 feels good. This is why "Don\'t miss out" outperforms "Get this benefit" every single time. FOMO isn\'t just a marketing buzzword - it\'s a fundamental feature of human psychology. Use it ethically, or your competitors will.' },
-      { type: 'cards', title: 'Loss Aversion in eCommerce', items: [
-        { title: 'Scarcity', description: '"Only 3 left in stock" triggers loss aversion. Customers fear missing out, not gaining the item. Stock counters work because of this bias.' },
-        { title: 'Urgency', description: '"Sale ends in 4 hours" creates deadline pressure. Not buying = losing the deal. Time-sensitive offers leverage loss aversion perfectly.' },
-        { title: 'Free Shipping Threshold', description: '"Add $12 more for free shipping" works because customers hate losing the shipping benefit they almost had. Progress bars amplify this.' }
-      ]},
-      { type: 'example', scenario: 'Fashion Store - Loss Aversion', before: { label: 'Gain-Focused Message', text: '"Get 20% off when you buy 3 items!"' }, after: { label: 'Loss-Focused Message', text: '"Don\'t lose your 20% discount - add 1 more item before this deal expires in 3:47:12"' }, insight: 'Loss framing + countdown timer = 2x the psychological pressure. Same offer, different emotion.' },
-      { type: 'content', title: 'The Bandwagon Effect: Crowd = Correctness', body: 'When 10,000 people buy something, your brain automatically assumes it\'s the right choice. Not because you\'re sheep - because for 200,000 years, following the crowd kept humans alive. If everyone ran from the tiger, you ran too. Today, "10,000+ happy customers" triggers the same survival mechanism. Social proof isn\'t just nice to have. It\'s neurologically irresistible.' },
-      { type: 'visual', title: 'Social Proof by the Numbers', visualType: 'stats', data: [
-        { value: '88%', label: 'trust online reviews', subtext: 'As much as personal recommendations' },
-        { value: '3.8x', label: 'conversion boost', subtext: 'When social proof is visible' },
-        { value: '70%', label: 'more likely to buy', subtext: 'When seeing "bestseller" badge' }
-      ]},
-      { type: 'content', title: 'The Ethical Reframe', body: 'Some people worry: "Isn\'t this manipulation?" Here\'s the paradigm shift. You\'re not manipulating people\'s psychology against them. You\'re communicating in the language the brain actually understands. These biases work whether you use them or not. Ignoring them doesn\'t make you ethical - it makes you invisible. Using them ethically to sell genuine value? That\'s mastery.' },
-      { type: 'quiz', question: 'According to neuroscience research, what percentage of decision-making happens below conscious awareness?', options: ['25% - Most decisions are conscious', '50% - It\'s about half and half', '75% - Mostly subconscious', '95% - Almost entirely subconscious'], correctIndex: 3, feedback: { correct: 'Exactly! 95% of decision-making happens subconsciously. This is why understanding cognitive biases isn\'t manipulation - it\'s speaking the language your customer\'s brain actually uses. Your copy must reach the subconscious level to truly convert.', incorrect: 'Not quite. Research shows that 95% of decision-making happens below conscious awareness. The rational mind thinks it\'s in control, but the subconscious is making decisions before conscious thought even begins. This is why cognitive biases are so powerful.' }},
-      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
-      { type: 'section-divider' },
-      { type: 'step-install-surveys' },
-      { type: 'step-craft-questions' },
-      { type: 'step-analyze-patterns' },
-      { type: 'step-results' },
+      { type: 'hook', headline: 'Your brain has been lying to you since birth.', subtext: 'There\'s a spot in your eye where the optic nerve connects. No vision. Complete darkness. But you\'ve never noticed it. Why? Your brain fills in what it cannot see. Your customers\' brains work the same way. They make decisions using shortcuts you never see.' },
+      { type: 'mind-map', title: 'How Your Brain Makes Decisions' },
+      { type: 'split-content', title: 'The Hidden Decision Engine', content: 'Here\'s what neuroscience reveals: 95% of your brain\'s processing happens outside your awareness. You think you\'re making rational choices, but the real decisions happen before conscious thought even begins.\n\nThese aren\'t bugs in the system - they\'re features. Mental shortcuts that evolved over millions of years to help humans survive.', media: { type: 'video', src: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4' }, reversed: false },
+      { type: 'venn-diagram', title: 'The 95/5 Split: Where Decisions Happen' },
+      { type: 'before-after', scenario: 'Pet Supplies Store - Halo Effect', before: { label: 'Generic Product Page', text: '"Premium Dog Food - High Quality Ingredients - $39.99 - Order Now"' }, after: { label: 'Halo Effect Applied', text: 'Clean hero image: happy golden retriever in sunlight. Minimalist design. White space. Premium typography. Price unchanged: $39.99. Conversion rate: +127%.' }, insight: 'Beautiful design isn\'t decoration. It\'s a cognitive bias trigger that changes perception of value.' },
+      { type: 'decision-tree', title: 'The Customer\'s Hidden Decision Path' },
+      { type: 'before-after', scenario: 'Jewelry Store - Anchoring', before: { label: 'Single Price Only', text: '"Handcrafted Silver Bracelet - $79 - Shop Now"' }, after: { label: 'Strategic Anchoring', text: '"Handcrafted Silver Bracelet - Was $189 - Now $79 (Limited Time) - Save $110 Today"' }, insight: 'Same product. Same price. Different perception. The $189 anchor makes $79 feel irresistible.' },
+      { type: 'split-content', title: 'Loss Aversion: The 2x Multiplier', content: 'Nobel Prize-winning research proves it: humans feel losses twice as intensely as equivalent gains. Losing $100 hurts more than gaining $100 feels good.\n\nThis is why "Don\'t miss out" outperforms "Get this benefit" every single time. FOMO isn\'t just a marketing buzzword - it\'s a fundamental feature of human psychology.', media: { type: 'video', src: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4' }, reversed: true },
+      { type: 'before-after', scenario: 'Fashion Store - Loss Aversion', before: { label: 'Gain-Focused Message', text: '"Get 20% off when you buy 3 items!"' }, after: { label: 'Loss-Focused Message', text: '"Don\'t lose your 20% discount - add 1 more item before this deal expires in 3:47:12"' }, insight: 'Loss framing + countdown timer = 2x the psychological pressure. Same offer, different emotion.' },
+      { type: 'slope-chart', title: 'Before vs After: Conversion Rates' },
+      { type: 'quote', quote: 'The biases work whether you use them or not. Ignoring them doesn\'t make you ethical - it makes you invisible.', author: 'Behavioral Economics', role: 'Core Principle' },
+      { type: 'quiz', question: 'According to neuroscience research, what percentage of decision-making happens below conscious awareness?', options: ['25% - Most decisions are conscious', '50% - It\'s about half and half', '75% - Mostly subconscious', '95% - Almost entirely subconscious'], correctIndex: 3, feedback: { correct: 'Exactly! 95% of decision-making happens subconsciously. This is why understanding cognitive biases isn\'t manipulation - it\'s speaking the language your customer\'s brain actually uses.', incorrect: 'Not quite. Research shows that 95% of decision-making happens below conscious awareness. The rational mind thinks it\'s in control, but the subconscious is making decisions before conscious thought even begins.' }},
       { type: 'completion' }
     ];
 
@@ -189,758 +80,775 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowDown: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M12 18v-9"/></svg>,
-      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>,
-      EyeOff: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
-      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      Anchor: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>,
-      TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
-      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
-      BarChart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
-      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      ChevronRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>,
       Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Quote: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
+      GitBranch: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>,
+      Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
     };
 
-    // ============ CUSTOM SLIDE COMPONENTS ============
+    // ============ UNIQUE COMPONENT 1: MIND MAP ============
+    const MindMapSlide = ({ data }) => {
+      const mindMapData = {
+        label: 'Purchase Decision',
+        children: [
+          {
+            label: 'Subconscious (95%)',
+            color: '#88da1c',
+            children: [
+              { label: 'Halo Effect', color: '#F59E0B' },
+              { label: 'Anchoring', color: '#3B82F6' },
+              { label: 'Loss Aversion', color: '#EF4444' },
+              { label: 'Bandwagon', color: '#22C55E' }
+            ]
+          },
+          {
+            label: 'Conscious (5%)',
+            color: '#6B7280',
+            children: [
+              { label: 'Price Compare', color: '#9CA3AF' },
+              { label: 'Feature Analysis', color: '#9CA3AF' }
+            ]
+          }
+        ]
+      };
 
-    // BrainSplitSlide - Visual 5% conscious vs 95% subconscious
-    const BrainSplitSlide = ({ data }) => {
+      const width = 600;
+      const height = 560;
+      const cx = width / 2;
+      const cy = height / 2 - 50;
+      const colors = ['#88da1c', '#22C55E', '#3B82F6', '#A855F7', '#F59E0B', '#EF4444'];
+
+      const positions = [];
+
+      const calculatePositions = (node, level, angle, angleSpread, parent, colorIndex = 0) => {
+        const radius = level === 0 ? 0 : 45 + level * 50;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+        const color = node.color || colors[colorIndex % colors.length];
+
+        const pos = { x, y, label: node.label, level, color, parent };
+        positions.push(pos);
+
+        if (node.children && node.children.length > 0) {
+          const childAngleSpread = angleSpread / node.children.length;
+          const startAngle = angle - angleSpread / 2 + childAngleSpread / 2;
+
+          node.children.forEach((child, i) => {
+            calculatePositions(child, level + 1, startAngle + i * childAngleSpread, childAngleSpread * 0.85, pos, i);
+          });
+        }
+      };
+
+      // Start at -PI/2 so main branches go left and right
+      calculatePositions(mindMapData, 0, -Math.PI / 2, 2 * Math.PI, null);
+
+      const createCurvedPath = (from, to) => {
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2;
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const perpX = -dy * 0.15;
+        const perpY = dx * 0.15;
+        return `M ${from.x} ${from.y} Q ${midX + perpX} ${midY + perpY} ${to.x} ${to.y}`;
+      };
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
-            {data.title}
-          </motion.h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Brain />
+              <span>Mind Map</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
 
-          <div className="rounded-2xl p-6 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.08)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
-            {/* Brain visualization */}
-            <div className="flex items-center justify-center gap-6 md:gap-12">
-              {/* 5% Visible */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex-1 text-center"
-              >
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #22c55e40, #22c55e20)', border: '2px solid #22c55e' }}>
-                  <Icons.Eye />
-                </div>
-                <div className="text-4xl md:text-5xl font-bold mb-1" style={{ color: '#22c55e' }}>5%</div>
-                <div className="text-white font-semibold text-sm">Conscious</div>
-                <div className="text-neutral-400 text-xs mt-1">What you see</div>
-              </motion.div>
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+              <defs>
+                <filter id="mindmapGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="glow"/>
+                  <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
 
-              {/* Brain Icon in center */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
+              {/* Connections */}
+              {positions.map((pos, i) =>
+                pos.parent ? (
+                  <motion.path
+                    key={`path-${i}`}
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: pos.level * 0.15, duration: 0.5 }}
+                    d={createCurvedPath(pos.parent, pos)}
+                    fill="none"
+                    stroke={pos.color}
+                    strokeWidth="2"
+                    strokeOpacity="0.6"
+                  />
+                ) : null
+              )}
+
+              {/* Nodes */}
+              {positions.map((pos, i) => {
+                const isCenter = pos.level === 0;
+                const nodeWidth = isCenter ? 110 : 75;
+                const nodeHeight = isCenter ? 40 : 28;
+
+                return (
+                  <motion.g key={`node-${i}`}>
+                    <motion.rect
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: pos.level * 0.1 + 0.1, type: 'spring' }}
+                      x={pos.x - nodeWidth / 2}
+                      y={pos.y - nodeHeight / 2}
+                      width={nodeWidth}
+                      height={nodeHeight}
+                      rx={nodeHeight / 2}
+                      fill={pos.color}
+                      filter={isCenter ? 'url(#mindmapGlow)' : undefined}
+                      style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
+                    />
+                    <motion.text
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: pos.level * 0.1 + 0.2 }}
+                      x={pos.x}
+                      y={pos.y + (isCenter ? 5 : 4)}
+                      textAnchor="middle"
+                      fill="white"
+                      fontSize={isCenter ? 11 : 8}
+                      fontWeight="bold"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
+                    >
+                      {pos.label}
+                    </motion.text>
+                  </motion.g>
+                );
+              })}
+            </svg>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-center mt-4">
+              <span className="inline-block px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: 'rgba(136, 218, 28, 0.15)', color: 'var(--accent)' }}>
+                Subconscious biases branch into every purchase decision
+              </span>
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ UNIQUE COMPONENT 2: VENN DIAGRAM ============
+    // Using exact pattern from library: equal-sized overlapping circles
+    const VennDiagramSlide = ({ data }) => {
+      const sets = [
+        { label: 'Conscious', color: '#6B7280' },
+        { label: 'Subconscious', color: '#88da1c' }
+      ];
+      const intersectionLabel = 'Biases Active';
+
+      const width = 450;
+      const height = 350;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Layers />
+              <span>Venn Diagram</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.08)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+              {/* Set A - Conscious (smaller visual weight) */}
+              <motion.circle
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 0.5 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                cx={cx - 50}
+                cy={cy}
+                r="100"
+                fill={sets[0].color}
+                style={{ transformOrigin: `${cx - 50}px ${cy}px` }}
+              />
+
+              {/* Set B - Subconscious (larger visual weight via glow) */}
+              <motion.circle
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 0.5 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                cx={cx + 50}
+                cy={cy}
+                r="100"
+                fill={sets[1].color}
+                style={{ transformOrigin: `${cx + 50}px ${cy}px` }}
+              />
+
+              {/* Labels for Conscious */}
+              <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                <text x={cx - 100} y={cy - 20} textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">{sets[0].label}</text>
+                <text x={cx - 100} y={cy + 5} textAnchor="middle" fill="white" fontSize="24" fontWeight="bold">5%</text>
+                <text x={cx - 100} y={cy + 25} textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="9">Rational</text>
+                <text x={cx - 100} y={cy + 37} textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="9">Analysis</text>
+              </motion.g>
+
+              {/* Labels for Subconscious */}
+              <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+                <text x={cx + 100} y={cy - 20} textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">{sets[1].label}</text>
+                <text x={cx + 100} y={cy + 5} textAnchor="middle" fill="white" fontSize="24" fontWeight="bold">95%</text>
+                <text x={cx + 100} y={cy + 25} textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="9">Cognitive Biases</text>
+                <text x={cx + 100} y={cy + 37} textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="9">Auto Responses</text>
+              </motion.g>
+
+              {/* Intersection label */}
+              <motion.text
+                initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="hidden md:flex flex-col items-center"
+                transition={{ delay: 0.8, type: 'spring' }}
+                x={cx}
+                y={cy}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill="white"
+                fontSize="11"
+                fontWeight="bold"
               >
-                <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b5cf640, #8b5cf620)', border: '2px solid #8b5cf6' }}>
-                  <div style={{ color: '#8b5cf6' }}><Icons.Brain /></div>
-                </div>
-                <div className="text-xs text-neutral-500 mt-2">Your Brain</div>
-              </motion.div>
-
-              {/* 95% Hidden */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex-1 text-center"
-              >
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ef444440, #ef444420)', border: '2px solid #ef4444' }}>
-                  <Icons.EyeOff />
-                </div>
-                <div className="text-4xl md:text-5xl font-bold mb-1" style={{ color: '#ef4444' }}>95%</div>
-                <div className="text-white font-semibold text-sm">Subconscious</div>
-                <div className="text-neutral-400 text-xs mt-1">What drives decisions</div>
-              </motion.div>
-            </div>
+                {intersectionLabel}
+              </motion.text>
+            </svg>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 text-center"
-            >
-              <div className="inline-block px-4 py-2 rounded-lg" style={{ background: '#8b5cf620', border: '1px solid #8b5cf640' }}>
-                <span className="text-sm" style={{ color: '#8b5cf6' }}>Your copy must speak to BOTH levels</span>
-              </div>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3 }}
+              className="text-center mt-4">
+              <span className="inline-block px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: 'rgba(136, 218, 28, 0.15)', color: 'var(--accent)' }}>
+                95% of decisions happen before you're consciously aware
+              </span>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       );
     };
 
-    // BiasGridSlide - 4 master biases visualization
-    const BiasGridSlide = ({ data }) => {
-      const biases = [
-        { name: 'Halo Effect', icon: <Icons.Star />, color: '#f59e0b', desc: 'Beautiful = Quality' },
-        { name: 'Anchoring', icon: <Icons.Anchor />, color: '#3b82f6', desc: 'First price wins' },
-        { name: 'Loss Aversion', icon: <Icons.TrendingDown />, color: '#ef4444', desc: '2x loss pain' },
-        { name: 'Bandwagon', icon: <Icons.Users />, color: '#22c55e', desc: 'Crowd = correct' }
+    // ============ UNIQUE COMPONENT 3: DECISION TREE ============
+    const DecisionTreeSlide = ({ data }) => {
+      const nodes = [
+        { id: 'start', label: 'Sees Product', type: 'decision', yes: 'halo', no: 'exit1' },
+        { id: 'halo', label: 'Good Design?', type: 'decision', yes: 'anchor', no: 'exit2' },
+        { id: 'anchor', label: 'Price Anchored?', type: 'decision', yes: 'loss', no: 'consider' },
+        { id: 'loss', label: 'Scarcity?', type: 'decision', yes: 'buy', no: 'cart' },
+        { id: 'buy', label: 'PURCHASE', type: 'outcome', color: '#22C55E' },
+        { id: 'cart', label: 'Add to Cart', type: 'outcome', color: '#F59E0B' },
+        { id: 'consider', label: 'Maybe Later', type: 'outcome', color: '#6B7280' },
+        { id: 'exit1', label: 'Bounce', type: 'outcome', color: '#EF4444' },
+        { id: 'exit2', label: 'Exit', type: 'outcome', color: '#EF4444' },
       ];
 
+      const decisionColor = '#3B82F6';
+      const yesColor = '#22C55E';
+      const noColor = '#EF4444';
+      const outcomeColor = '#A855F7';
+
+      const width = 600;
+      const height = 420;
+
+      const positionedNodes = [];
+      const connections = [];
+
+      const positionNode = (nodeId, x, y, level, spread) => {
+        const node = nodes.find(n => n.id === nodeId);
+        if (!node || positionedNodes.find(p => p.node.id === nodeId)) return;
+
+        const posNode = { node, x, y, level };
+        positionedNodes.push(posNode);
+
+        const nextY = y + 85;
+        const nextSpread = spread * 0.55;
+
+        if (node.yes) {
+          const yesX = x - spread;
+          positionNode(node.yes, yesX, nextY, level + 1, nextSpread);
+          const targetNode = positionedNodes.find(p => p.node.id === node.yes);
+          if (targetNode) connections.push({ from: posNode, to: targetNode, type: 'yes' });
+        }
+
+        if (node.no) {
+          const noX = x + spread;
+          positionNode(node.no, noX, nextY, level + 1, nextSpread);
+          const targetNode = positionedNodes.find(p => p.node.id === node.no);
+          if (targetNode) connections.push({ from: posNode, to: targetNode, type: 'no' });
+        }
+      };
+
+      positionNode('start', width / 2, 50, 0, 130);
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">
-            {data.title}
-          </motion.h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.GitBranch />
+              <span>Decision Tree</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {biases.map((bias, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.1 }}
-                className="rounded-2xl p-5 relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-              >
-                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${bias.color}, transparent)` }} />
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${bias.color}20`, color: bias.color }}>
-                    {bias.icon}
-                  </div>
-                  <div className="text-white font-bold text-sm md:text-base">{bias.name}</div>
-                </div>
-                <div className="text-neutral-400 text-xs md:text-sm">{bias.desc}</div>
-              </motion.div>
-            ))}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.08)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="text-center text-sm text-neutral-500 mt-6"
-          >
-            These aren&apos;t bugs. They&apos;re features of human psychology.
-          </motion.p>
-        </div>
-      );
-    };
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+              <defs>
+                <marker id="decisionArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.5)" />
+                </marker>
+                <filter id="treeShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3" />
+                </filter>
+                <filter id="treeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="glow"/>
+                  <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
 
-    // AnchoringDemoSlide - Price anchor perception demo
-    const AnchoringDemoSlide = ({ data }) => {
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">
-            {data.title}
-          </motion.h2>
+              {/* Connections */}
+              {connections.map((conn, i) => {
+                const fromY = conn.from.y + 26;
+                const toY = conn.to.y - (conn.to.node.type === 'decision' ? 26 : 18);
+                const midY = (fromY + toY) / 2;
+                const pathD = `M ${conn.from.x} ${fromY} C ${conn.from.x} ${midY}, ${conn.to.x} ${midY}, ${conn.to.x} ${toY}`;
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Without Anchor */}
+                return (
+                  <motion.g key={`conn-${i}`}>
+                    <motion.path
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      transition={{ delay: 0.4 + i * 0.08, duration: 0.4 }}
+                      d={pathD}
+                      stroke={conn.type === 'yes' ? yesColor : noColor}
+                      strokeWidth="2"
+                      fill="none"
+                      markerEnd="url(#decisionArrow)"
+                    />
+                    <motion.text
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6 + i * 0.08 }}
+                      x={(conn.from.x + conn.to.x) / 2 + (conn.type === 'yes' ? -12 : 12)}
+                      y={midY}
+                      textAnchor="middle"
+                      fill={conn.type === 'yes' ? yesColor : noColor}
+                      fontSize="9"
+                      fontWeight="600"
+                    >
+                      {conn.type === 'yes' ? 'Yes' : 'No'}
+                    </motion.text>
+                  </motion.g>
+                );
+              })}
+
+              {/* Nodes */}
+              {positionedNodes.map((posNode, i) => {
+                const { node, x, y } = posNode;
+                const isDecision = node.type === 'decision';
+                const color = node.color || (isDecision ? decisionColor : outcomeColor);
+                const isPurchase = node.id === 'buy';
+
+                return (
+                  <motion.g key={node.id} filter="url(#treeShadow)">
+                    {isDecision ? (
+                      <motion.g
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1 + i * 0.06, type: 'spring', stiffness: 200 }}
+                        style={{ transformOrigin: `${x}px ${y}px` }}>
+                        <polygon
+                          points={`${x},${y - 26} ${x + 50},${y} ${x},${y + 26} ${x - 50},${y}`}
+                          fill={color}
+                        />
+                        <text x={x} y={y + 4} textAnchor="middle" fill="white" fontSize="9" fontWeight="600">{node.label}</text>
+                      </motion.g>
+                    ) : (
+                      <motion.g
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1 + i * 0.06, type: 'spring', stiffness: 200 }}
+                        style={{ transformOrigin: `${x}px ${y}px` }}
+                        filter={isPurchase ? 'url(#treeGlow)' : undefined}>
+                        <rect x={x - 45} y={y - 18} width="90" height="36" rx="18" fill={color} />
+                        <text x={x} y={y + 4} textAnchor="middle" fill="white" fontSize="9" fontWeight="600">{node.label}</text>
+                      </motion.g>
+                    )}
+                  </motion.g>
+                );
+              })}
+            </svg>
+
+            {/* Legend */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl p-6 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
-              <div className="text-neutral-400 text-xs uppercase tracking-wider mb-4">Without Anchor</div>
-              <div className="text-center mb-4">
-                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#ef4444' }}>$97</div>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="flex justify-center gap-6 mt-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rotate-45" style={{ backgroundColor: decisionColor }} />
+                <span className="text-xs text-white/60">Decision Point</span>
               </div>
-              <div className="text-center py-3 rounded-lg" style={{ background: '#ef444420' }}>
-                <span className="text-red-400 font-semibold">Feels expensive</span>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: outcomeColor }} />
+                <span className="text-xs text-white/60">Outcome</span>
               </div>
-              <div className="flex justify-center mt-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#ef444420', color: '#ef4444' }}>
-                  <Icons.X />
-                </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-0.5" style={{ backgroundColor: yesColor }} />
+                <span className="text-xs" style={{ color: yesColor }}>Yes (Bias Active)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-0.5" style={{ backgroundColor: noColor }} />
+                <span className="text-xs" style={{ color: noColor }}>No (Bias Missing)</span>
               </div>
             </motion.div>
+          </motion.div>
+        </div>
+      );
+    };
 
-            {/* With Anchor */}
+    // ============ UNIQUE COMPONENT 4: SLOPE CHART ============
+    // Using exact pattern from library with well-spaced data
+    const SlopeChartSlide = ({ data }) => {
+      // Spread out start values vertically for clarity
+      const chartData = [
+        { label: 'Loss Aversion', start: 2.3, end: 5.8, color: '#EF4444' },
+        { label: 'Anchoring', start: 1.9, end: 5.4, color: '#3B82F6' },
+        { label: 'Halo Effect', start: 2.1, end: 4.6, color: '#F59E0B' },
+        { label: 'Bandwagon', start: 1.4, end: 3.5, color: '#22C55E' },
+      ];
+
+      const width = 550;
+      const height = 350;
+      const padding = { top: 60, right: 180, bottom: 40, left: 80 };
+
+      const allValues = chartData.flatMap(d => [d.start, d.end]);
+      const maxValue = Math.max(...allValues);
+      const minValue = Math.min(...allValues);
+
+      const scaleY = (val) =>
+        height - padding.bottom - ((val - minValue) / (maxValue - minValue)) * (height - padding.top - padding.bottom);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.TrendingUp />
+              <span>Slope Chart</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.08)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+              {/* Column lines */}
+              <motion.line
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                x1={padding.left} y1={padding.top}
+                x2={padding.left} y2={height - padding.bottom}
+                stroke="rgba(255,255,255,0.2)" strokeWidth="2"
+              />
+              <motion.line
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                x1={width - padding.right} y1={padding.top}
+                x2={width - padding.right} y2={height - padding.bottom}
+                stroke="rgba(255,255,255,0.2)" strokeWidth="2"
+              />
+
+              {/* Column headers */}
+              <motion.text
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                x={padding.left} y={padding.top - 20}
+                textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="12" fontWeight="bold"
+              >Before</motion.text>
+              <motion.text
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                x={width - padding.right} y={padding.top - 20}
+                textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="12" fontWeight="bold"
+              >After</motion.text>
+
+              {/* Slopes */}
+              {chartData.map((d, i) => {
+                const color = d.color;
+                const y1 = scaleY(d.start);
+                const y2 = scaleY(d.end);
+                const isIncrease = d.end >= d.start;
+
+                return (
+                  <motion.g key={i}>
+                    {/* Line */}
+                    <motion.line
+                      initial={{ x2: padding.left, y2: y1 }}
+                      animate={{ x2: width - padding.right, y2 }}
+                      transition={{ delay: 0.2 + i * 0.1, duration: 0.6 }}
+                      x1={padding.left} y1={y1}
+                      stroke={color} strokeWidth="3"
+                    />
+
+                    {/* Start point */}
+                    <motion.circle
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.1 + i * 0.1 }}
+                      cx={padding.left} cy={y1} r="8" fill={color}
+                    />
+
+                    {/* End point */}
+                    <motion.circle
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                      cx={width - padding.right} cy={y2} r="8" fill={color}
+                    />
+
+                    {/* Start value */}
+                    <motion.text
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 + i * 0.1 }}
+                      x={padding.left - 15} y={y1 + 4}
+                      textAnchor="end" fill="rgba(255,255,255,0.7)" fontSize="11"
+                    >{d.start}</motion.text>
+
+                    {/* End value */}
+                    <motion.text
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6 + i * 0.1 }}
+                      x={width - padding.right + 15} y={y2 + 4}
+                      textAnchor="start" fill="rgba(255,255,255,0.7)" fontSize="11"
+                    >{d.end}</motion.text>
+
+                    {/* Label - positioned to the right of end point */}
+                    <motion.text
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      x={width - padding.right + 50}
+                      y={y2 + 4}
+                      textAnchor="start" fill={color} fontSize="10" fontWeight="bold"
+                    >{d.label}</motion.text>
+                  </motion.g>
+                );
+              })}
+            </svg>
+
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="rounded-2xl p-6 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
-              <div className="text-neutral-400 text-xs uppercase tracking-wider mb-4">With Anchor</div>
-              <div className="text-center mb-4">
-                <div className="text-2xl text-neutral-500 line-through mb-1">$297</div>
-                <div className="text-5xl md:text-6xl font-bold" style={{ color: '#22c55e' }}>$97</div>
-              </div>
-              <div className="text-center py-3 rounded-lg" style={{ background: '#22c55e20' }}>
-                <span className="text-green-400 font-semibold">Feels like a steal!</span>
-              </div>
-              <div className="flex justify-center mt-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#22c55e20', color: '#22c55e' }}>
-                  <Icons.Check />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center text-sm mt-6 font-semibold"
-            style={{ color: '#8b5cf6' }}
-          >
-            Same product. Same price. Different perception.
-          </motion.p>
-        </div>
-      );
-    };
-
-    // ============ PART 2: PRACTICAL SLIDES ============
-
-    // Section Divider - Transition to practical
-    const SectionDividerSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
-            <Icons.Zap className="w-10 h-10 text-white" />
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">Discover which biases resonate with YOUR customers</motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
-                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-    );
-
-    // Step 1: Install Post-Purchase Surveys
-    const StepInstallSurveysSlide = ({ data }) => {
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Install Post-Purchase Surveys</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-              <div className="flex items-center gap-3 mb-4">
-                <img src={TOOL_CONFIG.logo} alt="Grapevine" className="w-12 h-12 rounded-lg" />
-                <div>
-                  <div className="text-white font-bold text-sm">Grapevine</div>
-                  <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
-                </div>
-              </div>
-              <div className="space-y-2 text-sm text-neutral-300">
-                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Appears right after purchase</span></div>
-                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Customers at peak trust moment</span></div>
-                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>40-60% response rates typical</span></div>
-                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Zero friction - one click answers</span></div>
-              </div>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
-              <div className="text-sm font-bold text-neutral-700 mb-4">Why This Timing?</div>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-xl font-bold text-green-600">10x</div>
-                  <div>
-                    <div className="font-bold text-neutral-800 text-sm">Higher response rate</div>
-                    <div className="text-xs text-neutral-500">vs email surveys sent later</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-xl font-bold text-purple-600">Real</div>
-                  <div>
-                    <div className="font-bold text-neutral-800 text-sm">Fresh memory</div>
-                    <div className="text-xs text-neutral-500">They remember why they bought</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install Grapevine from the Shopify App Store. Takes 2 minutes.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Step 2: Craft The Right Questions
-    const StepCraftQuestionsSlide = ({ data }) => {
-      const questions = [
-        { q: '"How did you hear about us?"', insight: 'Reveals which channels drive real buyers', color: '#3b82f6' },
-        { q: '"What almost stopped you from buying?"', insight: 'Uncovers hidden objections to address', color: '#ef4444' },
-        { q: '"What convinced you to buy today?"', insight: 'Shows which biases naturally resonate', color: '#22c55e' },
-        { q: '"Who are you buying this for?"', insight: 'Reveals unexpected customer segments', color: '#f59e0b' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Craft The Right Questions</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-3 mb-6">
-            {questions.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-                <div className="h-1 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
-                <div className="text-white font-medium text-sm mb-2">{item.q}</div>
-                <div className="text-neutral-400 text-xs flex items-center gap-1">
-                  <Icons.Lightbulb className="w-3 h-3" style={{ color: item.color }} />
-                  <span>{item.insight}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Start with 2-3 questions max. More = lower completion rates.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Step 3: Analyze Patterns
-    const StepAnalyzePatternsSlide = ({ data }) => {
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Analyze Patterns & Apply</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-              <div className="flex items-center gap-2 mb-4">
-                <Icons.BarChart style={{ color: 'var(--accent)' }} />
-                <div className="text-white font-bold text-sm">Look For Patterns</div>
-              </div>
-              <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-neutral-800">
-                  <div className="text-neutral-300 text-sm">If 40% say "Instagram"...</div>
-                  <div className="text-xs mt-1" style={{ color: 'var(--accent)' }}>Double down on that channel</div>
-                </div>
-                <div className="p-3 rounded-lg bg-neutral-800">
-                  <div className="text-neutral-300 text-sm">If "shipping cost" was top objection...</div>
-                  <div className="text-xs mt-1" style={{ color: 'var(--accent)' }}>Address it prominently on product pages</div>
-                </div>
-                <div className="p-3 rounded-lg bg-neutral-800">
-                  <div className="text-neutral-300 text-sm">If "reviews convinced me"...</div>
-                  <div className="text-xs mt-1" style={{ color: 'var(--accent)' }}>Social proof is your superpower</div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
-              <div className="text-sm font-bold text-neutral-700 mb-4">Turn Data Into Copy</div>
-              <div className="space-y-3 text-sm">
-                <div className="p-3 rounded-lg bg-white border border-neutral-100">
-                  <p className="text-neutral-500 text-xs mb-1">Customer said:</p>
-                  <p className="text-neutral-700 italic">"I was worried about sizing"</p>
-                  <p className="mt-2 text-xs" style={{ color: 'var(--accent)' }}>Add: "Detailed size guide + easy returns"</p>
-                </div>
-                <div className="p-3 rounded-lg bg-white border border-neutral-100">
-                  <p className="text-neutral-500 text-xs mb-1">Customer said:</p>
-                  <p className="text-neutral-700 italic">"The before/after photos sold me"</p>
-                  <p className="mt-2 text-xs" style={{ color: 'var(--accent)' }}>Add: More UGC and results content</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Review responses weekly. Let customers write your marketing for you.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Results Slide - What to expect
-    const StepResultsSlide = ({ data }) => {
-      const results = [
-        { metric: '40-60%', label: 'Response Rate', desc: 'Post-purchase timing', icon: Icons.MessageCircle, color: '#22c55e' },
-        { metric: '3-5x', label: 'Better Targeting', desc: 'Know what actually works', icon: Icons.Target, color: '#f59e0b' },
-        { metric: '+25%', label: 'Conversion Lift', desc: 'From addressing objections', icon: Icons.TrendingUp, color: '#8b5cf6' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            {results.map((result, i) => {
-              const Icon = result.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
-                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
-                    <Icon />
-                  </div>
-                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
-                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
-                  <div className="text-neutral-400 text-xs">{result.desc}</div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-            <p className="text-neutral-300 text-sm">Insights start flowing within <span className="text-white font-bold">24-48 hours</span> of your first orders</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Completion Slide with Key Takeaways
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the invisible forces that drive purchase decisions. Use them ethically to communicate in the language your customer's brain actually speaks.</motion.p>
-
-        {/* Key Takeaways - Clean summary */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
-          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
-          <div className="space-y-2 text-left">
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4 }}
+              className="text-center mt-4">
+              <span className="inline-block px-4 py-2 rounded-lg text-sm font-semibold" style={{ background: 'rgba(136, 218, 28, 0.15)', color: 'var(--accent)' }}>
+                Average conversion increase: +189% when biases are strategically applied
               </span>
-              <span className="text-sm text-neutral-600">95% of decisions happen subconsciously - your copy must speak to both levels</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
-              </span>
-              <span className="text-sm text-neutral-600">The 4 master biases: Halo Effect, Anchoring, Loss Aversion, Bandwagon</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
-              </span>
-              <span className="text-sm text-neutral-600">Ask customers WHY they bought to discover which biases naturally resonate</span>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
-          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-      </div>
-    );
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    };
 
     // ============ STANDARD SLIDE COMPONENTS ============
 
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+    const WelcomeSlide = ({ data }) => {
+      const userName = getUserName();
+      const [greeting, setGreeting] = useState('');
+      useEffect(() => {
+        if (typeof window !== 'undefined' && window.getPersonalizedGreeting) {
+          setGreeting(window.getPersonalizedGreeting(userName));
+        } else {
+          setGreeting(`Welcome, ${userName}!`);
+        }
+      }, [userName]);
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6 overflow-y-auto slide-scroll">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="text-center mb-6">
+            <motion.div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <Icons.Zap />
+              <span>{LESSON_CONFIG.duration}</span>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
-          </div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-sm text-black/60 mb-2">{greeting}</motion.p>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="title-font text-3xl md:text-5xl text-black mb-4">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-base md:text-lg text-black/70 max-w-xl mx-auto">{LESSON_CONFIG.description}</motion.p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="rounded-2xl p-5 md:p-7" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333' }}>
+            <h3 className="text-white text-base font-semibold mb-4 flex items-center gap-2"><Icons.Target className="text-[var(--accent)]" /> What You'll Learn</h3>
+            <ul className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.1 }} className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: 'var(--accent)', color: 'black' }}>{i + 1}</span>
+                  <span className="text-white/80 text-sm">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6 overflow-y-auto slide-scroll">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }} className="title-font text-3xl md:text-5xl text-black mb-6 leading-tight">{data.headline}</motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-base md:text-lg text-black/70 max-w-2xl mx-auto leading-relaxed">{data.subtext}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    const SplitContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6 overflow-y-auto slide-scroll">
+        <div className={`flex flex-col ${data.reversed ? 'md:flex-row-reverse' : 'md:flex-row'} gap-6 items-center`}>
+          <motion.div className="flex-1" initial={{ opacity: 0, x: data.reversed ? 30 : -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</h2>
+            <p className="text-black/70 leading-relaxed whitespace-pre-line text-sm md:text-base">{data.content}</p>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.div className="flex-1 flex justify-center" initial={{ opacity: 0, x: data.reversed ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
+            {data.media?.type === 'video' && (
+              <video src={data.media.src} autoPlay loop muted playsInline className="rounded-xl max-h-[320px] w-auto shadow-lg" style={{ background: '#f5f5f5' }} />
+            )}
+          </motion.div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6 overflow-y-auto slide-scroll">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>Case Study</div>
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #fee2e2, #fecaca)', border: '1px solid #fca5a5' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <Icons.X className="text-red-500" />
+              <span className="font-semibold text-red-700 text-sm">{data.before.label}</span>
+            </div>
+            <p className="text-red-900/80 text-sm leading-relaxed">{data.before.text}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #dcfce7, #bbf7d0)', border: '1px solid #86efac' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <Icons.Check className="text-green-600" />
+              <span className="font-semibold text-green-700 text-sm">{data.after.label}</span>
+            </div>
+            <p className="text-green-900/80 text-sm leading-relaxed">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="rounded-xl p-4 text-center" style={{ background: 'rgba(136, 218, 28, 0.1)', border: '1px solid rgba(136, 218, 28, 0.3)' }}>
+          <p className="text-black/80 font-medium text-sm"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.insight}</p>
         </motion.div>
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="mb-6"><Icons.Quote className="w-12 h-12 mx-auto" style={{ color: 'var(--accent)' }} /></motion.div>
+          <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="title-font text-2xl md:text-4xl text-black mb-6 leading-snug">"{data.quote}"</motion.blockquote>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+            <p className="font-semibold text-black">{data.author}</p>
+            <p className="text-black/60 text-sm">{data.role}</p>
+          </motion.div>
+        </motion.div>
       </div>
     );
 
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+    const QuizSlide = ({ data, onAnswer }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const [feedbackGif, setFeedbackGif] = useState('');
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      const handleSelect = (index) => {
+        if (selected !== null) return;
+        setSelected(index);
+        setFeedbackGif(index === data.correctIndex ? getRandomCelebrationGif() : getRandomEmpathyGif());
+        setTimeout(() => setShowFeedback(true), 300);
+        if (onAnswer) onAnswer(index === data.correctIndex);
+      };
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
-            </motion.div>
-            <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
-                  <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
-                  </div>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6 overflow-y-auto slide-scroll">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>Quick Check</div>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+
+          <div className="space-y-3 max-w-2xl mx-auto w-full">
+            {data.options.map((option, i) => {
+              let style = { background: '#f5f5f5', border: '2px solid #e5e5e5' };
+              if (selected !== null) {
+                if (i === data.correctIndex) style = { background: '#dcfce7', border: '2px solid #22c55e' };
+                else if (i === selected) style = { background: '#fee2e2', border: '2px solid #ef4444' };
+              }
+              return (
+                <motion.button key={i} onClick={() => handleSelect(i)} disabled={selected !== null} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="w-full text-left p-4 rounded-xl transition-all duration-200 flex items-center gap-3" style={style}>
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: selected === i ? (i === data.correctIndex ? '#22c55e' : '#ef4444') : '#e5e5e5', color: selected === i ? 'white' : '#666' }}>{String.fromCharCode(65 + i)}</span>
+                  <span className="text-sm font-medium text-black/80">{option}</span>
                 </motion.button>
-              ))}
-            </div>
-            <AnimatePresence>
-              {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              );
+            })}
           </div>
-        </div>
-      );
-    };
 
-    const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
-      const [direction, setDirection] = useState(1);
-      const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
-      const [gifConfig, setGifConfig] = useState(null);
-      const [isAnimating, setIsAnimating] = useState(false);
-
-      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
-      const hideGif = useCallback(() => setGifConfig(null), []);
-
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          totalSlides: slides.length,
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
-
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
-        setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
-      }, [isAnimating]);
-
-      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
-      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
-
-      useEffect(() => {
-        const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [nextSlide, prevSlide]);
-
-      const slideVariants = {
-        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
-      };
-
-      const renderSlide = (slide) => {
-        switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'brain-split': return <BrainSplitSlide data={slide} />;
-          case 'bias-grid': return <BiasGridSlide data={slide} />;
-          case 'anchoring-demo': return <AnchoringDemoSlide data={slide} />;
-          // Part 2: Practical slides
-          case 'section-divider': return <SectionDividerSlide data={slide} />;
-          case 'step-install-surveys': return <StepInstallSurveysSlide data={slide} />;
-          case 'step-craft-questions': return <StepCraftQuestionsSlide data={slide} />;
-          case 'step-analyze-patterns': return <StepAnalyzePatternsSlide data={slide} />;
-          case 'step-results': return <StepResultsSlide data={slide} />;
-          case 'completion': return <CompletionSlide />;
-          default: return null;
-        }
-      };
-
-      const showPrev = currentSlide > 0;
-      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
-
-      return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
-            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
-                {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
-              </motion.div>
-            </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowRight /></button>}
-          </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
-            </div>
-          </div>
           <AnimatePresence>
-            {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
+            {showFeedback && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-5 rounded-xl p-4 flex items-start gap-4 max-w-2xl mx-auto" style={{ background: isCorrect ? '#dcfce7' : '#fee2e2', border: `1px solid ${isCorrect ? '#22c55e' : '#ef4444'}` }}>
+                <video src={feedbackGif} autoPlay loop muted playsInline className="w-20 h-20 rounded-lg object-cover flex-shrink-0" />
+                <div>
+                  <p className="font-bold mb-1" style={{ color: isCorrect ? '#166534' : '#991b1b' }}>{isCorrect ? 'Correct!' : 'Not Quite'}</p>
+                  <p className="text-sm" style={{ color: isCorrect ? '#166534' : '#991b1b' }}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -948,7 +856,104 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6 overflow-y-auto slide-scroll">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <Icons.Check className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="title-font text-3xl md:text-4xl text-black mb-4">Lesson Complete!</motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-black/70 mb-8 max-w-md mx-auto">You've unlocked the secrets of cognitive biases. Now go make your customers' brains work for you.</motion.p>
+
+          {LESSON_CONFIG.nextLesson && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-5 text-left max-w-md mx-auto" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid #333' }}>
+              <p className="text-white/50 text-xs uppercase tracking-wider mb-2">Up Next</p>
+              <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+              <p className="text-white/70 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    );
+
+    // ============ SLIDE RENDERER ============
+    const SlideRenderer = ({ slide, onAnswer }) => {
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide data={slide} />;
+        case 'hook': return <HookSlide data={slide} />;
+        case 'mind-map': return <MindMapSlide data={slide} />;
+        case 'venn-diagram': return <VennDiagramSlide data={slide} />;
+        case 'decision-tree': return <DecisionTreeSlide data={slide} />;
+        case 'slope-chart': return <SlopeChartSlide data={slide} />;
+        case 'split-content': return <SplitContentSlide data={slide} />;
+        case 'before-after': return <BeforeAfterSlide data={slide} />;
+        case 'quote': return <QuoteSlide data={slide} />;
+        case 'quiz': return <QuizSlide data={slide} onAnswer={onAnswer} />;
+        case 'completion': return <CompletionSlide data={slide} />;
+        default: return <div className="h-full flex items-center justify-center text-black/50">Unknown slide type: {slide.type}</div>;
+      }
+    };
+
+    // ============ MAIN APP ============
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const totalSlides = slides.length;
+
+      const goNext = useCallback(() => { if (currentSlide < totalSlides - 1) setCurrentSlide(s => s + 1); }, [currentSlide, totalSlides]);
+      const goPrev = useCallback(() => { if (currentSlide > 0) setCurrentSlide(s => s - 1); }, [currentSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+          else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [goNext, goPrev]);
+
+      useEffect(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('slide', currentSlide.toString());
+        window.history.replaceState({}, '', url.toString());
+      }, [currentSlide]);
+
+      const progress = ((currentSlide + 1) / totalSlides) * 100;
+
+      return (
+        <div className="h-screen w-full flex flex-col bg-[#fafafa] relative overflow-hidden">
+          {/* Progress Bar */}
+          <div className="h-1 w-full bg-black/5 relative z-50">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          {/* Slide Content */}
+          <div className="flex-1 relative overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                <SlideRenderer slide={slides[currentSlide]} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-black/5">
+            <button onClick={goPrev} disabled={currentSlide === 0} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/5" style={{ color: '#333' }}>
+              <Icons.ArrowLeft /> Back
+            </button>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-black/60">{currentSlide + 1} / {totalSlides}</span>
+            </div>
+
+            <button onClick={goNext} disabled={currentSlide === totalSlides - 1} className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all disabled:opacity-30 disabled:cursor-not-allowed" style={{ background: 'var(--accent)', color: 'black' }}>
+              {currentSlide === totalSlides - 1 ? 'Finish' : 'Continue'} <Icons.ArrowRight />
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
