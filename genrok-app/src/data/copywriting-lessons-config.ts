@@ -15,10 +15,21 @@ export interface ComponentOption {
   previewData: Record<string, unknown>;
 }
 
+export interface SlideContent {
+  title?: string;
+  subtitle?: string;
+  body?: string;
+  emphasis?: string;
+  stats?: { value: string; label: string; desc?: string }[];
+  steps?: { num?: string; title: string; desc?: string }[];
+  items?: { title: string; question?: string; text?: string }[];
+}
+
 export interface ComponentSlot {
   slideIndex: number;
   slideTitle: string;
   currentType: string;
+  slideContent: SlideContent; // Actual content from the lesson slide
   options: [ComponentOption, ComponentOption, ComponentOption];
 }
 
@@ -45,6 +56,11 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 3,
         slideTitle: 'The MAYA Principle',
         currentType: 'maya',
+        slideContent: {
+          title: 'The MAYA Principle',
+          subtitle: 'Most Advanced Yet Acceptable',
+          body: 'The sweet spot between familiar and novel that makes products irresistible.',
+        },
         options: [
           {
             id: 'VennDiagram',
@@ -95,6 +111,14 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 8,
         slideTitle: 'Brain Science Stats',
         currentType: 'stats',
+        slideContent: {
+          title: 'The Brain Science',
+          stats: [
+            { value: '40%', label: 'Faster Processing', desc: 'Brain handles familiar things faster' },
+            { value: '0', label: 'Dopamine Spike', desc: 'Pure familiarity = no excitement' },
+            { value: '2x', label: 'Engagement', desc: 'Novel-familiar mix doubles attention' },
+          ],
+        },
         options: [
           {
             id: 'StatCard',
@@ -149,6 +173,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 4,
         slideTitle: 'Reactance Stats',
         currentType: 'reactance-stats',
+        slideContent: {
+          title: 'The Reactance Response',
+          body: 'When you tell someone they CAN\'T do something, their brain instantly wants to do it MORE.',
+        },
         options: [
           {
             id: 'StatCard',
@@ -192,6 +220,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 3,
         slideTitle: 'Brain Response Cascade',
         currentType: 'brain-response',
+        slideContent: {
+          title: 'What Happens in Your Brain',
+          body: 'The moment you see "Don\'t click this," a 4-step cascade begins.',
+        },
         options: [
           {
             id: 'Timeline',
@@ -250,6 +282,11 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 4,
         slideTitle: 'The F.R.E.D. Framework',
         currentType: 'framework',
+        slideContent: {
+          title: 'The F.R.E.D. Method',
+          subtitle: 'Fears, Reactions, Emotions, Desires',
+          body: 'The 4 psychological levers that control every buying decision.',
+        },
         options: [
           {
             id: 'ProcessSteps',
@@ -295,6 +332,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 7,
         slideTitle: 'F.R.E.D. Application',
         currentType: 'example',
+        slideContent: {
+          title: 'F.R.E.D. In Action',
+          body: 'See how generic copy transforms when you apply the F.R.E.D. framework.',
+        },
         options: [
           {
             id: 'BeforeAfter',
@@ -346,6 +387,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 4,
         slideTitle: 'The Decision Split',
         currentType: 'stats',
+        slideContent: {
+          title: 'The Decision Split',
+          body: 'Your customers think they make logical decisions. They don\'t.',
+        },
         options: [
           {
             id: 'DonutChart',
@@ -390,6 +435,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 6,
         slideTitle: 'The Decision Sequence',
         currentType: 'process',
+        slideContent: {
+          title: 'The Real Decision Process',
+          body: 'Every purchase follows this invisible sequence - emotion leads, logic follows.',
+        },
         options: [
           {
             id: 'Timeline',
@@ -448,6 +497,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 4,
         slideTitle: 'The Attention Filter',
         currentType: 'stats',
+        slideContent: {
+          title: 'The Gatekeeper',
+          body: 'Your brain filters 99.9% of all marketing messages. Here\'s how to get through.',
+        },
         options: [
           {
             id: 'FunnelChart',
@@ -492,6 +545,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 6,
         slideTitle: 'Bypass Techniques',
         currentType: 'techniques',
+        slideContent: {
+          title: 'The 4 Gatekeeper Keys',
+          body: 'Four proven methods to bypass the brain\'s attention filter.',
+        },
         options: [
           {
             id: 'IconGrid',
@@ -546,6 +603,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 3,
         slideTitle: 'The 3-Second Window',
         currentType: 'stats',
+        slideContent: {
+          title: 'The 3-Second Window',
+          body: 'You have exactly 3 seconds before a visitor decides to stay or leave.',
+        },
         options: [
           {
             id: 'Timeline',
@@ -589,6 +650,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         slideIndex: 6,
         slideTitle: 'Win the 3 Seconds',
         currentType: 'checklist',
+        slideContent: {
+          title: 'Win the 3 Seconds',
+          body: 'Your page must accomplish these 4 things before the clock runs out.',
+        },
         options: [
           {
             id: 'IconGrid',

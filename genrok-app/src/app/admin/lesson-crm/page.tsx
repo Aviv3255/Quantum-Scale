@@ -20,7 +20,7 @@ import {
   Link as LinkIcon,
 } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { copywritingLessonsConfig, LessonConfig, ComponentSlot, ComponentOption } from '@/data/copywriting-lessons-config';
+import { copywritingLessonsConfig, LessonConfig, ComponentSlot, ComponentOption, SlideContent } from '@/data/copywriting-lessons-config';
 
 // Types for saved data
 interface SavedData {
@@ -355,185 +355,74 @@ const ComponentPreviewContent = ({ option }: { option: ComponentOption }) => {
   );
 };
 
-// Layout types for different component placements
-type SlideLayout = 'centered' | 'split-left' | 'split-right' | 'full-width' | 'bottom-stats' | 'top-title-centered';
-
-// Determine the best layout for each component type
-const getComponentLayout = (componentId: string): SlideLayout => {
-  const layoutMap: Record<string, SlideLayout> = {
-    // Centered layouts - diagrams and charts that need space
-    VennDiagram: 'centered',
-    DonutChart: 'centered',
-    RadarChart: 'centered',
-    GaugeChart: 'centered',
-    FunnelChart: 'centered',
-
-    // Split layouts - content with explanation
-    Timeline: 'split-right',
-    ProcessSteps: 'split-right',
-    IconGrid: 'split-right',
-    StackedList: 'split-right',
-
-    // Full width - comparisons and bars
-    BeforeAfter: 'full-width',
-    ComparisonBars: 'full-width',
-    BarChart: 'full-width',
-    SlopeChart: 'full-width',
-
-    // Stats at bottom
-    StatCard: 'bottom-stats',
-
-    // Default
-    SplitContent: 'split-left',
-  };
-  return layoutMap[componentId] || 'top-title-centered';
-};
-
-// Slide frame that shows the component inside the actual slide layout
+// Full-width slide preview that mimics the actual lesson slide
 const SlidePreview = ({
   option,
-  slideTitle,
+  slideContent,
   slideIndex
 }: {
   option: ComponentOption;
-  slideTitle: string;
+  slideContent: SlideContent;
   slideIndex: number;
 }) => {
-  const layout = getComponentLayout(option.id);
-
-  // Render different slide layouts based on component type
-  const renderSlideContent = () => {
-    switch (layout) {
-      case 'centered':
-        // Large centered component (diagrams, charts)
-        return (
-          <div className="flex-1 p-1.5 flex flex-col">
-            <div className="text-center mb-1">
-              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
-            </div>
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-[85%] h-[90%]">
-                <ComponentPreviewContent option={option} />
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'split-right':
-        // Title + text on left, component on right
-        return (
-          <div className="flex-1 p-1.5 flex gap-1.5">
-            <div className="w-[35%] flex flex-col justify-center">
-              <h3 className="text-[7px] font-bold text-black leading-tight mb-1">{slideTitle}</h3>
-              <div className="space-y-0.5">
-                <div className="h-1 bg-black/10 rounded w-full" />
-                <div className="h-1 bg-black/10 rounded w-4/5" />
-                <div className="h-1 bg-black/10 rounded w-3/5" />
-              </div>
-            </div>
-            <div className="w-[65%] flex items-center justify-center">
-              <div className="w-full h-full">
-                <ComponentPreviewContent option={option} />
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'split-left':
-        // Component on left, text on right
-        return (
-          <div className="flex-1 p-1.5 flex gap-1.5">
-            <div className="w-[60%] flex items-center justify-center">
-              <div className="w-full h-full">
-                <ComponentPreviewContent option={option} />
-              </div>
-            </div>
-            <div className="w-[40%] flex flex-col justify-center">
-              <h3 className="text-[7px] font-bold text-black leading-tight mb-1">{slideTitle}</h3>
-              <div className="space-y-0.5">
-                <div className="h-1 bg-black/10 rounded w-full" />
-                <div className="h-1 bg-black/10 rounded w-4/5" />
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'full-width':
-        // Small title, full-width component below
-        return (
-          <div className="flex-1 p-1.5 flex flex-col">
-            <div className="mb-1">
-              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
-            </div>
-            <div className="flex-1">
-              <ComponentPreviewContent option={option} />
-            </div>
-          </div>
-        );
-
-      case 'bottom-stats':
-        // Title and content on top, stats row at bottom
-        return (
-          <div className="flex-1 p-1.5 flex flex-col">
-            <div className="mb-1">
-              <h3 className="text-[7px] font-bold text-black leading-tight text-center">{slideTitle}</h3>
-            </div>
-            <div className="flex-1 flex flex-col justify-center">
-              <div className="space-y-0.5 mb-2 px-2">
-                <div className="h-1 bg-black/10 rounded w-full" />
-                <div className="h-1 bg-black/10 rounded w-4/5 mx-auto" />
-              </div>
-              <div className="h-[60%]">
-                <ComponentPreviewContent option={option} />
-              </div>
-            </div>
-          </div>
-        );
-
-      default: // top-title-centered
-        return (
-          <div className="flex-1 p-1.5 flex flex-col">
-            <div className="text-center mb-1">
-              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
-              <div className="w-4 h-0.5 bg-[#88da1c] mx-auto mt-0.5 rounded-full" />
-            </div>
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-[90%] h-[85%]">
-                <ComponentPreviewContent option={option} />
-              </div>
-            </div>
-          </div>
-        );
-    }
-  };
-
   return (
-    <div className="bg-white rounded-lg overflow-hidden h-full border border-gray-200 shadow-sm">
-      {/* Mini slide frame - mimics actual lesson slide */}
-      <div className="relative aspect-[16/10] bg-white flex flex-col h-full">
-        {/* Top navigation bar mockup */}
-        <div className="h-2.5 bg-black/5 flex items-center justify-between px-1.5 flex-shrink-0">
-          <div className="flex items-center gap-0.5">
-            <div className="w-1 h-1 rounded-full bg-black/20" />
-            <span className="text-[4px] text-black/40 font-medium">Slide {slideIndex + 1}</span>
+    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-lg">
+      {/* Actual slide mockup - full width, proper aspect ratio */}
+      <div className="relative aspect-[16/9] bg-white flex flex-col">
+        {/* Top bar - like actual lesson */}
+        <div className="h-8 bg-black flex items-center justify-between px-4 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500/80" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80" />
           </div>
-          <div className="flex gap-0.5">
-            {[1,2,3,4,5].map(i => (
-              <div
-                key={i}
-                className={`w-0.5 h-0.5 rounded-full ${i === slideIndex + 1 ? 'bg-[#88da1c]' : 'bg-black/20'}`}
-              />
-            ))}
+          <div className="flex items-center gap-1">
+            <span className="text-[10px] text-white/60">Slide {slideIndex + 1}</span>
+            <div className="flex gap-1 ml-2">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 h-1.5 rounded-full ${i === slideIndex ? 'bg-[#88da1c]' : 'bg-white/30'}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Slide content - layout varies by component */}
-        {renderSlideContent()}
+        {/* Main slide content area */}
+        <div className="flex-1 p-6 flex flex-col overflow-hidden">
+          {/* Slide title */}
+          <div className="text-center mb-4">
+            <h2 className="text-lg font-bold text-black leading-tight">{slideContent.title}</h2>
+            {slideContent.subtitle && (
+              <p className="text-xs text-[#88da1c] font-medium mt-1">{slideContent.subtitle}</p>
+            )}
+            <div className="w-12 h-0.5 bg-[#88da1c] mx-auto mt-2 rounded-full" />
+          </div>
 
-        {/* Bottom navigation mockup */}
-        <div className="h-2.5 bg-black/5 flex items-center justify-center gap-1.5 px-2 flex-shrink-0">
-          <div className="w-3 h-1 rounded-sm bg-black/10" />
-          <div className="w-4 h-1 rounded-sm bg-[#88da1c]" />
+          {/* Body text if present */}
+          {slideContent.body && (
+            <p className="text-xs text-gray-600 text-center mb-4 max-w-md mx-auto">
+              {slideContent.body}
+            </p>
+          )}
+
+          {/* Component visualization area */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-lg h-full">
+              <ComponentPreviewContent option={option} />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom navigation - like actual lesson */}
+        <div className="h-12 bg-gray-50 border-t border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+          <button className="px-4 py-1.5 text-xs text-gray-500 bg-white border border-gray-200 rounded-lg">
+            ← Back
+          </button>
+          <button className="px-4 py-1.5 text-xs text-black font-medium bg-[#88da1c] rounded-lg">
+            Continue →
+          </button>
         </div>
       </div>
     </div>
@@ -911,42 +800,51 @@ export default function LessonCRMPage() {
                                     )}
                                   </div>
 
-                                  {/* Three Options - Slide Previews showing component inside actual slide */}
-                                  <div className="grid grid-cols-3 gap-4">
+                                  {/* Three Options - Full-width slide previews */}
+                                  <div className="space-y-4">
                                     {slot.options.map((option) => {
                                       const isSelected = selectedId === option.id;
                                       return (
-                                        <button
+                                        <div
                                           key={option.id}
-                                          onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
-                                          className={`rounded-xl border-2 text-left transition-all overflow-hidden ${
+                                          className={`rounded-xl border-2 overflow-hidden transition-all ${
                                             isSelected
                                               ? 'border-[#88da1c] ring-2 ring-[#88da1c]/20'
                                               : 'border-black/10 hover:border-[#88da1c]/50'
                                           }`}
                                         >
-                                          {/* Slide Preview - shows component inside actual slide mockup */}
-                                          <div className="h-40 bg-gray-100">
+                                          {/* Option header with select button */}
+                                          <div className={`flex items-center justify-between p-3 ${isSelected ? 'bg-[#88da1c]/10' : 'bg-gray-50'}`}>
+                                            <div className="flex items-center gap-3">
+                                              {isSelected && (
+                                                <CheckCircle size={20} className="text-[#88da1c]" />
+                                              )}
+                                              <div>
+                                                <h5 className="font-semibold text-black">{option.name}</h5>
+                                                <p className="text-xs text-[var(--text-muted)]">{option.description}</p>
+                                              </div>
+                                            </div>
+                                            <button
+                                              onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
+                                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                                isSelected
+                                                  ? 'bg-[#88da1c] text-black'
+                                                  : 'bg-black text-white hover:bg-black/80'
+                                              }`}
+                                            >
+                                              {isSelected ? 'Selected ✓' : 'Select This'}
+                                            </button>
+                                          </div>
+
+                                          {/* Full-width slide preview */}
+                                          <div className="p-4 bg-gray-100">
                                             <SlidePreview
                                               option={option}
-                                              slideTitle={slot.slideTitle}
+                                              slideContent={slot.slideContent}
                                               slideIndex={slot.slideIndex}
                                             />
                                           </div>
-
-                                          {/* Label */}
-                                          <div className={`p-3 ${isSelected ? 'bg-[#88da1c]/5' : 'bg-white'}`}>
-                                            <div className="flex items-center justify-between">
-                                              <h5 className="font-semibold text-black text-sm">{option.name}</h5>
-                                              {isSelected && (
-                                                <CheckCircle size={18} className="text-[#88da1c]" />
-                                              )}
-                                            </div>
-                                            <p className="text-xs text-[var(--text-muted)] mt-1">
-                                              {option.description}
-                                            </p>
-                                          </div>
-                                        </button>
+                                        </div>
                                       );
                                     })}
                                   </div>
