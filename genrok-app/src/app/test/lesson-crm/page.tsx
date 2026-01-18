@@ -1,6 +1,6 @@
 'use client';
 // TEST VERSION - No authentication wrapper
-// CRM v2 - Simplified Copywriting Lessons View with Image Upload & Component Previews
+// CRM v2 - Backend storage + Better slide previews
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,13 +20,13 @@ import {
   X,
   Link as LinkIcon,
 } from 'lucide-react';
-import { copywritingLessonsConfig, LessonConfig, ComponentSlot, ComponentOption, SlideContent } from '@/data/copywriting-lessons-config';
+import { copywritingLessonsConfig, LessonConfig, ComponentOption, SlideContent } from '@/data/copywriting-lessons-config';
 
 // Types for saved data
 interface SavedData {
   selections: {
     [lessonSlug: string]: {
-      [slideIndex: number]: string; // componentId
+      [slideIndex: string]: string; // componentId
     };
   };
   images: {
@@ -34,43 +34,26 @@ interface SavedData {
   };
 }
 
-// Load saved data from localStorage
-const loadSavedData = (): SavedData => {
-  if (typeof window === 'undefined') return { selections: {}, images: {} };
-  try {
-    const saved = localStorage.getItem('lesson-crm-data-v2');
-    return saved ? JSON.parse(saved) : { selections: {}, images: {} };
-  } catch {
-    return { selections: {}, images: {} };
-  }
-};
-
-// Save data to localStorage
-const saveSavedData = (data: SavedData) => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem('lesson-crm-data-v2', JSON.stringify(data));
-};
-
 // ============================================
-// COMPONENT PREVIEW RENDERERS
+// COMPONENT PREVIEW RENDERERS - LARGER SIZE
 // ============================================
 
 const PreviewVennDiagram = ({ data }: { data: Record<string, unknown> }) => {
-  const d = data as { title?: string; leftLabel?: string; rightLabel?: string; overlapLabel?: string; leftItems?: string[]; rightItems?: string[]; overlapItems?: string[] };
+  const d = data as { title?: string; leftLabel?: string; rightLabel?: string; overlapLabel?: string };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold text-center mb-2 text-black">{d.title}</p>
-      <div className="relative h-24 flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center h-full">
+      <p className="text-sm font-bold text-center mb-4 text-black">{d.title}</p>
+      <div className="relative w-64 h-32 flex items-center justify-center">
         {/* Left Circle */}
-        <div className="absolute left-2 w-16 h-16 rounded-full bg-[#88da1c]/20 border-2 border-[#88da1c] flex items-center justify-center">
-          <span className="text-[8px] font-medium text-center px-1">{d.leftLabel}</span>
+        <div className="absolute left-0 w-28 h-28 rounded-full bg-[#88da1c]/20 border-3 border-[#88da1c] flex items-center justify-center">
+          <span className="text-xs font-semibold text-center px-2">{d.leftLabel}</span>
         </div>
         {/* Right Circle */}
-        <div className="absolute right-2 w-16 h-16 rounded-full bg-black/10 border-2 border-black flex items-center justify-center">
-          <span className="text-[8px] font-medium text-center px-1">{d.rightLabel}</span>
+        <div className="absolute right-0 w-28 h-28 rounded-full bg-black/10 border-3 border-black flex items-center justify-center">
+          <span className="text-xs font-semibold text-center px-2">{d.rightLabel}</span>
         </div>
         {/* Overlap */}
-        <div className="absolute z-10 bg-[#88da1c] text-black text-[8px] font-bold px-2 py-1 rounded">
+        <div className="absolute z-10 bg-[#88da1c] text-black text-sm font-bold px-4 py-2 rounded-lg shadow-lg">
           {d.overlapLabel}
         </div>
       </div>
@@ -81,23 +64,23 @@ const PreviewVennDiagram = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewDonutChart = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; segments?: { label: string; value: number; color: string }[]; centerLabel?: string; centerValue?: string };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold text-center mb-2 text-black">{d.title}</p>
-      <div className="relative w-20 h-20 mx-auto">
+    <div className="flex flex-col items-center justify-center h-full">
+      <p className="text-sm font-bold text-center mb-4 text-black">{d.title}</p>
+      <div className="relative w-32 h-32">
         <svg viewBox="0 0 36 36" className="w-full h-full">
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#88da1c" strokeWidth="3" strokeDasharray="70, 100" />
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#000" strokeWidth="3" strokeDasharray="30, 100" strokeDashoffset="-70" />
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#88da1c" strokeWidth="4" strokeDasharray="70, 100" />
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#000" strokeWidth="4" strokeDasharray="30, 100" strokeDashoffset="-70" />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[10px] font-bold">{d.centerLabel}</span>
-          <span className="text-[8px] text-gray-500">{d.centerValue}</span>
+          <span className="text-base font-bold">{d.centerLabel}</span>
+          <span className="text-xs text-gray-500">{d.centerValue}</span>
         </div>
       </div>
-      <div className="flex justify-center gap-2 mt-2">
+      <div className="flex justify-center gap-4 mt-4">
         {d.segments?.map((s, i) => (
-          <div key={i} className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: s.color }} />
-            <span className="text-[7px]">{s.value}%</span>
+          <div key={i} className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: s.color }} />
+            <span className="text-xs font-medium">{s.label}: {s.value}%</span>
           </div>
         ))}
       </div>
@@ -108,12 +91,13 @@ const PreviewDonutChart = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewStatCards = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { stats?: { value: string; label: string; desc?: string }[] };
   return (
-    <div className="bg-white rounded-lg p-2 h-full">
-      <div className="grid grid-cols-3 gap-1">
+    <div className="w-full">
+      <div className="grid grid-cols-3 gap-4">
         {d.stats?.slice(0, 3).map((stat, i) => (
-          <div key={i} className="bg-black/5 rounded p-2 text-center">
-            <p className="text-sm font-bold text-[#88da1c]">{stat.value}</p>
-            <p className="text-[7px] font-medium text-black">{stat.label}</p>
+          <div key={i} className="bg-black/5 rounded-xl p-4 text-center">
+            <p className="text-2xl font-bold text-[#88da1c]">{stat.value}</p>
+            <p className="text-sm font-medium text-black mt-1">{stat.label}</p>
+            {stat.desc && <p className="text-xs text-gray-500 mt-1">{stat.desc}</p>}
           </div>
         ))}
       </div>
@@ -124,17 +108,17 @@ const PreviewStatCards = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewTimeline = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; steps?: { title: string; desc?: string }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="space-y-1">
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black">{d.title}</p>
+      <div className="space-y-3">
         {d.steps?.slice(0, 4).map((step, i) => (
-          <div key={i} className="flex items-start gap-2">
-            <div className="w-4 h-4 rounded-full bg-[#88da1c] flex items-center justify-center flex-shrink-0">
-              <span className="text-[8px] font-bold text-black">{i + 1}</span>
+          <div key={i} className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#88da1c] flex items-center justify-center flex-shrink-0">
+              <span className="text-sm font-bold text-black">{i + 1}</span>
             </div>
-            <div>
-              <p className="text-[9px] font-semibold text-black">{step.title}</p>
-              <p className="text-[7px] text-gray-500">{step.desc}</p>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-black">{step.title}</p>
+              <p className="text-xs text-gray-500">{step.desc}</p>
             </div>
           </div>
         ))}
@@ -146,13 +130,14 @@ const PreviewTimeline = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewProcessSteps = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; steps?: { num?: string; title: string; desc?: string }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="grid grid-cols-2 gap-1">
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black">{d.title}</p>
+      <div className="grid grid-cols-2 gap-3">
         {d.steps?.slice(0, 4).map((step, i) => (
-          <div key={i} className="bg-black/5 rounded p-1.5">
-            <span className="text-[10px] font-bold text-[#88da1c]">{step.num || `0${i + 1}`}</span>
-            <p className="text-[8px] font-medium text-black">{step.title}</p>
+          <div key={i} className="bg-black/5 rounded-lg p-3">
+            <span className="text-lg font-bold text-[#88da1c]">{step.num || `0${i + 1}`}</span>
+            <p className="text-sm font-medium text-black mt-1">{step.title}</p>
+            {step.desc && <p className="text-xs text-gray-500">{step.desc}</p>}
           </div>
         ))}
       </div>
@@ -163,26 +148,24 @@ const PreviewProcessSteps = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewGaugeChart = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { gauges?: { label: string; value: number; max?: number; color?: string }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <div className="space-y-2">
-        {d.gauges?.slice(0, 3).map((gauge, i) => (
-          <div key={i}>
-            <div className="flex justify-between text-[8px] mb-0.5">
-              <span className="font-medium">{gauge.label}</span>
-              <span className="font-bold">{gauge.value}%</span>
-            </div>
-            <div className="h-2 bg-black/10 rounded-full overflow-hidden">
-              <div
-                className="h-full rounded-full"
-                style={{
-                  width: `${(gauge.value / (gauge.max || 100)) * 100}%`,
-                  backgroundColor: gauge.color || '#88da1c',
-                }}
-              />
-            </div>
+    <div className="w-full space-y-4">
+      {d.gauges?.slice(0, 3).map((gauge, i) => (
+        <div key={i}>
+          <div className="flex justify-between text-sm mb-1">
+            <span className="font-medium">{gauge.label}</span>
+            <span className="font-bold text-[#88da1c]">{gauge.value}%</span>
           </div>
-        ))}
-      </div>
+          <div className="h-4 bg-black/10 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${(gauge.value / (gauge.max || 100)) * 100}%`,
+                backgroundColor: gauge.color || '#88da1c',
+              }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
@@ -191,19 +174,20 @@ const PreviewBarChart = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; bars?: { label: string; value: number }[] };
   const maxVal = Math.max(...(d.bars?.map(b => b.value) || [1]));
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="space-y-1">
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black">{d.title}</p>
+      <div className="space-y-3">
         {d.bars?.slice(0, 4).map((bar, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <span className="text-[7px] w-16 truncate">{bar.label}</span>
-            <div className="flex-1 h-3 bg-black/10 rounded overflow-hidden">
+          <div key={i} className="flex items-center gap-3">
+            <span className="text-xs font-medium w-24 truncate">{bar.label}</span>
+            <div className="flex-1 h-6 bg-black/10 rounded overflow-hidden">
               <div
-                className="h-full bg-[#88da1c] rounded"
+                className="h-full bg-[#88da1c] rounded flex items-center justify-end pr-2"
                 style={{ width: `${(bar.value / maxVal) * 100}%` }}
-              />
+              >
+                <span className="text-xs font-bold text-black">{bar.value}</span>
+              </div>
             </div>
-            <span className="text-[8px] font-bold w-8">{bar.value}</span>
           </div>
         ))}
       </div>
@@ -214,13 +198,13 @@ const PreviewBarChart = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewIconGrid = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; items?: { title: string; text?: string }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="grid grid-cols-2 gap-1">
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black">{d.title}</p>
+      <div className="grid grid-cols-2 gap-3">
         {d.items?.slice(0, 4).map((item, i) => (
-          <div key={i} className="bg-[#88da1c]/10 rounded p-1.5">
-            <p className="text-[8px] font-semibold text-black">{item.title}</p>
-            <p className="text-[6px] text-gray-600 line-clamp-2">{item.text}</p>
+          <div key={i} className="bg-[#88da1c]/10 rounded-lg p-3 border border-[#88da1c]/20">
+            <p className="text-sm font-semibold text-black">{item.title}</p>
+            <p className="text-xs text-gray-600 mt-1">{item.text}</p>
           </div>
         ))}
       </div>
@@ -231,18 +215,18 @@ const PreviewIconGrid = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewFunnelChart = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; stages?: { label: string; value: number }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="space-y-1">
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black text-center">{d.title}</p>
+      <div className="space-y-2">
         {d.stages?.slice(0, 4).map((stage, i) => {
           const width = 100 - i * 15;
           return (
             <div key={i} className="flex items-center justify-center">
               <div
-                className="h-4 bg-[#88da1c] rounded flex items-center justify-center"
+                className="h-10 bg-[#88da1c] rounded-lg flex items-center justify-center shadow"
                 style={{ width: `${width}%`, opacity: 1 - i * 0.15 }}
               >
-                <span className="text-[7px] font-medium text-black">{stage.label}</span>
+                <span className="text-sm font-semibold text-black">{stage.label}</span>
               </div>
             </div>
           );
@@ -253,22 +237,20 @@ const PreviewFunnelChart = ({ data }: { data: Record<string, unknown> }) => {
 };
 
 const PreviewRadarChart = ({ data }: { data: Record<string, unknown> }) => {
-  const d = data as { title?: string; axes?: string[]; data?: number[] };
+  const d = data as { title?: string; axes?: string[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold text-center mb-1 text-black">{d.title}</p>
-      <div className="relative w-20 h-20 mx-auto">
+    <div className="flex flex-col items-center justify-center h-full">
+      <p className="text-sm font-bold text-center mb-4 text-black">{d.title}</p>
+      <div className="relative w-36 h-36">
         <svg viewBox="0 0 100 100" className="w-full h-full">
-          {/* Background grid */}
           <polygon points="50,10 90,35 90,75 50,90 10,75 10,35" fill="none" stroke="#e5e7eb" strokeWidth="1" />
           <polygon points="50,25 75,40 75,65 50,75 25,65 25,40" fill="none" stroke="#e5e7eb" strokeWidth="1" />
-          {/* Data polygon */}
           <polygon points="50,15 85,38 80,72 50,85 20,72 15,38" fill="rgba(136,218,28,0.3)" stroke="#88da1c" strokeWidth="2" />
         </svg>
       </div>
-      <div className="flex flex-wrap justify-center gap-1 mt-1">
+      <div className="flex flex-wrap justify-center gap-2 mt-4">
         {d.axes?.slice(0, 4).map((axis, i) => (
-          <span key={i} className="text-[6px] bg-black/5 px-1 rounded">{axis}</span>
+          <span key={i} className="text-xs bg-black/5 px-2 py-1 rounded">{axis}</span>
         ))}
       </div>
     </div>
@@ -278,18 +260,18 @@ const PreviewRadarChart = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewSlopeChart = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { title?: string; leftLabel?: string; rightLabel?: string; items?: { label: string; leftValue: number; rightValue: number }[] };
   return (
-    <div className="bg-white rounded-lg p-3 h-full">
-      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
-      <div className="flex justify-between text-[7px] text-gray-500 mb-1">
-        <span>{d.leftLabel}</span>
-        <span>{d.rightLabel}</span>
+    <div className="w-full">
+      <p className="text-sm font-bold mb-4 text-black">{d.title}</p>
+      <div className="flex justify-between text-xs text-gray-500 mb-3 px-8">
+        <span className="font-medium">{d.leftLabel}</span>
+        <span className="font-medium">{d.rightLabel}</span>
       </div>
-      <div className="space-y-1">
+      <div className="space-y-3">
         {d.items?.slice(0, 3).map((item, i) => (
-          <div key={i} className="flex items-center">
-            <span className="text-[8px] font-bold w-6">{item.leftValue}</span>
-            <div className="flex-1 h-0.5 bg-[#88da1c] mx-1" style={{ transform: 'rotate(-10deg)' }} />
-            <span className="text-[8px] font-bold text-[#88da1c] w-6 text-right">{item.rightValue}</span>
+          <div key={i} className="flex items-center px-4">
+            <span className="text-lg font-bold w-12 text-black">{item.leftValue}</span>
+            <div className="flex-1 h-1 bg-[#88da1c] mx-4 rounded" style={{ transform: 'rotate(-5deg)' }} />
+            <span className="text-lg font-bold text-[#88da1c] w-12 text-right">{item.rightValue}</span>
           </div>
         ))}
       </div>
@@ -300,22 +282,22 @@ const PreviewSlopeChart = ({ data }: { data: Record<string, unknown> }) => {
 const PreviewBeforeAfter = ({ data }: { data: Record<string, unknown> }) => {
   const d = data as { before?: { title: string; text: string }; after?: { title: string; text: string } };
   return (
-    <div className="bg-white rounded-lg p-2 h-full">
-      <div className="grid grid-cols-2 gap-2 h-full">
-        <div className="bg-red-50 rounded p-1.5 border border-red-200">
-          <p className="text-[8px] font-bold text-red-600">{d.before?.title}</p>
-          <p className="text-[6px] text-red-800 line-clamp-3">{d.before?.text}</p>
+    <div className="w-full">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-red-50 rounded-xl p-4 border-2 border-red-200">
+          <p className="text-sm font-bold text-red-600 mb-2">{d.before?.title}</p>
+          <p className="text-xs text-red-800">{d.before?.text}</p>
         </div>
-        <div className="bg-green-50 rounded p-1.5 border border-green-200">
-          <p className="text-[8px] font-bold text-green-600">{d.after?.title}</p>
-          <p className="text-[6px] text-green-800 line-clamp-3">{d.after?.text}</p>
+        <div className="bg-green-50 rounded-xl p-4 border-2 border-green-200">
+          <p className="text-sm font-bold text-green-600 mb-2">{d.after?.title}</p>
+          <p className="text-xs text-green-800">{d.after?.text}</p>
         </div>
       </div>
     </div>
   );
 };
 
-// Component preview router (returns just the component)
+// Component preview router
 const ComponentPreviewContent = ({ option }: { option: ComponentOption }) => {
   const { id, previewData } = option;
 
@@ -343,19 +325,18 @@ const ComponentPreviewContent = ({ option }: { option: ComponentOption }) => {
     return <PreviewComponent data={previewData} />;
   }
 
-  // Fallback for unknown components
   return (
-    <div className="bg-white rounded-lg p-3 h-full flex items-center justify-center">
+    <div className="flex items-center justify-center h-full">
       <div className="text-center">
-        <Layers size={24} className="mx-auto mb-1 text-[#88da1c]" />
-        <p className="text-[10px] font-bold text-black">{option.name}</p>
-        <p className="text-[7px] text-gray-500">Preview</p>
+        <Layers size={32} className="mx-auto mb-2 text-[#88da1c]" />
+        <p className="text-sm font-bold text-black">{option.name}</p>
+        <p className="text-xs text-gray-500">Preview</p>
       </div>
     </div>
   );
 };
 
-// Full-width slide preview that mimics the actual lesson slide
+// Compact slide preview - focused on the component
 const SlidePreview = ({
   option,
   slideContent,
@@ -366,63 +347,43 @@ const SlidePreview = ({
   slideIndex: number;
 }) => {
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-lg">
-      {/* Actual slide mockup - full width, proper aspect ratio */}
-      <div className="relative aspect-[16/9] bg-white flex flex-col">
-        {/* Top bar - like actual lesson */}
-        <div className="h-8 bg-black flex items-center justify-between px-4 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="text-[10px] text-white/60">Slide {slideIndex + 1}</span>
-            <div className="flex gap-1 ml-2">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-1.5 h-1.5 rounded-full ${i === slideIndex ? 'bg-[#88da1c]' : 'bg-white/30'}`}
-                />
-              ))}
-            </div>
-          </div>
+    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-md">
+      {/* Compact header */}
+      <div className="h-6 bg-black flex items-center justify-between px-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-red-500/80" />
+          <div className="w-2 h-2 rounded-full bg-yellow-500/80" />
+          <div className="w-2 h-2 rounded-full bg-green-500/80" />
         </div>
+        <div className="flex items-center gap-1">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className={`w-1 h-1 rounded-full ${i === slideIndex ? 'bg-[#88da1c]' : 'bg-white/30'}`}
+            />
+          ))}
+        </div>
+      </div>
 
-        {/* Main slide content area */}
-        <div className="flex-1 p-6 flex flex-col overflow-hidden">
-          {/* Slide title */}
-          <div className="text-center mb-4">
-            <h2 className="text-lg font-bold text-black leading-tight">{slideContent.title}</h2>
-            {slideContent.subtitle && (
-              <p className="text-xs text-[#88da1c] font-medium mt-1">{slideContent.subtitle}</p>
-            )}
-            <div className="w-12 h-0.5 bg-[#88da1c] mx-auto mt-2 rounded-full" />
-          </div>
-
-          {/* Body text if present */}
-          {slideContent.body && (
-            <p className="text-xs text-gray-600 text-center mb-4 max-w-md mx-auto">
-              {slideContent.body}
-            </p>
+      {/* Main content - more compact */}
+      <div className="p-4">
+        {/* Slide title - smaller */}
+        <div className="text-center mb-3">
+          <h3 className="text-base font-bold text-black">{slideContent.title}</h3>
+          {slideContent.subtitle && (
+            <p className="text-xs text-[#88da1c] font-medium">{slideContent.subtitle}</p>
           )}
-
-          {/* Component visualization area */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-full max-w-lg h-full">
-              <ComponentPreviewContent option={option} />
-            </div>
-          </div>
         </div>
 
-        {/* Bottom navigation - like actual lesson */}
-        <div className="h-12 bg-gray-50 border-t border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
-          <button className="px-4 py-1.5 text-xs text-gray-500 bg-white border border-gray-200 rounded-lg">
-            ← Back
-          </button>
-          <button className="px-4 py-1.5 text-xs text-black font-medium bg-[#88da1c] rounded-lg">
-            Continue →
-          </button>
+        {slideContent.body && (
+          <p className="text-xs text-gray-500 text-center mb-3 line-clamp-2">
+            {slideContent.body}
+          </p>
+        )}
+
+        {/* Component - takes most space */}
+        <div className="bg-gray-50 rounded-lg p-4 min-h-[180px] flex items-center justify-center">
+          <ComponentPreviewContent option={option} />
         </div>
       </div>
     </div>
@@ -440,14 +401,44 @@ export default function TestLessonCRMPage() {
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
   const [savedData, setSavedData] = useState<SavedData>({ selections: {}, images: {} });
   const [imageInputs, setImageInputs] = useState<Record<string, string>>({});
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Load saved data on mount
+  // Load saved data from backend on mount
   useEffect(() => {
-    const data = loadSavedData();
-    setSavedData(data);
-    setImageInputs(data.images);
+    loadDataFromBackend();
     checkMigrationStatus();
   }, []);
+
+  // Load data from backend API
+  const loadDataFromBackend = async () => {
+    try {
+      const res = await fetch('/api/admin/lesson-crm/data');
+      const data = await res.json();
+      setSavedData({
+        selections: data.selections || {},
+        images: data.images || {},
+      });
+      setImageInputs(data.images || {});
+    } catch (error) {
+      console.error('Failed to load data:', error);
+    }
+  };
+
+  // Save data to backend
+  const saveToBackend = async (newData: SavedData) => {
+    setIsSaving(true);
+    try {
+      await fetch('/api/admin/lesson-crm/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData),
+      });
+    } catch (error) {
+      console.error('Failed to save:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Check color migration status
   const checkMigrationStatus = async () => {
@@ -492,7 +483,7 @@ export default function TestLessonCRMPage() {
     const newData = { ...savedData, images: newImages };
     setSavedData(newData);
     setImageInputs({ ...imageInputs, [key]: url });
-    saveSavedData(newData);
+    saveToBackend(newData);
   };
 
   // Get saved image URL
@@ -511,7 +502,7 @@ export default function TestLessonCRMPage() {
     };
     const newData = { ...savedData, selections: newSelections };
     setSavedData(newData);
-    saveSavedData(newData);
+    saveToBackend(newData);
   };
 
   // Get selected component for a slide
@@ -530,21 +521,27 @@ export default function TestLessonCRMPage() {
     return allComponentsSelected && (lesson.imagePrompts.length === 0 || allImagesUploaded);
   };
 
-  // No DashboardLayout wrapper - direct rendering for testing
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="page-wrapper max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Test Mode Banner */}
-        <div className="bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-2 mb-6 flex items-center gap-2">
-          <span className="text-yellow-700 font-medium">TEST MODE</span>
-          <span className="text-yellow-600 text-sm">- Authentication bypassed for testing</span>
+        <div className="bg-yellow-100 border border-yellow-300 rounded-lg px-4 py-2 mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-yellow-700 font-medium">TEST MODE</span>
+            <span className="text-yellow-600 text-sm">- Backend storage enabled</span>
+          </div>
+          {isSaving && (
+            <span className="text-yellow-600 text-sm flex items-center gap-1">
+              <RefreshCw size={14} className="animate-spin" /> Saving...
+            </span>
+          )}
         </div>
 
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="page-header mb-8"
+          className="mb-8"
         >
           <div className="flex items-center gap-4 mb-6">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#88da1c] to-[#6BB516] flex items-center justify-center">
@@ -678,7 +675,7 @@ export default function TestLessonCRMPage() {
                       className="border-t border-black/5"
                     >
                       <div className="p-6 space-y-8">
-                        {/* Image Prompts with Upload */}
+                        {/* Image Prompts */}
                         {lesson.imagePrompts.length > 0 && (
                           <div>
                             <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
@@ -761,9 +758,8 @@ export default function TestLessonCRMPage() {
                                       </button>
                                     </div>
 
-                                    {/* Image Preview */}
                                     {savedUrl && (
-                                      <div className="mt-3 relative">
+                                      <div className="mt-3 relative inline-block">
                                         <img
                                           src={savedUrl}
                                           alt={`Slide ${img.slideIndex + 1}`}
@@ -784,7 +780,7 @@ export default function TestLessonCRMPage() {
                           </div>
                         )}
 
-                        {/* Component Slots with Visual Previews */}
+                        {/* Component Slots */}
                         <div>
                           <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
                             <Layers size={18} className="text-[#3B82F6]" />
@@ -802,13 +798,13 @@ export default function TestLessonCRMPage() {
                                     <span className="text-sm font-medium text-black">{slot.slideTitle}</span>
                                     {selectedId && (
                                       <span className="px-2 py-1 text-xs font-medium bg-[#88da1c]/20 text-[#88da1c] rounded flex items-center gap-1">
-                                        <Check size={12} /> Selected
+                                        <Check size={12} /> {selectedId}
                                       </span>
                                     )}
                                   </div>
 
-                                  {/* Three Options - Full-width slide previews */}
-                                  <div className="space-y-4">
+                                  {/* Three options in a row */}
+                                  <div className="grid grid-cols-3 gap-4">
                                     {slot.options.map((option) => {
                                       const isSelected = selectedId === option.id;
                                       return (
@@ -820,36 +816,31 @@ export default function TestLessonCRMPage() {
                                               : 'border-black/10 hover:border-[#88da1c]/50'
                                           }`}
                                         >
-                                          {/* Option header with select button */}
-                                          <div className={`flex items-center justify-between p-3 ${isSelected ? 'bg-[#88da1c]/10' : 'bg-gray-50'}`}>
-                                            <div className="flex items-center gap-3">
-                                              {isSelected && (
-                                                <CheckCircle size={20} className="text-[#88da1c]" />
-                                              )}
+                                          {/* Preview */}
+                                          <SlidePreview
+                                            option={option}
+                                            slideContent={slot.slideContent}
+                                            slideIndex={slot.slideIndex}
+                                          />
+
+                                          {/* Select button */}
+                                          <div className={`p-3 ${isSelected ? 'bg-[#88da1c]/10' : 'bg-gray-50'}`}>
+                                            <div className="flex items-center justify-between">
                                               <div>
-                                                <h5 className="font-semibold text-black">{option.name}</h5>
+                                                <h5 className="font-semibold text-sm text-black">{option.name}</h5>
                                                 <p className="text-xs text-gray-500">{option.description}</p>
                                               </div>
+                                              <button
+                                                onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
+                                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                                  isSelected
+                                                    ? 'bg-[#88da1c] text-black'
+                                                    : 'bg-black text-white hover:bg-black/80'
+                                                }`}
+                                              >
+                                                {isSelected ? '✓' : 'Select'}
+                                              </button>
                                             </div>
-                                            <button
-                                              onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
-                                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                                isSelected
-                                                  ? 'bg-[#88da1c] text-black'
-                                                  : 'bg-black text-white hover:bg-black/80'
-                                              }`}
-                                            >
-                                              {isSelected ? 'Selected ✓' : 'Select This'}
-                                            </button>
-                                          </div>
-
-                                          {/* Full-width slide preview */}
-                                          <div className="p-4 bg-gray-100">
-                                            <SlidePreview
-                                              option={option}
-                                              slideContent={slot.slideContent}
-                                              slideIndex={slot.slideIndex}
-                                            />
                                           </div>
                                         </div>
                                       );
