@@ -7750,10 +7750,11 @@ export const sectionsData: Section[] = [
       { id: 'rightFeature2Label', label: 'Right Feature 2 Label', type: 'text', defaultValue: 'Clarifier' },
       { id: 'rightFeature2Value', label: 'Right Feature 2 Value (%)', type: 'number', defaultValue: '88' },
       { id: 'rightBattery', label: 'Right Battery (%)', type: 'number', defaultValue: '74' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#000000' },
     ],
     generateHtml: (v) => `<div class="${uid('sps')}" id="${uid('sps')}-container" data-active="left">
   <style>
-    .${uid('sps')} { position:relative; min-height:100vh; width:100%; background:#000; color:#f4f4f5; overflow:hidden; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .${uid('sps')} { position:relative; min-height:100vh; width:100%; background:${v.bgColor}; color:#f4f4f5; overflow:hidden; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; }
     .${uid('sps')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('sps')}-bg { position:fixed; inset:0; pointer-events:none; transition:all 1.2s cubic-bezier(0.16,1,0.3,1); }
     .${uid('sps')}-bg.left { background:radial-gradient(circle at 0% 50%, rgba(59,130,246,0.15), transparent 50%); }
@@ -7964,10 +7965,11 @@ export const sectionsData: Section[] = [
       { id: 'color3', label: 'Color 3 (hex)', type: 'text', defaultValue: '#DE9C5E' },
       { id: 'color3Image1', label: 'Color 3 - Image 1', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/61++XRhgaTL._AC_SY695_.jpg' },
       { id: 'color3Image2', label: 'Color 3 - Image 2 (hover)', type: 'image', defaultValue: 'https://m.media-amazon.com/images/I/51WRTVpnh0L._AC_SY695_.jpg' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('pcc')}" id="${uid('pcc')}-container" data-active="0" data-hover="0">
   <style>
-    .${uid('pcc')} { display:flex; align-items:center; justify-content:center; min-height:400px; padding:24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('pcc')} { display:flex; align-items:center; justify-content:center; min-height:400px; padding:24px; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
     .${uid('pcc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('pcc')}-card { position:relative; width:256px; padding:16px 16px 24px; }
     .${uid('pcc')}-images { position:relative; aspect-ratio:16/9; width:100%; overflow:hidden; cursor:pointer; }
@@ -8032,10 +8034,11 @@ export const sectionsData: Section[] = [
       { id: 'count', label: 'Visitor Count', type: 'number', defaultValue: '24' },
       { id: 'label', label: 'Label Text', type: 'text', defaultValue: 'people are viewing this right now' },
       { id: 'dotColor', label: 'Dot Color', type: 'color', defaultValue: '#22c55e' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
     ],
     generateHtml: (v) => `<div class="${uid('lvc')}">
   <style>
-    .${uid('lvc')} { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; background:#fafafa; border:1px solid #e5e5e5; border-radius:9999px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size:14px; color:#374151; }
+    .${uid('lvc')} { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; background:${v.bgColor}; border:1px solid #e5e5e5; border-radius:9999px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size:14px; color:#374151; }
     .${uid('lvc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('lvc')}-dot { position:relative; width:8px; height:8px; border-radius:50%; background:${v.dotColor}; }
     .${uid('lvc')}-dot::before { content:''; position:absolute; inset:-4px; border-radius:50%; background:${v.dotColor}; opacity:0.3; animation:${uid('lvc')}-ping 1.5s cubic-bezier(0,0,0.2,1) infinite; }
@@ -8128,10 +8131,11 @@ export const sectionsData: Section[] = [
       { id: 'plan3Feature1', label: 'Plan 3 Feature 1', type: 'text', defaultValue: 'Custom Solutions' },
       { id: 'plan3Feature2', label: 'Plan 3 Feature 2', type: 'text', defaultValue: 'Dedicated Manager' },
       { id: 'plan3Feature3', label: 'Plan 3 Feature 3', type: 'text', defaultValue: '24/7 Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('ptc')}" id="${uid('ptc')}-section" data-billing="monthly">
   <style>
-    .${uid('ptc')} { padding:64px 24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('ptc')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
     .${uid('ptc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('ptc')}-header { text-align:center; margin-bottom:48px; }
     .${uid('ptc')}-title { font-size:36px; font-weight:700; color:#111827; margin-bottom:16px; }
@@ -8227,10 +8231,11 @@ export const sectionsData: Section[] = [
       { id: 'endDate', label: 'End Date', type: 'text', defaultValue: 'Jan 25' },
       { id: 'shippingLabel', label: 'Shipping Label', type: 'text', defaultValue: 'Free Express Shipping' },
       { id: 'progress', label: 'Progress (%)', type: 'number', defaultValue: '65' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('eta')}">
   <style>
-    .${uid('eta')} { display:flex; flex-direction:column; gap:12px; padding:20px; background:#fff; border:1px solid #e5e7eb; border-radius:12px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; max-width:320px; }
+    .${uid('eta')} { display:flex; flex-direction:column; gap:12px; padding:20px; background:${v.bgColor}; border:1px solid #e5e7eb; border-radius:12px; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; max-width:320px; }
     .${uid('eta')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('eta')}-header { display:flex; align-items:center; justify-content:space-between; }
     .${uid('eta')}-label { font-size:14px; font-weight:500; color:#374151; }
@@ -8277,10 +8282,11 @@ export const sectionsData: Section[] = [
       { id: 't4Quote', label: 'Testimonial 4 Quote', type: 'textarea', defaultValue: 'Our business functions improved with a user-friendly design and positive customer support experience.' },
       { id: 't4Name', label: 'Testimonial 4 Name', type: 'text', defaultValue: 'Maria Santos' },
       { id: 't4Role', label: 'Testimonial 4 Role', type: 'text', defaultValue: 'CEO' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('tgv')}">
   <style>
-    .${uid('tgv')} { padding:64px 24px; background:#fff; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('tgv')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
     .${uid('tgv')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('tgv')}-header { text-align:center; margin-bottom:48px; }
     .${uid('tgv')}-badge { display:inline-block; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:0.1em; color:#6b7280; margin-bottom:12px; }
@@ -8394,10 +8400,11 @@ export const sectionsData: Section[] = [
       { id: 'desc3', label: 'Feature 3 Description', type: 'text', defaultValue: 'Work together seamlessly' },
       { id: 'title4', label: 'Feature 4 Title', type: 'text', defaultValue: 'API Integration' },
       { id: 'desc4', label: 'Feature 4 Description', type: 'text', defaultValue: 'Connect with 100+ apps' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f8fafc' },
     ],
     generateHtml: (v) => `<div class="${uid('bgf')}">
   <style>
-    .${uid('bgf')} { padding:64px 24px; background:#f8fafc; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('bgf')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
     .${uid('bgf')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('bgf')}-grid { display:grid; grid-template-columns:repeat(4, 1fr); grid-template-rows:repeat(2, 200px); gap:16px; max-width:1000px; margin:0 auto; }
     @media(max-width:768px) { .${uid('bgf')}-grid { grid-template-columns:1fr 1fr; grid-template-rows:repeat(4, 180px); } }
@@ -8450,10 +8457,11 @@ export const sectionsData: Section[] = [
       { id: 'badge2', label: 'Badge 2 Text', type: 'text', defaultValue: '30-Day Returns' },
       { id: 'badge3', label: 'Badge 3 Text', type: 'text', defaultValue: '2-Year Warranty' },
       { id: 'badge4', label: 'Badge 4 Text', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('mkb')}">
   <style>
-    .${uid('mkb')} { display:flex; flex-wrap:wrap; gap:12px; padding:24px; justify-content:center; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
+    .${uid('mkb')} { display:flex; flex-wrap:wrap; gap:12px; padding:24px; justify-content:center; background:${v.bgColor}; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; }
     .${uid('mkb')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('mkb')}-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:8px; font-size:13px; font-weight:500; color:#374151; transition:all 0.2s; }
     .${uid('mkb')}-badge:hover { border-color:#3b82f6; background:#eff6ff; }
@@ -8494,10 +8502,11 @@ export const sectionsData: Section[] = [
       { id: 'image6', label: 'Image 6', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&h=400&fit=crop' },
       { id: 'image7', label: 'Image 7', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=300&h=400&fit=crop' },
       { id: 'image8', label: 'Image 8', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=300&h=400&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
     ],
     generateHtml: (v) => `<div class="${uid('3dc')}">
   <style>
-    .${uid('3dc')} { padding:40px 0; background:#fafafa; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('3dc')} { padding:40px 0; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
     .${uid('3dc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('3dc')}-scene { width:100%; height:500px; perspective:1000px; display:flex; align-items:center; justify-content:center; cursor:grab; user-select:none; }
     .${uid('3dc')}-scene:active { cursor:grabbing; }
@@ -8571,10 +8580,11 @@ export const sectionsData: Section[] = [
       { id: 'offer3Desc', label: 'Offer 3 Description', type: 'text', defaultValue: 'Premium Membership' },
       { id: 'offer3Brand', label: 'Offer 3 Brand', type: 'text', defaultValue: 'StreamPlus' },
       { id: 'offer3Code', label: 'Offer 3 Code', type: 'text', defaultValue: 'STREAM50' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('ofc')}">
   <style>
-    .${uid('ofc')} { padding:40px 24px; background:#fff; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ofc')} { padding:40px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
     .${uid('ofc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('ofc')}-title { font-size:28px; font-weight:700; color:#111; margin-bottom:24px; }
     .${uid('ofc')}-wrapper { position:relative; }
@@ -8688,10 +8698,11 @@ export const sectionsData: Section[] = [
       { id: 'plan3Feature2', label: 'Plan 3 Feature 2', type: 'text', defaultValue: 'Custom Integrations' },
       { id: 'plan3Feature3', label: 'Plan 3 Feature 3', type: 'text', defaultValue: 'Dedicated Manager' },
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Get Started' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#667eea' },
     ],
     generateHtml: (v) => `<div class="${uid('crp')}">
   <style>
-    .${uid('crp')} { padding:80px 24px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('crp')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
     .${uid('crp')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('crp')}-header { text-align:center; margin-bottom:48px; }
     .${uid('crp')}-title { font-size:42px; font-weight:800; color:#fff; margin-bottom:12px; }
@@ -8773,10 +8784,11 @@ export const sectionsData: Section[] = [
       { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Team' },
       { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: '$79' },
       { id: 'plan3Features', label: 'Plan 3 Features (comma sep)', type: 'textarea', defaultValue: 'Everything in Pro,Team Collaboration,Custom Domains,White-label,Dedicated Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
     ],
     generateHtml: (v) => `<div class="${uid('dgp')}">
   <style>
-    .${uid('dgp')} { padding:80px 24px; background:linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%); font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('dgp')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
     .${uid('dgp')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('dgp')}-title { text-align:center; font-size:40px; font-weight:700; color:#fff; margin-bottom:48px; }
     .${uid('dgp')}-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; max-width:1100px; margin:0 auto; }
@@ -8852,10 +8864,11 @@ export const sectionsData: Section[] = [
       { id: 'author3', label: 'Author 3', type: 'text', defaultValue: 'Emily Davis' },
       { id: 'role3', label: 'Role 3', type: 'text', defaultValue: 'Marketing Director' },
       { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
     ],
     generateHtml: (v) => `<div class="${uid('prt')}">
   <style>
-    .${uid('prt')} { padding:80px 24px; background:linear-gradient(180deg, #fafafa 0%, #f5f5f7 100%); font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('prt')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
     .${uid('prt')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('prt')}-container { max-width:800px; margin:0 auto; position:relative; }
     .${uid('prt')}-slide { display:none; text-align:center; animation:${uid('prt')}-fadeIn 0.5s ease; }
@@ -8935,10 +8948,11 @@ export const sectionsData: Section[] = [
       { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'Best decision we made this year. Highly recommend to everyone!' },
       { id: 'author3', label: 'Author 3', type: 'text', defaultValue: 'James Wilson' },
       { id: 'company3', label: 'Company 3', type: 'text', defaultValue: 'Tech Innovations' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f5f0e8' },
     ],
     generateHtml: (v) => `<div class="${uid('rtc')}">
   <style>
-    .${uid('rtc')} { padding:80px 24px; background:#f5f0e8; font-family:'Georgia',serif; }
+    .${uid('rtc')} { padding:80px 24px; background:${v.bgColor}; font-family:'Georgia',serif; }
     .${uid('rtc')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('rtc')}-title { text-align:center; font-size:36px; font-weight:400; color:#2d2d2d; margin-bottom:48px; font-style:italic; }
     .${uid('rtc')}-container { max-width:600px; margin:0 auto; position:relative; height:320px; }
@@ -9007,10 +9021,11 @@ export const sectionsData: Section[] = [
       { id: 'logo6', label: 'Logo 6 Text', type: 'text', defaultValue: 'Figma' },
       { id: 'logo7', label: 'Logo 7 Text', type: 'text', defaultValue: 'Linear' },
       { id: 'logo8', label: 'Logo 8 Text', type: 'text', defaultValue: 'Vercel' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div class="${uid('ils')}">
   <style>
-    .${uid('ils')} { padding:60px 0; background:#fff; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ils')} { padding:60px 0; background:${v.bgColor}; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; }
     .${uid('ils')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('ils')}-track { display:flex; width:fit-content; animation:${uid('ils')}-scroll ${v.speed}s linear infinite; }
     .${uid('ils')}:hover .${uid('ils')}-track { animation-play-state:paused; }
@@ -9064,10 +9079,11 @@ export const sectionsData: Section[] = [
       { id: 'feature3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Scalable Infrastructure' },
       { id: 'feature3Desc', label: 'Feature 3 Description', type: 'textarea', defaultValue: 'Built to grow with your business, handling millions of requests without breaking a sweat.' },
       { id: 'feature3Img', label: 'Feature 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
     ],
     generateHtml: (v) => `<div class="${uid('fcr')}">
   <style>
-    .${uid('fcr')} { padding:80px 24px; background:#0a0a0a; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fcr')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
     .${uid('fcr')} * { box-sizing:border-box; margin:0; padding:0; }
     .${uid('fcr')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
     @media(max-width:900px) { .${uid('fcr')}-container { grid-template-columns:1fr; } }
@@ -9130,10 +9146,11 @@ export const sectionsData: Section[] = [
       { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: 'Custom' },
       { id: 'plan3Desc', label: 'Plan 3 Description', type: 'text', defaultValue: 'For large organizations' },
       { id: 'plan3Features', label: 'Plan 3 Features (comma sep)', type: 'textarea', defaultValue: 'Everything in Pro,SSO & SAML,Dedicated Manager,SLA Guarantee,Custom Integrations' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#1e1e2f' },
     ],
     generateHtml: (v) => `<div class="${uid('glp')}">
   <style>
-    .${uid('glp')} { padding:80px 24px; background:linear-gradient(135deg, #1e1e2f 0%, #0f0f1a 50%, #1a1a2e 100%); font-family:'Inter',-apple-system,sans-serif; position:relative; overflow:hidden; }
+    .${uid('glp')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; position:relative; overflow:hidden; }
     .${uid('glp')}::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(99,102,241,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(236,72,153,0.1) 0%, transparent 50%); animation:${uid('glp')}-float 20s ease-in-out infinite; }
     @keyframes ${uid('glp')}-float { 0%, 100% { transform:translate(0,0) rotate(0deg); } 50% { transform:translate(30px, 30px) rotate(5deg); } }
     .${uid('glp')} * { box-sizing:border-box; margin:0; padding:0; }
@@ -9234,6 +9251,3121 @@ export const sectionsData: Section[] = [
         <div class="${uid('dst')}-name">${v.author}</div>
         <div class="${uid('dst')}-role">${v.role}, ${v.company}</div>
       </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ============================================
+  // 21st.dev INSPIRED PROFESSIONAL SECTIONS (BATCH 2)
+  // ============================================
+
+  // 21. Minimal Hero Split
+  {
+    id: 'minimal-hero-split',
+    name: 'Minimal Hero Split',
+    category: 'Hero',
+    description: 'Clean split-screen hero with text left, image right - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'tagline', label: 'Tagline', type: 'text', defaultValue: 'New Collection 2024' },
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Redefine Your Style' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Discover our curated collection of premium essentials designed for the modern lifestyle. Quality craftsmanship meets contemporary design.' },
+      { id: 'ctaText', label: 'CTA Button Text', type: 'text', defaultValue: 'Shop Collection' },
+      { id: 'ctaUrl', label: 'CTA Button URL', type: 'url', defaultValue: '#' },
+      { id: 'secondaryText', label: 'Secondary Link Text', type: 'text', defaultValue: 'Learn More' },
+      { id: 'image', label: 'Hero Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=1000&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#4b5563' },
+    ],
+    generateHtml: (v) => `<div class="${uid('mhs')}">
+  <style>
+    .${uid('mhs')} { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('mhs')} * { box-sizing:border-box; margin:0; padding:0; }
+    @media(max-width:900px) { .${uid('mhs')} { grid-template-columns:1fr; min-height:auto; } }
+    .${uid('mhs')}-content { display:flex; flex-direction:column; justify-content:center; padding:80px 64px; }
+    @media(max-width:900px) { .${uid('mhs')}-content { padding:60px 24px; text-align:center; } }
+    .${uid('mhs')}-tagline { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:${v.textColor}; margin-bottom:16px; }
+    .${uid('mhs')}-headline { font-size:56px; font-weight:700; line-height:1.1; color:${v.headlineColor}; margin-bottom:24px; letter-spacing:-0.02em; }
+    @media(max-width:900px) { .${uid('mhs')}-headline { font-size:40px; } }
+    .${uid('mhs')}-desc { font-size:18px; line-height:1.7; color:${v.textColor}; margin-bottom:40px; max-width:480px; }
+    @media(max-width:900px) { .${uid('mhs')}-desc { margin:0 auto 40px; } }
+    .${uid('mhs')}-actions { display:flex; gap:16px; align-items:center; }
+    @media(max-width:900px) { .${uid('mhs')}-actions { justify-content:center; } }
+    .${uid('mhs')}-cta { display:inline-flex; padding:16px 32px; background:${v.headlineColor}; color:#fff; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px; transition:all 0.2s; }
+    .${uid('mhs')}-cta:hover { background:#374151; transform:translateY(-2px); }
+    .${uid('mhs')}-secondary { font-size:14px; font-weight:500; color:${v.headlineColor}; text-decoration:none; display:flex; align-items:center; gap:8px; transition:gap 0.2s; }
+    .${uid('mhs')}-secondary:hover { gap:12px; }
+    .${uid('mhs')}-secondary svg { width:16px; height:16px; }
+    .${uid('mhs')}-visual { position:relative; overflow:hidden; }
+    @media(max-width:900px) { .${uid('mhs')}-visual { height:400px; } }
+    .${uid('mhs')}-img { width:100%; height:100%; object-fit:cover; }
+  </style>
+  <div class="${uid('mhs')}-content">
+    <span class="${uid('mhs')}-tagline">${v.tagline}</span>
+    <h1 class="${uid('mhs')}-headline">${v.headline}</h1>
+    <p class="${uid('mhs')}-desc">${v.description}</p>
+    <div class="${uid('mhs')}-actions">
+      <a href="${v.ctaUrl}" class="${uid('mhs')}-cta">${v.ctaText}</a>
+      <a href="#" class="${uid('mhs')}-secondary">${v.secondaryText} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+  </div>
+  <div class="${uid('mhs')}-visual">
+    <img class="${uid('mhs')}-img" src="${v.image}" alt="Hero">
+  </div>
+</div>`
+  },
+
+  // 22. Stats Banner
+  {
+    id: 'stats-banner-animated',
+    name: 'Stats Banner Animated',
+    category: 'Trust',
+    description: 'Animated statistics display with counting numbers - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'stat1Value', label: 'Stat 1 Value', type: 'text', defaultValue: '50K+' },
+      { id: 'stat1Label', label: 'Stat 1 Label', type: 'text', defaultValue: 'Happy Customers' },
+      { id: 'stat2Value', label: 'Stat 2 Value', type: 'text', defaultValue: '4.9' },
+      { id: 'stat2Label', label: 'Stat 2 Label', type: 'text', defaultValue: 'Average Rating' },
+      { id: 'stat3Value', label: 'Stat 3 Value', type: 'text', defaultValue: '100+' },
+      { id: 'stat3Label', label: 'Stat 3 Label', type: 'text', defaultValue: 'Countries Shipped' },
+      { id: 'stat4Value', label: 'Stat 4 Value', type: 'text', defaultValue: '24/7' },
+      { id: 'stat4Label', label: 'Stat 4 Label', type: 'text', defaultValue: 'Customer Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('sba')}">
+  <style>
+    .${uid('sba')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('sba')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('sba')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:48px; }
+    @media(max-width:900px) { .${uid('sba')}-container { grid-template-columns:repeat(2,1fr); gap:32px; } }
+    @media(max-width:500px) { .${uid('sba')}-container { grid-template-columns:1fr; gap:24px; text-align:center; } }
+    .${uid('sba')}-stat { }
+    .${uid('sba')}-value { font-size:48px; font-weight:700; color:${v.textColor}; line-height:1; margin-bottom:8px; letter-spacing:-0.02em; }
+    @media(max-width:900px) { .${uid('sba')}-value { font-size:36px; } }
+    .${uid('sba')}-label { font-size:14px; color:${v.textColor}; opacity:0.7; font-weight:500; }
+    .${uid('sba')}-divider { width:1px; background:rgba(255,255,255,0.2); }
+    @media(max-width:900px) { .${uid('sba')}-divider { display:none; } }
+  </style>
+  <div class="${uid('sba')}-container">
+    <div class="${uid('sba')}-stat">
+      <div class="${uid('sba')}-value">${v.stat1Value}</div>
+      <div class="${uid('sba')}-label">${v.stat1Label}</div>
+    </div>
+    <div class="${uid('sba')}-stat">
+      <div class="${uid('sba')}-value">${v.stat2Value}</div>
+      <div class="${uid('sba')}-label">${v.stat2Label}</div>
+    </div>
+    <div class="${uid('sba')}-stat">
+      <div class="${uid('sba')}-value">${v.stat3Value}</div>
+      <div class="${uid('sba')}-label">${v.stat3Label}</div>
+    </div>
+    <div class="${uid('sba')}-stat">
+      <div class="${uid('sba')}-value">${v.stat4Value}</div>
+      <div class="${uid('sba')}-label">${v.stat4Label}</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 23. Feature Grid Modern
+  {
+    id: 'feature-grid-modern',
+    name: 'Feature Grid Modern',
+    category: 'Features',
+    description: 'Clean 2x3 feature grid with icons and descriptions - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Why Choose Us' },
+      { id: 'subhead', label: 'Section Subhead', type: 'textarea', defaultValue: 'We combine quality, service, and value to deliver an exceptional shopping experience.' },
+      { id: 'feat1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'feat1Desc', label: 'Feature 1 Description', type: 'text', defaultValue: 'Free standard shipping on all orders over $50' },
+      { id: 'feat2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Easy Returns' },
+      { id: 'feat2Desc', label: 'Feature 2 Description', type: 'text', defaultValue: '30-day hassle-free return policy' },
+      { id: 'feat3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Secure Payment' },
+      { id: 'feat3Desc', label: 'Feature 3 Description', type: 'text', defaultValue: 'Your data is protected with SSL encryption' },
+      { id: 'feat4Title', label: 'Feature 4 Title', type: 'text', defaultValue: '24/7 Support' },
+      { id: 'feat4Desc', label: 'Feature 4 Description', type: 'text', defaultValue: 'Round-the-clock customer assistance' },
+      { id: 'feat5Title', label: 'Feature 5 Title', type: 'text', defaultValue: 'Quality Guarantee' },
+      { id: 'feat5Desc', label: 'Feature 5 Description', type: 'text', defaultValue: 'Premium materials and craftsmanship' },
+      { id: 'feat6Title', label: 'Feature 6 Title', type: 'text', defaultValue: 'Fast Delivery' },
+      { id: 'feat6Desc', label: 'Feature 6 Description', type: 'text', defaultValue: 'Express shipping available worldwide' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fgm')}">
+  <style>
+    .${uid('fgm')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fgm')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fgm')}-container { max-width:1200px; margin:0 auto; }
+    .${uid('fgm')}-header { text-align:center; margin-bottom:64px; }
+    .${uid('fgm')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    .${uid('fgm')}-subhead { font-size:18px; color:${v.textColor}; max-width:600px; margin:0 auto; line-height:1.6; }
+    .${uid('fgm')}-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+    @media(max-width:900px) { .${uid('fgm')}-grid { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:600px) { .${uid('fgm')}-grid { grid-template-columns:1fr; } }
+    .${uid('fgm')}-card { padding:32px; border-radius:16px; background:#f9fafb; transition:all 0.3s; }
+    .${uid('fgm')}-card:hover { background:#f3f4f6; transform:translateY(-4px); }
+    .${uid('fgm')}-icon { width:48px; height:48px; background:${v.headlineColor}; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+    .${uid('fgm')}-icon svg { width:24px; height:24px; color:#fff; }
+    .${uid('fgm')}-title { font-size:18px; font-weight:600; color:${v.headlineColor}; margin-bottom:8px; }
+    .${uid('fgm')}-desc { font-size:14px; color:${v.textColor}; line-height:1.6; }
+  </style>
+  <div class="${uid('fgm')}-container">
+    <div class="${uid('fgm')}-header">
+      <h2 class="${uid('fgm')}-headline">${v.headline}</h2>
+      <p class="${uid('fgm')}-subhead">${v.subhead}</p>
+    </div>
+    <div class="${uid('fgm')}-grid">
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat1Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat1Desc}</p>
+      </div>
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat2Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat2Desc}</p>
+      </div>
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat3Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat3Desc}</p>
+      </div>
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat4Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat4Desc}</p>
+      </div>
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat5Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat5Desc}</p>
+      </div>
+      <div class="${uid('fgm')}-card">
+        <div class="${uid('fgm')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <h3 class="${uid('fgm')}-title">${v.feat6Title}</h3>
+        <p class="${uid('fgm')}-desc">${v.feat6Desc}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 24. Newsletter Elegant
+  {
+    id: 'newsletter-elegant',
+    name: 'Newsletter Elegant',
+    category: 'CTA',
+    description: 'Clean email signup with social proof - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Stay in the Loop' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Subscribe to our newsletter for exclusive offers, new arrivals, and style inspiration delivered to your inbox.' },
+      { id: 'placeholder', label: 'Input Placeholder', type: 'text', defaultValue: 'Enter your email' },
+      { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Subscribe' },
+      { id: 'socialProof', label: 'Social Proof Text', type: 'text', defaultValue: 'Join 25,000+ subscribers' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f3f4f6' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('nle')}">
+  <style>
+    .${uid('nle')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('nle')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('nle')}-container { max-width:560px; margin:0 auto; text-align:center; }
+    .${uid('nle')}-headline { font-size:36px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    .${uid('nle')}-desc { font-size:16px; color:${v.textColor}; margin-bottom:32px; line-height:1.6; }
+    .${uid('nle')}-form { display:flex; gap:12px; margin-bottom:24px; }
+    @media(max-width:500px) { .${uid('nle')}-form { flex-direction:column; } }
+    .${uid('nle')}-input { flex:1; padding:16px 20px; font-size:16px; border:1px solid #e5e7eb; border-radius:8px; outline:none; transition:border-color 0.2s; }
+    .${uid('nle')}-input:focus { border-color:${v.headlineColor}; }
+    .${uid('nle')}-btn { padding:16px 32px; background:${v.headlineColor}; color:#fff; font-size:14px; font-weight:600; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+    .${uid('nle')}-btn:hover { opacity:0.9; }
+    .${uid('nle')}-social { display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; color:${v.textColor}; }
+    .${uid('nle')}-avatars { display:flex; }
+    .${uid('nle')}-avatar { width:28px; height:28px; border-radius:50%; border:2px solid ${v.bgColor}; margin-left:-8px; object-fit:cover; }
+    .${uid('nle')}-avatar:first-child { margin-left:0; }
+  </style>
+  <div class="${uid('nle')}-container">
+    <h2 class="${uid('nle')}-headline">${v.headline}</h2>
+    <p class="${uid('nle')}-desc">${v.description}</p>
+    <form class="${uid('nle')}-form" onsubmit="event.preventDefault()">
+      <input type="email" class="${uid('nle')}-input" placeholder="${v.placeholder}" required>
+      <button type="submit" class="${uid('nle')}-btn">${v.buttonText}</button>
+    </form>
+    <div class="${uid('nle')}-social">
+      <div class="${uid('nle')}-avatars">
+        <img class="${uid('nle')}-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="">
+        <img class="${uid('nle')}-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="">
+        <img class="${uid('nle')}-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="">
+      </div>
+      <span>${v.socialProof}</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 25. Process Steps
+  {
+    id: 'process-steps-horizontal',
+    name: 'Process Steps Horizontal',
+    category: 'Features',
+    description: 'Horizontal timeline for purchase/delivery process - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'How It Works' },
+      { id: 'step1Title', label: 'Step 1 Title', type: 'text', defaultValue: 'Browse & Select' },
+      { id: 'step1Desc', label: 'Step 1 Description', type: 'text', defaultValue: 'Explore our curated collection and find your perfect items' },
+      { id: 'step2Title', label: 'Step 2 Title', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'step2Desc', label: 'Step 2 Description', type: 'text', defaultValue: 'Complete your purchase with our encrypted payment system' },
+      { id: 'step3Title', label: 'Step 3 Title', type: 'text', defaultValue: 'Fast Shipping' },
+      { id: 'step3Desc', label: 'Step 3 Description', type: 'text', defaultValue: 'Your order is carefully packed and shipped to your door' },
+      { id: 'step4Title', label: 'Step 4 Title', type: 'text', defaultValue: 'Enjoy!' },
+      { id: 'step4Desc', label: 'Step 4 Description', type: 'text', defaultValue: 'Unbox your new favorites and start enjoying them' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('psh')}">
+  <style>
+    .${uid('psh')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('psh')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('psh')}-container { max-width:1200px; margin:0 auto; }
+    .${uid('psh')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:64px; letter-spacing:-0.02em; }
+    .${uid('psh')}-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; position:relative; }
+    @media(max-width:900px) { .${uid('psh')}-steps { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:500px) { .${uid('psh')}-steps { grid-template-columns:1fr; } }
+    .${uid('psh')}-step { text-align:center; position:relative; }
+    .${uid('psh')}-num { width:56px; height:56px; background:${v.headlineColor}; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; margin:0 auto 24px; position:relative; z-index:1; }
+    .${uid('psh')}-title { font-size:18px; font-weight:600; color:${v.headlineColor}; margin-bottom:12px; }
+    .${uid('psh')}-desc { font-size:14px; color:${v.textColor}; line-height:1.6; max-width:220px; margin:0 auto; }
+    .${uid('psh')}-line { position:absolute; top:28px; left:calc(50% + 28px); right:calc(-50% + 28px); height:2px; background:#e5e7eb; }
+    @media(max-width:900px) { .${uid('psh')}-line { display:none; } }
+    .${uid('psh')}-step:last-child .${uid('psh')}-line { display:none; }
+  </style>
+  <div class="${uid('psh')}-container">
+    <h2 class="${uid('psh')}-headline">${v.headline}</h2>
+    <div class="${uid('psh')}-steps">
+      <div class="${uid('psh')}-step">
+        <div class="${uid('psh')}-num">1</div>
+        <div class="${uid('psh')}-line"></div>
+        <h3 class="${uid('psh')}-title">${v.step1Title}</h3>
+        <p class="${uid('psh')}-desc">${v.step1Desc}</p>
+      </div>
+      <div class="${uid('psh')}-step">
+        <div class="${uid('psh')}-num">2</div>
+        <div class="${uid('psh')}-line"></div>
+        <h3 class="${uid('psh')}-title">${v.step2Title}</h3>
+        <p class="${uid('psh')}-desc">${v.step2Desc}</p>
+      </div>
+      <div class="${uid('psh')}-step">
+        <div class="${uid('psh')}-num">3</div>
+        <div class="${uid('psh')}-line"></div>
+        <h3 class="${uid('psh')}-title">${v.step3Title}</h3>
+        <p class="${uid('psh')}-desc">${v.step3Desc}</p>
+      </div>
+      <div class="${uid('psh')}-step">
+        <div class="${uid('psh')}-num">4</div>
+        <h3 class="${uid('psh')}-title">${v.step4Title}</h3>
+        <p class="${uid('psh')}-desc">${v.step4Desc}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 26. Comparison Table
+  {
+    id: 'comparison-table-modern',
+    name: 'Comparison Table Modern',
+    category: 'Product',
+    description: 'Side-by-side product/plan comparison - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Compare Plans' },
+      { id: 'plan1Name', label: 'Plan 1 Name', type: 'text', defaultValue: 'Basic' },
+      { id: 'plan1Price', label: 'Plan 1 Price', type: 'text', defaultValue: '$9' },
+      { id: 'plan2Name', label: 'Plan 2 Name', type: 'text', defaultValue: 'Pro' },
+      { id: 'plan2Price', label: 'Plan 2 Price', type: 'text', defaultValue: '$29' },
+      { id: 'plan2Badge', label: 'Plan 2 Badge', type: 'text', defaultValue: 'Most Popular' },
+      { id: 'plan3Name', label: 'Plan 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'plan3Price', label: 'Plan 3 Price', type: 'text', defaultValue: '$99' },
+      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Products' },
+      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Storage' },
+      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Support' },
+      { id: 'feature4', label: 'Feature 4', type: 'text', defaultValue: 'Analytics' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ctm')}">
+  <style>
+    .${uid('ctm')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ctm')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ctm')}-container { max-width:900px; margin:0 auto; }
+    .${uid('ctm')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:48px; letter-spacing:-0.02em; }
+    .${uid('ctm')}-table { width:100%; border-collapse:collapse; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+    .${uid('ctm')}-table th, .${uid('ctm')}-table td { padding:20px 24px; text-align:center; border-bottom:1px solid #f3f4f6; }
+    .${uid('ctm')}-table th:first-child, .${uid('ctm')}-table td:first-child { text-align:left; }
+    .${uid('ctm')}-table thead th { background:${v.headlineColor}; color:#fff; font-weight:600; font-size:14px; }
+    .${uid('ctm')}-table thead th:first-child { background:${v.headlineColor}; }
+    .${uid('ctm')}-popular { background:#f0fdf4 !important; }
+    .${uid('ctm')}-popular-head { background:#059669 !important; }
+    .${uid('ctm')}-price { font-size:28px; font-weight:700; color:${v.headlineColor}; }
+    .${uid('ctm')}-price span { font-size:14px; font-weight:400; color:${v.textColor}; }
+    .${uid('ctm')}-badge { display:inline-block; padding:4px 8px; background:#059669; color:#fff; font-size:10px; font-weight:600; border-radius:4px; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+    .${uid('ctm')}-feat { color:${v.textColor}; font-size:14px; }
+    .${uid('ctm')}-check { width:20px; height:20px; color:#059669; }
+    .${uid('ctm')}-x { width:20px; height:20px; color:#d1d5db; }
+    @media(max-width:700px) {
+      .${uid('ctm')}-table { font-size:12px; }
+      .${uid('ctm')}-table th, .${uid('ctm')}-table td { padding:12px 8px; }
+      .${uid('ctm')}-price { font-size:20px; }
+    }
+  </style>
+  <div class="${uid('ctm')}-container">
+    <h2 class="${uid('ctm')}-headline">${v.headline}</h2>
+    <table class="${uid('ctm')}-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>${v.plan1Name}</th>
+          <th class="${uid('ctm')}-popular-head"><div class="${uid('ctm')}-badge">${v.plan2Badge}</div><br>${v.plan2Name}</th>
+          <th>${v.plan3Name}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="${uid('ctm')}-feat">Price</td>
+          <td><div class="${uid('ctm')}-price">${v.plan1Price}<span>/mo</span></div></td>
+          <td class="${uid('ctm')}-popular"><div class="${uid('ctm')}-price">${v.plan2Price}<span>/mo</span></div></td>
+          <td><div class="${uid('ctm')}-price">${v.plan3Price}<span>/mo</span></div></td>
+        </tr>
+        <tr>
+          <td class="${uid('ctm')}-feat">${v.feature1}</td>
+          <td>10</td>
+          <td class="${uid('ctm')}-popular">100</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td class="${uid('ctm')}-feat">${v.feature2}</td>
+          <td>5 GB</td>
+          <td class="${uid('ctm')}-popular">50 GB</td>
+          <td>500 GB</td>
+        </tr>
+        <tr>
+          <td class="${uid('ctm')}-feat">${v.feature3}</td>
+          <td>Email</td>
+          <td class="${uid('ctm')}-popular">Priority</td>
+          <td>Dedicated</td>
+        </tr>
+        <tr>
+          <td class="${uid('ctm')}-feat">${v.feature4}</td>
+          <td><svg class="${uid('ctm')}-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+          <td class="${uid('ctm')}-popular"><svg class="${uid('ctm')}-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+          <td><svg class="${uid('ctm')}-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>`
+  },
+
+  // 27. Team Grid Clean
+  {
+    id: 'team-grid-clean',
+    name: 'Team Grid Clean',
+    category: 'Story',
+    description: 'Clean team member showcase grid - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Meet Our Team' },
+      { id: 'subhead', label: 'Subhead', type: 'textarea', defaultValue: 'The passionate people behind our brand, dedicated to bringing you the best products.' },
+      { id: 'member1Name', label: 'Member 1 Name', type: 'text', defaultValue: 'Alex Chen' },
+      { id: 'member1Role', label: 'Member 1 Role', type: 'text', defaultValue: 'Founder & CEO' },
+      { id: 'member1Image', label: 'Member 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face' },
+      { id: 'member2Name', label: 'Member 2 Name', type: 'text', defaultValue: 'Sarah Kim' },
+      { id: 'member2Role', label: 'Member 2 Role', type: 'text', defaultValue: 'Creative Director' },
+      { id: 'member2Image', label: 'Member 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face' },
+      { id: 'member3Name', label: 'Member 3 Name', type: 'text', defaultValue: 'Michael Ross' },
+      { id: 'member3Role', label: 'Member 3 Role', type: 'text', defaultValue: 'Head of Product' },
+      { id: 'member3Image', label: 'Member 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face' },
+      { id: 'member4Name', label: 'Member 4 Name', type: 'text', defaultValue: 'Emma Wilson' },
+      { id: 'member4Role', label: 'Member 4 Role', type: 'text', defaultValue: 'Marketing Lead' },
+      { id: 'member4Image', label: 'Member 4 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tgc')}">
+  <style>
+    .${uid('tgc')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('tgc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('tgc')}-container { max-width:1100px; margin:0 auto; }
+    .${uid('tgc')}-header { text-align:center; margin-bottom:64px; }
+    .${uid('tgc')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    .${uid('tgc')}-subhead { font-size:18px; color:${v.textColor}; max-width:500px; margin:0 auto; line-height:1.6; }
+    .${uid('tgc')}-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:32px; }
+    @media(max-width:900px) { .${uid('tgc')}-grid { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:500px) { .${uid('tgc')}-grid { grid-template-columns:1fr; max-width:280px; margin:0 auto; } }
+    .${uid('tgc')}-member { text-align:center; }
+    .${uid('tgc')}-img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:16px; margin-bottom:20px; filter:grayscale(100%); transition:all 0.3s; }
+    .${uid('tgc')}-member:hover .${uid('tgc')}-img { filter:grayscale(0%); transform:scale(1.02); }
+    .${uid('tgc')}-name { font-size:18px; font-weight:600; color:${v.headlineColor}; margin-bottom:4px; }
+    .${uid('tgc')}-role { font-size:14px; color:${v.textColor}; }
+  </style>
+  <div class="${uid('tgc')}-container">
+    <div class="${uid('tgc')}-header">
+      <h2 class="${uid('tgc')}-headline">${v.headline}</h2>
+      <p class="${uid('tgc')}-subhead">${v.subhead}</p>
+    </div>
+    <div class="${uid('tgc')}-grid">
+      <div class="${uid('tgc')}-member">
+        <img class="${uid('tgc')}-img" src="${v.member1Image}" alt="${v.member1Name}">
+        <h3 class="${uid('tgc')}-name">${v.member1Name}</h3>
+        <p class="${uid('tgc')}-role">${v.member1Role}</p>
+      </div>
+      <div class="${uid('tgc')}-member">
+        <img class="${uid('tgc')}-img" src="${v.member2Image}" alt="${v.member2Name}">
+        <h3 class="${uid('tgc')}-name">${v.member2Name}</h3>
+        <p class="${uid('tgc')}-role">${v.member2Role}</p>
+      </div>
+      <div class="${uid('tgc')}-member">
+        <img class="${uid('tgc')}-img" src="${v.member3Image}" alt="${v.member3Name}">
+        <h3 class="${uid('tgc')}-name">${v.member3Name}</h3>
+        <p class="${uid('tgc')}-role">${v.member3Role}</p>
+      </div>
+      <div class="${uid('tgc')}-member">
+        <img class="${uid('tgc')}-img" src="${v.member4Image}" alt="${v.member4Name}">
+        <h3 class="${uid('tgc')}-name">${v.member4Name}</h3>
+        <p class="${uid('tgc')}-role">${v.member4Role}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 28. FAQ Minimal Accordion
+  {
+    id: 'faq-minimal-accordion',
+    name: 'FAQ Minimal Accordion',
+    category: 'FAQ',
+    description: 'Elegant accordion-style FAQ section - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Frequently Asked Questions' },
+      { id: 'q1', label: 'Question 1', type: 'text', defaultValue: 'What is your return policy?' },
+      { id: 'a1', label: 'Answer 1', type: 'textarea', defaultValue: 'We offer a 30-day hassle-free return policy. If you\'re not completely satisfied with your purchase, you can return it for a full refund or exchange. Items must be in original condition with tags attached.' },
+      { id: 'q2', label: 'Question 2', type: 'text', defaultValue: 'How long does shipping take?' },
+      { id: 'a2', label: 'Answer 2', type: 'textarea', defaultValue: 'Standard shipping typically takes 5-7 business days. Express shipping (2-3 business days) is available for an additional fee. International orders may take 10-14 business days.' },
+      { id: 'q3', label: 'Question 3', type: 'text', defaultValue: 'Do you offer international shipping?' },
+      { id: 'a3', label: 'Answer 3', type: 'textarea', defaultValue: 'Yes! We ship to over 100 countries worldwide. Shipping costs and delivery times vary by location. You can see the exact shipping cost at checkout before completing your purchase.' },
+      { id: 'q4', label: 'Question 4', type: 'text', defaultValue: 'How can I track my order?' },
+      { id: 'a4', label: 'Answer 4', type: 'textarea', defaultValue: 'Once your order ships, you\'ll receive an email with a tracking number and link. You can also track your order by logging into your account and viewing your order history.' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fma')}">
+  <style>
+    .${uid('fma')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fma')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fma')}-container { max-width:720px; margin:0 auto; }
+    .${uid('fma')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:48px; letter-spacing:-0.02em; }
+    .${uid('fma')}-item { border-bottom:1px solid #e5e7eb; }
+    .${uid('fma')}-question { width:100%; display:flex; justify-content:space-between; align-items:center; padding:24px 0; background:none; border:none; cursor:pointer; text-align:left; }
+    .${uid('fma')}-question:hover .${uid('fma')}-q { color:${v.headlineColor}; }
+    .${uid('fma')}-q { font-size:16px; font-weight:500; color:${v.textColor}; transition:color 0.2s; flex:1; padding-right:16px; }
+    .${uid('fma')}-icon { width:24px; height:24px; color:#9ca3af; transition:transform 0.3s; flex-shrink:0; }
+    .${uid('fma')}-item.open .${uid('fma')}-icon { transform:rotate(45deg); }
+    .${uid('fma')}-answer { max-height:0; overflow:hidden; transition:max-height 0.3s ease-out; }
+    .${uid('fma')}-item.open .${uid('fma')}-answer { max-height:500px; }
+    .${uid('fma')}-a { padding:0 0 24px; font-size:15px; color:${v.textColor}; line-height:1.7; }
+  </style>
+  <div class="${uid('fma')}-container">
+    <h2 class="${uid('fma')}-headline">${v.headline}</h2>
+    <div class="${uid('fma')}-list">
+      <div class="${uid('fma')}-item">
+        <button class="${uid('fma')}-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="${uid('fma')}-q">${v.q1}</span>
+          <svg class="${uid('fma')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="${uid('fma')}-answer"><p class="${uid('fma')}-a">${v.a1}</p></div>
+      </div>
+      <div class="${uid('fma')}-item">
+        <button class="${uid('fma')}-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="${uid('fma')}-q">${v.q2}</span>
+          <svg class="${uid('fma')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="${uid('fma')}-answer"><p class="${uid('fma')}-a">${v.a2}</p></div>
+      </div>
+      <div class="${uid('fma')}-item">
+        <button class="${uid('fma')}-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="${uid('fma')}-q">${v.q3}</span>
+          <svg class="${uid('fma')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="${uid('fma')}-answer"><p class="${uid('fma')}-a">${v.a3}</p></div>
+      </div>
+      <div class="${uid('fma')}-item">
+        <button class="${uid('fma')}-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="${uid('fma')}-q">${v.q4}</span>
+          <svg class="${uid('fma')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="${uid('fma')}-answer"><p class="${uid('fma')}-a">${v.a4}</p></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 29. Logo Cloud Grid
+  {
+    id: 'logo-cloud-grid',
+    name: 'Logo Cloud Grid',
+    category: 'Trust',
+    description: 'Partner/featured-in logos in clean grid - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Trusted by Industry Leaders' },
+      { id: 'logo1', label: 'Logo 1 Text', type: 'text', defaultValue: 'Acme Inc' },
+      { id: 'logo2', label: 'Logo 2 Text', type: 'text', defaultValue: 'Globex' },
+      { id: 'logo3', label: 'Logo 3 Text', type: 'text', defaultValue: 'Soylent' },
+      { id: 'logo4', label: 'Logo 4 Text', type: 'text', defaultValue: 'Initech' },
+      { id: 'logo5', label: 'Logo 5 Text', type: 'text', defaultValue: 'Hooli' },
+      { id: 'logo6', label: 'Logo 6 Text', type: 'text', defaultValue: 'Massive' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#6b7280' },
+      { id: 'textColor', label: 'Logo Text Color', type: 'color', defaultValue: '#9ca3af' },
+    ],
+    generateHtml: (v) => `<div class="${uid('lcg')}">
+  <style>
+    .${uid('lcg')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('lcg')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('lcg')}-container { max-width:1000px; margin:0 auto; }
+    .${uid('lcg')}-headline { font-size:14px; font-weight:500; color:${v.headlineColor}; text-align:center; margin-bottom:32px; text-transform:uppercase; letter-spacing:0.05em; }
+    .${uid('lcg')}-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:32px; align-items:center; }
+    @media(max-width:900px) { .${uid('lcg')}-grid { grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:500px) { .${uid('lcg')}-grid { grid-template-columns:repeat(2,1fr); } }
+    .${uid('lcg')}-logo { text-align:center; font-size:20px; font-weight:700; color:${v.textColor}; transition:color 0.2s; cursor:default; }
+    .${uid('lcg')}-logo:hover { color:${v.headlineColor}; }
+  </style>
+  <div class="${uid('lcg')}-container">
+    <p class="${uid('lcg')}-headline">${v.headline}</p>
+    <div class="${uid('lcg')}-grid">
+      <div class="${uid('lcg')}-logo">${v.logo1}</div>
+      <div class="${uid('lcg')}-logo">${v.logo2}</div>
+      <div class="${uid('lcg')}-logo">${v.logo3}</div>
+      <div class="${uid('lcg')}-logo">${v.logo4}</div>
+      <div class="${uid('lcg')}-logo">${v.logo5}</div>
+      <div class="${uid('lcg')}-logo">${v.logo6}</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 30. Value Props Banner
+  {
+    id: 'value-props-banner',
+    name: 'Value Props Banner',
+    category: 'Trust',
+    description: 'Horizontal strip of value propositions - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'prop1Icon', label: 'Prop 1 Icon (emoji)', type: 'text', defaultValue: '🚚' },
+      { id: 'prop1Text', label: 'Prop 1 Text', type: 'text', defaultValue: 'Free Shipping Over $50' },
+      { id: 'prop2Icon', label: 'Prop 2 Icon (emoji)', type: 'text', defaultValue: '🔄' },
+      { id: 'prop2Text', label: 'Prop 2 Text', type: 'text', defaultValue: '30-Day Returns' },
+      { id: 'prop3Icon', label: 'Prop 3 Icon (emoji)', type: 'text', defaultValue: '🔒' },
+      { id: 'prop3Text', label: 'Prop 3 Text', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'prop4Icon', label: 'Prop 4 Icon (emoji)', type: 'text', defaultValue: '💬' },
+      { id: 'prop4Text', label: 'Prop 4 Text', type: 'text', defaultValue: '24/7 Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('vpb')}">
+  <style>
+    .${uid('vpb')} { padding:20px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('vpb')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('vpb')}-container { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+    @media(max-width:700px) { .${uid('vpb')}-container { justify-content:center; } }
+    .${uid('vpb')}-prop { display:flex; align-items:center; gap:10px; }
+    .${uid('vpb')}-icon { font-size:18px; }
+    .${uid('vpb')}-text { font-size:13px; font-weight:500; color:${v.textColor}; }
+    .${uid('vpb')}-divider { width:1px; height:24px; background:rgba(255,255,255,0.2); }
+    @media(max-width:700px) { .${uid('vpb')}-divider { display:none; } }
+  </style>
+  <div class="${uid('vpb')}-container">
+    <div class="${uid('vpb')}-prop">
+      <span class="${uid('vpb')}-icon">${v.prop1Icon}</span>
+      <span class="${uid('vpb')}-text">${v.prop1Text}</span>
+    </div>
+    <div class="${uid('vpb')}-divider"></div>
+    <div class="${uid('vpb')}-prop">
+      <span class="${uid('vpb')}-icon">${v.prop2Icon}</span>
+      <span class="${uid('vpb')}-text">${v.prop2Text}</span>
+    </div>
+    <div class="${uid('vpb')}-divider"></div>
+    <div class="${uid('vpb')}-prop">
+      <span class="${uid('vpb')}-icon">${v.prop3Icon}</span>
+      <span class="${uid('vpb')}-text">${v.prop3Text}</span>
+    </div>
+    <div class="${uid('vpb')}-divider"></div>
+    <div class="${uid('vpb')}-prop">
+      <span class="${uid('vpb')}-icon">${v.prop4Icon}</span>
+      <span class="${uid('vpb')}-text">${v.prop4Text}</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 31. Product Spotlight
+  {
+    id: 'product-spotlight-large',
+    name: 'Product Spotlight Large',
+    category: 'Product',
+    description: 'Large product image with feature callouts - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'tagline', label: 'Tagline', type: 'text', defaultValue: 'Featured Product' },
+      { id: 'productName', label: 'Product Name', type: 'text', defaultValue: 'Premium Wireless Headphones' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Experience crystal-clear audio with our flagship wireless headphones. 40-hour battery life, active noise cancellation, and premium comfort.' },
+      { id: 'price', label: 'Price', type: 'text', defaultValue: '$299' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Shop Now' },
+      { id: 'image', label: 'Product Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=800&fit=crop' },
+      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: '40hr Battery' },
+      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'ANC' },
+      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Hi-Fi Audio' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('psl')}">
+  <style>
+    .${uid('psl')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('psl')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('psl')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    @media(max-width:900px) { .${uid('psl')}-container { grid-template-columns:1fr; gap:48px; } }
+    .${uid('psl')}-visual { position:relative; }
+    .${uid('psl')}-img { width:100%; max-width:500px; aspect-ratio:1; object-fit:cover; border-radius:24px; margin:0 auto; display:block; }
+    .${uid('psl')}-content { }
+    @media(max-width:900px) { .${uid('psl')}-content { text-align:center; } }
+    .${uid('psl')}-tagline { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:${v.textColor}; margin-bottom:12px; }
+    .${uid('psl')}-name { font-size:48px; font-weight:700; color:${v.headlineColor}; margin-bottom:20px; line-height:1.1; letter-spacing:-0.02em; }
+    @media(max-width:900px) { .${uid('psl')}-name { font-size:36px; } }
+    .${uid('psl')}-desc { font-size:18px; color:${v.textColor}; line-height:1.7; margin-bottom:24px; }
+    .${uid('psl')}-features { display:flex; gap:24px; margin-bottom:32px; }
+    @media(max-width:900px) { .${uid('psl')}-features { justify-content:center; } }
+    .${uid('psl')}-feat { padding:8px 16px; background:#fff; border-radius:8px; font-size:13px; font-weight:500; color:${v.headlineColor}; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .${uid('psl')}-price { font-size:36px; font-weight:700; color:${v.headlineColor}; margin-bottom:24px; }
+    .${uid('psl')}-cta { display:inline-flex; padding:16px 40px; background:${v.headlineColor}; color:#fff; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px; transition:all 0.2s; }
+    .${uid('psl')}-cta:hover { background:#374151; transform:translateY(-2px); }
+  </style>
+  <div class="${uid('psl')}-container">
+    <div class="${uid('psl')}-visual">
+      <img class="${uid('psl')}-img" src="${v.image}" alt="${v.productName}">
+    </div>
+    <div class="${uid('psl')}-content">
+      <span class="${uid('psl')}-tagline">${v.tagline}</span>
+      <h2 class="${uid('psl')}-name">${v.productName}</h2>
+      <p class="${uid('psl')}-desc">${v.description}</p>
+      <div class="${uid('psl')}-features">
+        <span class="${uid('psl')}-feat">${v.feature1}</span>
+        <span class="${uid('psl')}-feat">${v.feature2}</span>
+        <span class="${uid('psl')}-feat">${v.feature3}</span>
+      </div>
+      <div class="${uid('psl')}-price">${v.price}</div>
+      <a href="#" class="${uid('psl')}-cta">${v.ctaText}</a>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 32. Social Proof Bar
+  {
+    id: 'social-proof-bar',
+    name: 'Social Proof Bar',
+    category: 'Trust',
+    description: 'Floating bar with reviews/ratings - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'rating', label: 'Rating', type: 'text', defaultValue: '4.9' },
+      { id: 'reviewCount', label: 'Review Count', type: 'text', defaultValue: '2,847' },
+      { id: 'text1', label: 'Trust Text 1', type: 'text', defaultValue: 'Verified Reviews' },
+      { id: 'text2', label: 'Trust Text 2', type: 'text', defaultValue: '100K+ Happy Customers' },
+      { id: 'text3', label: 'Trust Text 3', type: 'text', defaultValue: '30-Day Money Back' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Score Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('spb')}">
+  <style>
+    .${uid('spb')} { padding:16px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; border-bottom:1px solid #f3f4f6; }
+    .${uid('spb')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('spb')}-container { max-width:1200px; margin:0 auto; display:flex; justify-content:center; align-items:center; gap:32px; flex-wrap:wrap; }
+    @media(max-width:600px) { .${uid('spb')}-container { gap:16px; } }
+    .${uid('spb')}-rating { display:flex; align-items:center; gap:8px; }
+    .${uid('spb')}-stars { display:flex; gap:2px; }
+    .${uid('spb')}-star { width:16px; height:16px; color:#fbbf24; }
+    .${uid('spb')}-score { font-size:14px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('spb')}-count { font-size:13px; color:${v.textColor}; }
+    .${uid('spb')}-divider { width:1px; height:20px; background:#e5e7eb; }
+    @media(max-width:600px) { .${uid('spb')}-divider { display:none; } }
+    .${uid('spb')}-item { display:flex; align-items:center; gap:6px; font-size:13px; color:${v.textColor}; }
+    .${uid('spb')}-icon { width:16px; height:16px; color:#10b981; }
+  </style>
+  <div class="${uid('spb')}-container">
+    <div class="${uid('spb')}-rating">
+      <div class="${uid('spb')}-stars">
+        ${Array.from({length:5}, () => `<svg class="${uid('spb')}-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}
+      </div>
+      <span class="${uid('spb')}-score">${v.rating}</span>
+      <span class="${uid('spb')}-count">(${v.reviewCount})</span>
+    </div>
+    <div class="${uid('spb')}-divider"></div>
+    <div class="${uid('spb')}-item">
+      <svg class="${uid('spb')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+      ${v.text1}
+    </div>
+    <div class="${uid('spb')}-divider"></div>
+    <div class="${uid('spb')}-item">
+      <svg class="${uid('spb')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+      ${v.text2}
+    </div>
+    <div class="${uid('spb')}-divider"></div>
+    <div class="${uid('spb')}-item">
+      <svg class="${uid('spb')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+      ${v.text3}
+    </div>
+  </div>
+</div>`
+  },
+
+  // 33. Image Text Stack
+  {
+    id: 'image-text-stack',
+    name: 'Image Text Stack',
+    category: 'Features',
+    description: 'Alternating image/text sections - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'title1', label: 'Section 1 Title', type: 'text', defaultValue: 'Crafted with Care' },
+      { id: 'desc1', label: 'Section 1 Description', type: 'textarea', defaultValue: 'Every product is meticulously designed and crafted using only the finest materials. Our attention to detail ensures lasting quality.' },
+      { id: 'image1', label: 'Section 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&h=600&fit=crop' },
+      { id: 'title2', label: 'Section 2 Title', type: 'text', defaultValue: 'Sustainable Practices' },
+      { id: 'desc2', label: 'Section 2 Description', type: 'textarea', defaultValue: 'We\'re committed to reducing our environmental footprint. From eco-friendly packaging to ethical sourcing, sustainability is at our core.' },
+      { id: 'image2', label: 'Section 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&h=600&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('its')}">
+  <style>
+    .${uid('its')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('its')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('its')}-container { max-width:1200px; margin:0 auto; }
+    .${uid('its')}-row { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; margin-bottom:96px; }
+    .${uid('its')}-row:last-child { margin-bottom:0; }
+    .${uid('its')}-row.reverse { direction:rtl; }
+    .${uid('its')}-row.reverse > * { direction:ltr; }
+    @media(max-width:900px) {
+      .${uid('its')}-row, .${uid('its')}-row.reverse { grid-template-columns:1fr; gap:40px; direction:ltr; }
+      .${uid('its')}-row.reverse > * { direction:ltr; }
+    }
+    .${uid('its')}-img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:20px; }
+    .${uid('its')}-content { }
+    @media(max-width:900px) { .${uid('its')}-content { text-align:center; } }
+    .${uid('its')}-title { font-size:36px; font-weight:700; color:${v.headlineColor}; margin-bottom:20px; letter-spacing:-0.02em; }
+    .${uid('its')}-desc { font-size:17px; color:${v.textColor}; line-height:1.8; }
+  </style>
+  <div class="${uid('its')}-container">
+    <div class="${uid('its')}-row">
+      <img class="${uid('its')}-img" src="${v.image1}" alt="${v.title1}">
+      <div class="${uid('its')}-content">
+        <h2 class="${uid('its')}-title">${v.title1}</h2>
+        <p class="${uid('its')}-desc">${v.desc1}</p>
+      </div>
+    </div>
+    <div class="${uid('its')}-row reverse">
+      <img class="${uid('its')}-img" src="${v.image2}" alt="${v.title2}">
+      <div class="${uid('its')}-content">
+        <h2 class="${uid('its')}-title">${v.title2}</h2>
+        <p class="${uid('its')}-desc">${v.desc2}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 34. CTA Split Screen
+  {
+    id: 'cta-split-screen',
+    name: 'CTA Split Screen',
+    category: 'CTA',
+    description: 'Bold call-to-action with image - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Ready to Transform Your Style?' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Join thousands of satisfied customers who have elevated their wardrobe with our premium collection.' },
+      { id: 'ctaText', label: 'CTA Button Text', type: 'text', defaultValue: 'Get Started' },
+      { id: 'secondaryText', label: 'Secondary Text', type: 'text', defaultValue: 'Free shipping on first order' },
+      { id: 'image', label: 'Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&h=1000&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#111827' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: 'rgba(255,255,255,0.7)' },
+    ],
+    generateHtml: (v) => `<div class="${uid('css')}">
+  <style>
+    .${uid('css')} { display:grid; grid-template-columns:1fr 1fr; min-height:600px; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('css')} * { box-sizing:border-box; margin:0; padding:0; }
+    @media(max-width:900px) { .${uid('css')} { grid-template-columns:1fr; } }
+    .${uid('css')}-content { background:${v.bgColor}; padding:80px 64px; display:flex; flex-direction:column; justify-content:center; }
+    @media(max-width:900px) { .${uid('css')}-content { padding:60px 24px; text-align:center; } }
+    .${uid('css')}-headline { font-size:44px; font-weight:700; color:${v.headlineColor}; margin-bottom:24px; line-height:1.15; letter-spacing:-0.02em; }
+    @media(max-width:900px) { .${uid('css')}-headline { font-size:32px; } }
+    .${uid('css')}-desc { font-size:18px; color:${v.textColor}; line-height:1.7; margin-bottom:40px; max-width:440px; }
+    @media(max-width:900px) { .${uid('css')}-desc { margin:0 auto 40px; } }
+    .${uid('css')}-cta { display:inline-flex; padding:18px 40px; background:${v.headlineColor}; color:${v.bgColor}; font-size:14px; font-weight:600; text-decoration:none; border-radius:8px; transition:all 0.2s; margin-bottom:16px; }
+    .${uid('css')}-cta:hover { opacity:0.9; transform:translateY(-2px); }
+    @media(max-width:900px) { .${uid('css')}-cta { margin:0 auto 16px; } }
+    .${uid('css')}-secondary { font-size:13px; color:${v.textColor}; opacity:0.7; }
+    .${uid('css')}-visual { position:relative; overflow:hidden; }
+    @media(max-width:900px) { .${uid('css')}-visual { height:400px; } }
+    .${uid('css')}-img { width:100%; height:100%; object-fit:cover; }
+  </style>
+  <div class="${uid('css')}-content">
+    <h2 class="${uid('css')}-headline">${v.headline}</h2>
+    <p class="${uid('css')}-desc">${v.description}</p>
+    <div>
+      <a href="#" class="${uid('css')}-cta">${v.ctaText}</a>
+      <p class="${uid('css')}-secondary">${v.secondaryText}</p>
+    </div>
+  </div>
+  <div class="${uid('css')}-visual">
+    <img class="${uid('css')}-img" src="${v.image}" alt="CTA">
+  </div>
+</div>`
+  },
+
+  // 35. Testimonial Single Large
+  {
+    id: 'testimonial-single-large',
+    name: 'Testimonial Single Large',
+    category: 'Testimonials',
+    description: 'Large, prominent single testimonial - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'This product completely exceeded my expectations. The quality is outstanding, shipping was fast, and the customer service team was incredibly helpful. I\'ve already recommended it to all my friends!' },
+      { id: 'author', label: 'Author Name', type: 'text', defaultValue: 'Jessica Anderson' },
+      { id: 'role', label: 'Author Role', type: 'text', defaultValue: 'Verified Buyer' },
+      { id: 'image', label: 'Author Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face' },
+      { id: 'rating', label: 'Rating (1-5)', type: 'number', defaultValue: '5' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Quote Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tsl')}">
+  <style>
+    .${uid('tsl')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('tsl')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('tsl')}-container { max-width:800px; margin:0 auto; text-align:center; }
+    .${uid('tsl')}-stars { display:flex; justify-content:center; gap:4px; margin-bottom:32px; }
+    .${uid('tsl')}-star { width:28px; height:28px; color:#fbbf24; }
+    .${uid('tsl')}-star.empty { color:#e5e7eb; }
+    .${uid('tsl')}-quote { font-size:28px; line-height:1.6; color:${v.headlineColor}; margin-bottom:40px; font-weight:400; }
+    @media(max-width:700px) { .${uid('tsl')}-quote { font-size:22px; } }
+    .${uid('tsl')}-author { display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .${uid('tsl')}-img { width:64px; height:64px; border-radius:50%; object-fit:cover; }
+    .${uid('tsl')}-name { font-size:16px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('tsl')}-role { font-size:14px; color:${v.textColor}; }
+  </style>
+  <div class="${uid('tsl')}-container">
+    <div class="${uid('tsl')}-stars">
+      ${Array.from({length: 5}, (_, i) => `<svg class="${uid('tsl')}-star${i < parseInt(v.rating) ? '' : ' empty'}" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}
+    </div>
+    <blockquote class="${uid('tsl')}-quote">"${v.quote}"</blockquote>
+    <div class="${uid('tsl')}-author">
+      <img class="${uid('tsl')}-img" src="${v.image}" alt="${v.author}">
+      <div class="${uid('tsl')}-name">${v.author}</div>
+      <div class="${uid('tsl')}-role">${v.role}</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 36. Benefit Cards 3-Col
+  {
+    id: 'benefit-cards-3col',
+    name: 'Benefit Cards 3-Col',
+    category: 'Features',
+    description: '3 cards highlighting key benefits - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Why Customers Love Us' },
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Premium Quality' },
+      { id: 'card1Desc', label: 'Card 1 Description', type: 'textarea', defaultValue: 'We source only the finest materials and work with skilled artisans to create products that last.' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Exceptional Value' },
+      { id: 'card2Desc', label: 'Card 2 Description', type: 'textarea', defaultValue: 'By working directly with manufacturers, we offer luxury quality at accessible prices.' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Customer First' },
+      { id: 'card3Desc', label: 'Card 3 Description', type: 'textarea', defaultValue: 'Our dedicated support team is here to help you before, during, and after your purchase.' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bc3')}">
+  <style>
+    .${uid('bc3')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('bc3')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('bc3')}-container { max-width:1100px; margin:0 auto; }
+    .${uid('bc3')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:64px; letter-spacing:-0.02em; }
+    .${uid('bc3')}-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+    @media(max-width:900px) { .${uid('bc3')}-grid { grid-template-columns:1fr; max-width:500px; margin:0 auto; } }
+    .${uid('bc3')}-card { padding:40px 32px; background:#f9fafb; border-radius:20px; text-align:center; transition:all 0.3s; }
+    .${uid('bc3')}-card:hover { background:#f3f4f6; transform:translateY(-4px); }
+    .${uid('bc3')}-icon { width:56px; height:56px; background:${v.headlineColor}; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; }
+    .${uid('bc3')}-icon svg { width:28px; height:28px; color:#fff; }
+    .${uid('bc3')}-title { font-size:20px; font-weight:600; color:${v.headlineColor}; margin-bottom:12px; }
+    .${uid('bc3')}-desc { font-size:15px; color:${v.textColor}; line-height:1.7; }
+  </style>
+  <div class="${uid('bc3')}-container">
+    <h2 class="${uid('bc3')}-headline">${v.headline}</h2>
+    <div class="${uid('bc3')}-grid">
+      <div class="${uid('bc3')}-card">
+        <div class="${uid('bc3')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <h3 class="${uid('bc3')}-title">${v.card1Title}</h3>
+        <p class="${uid('bc3')}-desc">${v.card1Desc}</p>
+      </div>
+      <div class="${uid('bc3')}-card">
+        <div class="${uid('bc3')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3 class="${uid('bc3')}-title">${v.card2Title}</h3>
+        <p class="${uid('bc3')}-desc">${v.card2Desc}</p>
+      </div>
+      <div class="${uid('bc3')}-card">
+        <div class="${uid('bc3')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+        <h3 class="${uid('bc3')}-title">${v.card3Title}</h3>
+        <p class="${uid('bc3')}-desc">${v.card3Desc}</p>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 37. Guarantee Badge Section
+  {
+    id: 'guarantee-badge-section',
+    name: 'Guarantee Badge Section',
+    category: 'Trust',
+    description: 'Trust guarantee section with badge - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: '100% Satisfaction Guaranteed' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'We stand behind every product we sell. If you\'re not completely satisfied with your purchase, we\'ll make it right - no questions asked.' },
+      { id: 'badge1', label: 'Badge 1 Text', type: 'text', defaultValue: '30-Day Returns' },
+      { id: 'badge2', label: 'Badge 2 Text', type: 'text', defaultValue: 'Free Exchanges' },
+      { id: 'badge3', label: 'Badge 3 Text', type: 'text', defaultValue: 'Lifetime Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f0fdf4' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#4b5563' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#059669' },
+    ],
+    generateHtml: (v) => `<div class="${uid('gbs')}">
+  <style>
+    .${uid('gbs')} { padding:64px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('gbs')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('gbs')}-container { max-width:900px; margin:0 auto; text-align:center; }
+    .${uid('gbs')}-icon { width:80px; height:80px; background:${v.accentColor}; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; }
+    .${uid('gbs')}-icon svg { width:40px; height:40px; color:#fff; }
+    .${uid('gbs')}-headline { font-size:32px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    .${uid('gbs')}-desc { font-size:17px; color:${v.textColor}; line-height:1.7; margin-bottom:32px; max-width:600px; margin-left:auto; margin-right:auto; }
+    .${uid('gbs')}-badges { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+    .${uid('gbs')}-badge { display:flex; align-items:center; gap:8px; padding:12px 20px; background:#fff; border-radius:8px; font-size:14px; font-weight:500; color:${v.accentColor}; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+    .${uid('gbs')}-badge svg { width:18px; height:18px; }
+  </style>
+  <div class="${uid('gbs')}-container">
+    <div class="${uid('gbs')}-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+    </div>
+    <h2 class="${uid('gbs')}-headline">${v.headline}</h2>
+    <p class="${uid('gbs')}-desc">${v.description}</p>
+    <div class="${uid('gbs')}-badges">
+      <div class="${uid('gbs')}-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+        ${v.badge1}
+      </div>
+      <div class="${uid('gbs')}-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+        ${v.badge2}
+      </div>
+      <div class="${uid('gbs')}-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+        ${v.badge3}
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 38. Quick Info Strip
+  {
+    id: 'quick-info-strip',
+    name: 'Quick Info Strip',
+    category: 'Trust',
+    description: 'Horizontal info badges (shipping, returns, etc.) - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'info1', label: 'Info 1', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'info2', label: 'Info 2', type: 'text', defaultValue: 'Easy Returns' },
+      { id: 'info3', label: 'Info 3', type: 'text', defaultValue: 'Secure Payment' },
+      { id: 'info4', label: 'Info 4', type: 'text', defaultValue: '2-Year Warranty' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#fafafa' },
+      { id: 'headlineColor', label: 'Icon Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+    ],
+    generateHtml: (v) => `<div class="${uid('qis')}">
+  <style>
+    .${uid('qis')} { padding:24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('qis')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('qis')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    @media(max-width:800px) { .${uid('qis')}-container { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:500px) { .${uid('qis')}-container { grid-template-columns:1fr; } }
+    .${uid('qis')}-item { display:flex; align-items:center; justify-content:center; gap:10px; padding:16px; background:#fff; border-radius:10px; }
+    .${uid('qis')}-icon { width:20px; height:20px; color:${v.headlineColor}; flex-shrink:0; }
+    .${uid('qis')}-text { font-size:13px; font-weight:500; color:${v.textColor}; }
+  </style>
+  <div class="${uid('qis')}-container">
+    <div class="${uid('qis')}-item">
+      <svg class="${uid('qis')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span class="${uid('qis')}-text">${v.info1}</span>
+    </div>
+    <div class="${uid('qis')}-item">
+      <svg class="${uid('qis')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      <span class="${uid('qis')}-text">${v.info2}</span>
+    </div>
+    <div class="${uid('qis')}-item">
+      <svg class="${uid('qis')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span class="${uid('qis')}-text">${v.info3}</span>
+    </div>
+    <div class="${uid('qis')}-item">
+      <svg class="${uid('qis')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span class="${uid('qis')}-text">${v.info4}</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 39. Video Hero Placeholder
+  {
+    id: 'video-hero-placeholder',
+    name: 'Video Hero Placeholder',
+    category: 'Hero',
+    description: 'Hero section with video placeholder - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'See It In Action' },
+      { id: 'subhead', label: 'Subhead', type: 'textarea', defaultValue: 'Watch our 2-minute video to see how our product can transform your daily routine.' },
+      { id: 'thumbnail', label: 'Video Thumbnail', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1200&h=675&fit=crop' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Watch Video' },
+      { id: 'duration', label: 'Video Duration', type: 'text', defaultValue: '2:30' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#111827' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: 'rgba(255,255,255,0.7)' },
+    ],
+    generateHtml: (v) => `<div class="${uid('vhp')}">
+  <style>
+    .${uid('vhp')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('vhp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('vhp')}-container { max-width:1000px; margin:0 auto; }
+    .${uid('vhp')}-header { text-align:center; margin-bottom:48px; }
+    .${uid('vhp')}-headline { font-size:44px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    @media(max-width:700px) { .${uid('vhp')}-headline { font-size:32px; } }
+    .${uid('vhp')}-subhead { font-size:18px; color:${v.textColor}; max-width:560px; margin:0 auto; line-height:1.6; }
+    .${uid('vhp')}-video { position:relative; border-radius:20px; overflow:hidden; aspect-ratio:16/9; cursor:pointer; }
+    .${uid('vhp')}-thumb { width:100%; height:100%; object-fit:cover; }
+    .${uid('vhp')}-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; flex-direction:column; align-items:center; justify-content:center; transition:background 0.3s; }
+    .${uid('vhp')}-video:hover .${uid('vhp')}-overlay { background:rgba(0,0,0,0.4); }
+    .${uid('vhp')}-play { width:80px; height:80px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:16px; transition:transform 0.3s; }
+    .${uid('vhp')}-video:hover .${uid('vhp')}-play { transform:scale(1.1); }
+    .${uid('vhp')}-play svg { width:32px; height:32px; color:#111827; margin-left:4px; }
+    .${uid('vhp')}-cta { font-size:14px; font-weight:600; color:#fff; }
+    .${uid('vhp')}-duration { font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; }
+  </style>
+  <div class="${uid('vhp')}-container">
+    <div class="${uid('vhp')}-header">
+      <h2 class="${uid('vhp')}-headline">${v.headline}</h2>
+      <p class="${uid('vhp')}-subhead">${v.subhead}</p>
+    </div>
+    <div class="${uid('vhp')}-video">
+      <img class="${uid('vhp')}-thumb" src="${v.thumbnail}" alt="Video thumbnail">
+      <div class="${uid('vhp')}-overlay">
+        <div class="${uid('vhp')}-play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="${uid('vhp')}-cta">${v.ctaText}</span>
+        <span class="${uid('vhp')}-duration">${v.duration}</span>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 40. Contact Cards
+  {
+    id: 'contact-cards-grid',
+    name: 'Contact Cards Grid',
+    category: 'Contact',
+    description: 'Contact options in card format - 21st.dev style',
+    thumbnail: 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Get In Touch' },
+      { id: 'subhead', label: 'Subhead', type: 'textarea', defaultValue: 'Have a question or need help? Choose the best way to reach us.' },
+      { id: 'card1Title', label: 'Card 1 Title', type: 'text', defaultValue: 'Email Us' },
+      { id: 'card1Desc', label: 'Card 1 Description', type: 'text', defaultValue: 'support@example.com' },
+      { id: 'card1Sub', label: 'Card 1 Subtext', type: 'text', defaultValue: 'Response within 24 hours' },
+      { id: 'card2Title', label: 'Card 2 Title', type: 'text', defaultValue: 'Live Chat' },
+      { id: 'card2Desc', label: 'Card 2 Description', type: 'text', defaultValue: 'Chat with our team' },
+      { id: 'card2Sub', label: 'Card 2 Subtext', type: 'text', defaultValue: 'Available 9am-6pm EST' },
+      { id: 'card3Title', label: 'Card 3 Title', type: 'text', defaultValue: 'Call Us' },
+      { id: 'card3Desc', label: 'Card 3 Description', type: 'text', defaultValue: '+1 (800) 123-4567' },
+      { id: 'card3Sub', label: 'Card 3 Subtext', type: 'text', defaultValue: 'Mon-Fri 9am-6pm EST' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ccg')}">
+  <style>
+    .${uid('ccg')} { padding:96px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ccg')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ccg')}-container { max-width:1000px; margin:0 auto; }
+    .${uid('ccg')}-header { text-align:center; margin-bottom:64px; }
+    .${uid('ccg')}-headline { font-size:40px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; letter-spacing:-0.02em; }
+    .${uid('ccg')}-subhead { font-size:18px; color:${v.textColor}; max-width:500px; margin:0 auto; line-height:1.6; }
+    .${uid('ccg')}-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    @media(max-width:800px) { .${uid('ccg')}-grid { grid-template-columns:1fr; max-width:400px; margin:0 auto; } }
+    .${uid('ccg')}-card { padding:40px 32px; background:#f9fafb; border-radius:20px; text-align:center; transition:all 0.3s; cursor:pointer; }
+    .${uid('ccg')}-card:hover { background:#f3f4f6; transform:translateY(-4px); }
+    .${uid('ccg')}-icon { width:56px; height:56px; background:${v.headlineColor}; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+    .${uid('ccg')}-icon svg { width:28px; height:28px; color:#fff; }
+    .${uid('ccg')}-title { font-size:14px; font-weight:500; color:${v.textColor}; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+    .${uid('ccg')}-desc { font-size:18px; font-weight:600; color:${v.headlineColor}; margin-bottom:8px; }
+    .${uid('ccg')}-sub { font-size:13px; color:${v.textColor}; opacity:0.7; }
+  </style>
+  <div class="${uid('ccg')}-container">
+    <div class="${uid('ccg')}-header">
+      <h2 class="${uid('ccg')}-headline">${v.headline}</h2>
+      <p class="${uid('ccg')}-subhead">${v.subhead}</p>
+    </div>
+    <div class="${uid('ccg')}-grid">
+      <div class="${uid('ccg')}-card">
+        <div class="${uid('ccg')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="${uid('ccg')}-title">${v.card1Title}</div>
+        <div class="${uid('ccg')}-desc">${v.card1Desc}</div>
+        <div class="${uid('ccg')}-sub">${v.card1Sub}</div>
+      </div>
+      <div class="${uid('ccg')}-card">
+        <div class="${uid('ccg')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <div class="${uid('ccg')}-title">${v.card2Title}</div>
+        <div class="${uid('ccg')}-desc">${v.card2Desc}</div>
+        <div class="${uid('ccg')}-sub">${v.card2Sub}</div>
+      </div>
+      <div class="${uid('ccg')}-card">
+        <div class="${uid('ccg')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="${uid('ccg')}-title">${v.card3Title}</div>
+        <div class="${uid('ccg')}-desc">${v.card3Desc}</div>
+        <div class="${uid('ccg')}-sub">${v.card3Sub}</div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ============================================
+  // PREMIUM ECOMMERCE SECTIONS (BATCH 3)
+  // Super high-relevancy ecommerce components
+  // ============================================
+
+  // 41. Product Card Grid
+  {
+    id: 'product-card-grid-premium',
+    name: 'Product Card Grid Premium',
+    category: 'Product',
+    description: 'Modern product cards with hover effects, quick-add, and wishlist',
+    thumbnail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Section Headline', type: 'text', defaultValue: 'Best Sellers' },
+      { id: 'product1Img', label: 'Product 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=500&fit=crop' },
+      { id: 'product1Name', label: 'Product 1 Name', type: 'text', defaultValue: 'Minimal Watch' },
+      { id: 'product1Price', label: 'Product 1 Price', type: 'text', defaultValue: '$189' },
+      { id: 'product1OldPrice', label: 'Product 1 Old Price', type: 'text', defaultValue: '$249' },
+      { id: 'product2Img', label: 'Product 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=500&fit=crop' },
+      { id: 'product2Name', label: 'Product 2 Name', type: 'text', defaultValue: 'Premium Headphones' },
+      { id: 'product2Price', label: 'Product 2 Price', type: 'text', defaultValue: '$299' },
+      { id: 'product2OldPrice', label: 'Product 2 Old Price', type: 'text', defaultValue: '' },
+      { id: 'product3Img', label: 'Product 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=500&fit=crop' },
+      { id: 'product3Name', label: 'Product 3 Name', type: 'text', defaultValue: 'Designer Sunglasses' },
+      { id: 'product3Price', label: 'Product 3 Price', type: 'text', defaultValue: '$159' },
+      { id: 'product3OldPrice', label: 'Product 3 Old Price', type: 'text', defaultValue: '$199' },
+      { id: 'product4Img', label: 'Product 4 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=500&fit=crop' },
+      { id: 'product4Name', label: 'Product 4 Name', type: 'text', defaultValue: 'Leather Bag' },
+      { id: 'product4Price', label: 'Product 4 Price', type: 'text', defaultValue: '$349' },
+      { id: 'product4OldPrice', label: 'Product 4 Old Price', type: 'text', defaultValue: '' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pcg')}">
+  <style>
+    .${uid('pcg')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('pcg')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pcg')}-container { max-width:1200px; margin:0 auto; }
+    .${uid('pcg')}-headline { font-size:32px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:48px; }
+    .${uid('pcg')}-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    @media(max-width:1000px) { .${uid('pcg')}-grid { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:500px) { .${uid('pcg')}-grid { grid-template-columns:1fr; } }
+    .${uid('pcg')}-card { position:relative; background:#fff; border-radius:16px; overflow:hidden; transition:all 0.3s; }
+    .${uid('pcg')}-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+    .${uid('pcg')}-img-wrap { position:relative; aspect-ratio:4/5; overflow:hidden; background:#f9fafb; }
+    .${uid('pcg')}-img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
+    .${uid('pcg')}-card:hover .${uid('pcg')}-img { transform:scale(1.05); }
+    .${uid('pcg')}-wishlist { position:absolute; top:12px; right:12px; width:36px; height:36px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:all 0.3s; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .${uid('pcg')}-card:hover .${uid('pcg')}-wishlist { opacity:1; }
+    .${uid('pcg')}-wishlist:hover { background:#fee2e2; }
+    .${uid('pcg')}-wishlist svg { width:18px; height:18px; color:#ef4444; }
+    .${uid('pcg')}-quick { position:absolute; bottom:0; left:0; right:0; padding:12px; background:${v.headlineColor}; color:#fff; text-align:center; font-size:13px; font-weight:600; transform:translateY(100%); transition:transform 0.3s; cursor:pointer; }
+    .${uid('pcg')}-card:hover .${uid('pcg')}-quick { transform:translateY(0); }
+    .${uid('pcg')}-info { padding:16px; }
+    .${uid('pcg')}-name { font-size:14px; font-weight:500; color:${v.headlineColor}; margin-bottom:8px; }
+    .${uid('pcg')}-prices { display:flex; align-items:center; gap:8px; }
+    .${uid('pcg')}-price { font-size:16px; font-weight:700; color:${v.headlineColor}; }
+    .${uid('pcg')}-old { font-size:14px; color:${v.textColor}; text-decoration:line-through; }
+    .${uid('pcg')}-badge { position:absolute; top:12px; left:12px; padding:4px 10px; background:#ef4444; color:#fff; font-size:11px; font-weight:600; border-radius:4px; text-transform:uppercase; }
+  </style>
+  <div class="${uid('pcg')}-container">
+    <h2 class="${uid('pcg')}-headline">${v.headline}</h2>
+    <div class="${uid('pcg')}-grid">
+      <div class="${uid('pcg')}-card">
+        ${v.product1OldPrice ? `<span class="${uid('pcg')}-badge">Sale</span>` : ''}
+        <div class="${uid('pcg')}-img-wrap">
+          <img class="${uid('pcg')}-img" src="${v.product1Img}" alt="${v.product1Name}">
+          <div class="${uid('pcg')}-wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="${uid('pcg')}-quick">Quick Add</div>
+        </div>
+        <div class="${uid('pcg')}-info">
+          <h3 class="${uid('pcg')}-name">${v.product1Name}</h3>
+          <div class="${uid('pcg')}-prices">
+            <span class="${uid('pcg')}-price">${v.product1Price}</span>
+            ${v.product1OldPrice ? `<span class="${uid('pcg')}-old">${v.product1OldPrice}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="${uid('pcg')}-card">
+        ${v.product2OldPrice ? `<span class="${uid('pcg')}-badge">Sale</span>` : ''}
+        <div class="${uid('pcg')}-img-wrap">
+          <img class="${uid('pcg')}-img" src="${v.product2Img}" alt="${v.product2Name}">
+          <div class="${uid('pcg')}-wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="${uid('pcg')}-quick">Quick Add</div>
+        </div>
+        <div class="${uid('pcg')}-info">
+          <h3 class="${uid('pcg')}-name">${v.product2Name}</h3>
+          <div class="${uid('pcg')}-prices">
+            <span class="${uid('pcg')}-price">${v.product2Price}</span>
+            ${v.product2OldPrice ? `<span class="${uid('pcg')}-old">${v.product2OldPrice}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="${uid('pcg')}-card">
+        ${v.product3OldPrice ? `<span class="${uid('pcg')}-badge">Sale</span>` : ''}
+        <div class="${uid('pcg')}-img-wrap">
+          <img class="${uid('pcg')}-img" src="${v.product3Img}" alt="${v.product3Name}">
+          <div class="${uid('pcg')}-wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="${uid('pcg')}-quick">Quick Add</div>
+        </div>
+        <div class="${uid('pcg')}-info">
+          <h3 class="${uid('pcg')}-name">${v.product3Name}</h3>
+          <div class="${uid('pcg')}-prices">
+            <span class="${uid('pcg')}-price">${v.product3Price}</span>
+            ${v.product3OldPrice ? `<span class="${uid('pcg')}-old">${v.product3OldPrice}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="${uid('pcg')}-card">
+        ${v.product4OldPrice ? `<span class="${uid('pcg')}-badge">Sale</span>` : ''}
+        <div class="${uid('pcg')}-img-wrap">
+          <img class="${uid('pcg')}-img" src="${v.product4Img}" alt="${v.product4Name}">
+          <div class="${uid('pcg')}-wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="${uid('pcg')}-quick">Quick Add</div>
+        </div>
+        <div class="${uid('pcg')}-info">
+          <h3 class="${uid('pcg')}-name">${v.product4Name}</h3>
+          <div class="${uid('pcg')}-prices">
+            <span class="${uid('pcg')}-price">${v.product4Price}</span>
+            ${v.product4OldPrice ? `<span class="${uid('pcg')}-old">${v.product4OldPrice}</span>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 42. Product Detail Hero
+  {
+    id: 'product-detail-hero',
+    name: 'Product Detail Hero',
+    category: 'Product',
+    description: 'Full product page hero with gallery, variants, and add to cart',
+    thumbnail: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'productImg', label: 'Main Product Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop' },
+      { id: 'productName', label: 'Product Name', type: 'text', defaultValue: 'Classic Minimalist Watch' },
+      { id: 'productPrice', label: 'Price', type: 'text', defaultValue: '$189.00' },
+      { id: 'oldPrice', label: 'Old Price (optional)', type: 'text', defaultValue: '$249.00' },
+      { id: 'rating', label: 'Rating (1-5)', type: 'number', defaultValue: '5' },
+      { id: 'reviewCount', label: 'Review Count', type: 'text', defaultValue: '128' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Crafted with precision and designed for everyday elegance. Features a genuine leather strap, sapphire crystal glass, and Swiss movement.' },
+      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Swiss Movement' },
+      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Sapphire Crystal' },
+      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Water Resistant' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Add to Cart' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#111827' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pdh')}">
+  <style>
+    .${uid('pdh')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('pdh')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pdh')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+    @media(max-width:900px) { .${uid('pdh')}-container { grid-template-columns:1fr; gap:40px; } }
+    .${uid('pdh')}-gallery { position:relative; }
+    .${uid('pdh')}-main-img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:20px; background:#f9fafb; }
+    .${uid('pdh')}-badge { position:absolute; top:16px; left:16px; padding:8px 16px; background:#ef4444; color:#fff; font-size:12px; font-weight:600; border-radius:6px; }
+    .${uid('pdh')}-content { }
+    .${uid('pdh')}-rating { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+    .${uid('pdh')}-stars { display:flex; gap:2px; }
+    .${uid('pdh')}-star { width:18px; height:18px; color:#fbbf24; }
+    .${uid('pdh')}-reviews { font-size:14px; color:${v.textColor}; }
+    .${uid('pdh')}-name { font-size:36px; font-weight:700; color:${v.headlineColor}; margin-bottom:16px; line-height:1.2; }
+    .${uid('pdh')}-prices { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+    .${uid('pdh')}-price { font-size:28px; font-weight:700; color:${v.headlineColor}; }
+    .${uid('pdh')}-old { font-size:20px; color:${v.textColor}; text-decoration:line-through; }
+    .${uid('pdh')}-save { padding:4px 10px; background:#dcfce7; color:#16a34a; font-size:12px; font-weight:600; border-radius:4px; }
+    .${uid('pdh')}-desc { font-size:16px; color:${v.textColor}; line-height:1.7; margin-bottom:24px; }
+    .${uid('pdh')}-features { display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap; }
+    .${uid('pdh')}-feat { display:flex; align-items:center; gap:8px; font-size:14px; color:${v.headlineColor}; }
+    .${uid('pdh')}-feat svg { width:18px; height:18px; color:#10b981; }
+    .${uid('pdh')}-actions { display:flex; gap:12px; }
+    .${uid('pdh')}-cta { flex:1; padding:18px 32px; background:${v.accentColor}; color:#fff; font-size:16px; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.2s; }
+    .${uid('pdh')}-cta:hover { opacity:0.9; transform:translateY(-2px); }
+    .${uid('pdh')}-wishlist { width:56px; height:56px; background:#f3f4f6; border:none; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; }
+    .${uid('pdh')}-wishlist:hover { background:#fee2e2; }
+    .${uid('pdh')}-wishlist svg { width:24px; height:24px; color:#ef4444; }
+  </style>
+  <div class="${uid('pdh')}-container">
+    <div class="${uid('pdh')}-gallery">
+      ${v.oldPrice ? `<span class="${uid('pdh')}-badge">Sale</span>` : ''}
+      <img class="${uid('pdh')}-main-img" src="${v.productImg}" alt="${v.productName}">
+    </div>
+    <div class="${uid('pdh')}-content">
+      <div class="${uid('pdh')}-rating">
+        <div class="${uid('pdh')}-stars">
+          ${Array.from({length: 5}, (_, i) => `<svg class="${uid('pdh')}-star" viewBox="0 0 24 24" fill="${i < parseInt(v.rating) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}
+        </div>
+        <span class="${uid('pdh')}-reviews">${v.reviewCount} reviews</span>
+      </div>
+      <h1 class="${uid('pdh')}-name">${v.productName}</h1>
+      <div class="${uid('pdh')}-prices">
+        <span class="${uid('pdh')}-price">${v.productPrice}</span>
+        ${v.oldPrice ? `<span class="${uid('pdh')}-old">${v.oldPrice}</span><span class="${uid('pdh')}-save">Save $60</span>` : ''}
+      </div>
+      <p class="${uid('pdh')}-desc">${v.description}</p>
+      <div class="${uid('pdh')}-features">
+        <div class="${uid('pdh')}-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>${v.feature1}</div>
+        <div class="${uid('pdh')}-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>${v.feature2}</div>
+        <div class="${uid('pdh')}-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>${v.feature3}</div>
+      </div>
+      <div class="${uid('pdh')}-actions">
+        <button class="${uid('pdh')}-cta">${v.ctaText}</button>
+        <button class="${uid('pdh')}-wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 43. Mini Cart Preview
+  {
+    id: 'mini-cart-preview',
+    name: 'Mini Cart Preview',
+    category: 'Product',
+    description: 'Floating cart preview with items and checkout button',
+    thumbnail: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'item1Img', label: 'Item 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop' },
+      { id: 'item1Name', label: 'Item 1 Name', type: 'text', defaultValue: 'Classic Watch' },
+      { id: 'item1Variant', label: 'Item 1 Variant', type: 'text', defaultValue: 'Silver / One Size' },
+      { id: 'item1Price', label: 'Item 1 Price', type: 'text', defaultValue: '$189' },
+      { id: 'item1Qty', label: 'Item 1 Quantity', type: 'number', defaultValue: '1' },
+      { id: 'item2Img', label: 'Item 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop' },
+      { id: 'item2Name', label: 'Item 2 Name', type: 'text', defaultValue: 'Wireless Headphones' },
+      { id: 'item2Variant', label: 'Item 2 Variant', type: 'text', defaultValue: 'Black' },
+      { id: 'item2Price', label: 'Item 2 Price', type: 'text', defaultValue: '$299' },
+      { id: 'item2Qty', label: 'Item 2 Quantity', type: 'number', defaultValue: '1' },
+      { id: 'subtotal', label: 'Subtotal', type: 'text', defaultValue: '$488' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#6b7280' },
+    ],
+    generateHtml: (v) => `<div class="${uid('mcp')}">
+  <style>
+    .${uid('mcp')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; display:flex; justify-content:center; }
+    .${uid('mcp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('mcp')}-card { width:100%; max-width:400px; background:#fff; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.1); overflow:hidden; }
+    .${uid('mcp')}-header { padding:20px 24px; border-bottom:1px solid #f3f4f6; display:flex; justify-content:space-between; align-items:center; }
+    .${uid('mcp')}-title { font-size:18px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('mcp')}-count { padding:4px 10px; background:#f3f4f6; border-radius:20px; font-size:13px; font-weight:500; color:${v.textColor}; }
+    .${uid('mcp')}-items { padding:16px 24px; max-height:300px; overflow-y:auto; }
+    .${uid('mcp')}-item { display:flex; gap:16px; padding:12px 0; border-bottom:1px solid #f3f4f6; }
+    .${uid('mcp')}-item:last-child { border-bottom:none; }
+    .${uid('mcp')}-item-img { width:64px; height:64px; border-radius:10px; object-fit:cover; background:#f9fafb; }
+    .${uid('mcp')}-item-info { flex:1; }
+    .${uid('mcp')}-item-name { font-size:14px; font-weight:500; color:${v.headlineColor}; margin-bottom:4px; }
+    .${uid('mcp')}-item-variant { font-size:12px; color:${v.textColor}; margin-bottom:8px; }
+    .${uid('mcp')}-item-bottom { display:flex; justify-content:space-between; align-items:center; }
+    .${uid('mcp')}-item-price { font-size:14px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('mcp')}-item-qty { display:flex; align-items:center; gap:8px; }
+    .${uid('mcp')}-qty-btn { width:24px; height:24px; border:1px solid #e5e7eb; background:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; color:${v.textColor}; }
+    .${uid('mcp')}-qty-num { font-size:13px; font-weight:500; color:${v.headlineColor}; }
+    .${uid('mcp')}-footer { padding:20px 24px; background:#f9fafb; }
+    .${uid('mcp')}-subtotal { display:flex; justify-content:space-between; margin-bottom:16px; }
+    .${uid('mcp')}-subtotal-label { font-size:14px; color:${v.textColor}; }
+    .${uid('mcp')}-subtotal-value { font-size:18px; font-weight:700; color:${v.headlineColor}; }
+    .${uid('mcp')}-checkout { width:100%; padding:16px; background:${v.headlineColor}; color:#fff; font-size:14px; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.2s; }
+    .${uid('mcp')}-checkout:hover { opacity:0.9; }
+    .${uid('mcp')}-continue { width:100%; padding:12px; background:transparent; color:${v.textColor}; font-size:13px; font-weight:500; border:none; cursor:pointer; margin-top:8px; }
+  </style>
+  <div class="${uid('mcp')}-card">
+    <div class="${uid('mcp')}-header">
+      <h3 class="${uid('mcp')}-title">Shopping Cart</h3>
+      <span class="${uid('mcp')}-count">2 items</span>
+    </div>
+    <div class="${uid('mcp')}-items">
+      <div class="${uid('mcp')}-item">
+        <img class="${uid('mcp')}-item-img" src="${v.item1Img}" alt="${v.item1Name}">
+        <div class="${uid('mcp')}-item-info">
+          <h4 class="${uid('mcp')}-item-name">${v.item1Name}</h4>
+          <p class="${uid('mcp')}-item-variant">${v.item1Variant}</p>
+          <div class="${uid('mcp')}-item-bottom">
+            <span class="${uid('mcp')}-item-price">${v.item1Price}</span>
+            <div class="${uid('mcp')}-item-qty">
+              <button class="${uid('mcp')}-qty-btn">-</button>
+              <span class="${uid('mcp')}-qty-num">${v.item1Qty}</span>
+              <button class="${uid('mcp')}-qty-btn">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="${uid('mcp')}-item">
+        <img class="${uid('mcp')}-item-img" src="${v.item2Img}" alt="${v.item2Name}">
+        <div class="${uid('mcp')}-item-info">
+          <h4 class="${uid('mcp')}-item-name">${v.item2Name}</h4>
+          <p class="${uid('mcp')}-item-variant">${v.item2Variant}</p>
+          <div class="${uid('mcp')}-item-bottom">
+            <span class="${uid('mcp')}-item-price">${v.item2Price}</span>
+            <div class="${uid('mcp')}-item-qty">
+              <button class="${uid('mcp')}-qty-btn">-</button>
+              <span class="${uid('mcp')}-qty-num">${v.item2Qty}</span>
+              <button class="${uid('mcp')}-qty-btn">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="${uid('mcp')}-footer">
+      <div class="${uid('mcp')}-subtotal">
+        <span class="${uid('mcp')}-subtotal-label">Subtotal</span>
+        <span class="${uid('mcp')}-subtotal-value">${v.subtotal}</span>
+      </div>
+      <button class="${uid('mcp')}-checkout">Checkout</button>
+      <button class="${uid('mcp')}-continue">Continue Shopping</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 44. Size Selector
+  {
+    id: 'size-selector-premium',
+    name: 'Size Selector Premium',
+    category: 'Product',
+    description: 'Interactive size selection with availability indicators',
+    thumbnail: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'label', label: 'Label', type: 'text', defaultValue: 'Select Size' },
+      { id: 'sizeGuideText', label: 'Size Guide Text', type: 'text', defaultValue: 'Size Guide' },
+      { id: 'sizes', label: 'Sizes (comma separated)', type: 'text', defaultValue: 'XS,S,M,L,XL,XXL' },
+      { id: 'unavailable', label: 'Unavailable Sizes (comma separated)', type: 'text', defaultValue: 'XXL' },
+      { id: 'selected', label: 'Default Selected', type: 'text', defaultValue: 'M' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Text Color', type: 'color', defaultValue: '#111827' },
+      { id: 'accentColor', label: 'Selected Color', type: 'color', defaultValue: '#111827' },
+    ],
+    generateHtml: (v) => {
+      const sizes = v.sizes.split(',').map((s: string) => s.trim());
+      const unavailable = v.unavailable.split(',').map((s: string) => s.trim());
+      return `<div class="${uid('ssz')}">
+  <style>
+    .${uid('ssz')} { padding:40px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ssz')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ssz')}-container { max-width:400px; margin:0 auto; }
+    .${uid('ssz')}-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .${uid('ssz')}-label { font-size:14px; font-weight:500; color:${v.headlineColor}; }
+    .${uid('ssz')}-guide { font-size:13px; color:${v.headlineColor}; text-decoration:underline; cursor:pointer; }
+    .${uid('ssz')}-grid { display:flex; flex-wrap:wrap; gap:10px; }
+    .${uid('ssz')}-btn { min-width:52px; padding:14px 18px; background:#fff; border:2px solid #e5e7eb; border-radius:10px; font-size:14px; font-weight:500; color:${v.headlineColor}; cursor:pointer; transition:all 0.2s; }
+    .${uid('ssz')}-btn:hover:not(.disabled):not(.selected) { border-color:${v.headlineColor}; }
+    .${uid('ssz')}-btn.selected { background:${v.accentColor}; border-color:${v.accentColor}; color:#fff; }
+    .${uid('ssz')}-btn.disabled { color:#d1d5db; border-color:#f3f4f6; cursor:not-allowed; position:relative; }
+    .${uid('ssz')}-btn.disabled::after { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:#d1d5db; transform:rotate(-20deg); }
+  </style>
+  <div class="${uid('ssz')}-container">
+    <div class="${uid('ssz')}-header">
+      <span class="${uid('ssz')}-label">${v.label}</span>
+      <span class="${uid('ssz')}-guide">${v.sizeGuideText}</span>
+    </div>
+    <div class="${uid('ssz')}-grid">
+      ${sizes.map((size: string) => {
+        const isUnavailable = unavailable.includes(size);
+        const isSelected = size === v.selected;
+        return `<button class="${uid('ssz')}-btn${isSelected ? ' selected' : ''}${isUnavailable ? ' disabled' : ''}">${size}</button>`;
+      }).join('')}
+    </div>
+  </div>
+</div>`;
+    }
+  },
+
+  // 45. Color Swatches
+  {
+    id: 'color-swatches-premium',
+    name: 'Color Swatches Premium',
+    category: 'Product',
+    description: 'Product color variant selector with hover labels',
+    thumbnail: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'label', label: 'Label', type: 'text', defaultValue: 'Color' },
+      { id: 'selectedName', label: 'Selected Color Name', type: 'text', defaultValue: 'Midnight Black' },
+      { id: 'color1', label: 'Color 1 (hex)', type: 'color', defaultValue: '#111827' },
+      { id: 'color1Name', label: 'Color 1 Name', type: 'text', defaultValue: 'Midnight Black' },
+      { id: 'color2', label: 'Color 2 (hex)', type: 'color', defaultValue: '#f5f5f4' },
+      { id: 'color2Name', label: 'Color 2 Name', type: 'text', defaultValue: 'Pearl White' },
+      { id: 'color3', label: 'Color 3 (hex)', type: 'color', defaultValue: '#78716c' },
+      { id: 'color3Name', label: 'Color 3 Name', type: 'text', defaultValue: 'Stone Gray' },
+      { id: 'color4', label: 'Color 4 (hex)', type: 'color', defaultValue: '#7c3aed' },
+      { id: 'color4Name', label: 'Color 4 Name', type: 'text', defaultValue: 'Royal Purple' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#111827' },
+    ],
+    generateHtml: (v) => `<div class="${uid('csw')}">
+  <style>
+    .${uid('csw')} { padding:40px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('csw')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('csw')}-container { max-width:400px; margin:0 auto; }
+    .${uid('csw')}-header { display:flex; gap:8px; margin-bottom:16px; }
+    .${uid('csw')}-label { font-size:14px; font-weight:500; color:${v.textColor}; }
+    .${uid('csw')}-selected { font-size:14px; color:#6b7280; }
+    .${uid('csw')}-swatches { display:flex; gap:12px; }
+    .${uid('csw')}-swatch { position:relative; width:40px; height:40px; border-radius:50%; cursor:pointer; transition:all 0.2s; border:2px solid transparent; }
+    .${uid('csw')}-swatch:hover { transform:scale(1.1); }
+    .${uid('csw')}-swatch.selected { border-color:${v.textColor}; box-shadow:0 0 0 2px #fff inset; }
+    .${uid('csw')}-swatch::after { content:attr(data-name); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); padding:6px 12px; background:#111; color:#fff; font-size:11px; font-weight:500; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+    .${uid('csw')}-swatch:hover::after { opacity:1; }
+    .${uid('csw')}-s1 { background:${v.color1}; }
+    .${uid('csw')}-s2 { background:${v.color2}; border:1px solid #e5e7eb; }
+    .${uid('csw')}-s3 { background:${v.color3}; }
+    .${uid('csw')}-s4 { background:${v.color4}; }
+  </style>
+  <div class="${uid('csw')}-container">
+    <div class="${uid('csw')}-header">
+      <span class="${uid('csw')}-label">${v.label}:</span>
+      <span class="${uid('csw')}-selected">${v.selectedName}</span>
+    </div>
+    <div class="${uid('csw')}-swatches">
+      <div class="${uid('csw')}-swatch ${uid('csw')}-s1 selected" data-name="${v.color1Name}"></div>
+      <div class="${uid('csw')}-swatch ${uid('csw')}-s2" data-name="${v.color2Name}"></div>
+      <div class="${uid('csw')}-swatch ${uid('csw')}-s3" data-name="${v.color3Name}"></div>
+      <div class="${uid('csw')}-swatch ${uid('csw')}-s4" data-name="${v.color4Name}"></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 46. Product Image Gallery
+  {
+    id: 'product-gallery-thumbs',
+    name: 'Product Gallery with Thumbnails',
+    category: 'Product',
+    description: 'Product image gallery with thumbnail navigation',
+    thumbnail: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'img1', label: 'Image 1 (Main)', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop' },
+      { id: 'img2', label: 'Image 2', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=600&fit=crop' },
+      { id: 'img3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=600&h=600&fit=crop' },
+      { id: 'img4', label: 'Image 4', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1434056886845-dbd39c1cc727?w=600&h=600&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pgt')}">
+  <style>
+    .${uid('pgt')} { padding:40px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('pgt')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pgt')}-container { max-width:500px; margin:0 auto; }
+    .${uid('pgt')}-main { position:relative; aspect-ratio:1; border-radius:20px; overflow:hidden; margin-bottom:16px; background:#f9fafb; }
+    .${uid('pgt')}-main-img { width:100%; height:100%; object-fit:cover; transition:opacity 0.3s; }
+    .${uid('pgt')}-zoom { position:absolute; top:16px; right:16px; width:44px; height:44px; background:#fff; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .${uid('pgt')}-zoom svg { width:20px; height:20px; color:#111; }
+    .${uid('pgt')}-thumbs { display:flex; gap:12px; }
+    .${uid('pgt')}-thumb { width:80px; height:80px; border-radius:12px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:all 0.2s; opacity:0.6; }
+    .${uid('pgt')}-thumb:hover, .${uid('pgt')}-thumb.active { opacity:1; border-color:#111; }
+    .${uid('pgt')}-thumb img { width:100%; height:100%; object-fit:cover; }
+  </style>
+  <div class="${uid('pgt')}-container">
+    <div class="${uid('pgt')}-main">
+      <img id="${uid('pgt')}-main-img" class="${uid('pgt')}-main-img" src="${v.img1}" alt="Product">
+      <div class="${uid('pgt')}-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg></div>
+    </div>
+    <div class="${uid('pgt')}-thumbs">
+      <div class="${uid('pgt')}-thumb active" onclick="document.getElementById('${uid('pgt')}-main-img').src='${v.img1}';document.querySelectorAll('.${uid('pgt')}-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active');"><img src="${v.img1}" alt="Thumb 1"></div>
+      <div class="${uid('pgt')}-thumb" onclick="document.getElementById('${uid('pgt')}-main-img').src='${v.img2}';document.querySelectorAll('.${uid('pgt')}-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active');"><img src="${v.img2}" alt="Thumb 2"></div>
+      <div class="${uid('pgt')}-thumb" onclick="document.getElementById('${uid('pgt')}-main-img').src='${v.img3}';document.querySelectorAll('.${uid('pgt')}-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active');"><img src="${v.img3}" alt="Thumb 3"></div>
+      <div class="${uid('pgt')}-thumb" onclick="document.getElementById('${uid('pgt')}-main-img').src='${v.img4}';document.querySelectorAll('.${uid('pgt')}-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active');"><img src="${v.img4}" alt="Thumb 4"></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 47. Add to Cart Button
+  {
+    id: 'add-to-cart-animated',
+    name: 'Add to Cart Animated',
+    category: 'Product',
+    description: 'Animated add to cart button with success state',
+    thumbnail: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'text', label: 'Button Text', type: 'text', defaultValue: 'Add to Cart' },
+      { id: 'price', label: 'Price', type: 'text', defaultValue: '$189.00' },
+      { id: 'successText', label: 'Success Text', type: 'text', defaultValue: 'Added!' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'buttonColor', label: 'Button Color', type: 'color', defaultValue: '#111827' },
+    ],
+    generateHtml: (v) => `<div class="${uid('atc')}">
+  <style>
+    .${uid('atc')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; display:flex; justify-content:center; }
+    .${uid('atc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('atc')}-btn { display:flex; align-items:center; gap:16px; padding:18px 32px; background:${v.buttonColor}; border:none; border-radius:14px; cursor:pointer; transition:all 0.3s; overflow:hidden; }
+    .${uid('atc')}-btn:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+    .${uid('atc')}-btn:active { transform:scale(0.98); }
+    .${uid('atc')}-icon { width:24px; height:24px; color:#fff; transition:transform 0.3s; }
+    .${uid('atc')}-btn:hover .${uid('atc')}-icon { transform:scale(1.1); }
+    .${uid('atc')}-text { font-size:16px; font-weight:600; color:#fff; }
+    .${uid('atc')}-divider { width:1px; height:24px; background:rgba(255,255,255,0.3); }
+    .${uid('atc')}-price { font-size:16px; font-weight:700; color:#fff; }
+  </style>
+  <button class="${uid('atc')}-btn" onclick="this.querySelector('.${uid('atc')}-text').textContent='${v.successText}';this.style.background='#16a34a';setTimeout(()=>{this.querySelector('.${uid('atc')}-text').textContent='${v.text}';this.style.background='${v.buttonColor}';},2000);">
+    <svg class="${uid('atc')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span class="${uid('atc')}-text">${v.text}</span>
+    <div class="${uid('atc')}-divider"></div>
+    <span class="${uid('atc')}-price">${v.price}</span>
+  </button>
+</div>`
+  },
+
+  // 48. Product Rating with Reviews
+  {
+    id: 'product-rating-reviews',
+    name: 'Product Rating with Reviews',
+    category: 'Product',
+    description: 'Star rating display with review count and breakdown',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'rating', label: 'Overall Rating', type: 'text', defaultValue: '4.8' },
+      { id: 'totalReviews', label: 'Total Reviews', type: 'text', defaultValue: '2,847' },
+      { id: 'star5', label: '5 Star Percent', type: 'number', defaultValue: '78' },
+      { id: 'star4', label: '4 Star Percent', type: 'number', defaultValue: '15' },
+      { id: 'star3', label: '3 Star Percent', type: 'number', defaultValue: '5' },
+      { id: 'star2', label: '2 Star Percent', type: 'number', defaultValue: '1' },
+      { id: 'star1', label: '1 Star Percent', type: 'number', defaultValue: '1' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Text Color', type: 'color', defaultValue: '#111827' },
+      { id: 'accentColor', label: 'Star Color', type: 'color', defaultValue: '#fbbf24' },
+    ],
+    generateHtml: (v) => `<div class="${uid('prr')}">
+  <style>
+    .${uid('prr')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('prr')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('prr')}-container { max-width:500px; margin:0 auto; display:flex; gap:40px; }
+    @media(max-width:600px) { .${uid('prr')}-container { flex-direction:column; align-items:center; text-align:center; } }
+    .${uid('prr')}-summary { }
+    .${uid('prr')}-score { font-size:56px; font-weight:700; color:${v.headlineColor}; line-height:1; }
+    .${uid('prr')}-stars { display:flex; gap:4px; margin:12px 0; }
+    @media(max-width:600px) { .${uid('prr')}-stars { justify-content:center; } }
+    .${uid('prr')}-star { width:24px; height:24px; color:${v.accentColor}; }
+    .${uid('prr')}-total { font-size:14px; color:#6b7280; }
+    .${uid('prr')}-breakdown { flex:1; }
+    .${uid('prr')}-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .${uid('prr')}-bar-label { font-size:13px; color:#6b7280; width:50px; }
+    .${uid('prr')}-bar-track { flex:1; height:8px; background:#f3f4f6; border-radius:4px; overflow:hidden; }
+    .${uid('prr')}-bar-fill { height:100%; background:${v.accentColor}; border-radius:4px; transition:width 0.5s; }
+    .${uid('prr')}-bar-pct { font-size:12px; color:#6b7280; width:36px; text-align:right; }
+  </style>
+  <div class="${uid('prr')}-container">
+    <div class="${uid('prr')}-summary">
+      <div class="${uid('prr')}-score">${v.rating}</div>
+      <div class="${uid('prr')}-stars">
+        ${Array.from({length: 5}, () => `<svg class="${uid('prr')}-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}
+      </div>
+      <div class="${uid('prr')}-total">${v.totalReviews} reviews</div>
+    </div>
+    <div class="${uid('prr')}-breakdown">
+      <div class="${uid('prr')}-bar-row"><span class="${uid('prr')}-bar-label">5 star</span><div class="${uid('prr')}-bar-track"><div class="${uid('prr')}-bar-fill" style="width:${v.star5}%"></div></div><span class="${uid('prr')}-bar-pct">${v.star5}%</span></div>
+      <div class="${uid('prr')}-bar-row"><span class="${uid('prr')}-bar-label">4 star</span><div class="${uid('prr')}-bar-track"><div class="${uid('prr')}-bar-fill" style="width:${v.star4}%"></div></div><span class="${uid('prr')}-bar-pct">${v.star4}%</span></div>
+      <div class="${uid('prr')}-bar-row"><span class="${uid('prr')}-bar-label">3 star</span><div class="${uid('prr')}-bar-track"><div class="${uid('prr')}-bar-fill" style="width:${v.star3}%"></div></div><span class="${uid('prr')}-bar-pct">${v.star3}%</span></div>
+      <div class="${uid('prr')}-bar-row"><span class="${uid('prr')}-bar-label">2 star</span><div class="${uid('prr')}-bar-track"><div class="${uid('prr')}-bar-fill" style="width:${v.star2}%"></div></div><span class="${uid('prr')}-bar-pct">${v.star2}%</span></div>
+      <div class="${uid('prr')}-bar-row"><span class="${uid('prr')}-bar-label">1 star</span><div class="${uid('prr')}-bar-track"><div class="${uid('prr')}-bar-fill" style="width:${v.star1}%"></div></div><span class="${uid('prr')}-bar-pct">${v.star1}%</span></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 49. Stock Status Indicator
+  {
+    id: 'stock-status-indicator',
+    name: 'Stock Status Indicator',
+    category: 'Product',
+    description: 'Visual stock level indicator with urgency messaging',
+    thumbnail: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'stockLevel', label: 'Stock Level (0-100)', type: 'number', defaultValue: '12' },
+      { id: 'lowStockText', label: 'Low Stock Message', type: 'text', defaultValue: 'Only 12 left in stock - order soon!' },
+      { id: 'inStockText', label: 'In Stock Message', type: 'text', defaultValue: 'In Stock' },
+      { id: 'outOfStockText', label: 'Out of Stock Message', type: 'text', defaultValue: 'Out of Stock' },
+      { id: 'lowThreshold', label: 'Low Stock Threshold', type: 'number', defaultValue: '20' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => {
+      const stock = parseInt(v.stockLevel);
+      const threshold = parseInt(v.lowThreshold);
+      const isLow = stock > 0 && stock <= threshold;
+      const isOut = stock === 0;
+      const color = isOut ? '#ef4444' : isLow ? '#f59e0b' : '#10b981';
+      const text = isOut ? v.outOfStockText : isLow ? v.lowStockText : v.inStockText;
+      return `<div class="${uid('ssi')}">
+  <style>
+    .${uid('ssi')} { padding:32px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('ssi')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('ssi')}-container { max-width:400px; margin:0 auto; }
+    .${uid('ssi')}-status { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .${uid('ssi')}-dot { width:10px; height:10px; border-radius:50%; background:${color}; animation:${isLow ? `${uid('ssi')}-pulse 2s infinite` : 'none'}; }
+    @keyframes ${uid('ssi')}-pulse { 0%, 100% { opacity:1; } 50% { opacity:0.5; } }
+    .${uid('ssi')}-text { font-size:14px; font-weight:500; color:${color}; }
+    .${uid('ssi')}-bar { height:6px; background:#f3f4f6; border-radius:3px; overflow:hidden; }
+    .${uid('ssi')}-fill { height:100%; background:${color}; border-radius:3px; transition:width 0.5s; }
+  </style>
+  <div class="${uid('ssi')}-container">
+    <div class="${uid('ssi')}-status">
+      <div class="${uid('ssi')}-dot"></div>
+      <span class="${uid('ssi')}-text">${text}</span>
+    </div>
+    <div class="${uid('ssi')}-bar">
+      <div class="${uid('ssi')}-fill" style="width:${stock}%"></div>
+    </div>
+  </div>
+</div>`;
+    }
+  },
+
+  // 50. Quantity Selector
+  {
+    id: 'quantity-selector-premium',
+    name: 'Quantity Selector Premium',
+    category: 'Product',
+    description: 'Elegant quantity stepper with min/max limits',
+    thumbnail: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop',
+    fields: [
+      { id: 'label', label: 'Label', type: 'text', defaultValue: 'Quantity' },
+      { id: 'defaultQty', label: 'Default Quantity', type: 'number', defaultValue: '1' },
+      { id: 'maxQty', label: 'Max Quantity', type: 'number', defaultValue: '10' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#111827' },
+    ],
+    generateHtml: (v) => `<div class="${uid('qsp')}">
+  <style>
+    .${uid('qsp')} { padding:40px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('qsp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('qsp')}-container { max-width:300px; margin:0 auto; }
+    .${uid('qsp')}-label { font-size:14px; font-weight:500; color:${v.textColor}; margin-bottom:12px; }
+    .${uid('qsp')}-stepper { display:flex; align-items:center; border:2px solid #e5e7eb; border-radius:12px; overflow:hidden; }
+    .${uid('qsp')}-btn { width:52px; height:52px; background:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .${uid('qsp')}-btn:hover:not(:disabled) { background:#f3f4f6; }
+    .${uid('qsp')}-btn:disabled { opacity:0.3; cursor:not-allowed; }
+    .${uid('qsp')}-btn svg { width:20px; height:20px; color:${v.textColor}; }
+    .${uid('qsp')}-value { flex:1; text-align:center; font-size:18px; font-weight:600; color:${v.textColor}; }
+    .${uid('qsp')}-max { font-size:12px; color:#6b7280; text-align:center; margin-top:8px; }
+  </style>
+  <div class="${uid('qsp')}-container">
+    <div class="${uid('qsp')}-label">${v.label}</div>
+    <div class="${uid('qsp')}-stepper">
+      <button class="${uid('qsp')}-btn" id="${uid('qsp')}-minus" onclick="var val=document.getElementById('${uid('qsp')}-val');var num=parseInt(val.textContent);if(num>1){val.textContent=num-1;document.getElementById('${uid('qsp')}-plus').disabled=false;}if(num-1<=1)this.disabled=true;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+      </button>
+      <span class="${uid('qsp')}-value" id="${uid('qsp')}-val">${v.defaultQty}</span>
+      <button class="${uid('qsp')}-btn" id="${uid('qsp')}-plus" onclick="var val=document.getElementById('${uid('qsp')}-val');var num=parseInt(val.textContent);if(num<${v.maxQty}){val.textContent=num+1;document.getElementById('${uid('qsp')}-minus').disabled=false;}if(num+1>=${v.maxQty})this.disabled=true;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+    <div class="${uid('qsp')}-max">Max ${v.maxQty} per order</div>
+  </div>
+</div>`
+  },
+
+  // 51. Flash Sale Countdown Timer
+  {
+    id: 'flash-sale-countdown',
+    name: 'Flash Sale Countdown',
+    category: 'Countdown',
+    description: 'Urgency-driven flash sale banner with animated countdown timer',
+    thumbnail: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'FLASH SALE' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Up to 70% Off Everything' },
+      { id: 'hours', label: 'Hours Left', type: 'number', defaultValue: '23' },
+      { id: 'minutes', label: 'Minutes Left', type: 'number', defaultValue: '59' },
+      { id: 'seconds', label: 'Seconds Left', type: 'number', defaultValue: '59' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Shop Now' },
+      { id: 'ctaUrl', label: 'CTA URL', type: 'url', defaultValue: '#' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#dc2626' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fsc')}">
+  <style>
+    .${uid('fsc')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; text-align:center; }
+    .${uid('fsc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fsc')}-headline { font-size:48px; font-weight:900; color:${v.textColor}; letter-spacing:4px; text-transform:uppercase; margin-bottom:8px; animation:${uid('fsc')}-pulse 2s infinite; }
+    @keyframes ${uid('fsc')}-pulse { 0%,100% { opacity:1; } 50% { opacity:0.8; } }
+    .${uid('fsc')}-sub { font-size:24px; font-weight:500; color:${v.textColor}; opacity:0.9; margin-bottom:32px; }
+    .${uid('fsc')}-timer { display:flex; justify-content:center; gap:16px; margin-bottom:32px; }
+    .${uid('fsc')}-unit { background:rgba(0,0,0,0.2); border-radius:12px; padding:20px 24px; min-width:100px; }
+    .${uid('fsc')}-number { font-size:48px; font-weight:700; color:${v.textColor}; line-height:1; }
+    .${uid('fsc')}-label { font-size:12px; font-weight:600; color:${v.textColor}; opacity:0.8; text-transform:uppercase; letter-spacing:2px; margin-top:8px; }
+    .${uid('fsc')}-cta { display:inline-block; background:${v.textColor}; color:${v.bgColor}; padding:16px 48px; border-radius:50px; font-size:16px; font-weight:700; text-decoration:none; text-transform:uppercase; letter-spacing:1px; transition:all 0.3s; }
+    .${uid('fsc')}-cta:hover { transform:scale(1.05); box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+  </style>
+  <div class="${uid('fsc')}-headline">${v.headline}</div>
+  <div class="${uid('fsc')}-sub">${v.subheadline}</div>
+  <div class="${uid('fsc')}-timer">
+    <div class="${uid('fsc')}-unit"><div class="${uid('fsc')}-number">${v.hours}</div><div class="${uid('fsc')}-label">Hours</div></div>
+    <div class="${uid('fsc')}-unit"><div class="${uid('fsc')}-number">${v.minutes}</div><div class="${uid('fsc')}-label">Minutes</div></div>
+    <div class="${uid('fsc')}-unit"><div class="${uid('fsc')}-number">${v.seconds}</div><div class="${uid('fsc')}-label">Seconds</div></div>
+  </div>
+  <a href="${v.ctaUrl}" class="${uid('fsc')}-cta">${v.ctaText}</a>
+</div>`
+  },
+
+  // 52. Recently Viewed Products
+  {
+    id: 'recently-viewed-products',
+    name: 'Recently Viewed Products',
+    category: 'Product',
+    description: 'Horizontal scroll of recently viewed product cards',
+    thumbnail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Recently Viewed' },
+      { id: 'product1Img', label: 'Product 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop' },
+      { id: 'product1Name', label: 'Product 1 Name', type: 'text', defaultValue: 'Smart Watch Pro' },
+      { id: 'product1Price', label: 'Product 1 Price', type: 'text', defaultValue: '$299' },
+      { id: 'product2Img', label: 'Product 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=200&h=200&fit=crop' },
+      { id: 'product2Name', label: 'Product 2 Name', type: 'text', defaultValue: 'Wireless Earbuds' },
+      { id: 'product2Price', label: 'Product 2 Price', type: 'text', defaultValue: '$149' },
+      { id: 'product3Img', label: 'Product 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=200&h=200&fit=crop' },
+      { id: 'product3Name', label: 'Product 3 Name', type: 'text', defaultValue: 'Leather Backpack' },
+      { id: 'product3Price', label: 'Product 3 Price', type: 'text', defaultValue: '$189' },
+      { id: 'product4Img', label: 'Product 4 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=200&h=200&fit=crop' },
+      { id: 'product4Name', label: 'Product 4 Name', type: 'text', defaultValue: 'Running Shoes' },
+      { id: 'product4Price', label: 'Product 4 Price', type: 'text', defaultValue: '$129' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+    ],
+    generateHtml: (v) => `<div class="${uid('rvp')}">
+  <style>
+    .${uid('rvp')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('rvp')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('rvp')}-container { max-width:1200px; margin:0 auto; }
+    .${uid('rvp')}-headline { font-size:24px; font-weight:700; color:${v.headlineColor}; margin-bottom:24px; }
+    .${uid('rvp')}-scroll { display:flex; gap:20px; overflow-x:auto; padding-bottom:16px; scrollbar-width:thin; }
+    .${uid('rvp')}-scroll::-webkit-scrollbar { height:6px; }
+    .${uid('rvp')}-scroll::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:3px; }
+    .${uid('rvp')}-card { flex-shrink:0; width:180px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:all 0.3s; cursor:pointer; }
+    .${uid('rvp')}-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+    .${uid('rvp')}-img { width:100%; aspect-ratio:1; object-fit:cover; }
+    .${uid('rvp')}-info { padding:12px; }
+    .${uid('rvp')}-name { font-size:14px; font-weight:500; color:${v.textColor}; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .${uid('rvp')}-price { font-size:16px; font-weight:700; color:${v.headlineColor}; }
+  </style>
+  <div class="${uid('rvp')}-container">
+    <div class="${uid('rvp')}-headline">${v.headline}</div>
+    <div class="${uid('rvp')}-scroll">
+      <div class="${uid('rvp')}-card"><img class="${uid('rvp')}-img" src="${v.product1Img}" alt="${v.product1Name}"/><div class="${uid('rvp')}-info"><div class="${uid('rvp')}-name">${v.product1Name}</div><div class="${uid('rvp')}-price">${v.product1Price}</div></div></div>
+      <div class="${uid('rvp')}-card"><img class="${uid('rvp')}-img" src="${v.product2Img}" alt="${v.product2Name}"/><div class="${uid('rvp')}-info"><div class="${uid('rvp')}-name">${v.product2Name}</div><div class="${uid('rvp')}-price">${v.product2Price}</div></div></div>
+      <div class="${uid('rvp')}-card"><img class="${uid('rvp')}-img" src="${v.product3Img}" alt="${v.product3Name}"/><div class="${uid('rvp')}-info"><div class="${uid('rvp')}-name">${v.product3Name}</div><div class="${uid('rvp')}-price">${v.product3Price}</div></div></div>
+      <div class="${uid('rvp')}-card"><img class="${uid('rvp')}-img" src="${v.product4Img}" alt="${v.product4Name}"/><div class="${uid('rvp')}-info"><div class="${uid('rvp')}-name">${v.product4Name}</div><div class="${uid('rvp')}-price">${v.product4Price}</div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 53. Product Comparison Table
+  {
+    id: 'product-comparison-table',
+    name: 'Product Comparison Table',
+    category: 'Product',
+    description: 'Side-by-side product feature comparison grid',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Compare Products' },
+      { id: 'product1Name', label: 'Product 1 Name', type: 'text', defaultValue: 'Basic Plan' },
+      { id: 'product1Price', label: 'Product 1 Price', type: 'text', defaultValue: '$29/mo' },
+      { id: 'product2Name', label: 'Product 2 Name', type: 'text', defaultValue: 'Pro Plan' },
+      { id: 'product2Price', label: 'Product 2 Price', type: 'text', defaultValue: '$59/mo' },
+      { id: 'product3Name', label: 'Product 3 Name', type: 'text', defaultValue: 'Enterprise' },
+      { id: 'product3Price', label: 'Product 3 Price', type: 'text', defaultValue: '$99/mo' },
+      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Storage' },
+      { id: 'feature1Values', label: 'Feature 1 Values (comma-separated)', type: 'text', defaultValue: '10GB,50GB,Unlimited' },
+      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Users' },
+      { id: 'feature2Values', label: 'Feature 2 Values (comma-separated)', type: 'text', defaultValue: '1,5,Unlimited' },
+      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Support' },
+      { id: 'feature3Values', label: 'Feature 3 Values (comma-separated)', type: 'text', defaultValue: 'Email,Priority,24/7 Phone' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => {
+      const f1v = v.feature1Values.split(',');
+      const f2v = v.feature2Values.split(',');
+      const f3v = v.feature3Values.split(',');
+      return `<div class="${uid('pct')}">
+  <style>
+    .${uid('pct')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('pct')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pct')}-container { max-width:900px; margin:0 auto; }
+    .${uid('pct')}-headline { font-size:32px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:32px; }
+    .${uid('pct')}-table { width:100%; border-collapse:collapse; }
+    .${uid('pct')}-table th, .${uid('pct')}-table td { padding:16px 12px; text-align:center; border-bottom:1px solid #e5e7eb; }
+    .${uid('pct')}-table th { font-size:14px; font-weight:600; color:#6b7280; }
+    .${uid('pct')}-table th.${uid('pct')}-product { background:#f9fafb; border-radius:12px 12px 0 0; }
+    .${uid('pct')}-product-name { font-size:18px; font-weight:700; color:${v.headlineColor}; margin-bottom:4px; }
+    .${uid('pct')}-product-price { font-size:24px; font-weight:800; color:${v.accentColor}; }
+    .${uid('pct')}-feature { text-align:left; font-weight:500; color:${v.headlineColor}; }
+    .${uid('pct')}-value { font-weight:600; color:#374151; }
+    .${uid('pct')}-highlight { background:rgba(59,130,246,0.05); }
+  </style>
+  <div class="${uid('pct')}-container">
+    <h2 class="${uid('pct')}-headline">${v.headline}</h2>
+    <table class="${uid('pct')}-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="${uid('pct')}-product"><div class="${uid('pct')}-product-name">${v.product1Name}</div><div class="${uid('pct')}-product-price">${v.product1Price}</div></th>
+          <th class="${uid('pct')}-product ${uid('pct')}-highlight"><div class="${uid('pct')}-product-name">${v.product2Name}</div><div class="${uid('pct')}-product-price">${v.product2Price}</div></th>
+          <th class="${uid('pct')}-product"><div class="${uid('pct')}-product-name">${v.product3Name}</div><div class="${uid('pct')}-product-price">${v.product3Price}</div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="${uid('pct')}-feature">${v.feature1}</td><td class="${uid('pct')}-value">${f1v[0] || ''}</td><td class="${uid('pct')}-value ${uid('pct')}-highlight">${f1v[1] || ''}</td><td class="${uid('pct')}-value">${f1v[2] || ''}</td></tr>
+        <tr><td class="${uid('pct')}-feature">${v.feature2}</td><td class="${uid('pct')}-value">${f2v[0] || ''}</td><td class="${uid('pct')}-value ${uid('pct')}-highlight">${f2v[1] || ''}</td><td class="${uid('pct')}-value">${f2v[2] || ''}</td></tr>
+        <tr><td class="${uid('pct')}-feature">${v.feature3}</td><td class="${uid('pct')}-value">${f3v[0] || ''}</td><td class="${uid('pct')}-value ${uid('pct')}-highlight">${f3v[1] || ''}</td><td class="${uid('pct')}-value">${f3v[2] || ''}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>`;
+    }
+  },
+
+  // 54. Bundle Deal Card
+  {
+    id: 'bundle-deal-card',
+    name: 'Bundle Deal Card',
+    category: 'Product',
+    description: 'Product bundle promotion with savings highlight',
+    thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Bundle & Save' },
+      { id: 'badgeText', label: 'Badge Text', type: 'text', defaultValue: 'SAVE 30%' },
+      { id: 'product1Img', label: 'Product 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&h=150&fit=crop' },
+      { id: 'product1Name', label: 'Product 1 Name', type: 'text', defaultValue: 'Smart Watch' },
+      { id: 'product2Img', label: 'Product 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=150&h=150&fit=crop' },
+      { id: 'product2Name', label: 'Product 2 Name', type: 'text', defaultValue: 'Wireless Earbuds' },
+      { id: 'product3Img', label: 'Product 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=150&h=150&fit=crop' },
+      { id: 'product3Name', label: 'Product 3 Name', type: 'text', defaultValue: 'Headphones' },
+      { id: 'originalPrice', label: 'Original Price', type: 'text', defaultValue: '$599' },
+      { id: 'bundlePrice', label: 'Bundle Price', type: 'text', defaultValue: '$419' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Get Bundle Deal' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#059669' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bdc')}">
+  <style>
+    .${uid('bdc')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('bdc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('bdc')}-card { max-width:500px; margin:0 auto; background:#fff; border-radius:20px; padding:32px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:2px solid ${v.accentColor}; position:relative; }
+    .${uid('bdc')}-badge { position:absolute; top:-12px; right:24px; background:${v.accentColor}; color:#fff; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:700; letter-spacing:1px; }
+    .${uid('bdc')}-headline { font-size:24px; font-weight:700; color:${v.headlineColor}; text-align:center; margin-bottom:24px; }
+    .${uid('bdc')}-products { display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:24px; }
+    .${uid('bdc')}-product { text-align:center; }
+    .${uid('bdc')}-product img { width:80px; height:80px; border-radius:12px; object-fit:cover; margin-bottom:8px; }
+    .${uid('bdc')}-product-name { font-size:12px; color:#6b7280; }
+    .${uid('bdc')}-plus { font-size:24px; font-weight:700; color:#d1d5db; }
+    .${uid('bdc')}-pricing { text-align:center; margin-bottom:24px; }
+    .${uid('bdc')}-original { font-size:18px; color:#9ca3af; text-decoration:line-through; }
+    .${uid('bdc')}-bundle { font-size:36px; font-weight:800; color:${v.accentColor}; margin-left:12px; }
+    .${uid('bdc')}-cta { display:block; width:100%; background:${v.accentColor}; color:#fff; padding:16px; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.3s; }
+    .${uid('bdc')}-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(5,150,105,0.4); }
+  </style>
+  <div class="${uid('bdc')}-card">
+    <div class="${uid('bdc')}-badge">${v.badgeText}</div>
+    <h2 class="${uid('bdc')}-headline">${v.headline}</h2>
+    <div class="${uid('bdc')}-products">
+      <div class="${uid('bdc')}-product"><img src="${v.product1Img}" alt="${v.product1Name}"/><div class="${uid('bdc')}-product-name">${v.product1Name}</div></div>
+      <div class="${uid('bdc')}-plus">+</div>
+      <div class="${uid('bdc')}-product"><img src="${v.product2Img}" alt="${v.product2Name}"/><div class="${uid('bdc')}-product-name">${v.product2Name}</div></div>
+      <div class="${uid('bdc')}-plus">+</div>
+      <div class="${uid('bdc')}-product"><img src="${v.product3Img}" alt="${v.product3Name}"/><div class="${uid('bdc')}-product-name">${v.product3Name}</div></div>
+    </div>
+    <div class="${uid('bdc')}-pricing">
+      <span class="${uid('bdc')}-original">${v.originalPrice}</span>
+      <span class="${uid('bdc')}-bundle">${v.bundlePrice}</span>
+    </div>
+    <button class="${uid('bdc')}-cta">${v.ctaText}</button>
+  </div>
+</div>`
+  },
+
+  // 55. Order Summary Card
+  {
+    id: 'order-summary-card',
+    name: 'Order Summary Card',
+    category: 'Product',
+    description: 'Checkout order summary with line items and totals',
+    thumbnail: 'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Order Summary' },
+      { id: 'item1Name', label: 'Item 1 Name', type: 'text', defaultValue: 'Premium Headphones' },
+      { id: 'item1Qty', label: 'Item 1 Qty', type: 'text', defaultValue: '1' },
+      { id: 'item1Price', label: 'Item 1 Price', type: 'text', defaultValue: '$299.00' },
+      { id: 'item2Name', label: 'Item 2 Name', type: 'text', defaultValue: 'Leather Case' },
+      { id: 'item2Qty', label: 'Item 2 Qty', type: 'text', defaultValue: '2' },
+      { id: 'item2Price', label: 'Item 2 Price', type: 'text', defaultValue: '$59.98' },
+      { id: 'subtotal', label: 'Subtotal', type: 'text', defaultValue: '$358.98' },
+      { id: 'shipping', label: 'Shipping', type: 'text', defaultValue: 'FREE' },
+      { id: 'tax', label: 'Tax', type: 'text', defaultValue: '$28.72' },
+      { id: 'total', label: 'Total', type: 'text', defaultValue: '$387.70' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'cardColor', label: 'Card Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+    ],
+    generateHtml: (v) => `<div class="${uid('osc')}">
+  <style>
+    .${uid('osc')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('osc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('osc')}-card { max-width:400px; margin:0 auto; background:${v.cardColor}; border-radius:16px; padding:24px; box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+    .${uid('osc')}-headline { font-size:20px; font-weight:700; color:${v.headlineColor}; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #e5e7eb; }
+    .${uid('osc')}-items { margin-bottom:20px; }
+    .${uid('osc')}-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; }
+    .${uid('osc')}-item-left { display:flex; align-items:center; gap:8px; }
+    .${uid('osc')}-item-name { font-size:14px; color:${v.textColor}; }
+    .${uid('osc')}-item-qty { font-size:12px; color:#9ca3af; }
+    .${uid('osc')}-item-price { font-size:14px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('osc')}-divider { height:1px; background:#e5e7eb; margin:8px 0; }
+    .${uid('osc')}-row { display:flex; justify-content:space-between; padding:8px 0; font-size:14px; }
+    .${uid('osc')}-row-label { color:${v.textColor}; }
+    .${uid('osc')}-row-value { font-weight:500; color:${v.headlineColor}; }
+    .${uid('osc')}-row-value.${uid('osc')}-free { color:#059669; }
+    .${uid('osc')}-total { display:flex; justify-content:space-between; padding:16px 0 0; border-top:2px solid #e5e7eb; margin-top:8px; }
+    .${uid('osc')}-total-label { font-size:16px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('osc')}-total-value { font-size:24px; font-weight:800; color:${v.headlineColor}; }
+  </style>
+  <div class="${uid('osc')}-card">
+    <h2 class="${uid('osc')}-headline">${v.headline}</h2>
+    <div class="${uid('osc')}-items">
+      <div class="${uid('osc')}-item"><div class="${uid('osc')}-item-left"><span class="${uid('osc')}-item-name">${v.item1Name}</span><span class="${uid('osc')}-item-qty">×${v.item1Qty}</span></div><span class="${uid('osc')}-item-price">${v.item1Price}</span></div>
+      <div class="${uid('osc')}-item"><div class="${uid('osc')}-item-left"><span class="${uid('osc')}-item-name">${v.item2Name}</span><span class="${uid('osc')}-item-qty">×${v.item2Qty}</span></div><span class="${uid('osc')}-item-price">${v.item2Price}</span></div>
+    </div>
+    <div class="${uid('osc')}-divider"></div>
+    <div class="${uid('osc')}-row"><span class="${uid('osc')}-row-label">Subtotal</span><span class="${uid('osc')}-row-value">${v.subtotal}</span></div>
+    <div class="${uid('osc')}-row"><span class="${uid('osc')}-row-label">Shipping</span><span class="${uid('osc')}-row-value ${uid('osc')}-free">${v.shipping}</span></div>
+    <div class="${uid('osc')}-row"><span class="${uid('osc')}-row-label">Tax</span><span class="${uid('osc')}-row-value">${v.tax}</span></div>
+    <div class="${uid('osc')}-total"><span class="${uid('osc')}-total-label">Total</span><span class="${uid('osc')}-total-value">${v.total}</span></div>
+  </div>
+</div>`
+  },
+
+  // 56. Shipping Options Selector
+  {
+    id: 'shipping-options-selector',
+    name: 'Shipping Options Selector',
+    category: 'Product',
+    description: 'Interactive shipping method selection cards',
+    thumbnail: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Shipping Method' },
+      { id: 'option1Name', label: 'Option 1 Name', type: 'text', defaultValue: 'Standard Shipping' },
+      { id: 'option1Time', label: 'Option 1 Time', type: 'text', defaultValue: '5-7 business days' },
+      { id: 'option1Price', label: 'Option 1 Price', type: 'text', defaultValue: 'FREE' },
+      { id: 'option2Name', label: 'Option 2 Name', type: 'text', defaultValue: 'Express Shipping' },
+      { id: 'option2Time', label: 'Option 2 Time', type: 'text', defaultValue: '2-3 business days' },
+      { id: 'option2Price', label: 'Option 2 Price', type: 'text', defaultValue: '$9.99' },
+      { id: 'option3Name', label: 'Option 3 Name', type: 'text', defaultValue: 'Next Day Delivery' },
+      { id: 'option3Time', label: 'Option 3 Time', type: 'text', defaultValue: '1 business day' },
+      { id: 'option3Price', label: 'Option 3 Price', type: 'text', defaultValue: '$19.99' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => `<div class="${uid('sos')}">
+  <style>
+    .${uid('sos')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('sos')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('sos')}-container { max-width:500px; margin:0 auto; }
+    .${uid('sos')}-headline { font-size:20px; font-weight:700; color:${v.headlineColor}; margin-bottom:20px; }
+    .${uid('sos')}-options { display:flex; flex-direction:column; gap:12px; }
+    .${uid('sos')}-option { display:flex; align-items:center; gap:16px; padding:20px; border:2px solid #e5e7eb; border-radius:12px; cursor:pointer; transition:all 0.2s; }
+    .${uid('sos')}-option:hover { border-color:#d1d5db; }
+    .${uid('sos')}-option.${uid('sos')}-selected { border-color:${v.accentColor}; background:rgba(59,130,246,0.05); }
+    .${uid('sos')}-radio { width:20px; height:20px; border:2px solid #d1d5db; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .${uid('sos')}-option.${uid('sos')}-selected .${uid('sos')}-radio { border-color:${v.accentColor}; }
+    .${uid('sos')}-radio-inner { width:10px; height:10px; background:${v.accentColor}; border-radius:50%; display:none; }
+    .${uid('sos')}-option.${uid('sos')}-selected .${uid('sos')}-radio-inner { display:block; }
+    .${uid('sos')}-info { flex:1; }
+    .${uid('sos')}-name { font-size:16px; font-weight:600; color:${v.headlineColor}; margin-bottom:4px; }
+    .${uid('sos')}-time { font-size:13px; color:#6b7280; }
+    .${uid('sos')}-price { font-size:16px; font-weight:700; color:${v.headlineColor}; }
+    .${uid('sos')}-price.${uid('sos')}-free { color:#059669; }
+  </style>
+  <div class="${uid('sos')}-container">
+    <h2 class="${uid('sos')}-headline">${v.headline}</h2>
+    <div class="${uid('sos')}-options">
+      <div class="${uid('sos')}-option ${uid('sos')}-selected" onclick="this.parentElement.querySelectorAll('.${uid('sos')}-option').forEach(o=>o.classList.remove('${uid('sos')}-selected'));this.classList.add('${uid('sos')}-selected');">
+        <div class="${uid('sos')}-radio"><div class="${uid('sos')}-radio-inner"></div></div>
+        <div class="${uid('sos')}-info"><div class="${uid('sos')}-name">${v.option1Name}</div><div class="${uid('sos')}-time">${v.option1Time}</div></div>
+        <div class="${uid('sos')}-price ${uid('sos')}-free">${v.option1Price}</div>
+      </div>
+      <div class="${uid('sos')}-option" onclick="this.parentElement.querySelectorAll('.${uid('sos')}-option').forEach(o=>o.classList.remove('${uid('sos')}-selected'));this.classList.add('${uid('sos')}-selected');">
+        <div class="${uid('sos')}-radio"><div class="${uid('sos')}-radio-inner"></div></div>
+        <div class="${uid('sos')}-info"><div class="${uid('sos')}-name">${v.option2Name}</div><div class="${uid('sos')}-time">${v.option2Time}</div></div>
+        <div class="${uid('sos')}-price">${v.option2Price}</div>
+      </div>
+      <div class="${uid('sos')}-option" onclick="this.parentElement.querySelectorAll('.${uid('sos')}-option').forEach(o=>o.classList.remove('${uid('sos')}-selected'));this.classList.add('${uid('sos')}-selected');">
+        <div class="${uid('sos')}-radio"><div class="${uid('sos')}-radio-inner"></div></div>
+        <div class="${uid('sos')}-info"><div class="${uid('sos')}-name">${v.option3Name}</div><div class="${uid('sos')}-time">${v.option3Time}</div></div>
+        <div class="${uid('sos')}-price">${v.option3Price}</div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 57. Trust Badges Strip
+  {
+    id: 'trust-badges-strip',
+    name: 'Trust Badges Strip',
+    category: 'Trust',
+    description: 'Security and payment trust badges in a horizontal strip',
+    thumbnail: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'badge1Text', label: 'Badge 1 Text', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'badge2Text', label: 'Badge 2 Text', type: 'text', defaultValue: '30-Day Returns' },
+      { id: 'badge3Text', label: 'Badge 3 Text', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'badge4Text', label: 'Badge 4 Text', type: 'text', defaultValue: '24/7 Support' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f9fafb' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+      { id: 'iconColor', label: 'Icon Color', type: 'color', defaultValue: '#059669' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tbs')}">
+  <style>
+    .${uid('tbs')} { padding:24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('tbs')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('tbs')}-container { max-width:1000px; margin:0 auto; display:flex; justify-content:center; flex-wrap:wrap; gap:32px; }
+    .${uid('tbs')}-badge { display:flex; align-items:center; gap:10px; }
+    .${uid('tbs')}-icon { width:40px; height:40px; background:${v.iconColor}; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .${uid('tbs')}-icon svg { width:20px; height:20px; color:#fff; }
+    .${uid('tbs')}-text { font-size:14px; font-weight:600; color:${v.textColor}; }
+  </style>
+  <div class="${uid('tbs')}-container">
+    <div class="${uid('tbs')}-badge">
+      <div class="${uid('tbs')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <span class="${uid('tbs')}-text">${v.badge1Text}</span>
+    </div>
+    <div class="${uid('tbs')}-badge">
+      <div class="${uid('tbs')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="${uid('tbs')}-text">${v.badge2Text}</span>
+    </div>
+    <div class="${uid('tbs')}-badge">
+      <div class="${uid('tbs')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <span class="${uid('tbs')}-text">${v.badge3Text}</span>
+    </div>
+    <div class="${uid('tbs')}-badge">
+      <div class="${uid('tbs')}-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <span class="${uid('tbs')}-text">${v.badge4Text}</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 58. Product Specifications Table
+  {
+    id: 'product-specifications-table',
+    name: 'Product Specifications Table',
+    category: 'Product',
+    description: 'Clean product specifications in a two-column layout',
+    thumbnail: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Specifications' },
+      { id: 'spec1Label', label: 'Spec 1 Label', type: 'text', defaultValue: 'Material' },
+      { id: 'spec1Value', label: 'Spec 1 Value', type: 'text', defaultValue: 'Premium Aluminum' },
+      { id: 'spec2Label', label: 'Spec 2 Label', type: 'text', defaultValue: 'Dimensions' },
+      { id: 'spec2Value', label: 'Spec 2 Value', type: 'text', defaultValue: '12.5" x 8.2" x 0.6"' },
+      { id: 'spec3Label', label: 'Spec 3 Label', type: 'text', defaultValue: 'Weight' },
+      { id: 'spec3Value', label: 'Spec 3 Value', type: 'text', defaultValue: '2.8 lbs (1.27 kg)' },
+      { id: 'spec4Label', label: 'Spec 4 Label', type: 'text', defaultValue: 'Display' },
+      { id: 'spec4Value', label: 'Spec 4 Value', type: 'text', defaultValue: '13.3" Retina Display' },
+      { id: 'spec5Label', label: 'Spec 5 Label', type: 'text', defaultValue: 'Battery Life' },
+      { id: 'spec5Value', label: 'Spec 5 Value', type: 'text', defaultValue: 'Up to 18 hours' },
+      { id: 'spec6Label', label: 'Spec 6 Label', type: 'text', defaultValue: 'Warranty' },
+      { id: 'spec6Value', label: 'Spec 6 Value', type: 'text', defaultValue: '2 Year Limited' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pst')}">
+  <style>
+    .${uid('pst')} { padding:48px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('pst')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pst')}-container { max-width:600px; margin:0 auto; }
+    .${uid('pst')}-headline { font-size:24px; font-weight:700; color:${v.headlineColor}; margin-bottom:24px; }
+    .${uid('pst')}-table { width:100%; }
+    .${uid('pst')}-row { display:flex; border-bottom:1px solid #e5e7eb; }
+    .${uid('pst')}-row:last-child { border-bottom:none; }
+    .${uid('pst')}-label { flex:0 0 40%; padding:16px 16px 16px 0; font-size:14px; font-weight:500; color:#6b7280; }
+    .${uid('pst')}-value { flex:1; padding:16px 0; font-size:14px; font-weight:500; color:${v.textColor}; }
+  </style>
+  <div class="${uid('pst')}-container">
+    <h2 class="${uid('pst')}-headline">${v.headline}</h2>
+    <div class="${uid('pst')}-table">
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec1Label}</span><span class="${uid('pst')}-value">${v.spec1Value}</span></div>
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec2Label}</span><span class="${uid('pst')}-value">${v.spec2Value}</span></div>
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec3Label}</span><span class="${uid('pst')}-value">${v.spec3Value}</span></div>
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec4Label}</span><span class="${uid('pst')}-value">${v.spec4Value}</span></div>
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec5Label}</span><span class="${uid('pst')}-value">${v.spec5Value}</span></div>
+      <div class="${uid('pst')}-row"><span class="${uid('pst')}-label">${v.spec6Label}</span><span class="${uid('pst')}-value">${v.spec6Value}</span></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 59. Customer Review Card
+  {
+    id: 'customer-review-card',
+    name: 'Customer Review Card',
+    category: 'Testimonials',
+    description: 'Individual customer review with avatar and verified badge',
+    thumbnail: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'reviewerImg', label: 'Reviewer Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop' },
+      { id: 'reviewerName', label: 'Reviewer Name', type: 'text', defaultValue: 'Michael Chen' },
+      { id: 'verifiedText', label: 'Verified Text', type: 'text', defaultValue: 'Verified Purchase' },
+      { id: 'rating', label: 'Rating (1-5)', type: 'number', defaultValue: '5' },
+      { id: 'reviewTitle', label: 'Review Title', type: 'text', defaultValue: 'Exceeded my expectations!' },
+      { id: 'reviewText', label: 'Review Text', type: 'textarea', defaultValue: 'This product is absolutely amazing. The quality is top-notch and it arrived faster than expected. I would highly recommend this to anyone looking for a premium experience.' },
+      { id: 'reviewDate', label: 'Review Date', type: 'text', defaultValue: 'January 15, 2024' },
+      { id: 'helpfulCount', label: 'Helpful Count', type: 'number', defaultValue: '24' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'headlineColor', label: 'Headline Color', type: 'color', defaultValue: '#111827' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#374151' },
+      { id: 'starColor', label: 'Star Color', type: 'color', defaultValue: '#fbbf24' },
+    ],
+    generateHtml: (v) => {
+      const stars = Array(5).fill(0).map((_, i) => i < parseInt(v.rating) ? 'filled' : 'empty').join(',');
+      return `<div class="${uid('crc')}">
+  <style>
+    .${uid('crc')} { padding:32px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('crc')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('crc')}-card { max-width:600px; margin:0 auto; background:#fff; border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
+    .${uid('crc')}-header { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+    .${uid('crc')}-avatar { width:56px; height:56px; border-radius:50%; object-fit:cover; }
+    .${uid('crc')}-info { flex:1; }
+    .${uid('crc')}-name { font-size:16px; font-weight:600; color:${v.headlineColor}; }
+    .${uid('crc')}-verified { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:#059669; margin-top:4px; }
+    .${uid('crc')}-verified svg { width:14px; height:14px; }
+    .${uid('crc')}-stars { display:flex; gap:2px; }
+    .${uid('crc')}-star { width:18px; height:18px; color:${v.starColor}; }
+    .${uid('crc')}-star.${uid('crc')}-empty { color:#e5e7eb; }
+    .${uid('crc')}-title { font-size:18px; font-weight:600; color:${v.headlineColor}; margin-bottom:8px; }
+    .${uid('crc')}-text { font-size:14px; line-height:1.6; color:${v.textColor}; margin-bottom:16px; }
+    .${uid('crc')}-footer { display:flex; justify-content:space-between; align-items:center; padding-top:16px; border-top:1px solid #f3f4f6; }
+    .${uid('crc')}-date { font-size:13px; color:#9ca3af; }
+    .${uid('crc')}-helpful { display:flex; align-items:center; gap:8px; font-size:13px; color:#6b7280; cursor:pointer; }
+    .${uid('crc')}-helpful:hover { color:${v.headlineColor}; }
+    .${uid('crc')}-helpful svg { width:16px; height:16px; }
+  </style>
+  <div class="${uid('crc')}-card">
+    <div class="${uid('crc')}-header">
+      <img class="${uid('crc')}-avatar" src="${v.reviewerImg}" alt="${v.reviewerName}"/>
+      <div class="${uid('crc')}-info">
+        <div class="${uid('crc')}-name">${v.reviewerName}</div>
+        <div class="${uid('crc')}-verified"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>${v.verifiedText}</div>
+      </div>
+      <div class="${uid('crc')}-stars">
+        ${stars.split(',').map(s => `<svg class="${uid('crc')}-star ${s === 'empty' ? uid('crc') + '-empty' : ''}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('')}
+      </div>
+    </div>
+    <h3 class="${uid('crc')}-title">${v.reviewTitle}</h3>
+    <p class="${uid('crc')}-text">${v.reviewText}</p>
+    <div class="${uid('crc')}-footer">
+      <span class="${uid('crc')}-date">${v.reviewDate}</span>
+      <div class="${uid('crc')}-helpful"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>${v.helpfulCount} found this helpful</div>
+    </div>
+  </div>
+</div>`;
+    }
+  },
+
+  // 60. Promotional Banner with Timer
+  {
+    id: 'promo-banner-timer',
+    name: 'Promotional Banner with Timer',
+    category: 'Banner',
+    description: 'Full-width promotional banner with countdown and CTA',
+    thumbnail: 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'bgImage', label: 'Background Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&h=400&fit=crop' },
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'BLACK FRIDAY SALE' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Up to 60% off on all products' },
+      { id: 'promoCode', label: 'Promo Code', type: 'text', defaultValue: 'BLACKFRI60' },
+      { id: 'hours', label: 'Hours', type: 'number', defaultValue: '47' },
+      { id: 'minutes', label: 'Minutes', type: 'number', defaultValue: '59' },
+      { id: 'seconds', label: 'Seconds', type: 'number', defaultValue: '59' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Shop the Sale' },
+      { id: 'ctaUrl', label: 'CTA URL', type: 'url', defaultValue: '#' },
+      { id: 'overlayColor', label: 'Overlay Color', type: 'color', defaultValue: '#000000' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#ef4444' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pbt')}">
+  <style>
+    .${uid('pbt')} { position:relative; min-height:400px; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('pbt')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('pbt')}-bg { position:absolute; inset:0; background-image:url('${v.bgImage}'); background-size:cover; background-position:center; }
+    .${uid('pbt')}-overlay { position:absolute; inset:0; background:${v.overlayColor}; opacity:0.7; }
+    .${uid('pbt')}-content { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; padding:48px 24px; text-align:center; }
+    .${uid('pbt')}-headline { font-size:48px; font-weight:900; color:${v.textColor}; letter-spacing:4px; margin-bottom:12px; }
+    .${uid('pbt')}-sub { font-size:20px; color:${v.textColor}; opacity:0.9; margin-bottom:24px; }
+    .${uid('pbt')}-code { display:inline-block; background:${v.accentColor}; color:#fff; padding:8px 24px; border-radius:8px; font-size:18px; font-weight:700; letter-spacing:2px; margin-bottom:24px; }
+    .${uid('pbt')}-timer { display:flex; gap:16px; margin-bottom:32px; }
+    .${uid('pbt')}-unit { background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); border-radius:12px; padding:16px 20px; min-width:80px; }
+    .${uid('pbt')}-number { font-size:32px; font-weight:700; color:${v.textColor}; }
+    .${uid('pbt')}-label { font-size:11px; font-weight:600; color:${v.textColor}; opacity:0.7; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+    .${uid('pbt')}-cta { display:inline-block; background:${v.textColor}; color:${v.overlayColor}; padding:16px 40px; border-radius:50px; font-size:16px; font-weight:700; text-decoration:none; transition:all 0.3s; }
+    .${uid('pbt')}-cta:hover { transform:scale(1.05); box-shadow:0 8px 32px rgba(255,255,255,0.3); }
+  </style>
+  <div class="${uid('pbt')}-bg"></div>
+  <div class="${uid('pbt')}-overlay"></div>
+  <div class="${uid('pbt')}-content">
+    <h2 class="${uid('pbt')}-headline">${v.headline}</h2>
+    <p class="${uid('pbt')}-sub">${v.subheadline}</p>
+    <div class="${uid('pbt')}-code">Use code: ${v.promoCode}</div>
+    <div class="${uid('pbt')}-timer">
+      <div class="${uid('pbt')}-unit"><div class="${uid('pbt')}-number">${v.hours}</div><div class="${uid('pbt')}-label">Hours</div></div>
+      <div class="${uid('pbt')}-unit"><div class="${uid('pbt')}-number">${v.minutes}</div><div class="${uid('pbt')}-label">Minutes</div></div>
+      <div class="${uid('pbt')}-unit"><div class="${uid('pbt')}-number">${v.seconds}</div><div class="${uid('pbt')}-label">Seconds</div></div>
+    </div>
+    <a href="${v.ctaUrl}" class="${uid('pbt')}-cta">${v.ctaText}</a>
+  </div>
+</div>`
+  },
+
+  // ========== 21ST.DEV PREMIUM COMPONENTS ==========
+
+  // 61. Glowing Effect (Aceternity) - Interactive mouse-following glow border
+  {
+    id: 'glowing-effect-aceternity',
+    name: 'Glowing Effect Card',
+    category: 'Interactive',
+    description: 'Interactive card with mouse-following conic gradient glow border effect',
+    thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'title', label: 'Card Title', type: 'text', defaultValue: 'Glowing Effect' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Hover over this card to see the beautiful mouse-following glow effect around the border.' },
+      { id: 'glowColor1', label: 'Glow Color 1', type: 'color', defaultValue: '#dd7bbb' },
+      { id: 'glowColor2', label: 'Glow Color 2', type: 'color', defaultValue: '#4169e1' },
+      { id: 'glowColor3', label: 'Glow Color 3', type: 'color', defaultValue: '#9b59b6' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#0a0a0a' },
+      { id: 'cardBg', label: 'Card Background', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'borderRadius', label: 'Border Radius', type: 'number', defaultValue: '16' },
+    ],
+    generateHtml: (v) => `<div class="${uid('glow')}">
+  <style>
+    .${uid('glow')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; display:flex; justify-content:center; align-items:center; min-height:400px; }
+    .${uid('glow')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('glow')}-card { position:relative; width:100%; max-width:400px; padding:3px; border-radius:${v.borderRadius}px; background:transparent; }
+    .${uid('glow')}-card::before {
+      content:''; position:absolute; inset:0; border-radius:${v.borderRadius}px; padding:2px;
+      background:conic-gradient(from var(--glow-angle, 0deg), ${v.glowColor1}, ${v.glowColor2}, ${v.glowColor3}, ${v.glowColor1});
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      opacity:var(--glow-active, 0); transition:opacity 0.3s ease;
+    }
+    .${uid('glow')}-card:hover::before { opacity:1; }
+    .${uid('glow')}-inner { background:${v.cardBg}; border-radius:calc(${v.borderRadius}px - 2px); padding:32px; position:relative; z-index:1; }
+    .${uid('glow')}-title { font-size:24px; font-weight:700; color:${v.textColor}; margin-bottom:12px; }
+    .${uid('glow')}-desc { font-size:15px; line-height:1.6; color:${v.textColor}; opacity:0.7; }
+    .${uid('glow')}-glow { position:absolute; inset:-2px; border-radius:${v.borderRadius}px; background:conic-gradient(from var(--glow-angle, 0deg), ${v.glowColor1}40, ${v.glowColor2}40, ${v.glowColor3}40, ${v.glowColor1}40); filter:blur(20px); opacity:var(--glow-active, 0); transition:opacity 0.3s ease; z-index:0; }
+    .${uid('glow')}-card:hover .${uid('glow')}-glow { opacity:0.6; }
+  </style>
+  <div class="${uid('glow')}-card" onmousemove="(function(e,el){const rect=el.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;const angle=Math.atan2(y,x)*180/Math.PI+90;el.style.setProperty('--glow-angle',angle+'deg');el.style.setProperty('--glow-active','1');})(event,this)" onmouseleave="this.style.setProperty('--glow-active','0')">
+    <div class="${uid('glow')}-glow"></div>
+    <div class="${uid('glow')}-inner">
+      <h3 class="${uid('glow')}-title">${v.title}</h3>
+      <p class="${uid('glow')}-desc">${v.description}</p>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 62. Logos3 - Auto-scrolling logo carousel (shadcnblocks)
+  {
+    id: 'logos3-carousel',
+    name: 'Logo Carousel - Auto Scroll',
+    category: 'Brand',
+    description: 'Smooth auto-scrolling logo carousel with masked edges',
+    thumbnail: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'heading', label: 'Section Heading', type: 'text', defaultValue: 'Trusted by industry leaders' },
+      { id: 'logo1', label: 'Logo 1 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg' },
+      { id: 'logo2', label: 'Logo 2 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoft.svg' },
+      { id: 'logo3', label: 'Logo 3 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg' },
+      { id: 'logo4', label: 'Logo 4 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg' },
+      { id: 'logo5', label: 'Logo 5 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg' },
+      { id: 'logo6', label: 'Logo 6 URL', type: 'image', defaultValue: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '30' },
+    ],
+    generateHtml: (v) => `<div class="${uid('logo3')}">
+  <style>
+    .${uid('logo3')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('logo3')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('logo3')}-heading { text-align:center; font-size:14px; font-weight:500; color:${v.textColor}; opacity:0.6; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:32px; }
+    .${uid('logo3')}-wrapper { position:relative; overflow:hidden; mask-image:linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image:linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+    .${uid('logo3')}-track { display:flex; animation:${uid('logo3')}-scroll ${v.speed}s linear infinite; width:max-content; }
+    .${uid('logo3')}-track:hover { animation-play-state:paused; }
+    .${uid('logo3')}-item { display:flex; align-items:center; justify-content:center; padding:0 40px; min-width:180px; height:60px; }
+    .${uid('logo3')}-item img { height:32px; width:auto; max-width:120px; object-fit:contain; filter:grayscale(100%); opacity:0.5; transition:all 0.3s ease; }
+    .${uid('logo3')}-item:hover img { filter:grayscale(0%); opacity:1; }
+    @keyframes ${uid('logo3')}-scroll { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+  </style>
+  <p class="${uid('logo3')}-heading">${v.heading}</p>
+  <div class="${uid('logo3')}-wrapper">
+    <div class="${uid('logo3')}-track">
+      <div class="${uid('logo3')}-item"><img src="${v.logo1}" alt="Logo 1"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo2}" alt="Logo 2"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo3}" alt="Logo 3"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo4}" alt="Logo 4"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo5}" alt="Logo 5"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo6}" alt="Logo 6"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo1}" alt="Logo 1"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo2}" alt="Logo 2"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo3}" alt="Logo 3"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo4}" alt="Logo 4"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo5}" alt="Logo 5"/></div>
+      <div class="${uid('logo3')}-item"><img src="${v.logo6}" alt="Logo 6"/></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 63. Animated Testimonials (Aceternity)
+  {
+    id: 'animated-testimonials-aceternity',
+    name: 'Animated Testimonials Carousel',
+    category: 'Testimonials',
+    description: 'Testimonials with 3D image rotation and word-by-word text animation',
+    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'name1', label: 'Name 1', type: 'text', defaultValue: 'Sarah Chen' },
+      { id: 'role1', label: 'Role 1', type: 'text', defaultValue: 'Product Manager at TechCorp' },
+      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'This product has completely transformed how our team collaborates. The intuitive interface and powerful features make it an essential tool.' },
+      { id: 'image1', label: 'Image 1', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop' },
+      { id: 'name2', label: 'Name 2', type: 'text', defaultValue: 'Michael Roberts' },
+      { id: 'role2', label: 'Role 2', type: 'text', defaultValue: 'CEO at StartupXYZ' },
+      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'We have seen a 40% increase in productivity since implementing this solution. The support team is incredibly responsive.' },
+      { id: 'image2', label: 'Image 2', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop' },
+      { id: 'name3', label: 'Name 3', type: 'text', defaultValue: 'Emily Watson' },
+      { id: 'role3', label: 'Role 3', type: 'text', defaultValue: 'Design Lead at Creative Co' },
+      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'The attention to detail is remarkable. Every feature feels thoughtfully designed with the user in mind.' },
+      { id: 'image3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#000000' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#ffffff' },
+    ],
+    generateHtml: (v) => `<div class="${uid('animtest')}">
+  <style>
+    .${uid('animtest')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('animtest')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('animtest')}-container { max-width:1000px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    @media(max-width:768px) { .${uid('animtest')}-container { grid-template-columns:1fr; } }
+    .${uid('animtest')}-images { position:relative; height:400px; perspective:1000px; }
+    .${uid('animtest')}-img { position:absolute; width:280px; height:350px; border-radius:20px; object-fit:cover; box-shadow:0 25px 50px rgba(0,0,0,0.5); transition:all 0.6s cubic-bezier(0.23,1,0.32,1); cursor:pointer; }
+    .${uid('animtest')}-img:nth-child(1) { z-index:3; transform:rotate(-3deg) translateZ(0); left:50%; margin-left:-140px; }
+    .${uid('animtest')}-img:nth-child(2) { z-index:2; transform:rotate(2deg) translateX(-30px) translateZ(-50px) scale(0.95); opacity:0.7; left:50%; margin-left:-140px; }
+    .${uid('animtest')}-img:nth-child(3) { z-index:1; transform:rotate(-1deg) translateX(30px) translateZ(-100px) scale(0.9); opacity:0.5; left:50%; margin-left:-140px; }
+    .${uid('animtest')}-content { color:${v.textColor}; }
+    .${uid('animtest')}-quote { font-size:28px; font-weight:500; line-height:1.4; margin-bottom:32px; }
+    .${uid('animtest')}-quote span { display:inline-block; opacity:0; animation:${uid('animtest')}-fadeWord 0.5s ease forwards; }
+    .${uid('animtest')}-author { display:flex; flex-direction:column; gap:4px; }
+    .${uid('animtest')}-name { font-size:18px; font-weight:600; }
+    .${uid('animtest')}-role { font-size:14px; opacity:0.6; }
+    .${uid('animtest')}-nav { display:flex; gap:12px; margin-top:32px; }
+    .${uid('animtest')}-btn { width:44px; height:44px; border-radius:50%; border:1px solid rgba(255,255,255,0.2); background:transparent; color:${v.textColor}; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
+    .${uid('animtest')}-btn:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.4); }
+    @keyframes ${uid('animtest')}-fadeWord { to { opacity:1; } }
+  </style>
+  <div class="${uid('animtest')}-container">
+    <div class="${uid('animtest')}-images">
+      <img class="${uid('animtest')}-img" src="${v.image1}" alt="${v.name1}"/>
+      <img class="${uid('animtest')}-img" src="${v.image2}" alt="${v.name2}"/>
+      <img class="${uid('animtest')}-img" src="${v.image3}" alt="${v.name3}"/>
+    </div>
+    <div class="${uid('animtest')}-content">
+      <p class="${uid('animtest')}-quote">${(v.quote1 || '').split(' ').map((word, i) => `<span style="animation-delay:${i * 0.05}s">${word}</span>`).join(' ')}</p>
+      <div class="${uid('animtest')}-author">
+        <span class="${uid('animtest')}-name">${v.name1}</span>
+        <span class="${uid('animtest')}-role">${v.role1}</span>
+      </div>
+      <div class="${uid('animtest')}-nav">
+        <button class="${uid('animtest')}-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="${uid('animtest')}-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 64. Testimonials Columns (efferd)
+  {
+    id: 'testimonials-columns-efferd',
+    name: 'Testimonials Columns Scroll',
+    category: 'Testimonials',
+    description: 'Three-column testimonials with vertical auto-scroll animation',
+    thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'badge', label: 'Badge Text', type: 'text', defaultValue: 'Testimonials' },
+      { id: 'heading', label: 'Heading', type: 'text', defaultValue: 'What our users say' },
+      { id: 'subheading', label: 'Subheading', type: 'text', defaultValue: 'See what our customers have to say about us.' },
+      { id: 't1name', label: 'T1 Name', type: 'text', defaultValue: 'Briana Patton' },
+      { id: 't1role', label: 'T1 Role', type: 'text', defaultValue: 'Operations Manager' },
+      { id: 't1text', label: 'T1 Text', type: 'textarea', defaultValue: 'This revolutionized our operations, streamlining finance and inventory. The cloud-based platform keeps us productive.' },
+      { id: 't1img', label: 'T1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop' },
+      { id: 't2name', label: 'T2 Name', type: 'text', defaultValue: 'Bilal Ahmed' },
+      { id: 't2role', label: 'T2 Role', type: 'text', defaultValue: 'IT Manager' },
+      { id: 't2text', label: 'T2 Text', type: 'textarea', defaultValue: 'Implementation was smooth and quick. The customizable interface made team training effortless.' },
+      { id: 't2img', label: 'T2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop' },
+      { id: 't3name', label: 'T3 Name', type: 'text', defaultValue: 'Saman Malik' },
+      { id: 't3role', label: 'T3 Role', type: 'text', defaultValue: 'Customer Support Lead' },
+      { id: 't3text', label: 'T3 Text', type: 'textarea', defaultValue: 'The support team is exceptional, guiding us through setup and providing ongoing assistance.' },
+      { id: 't3img', label: 'T3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tcol')}">
+  <style>
+    .${uid('tcol')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }
+    .${uid('tcol')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('tcol')}-header { text-align:center; max-width:540px; margin:0 auto 48px; }
+    .${uid('tcol')}-badge { display:inline-block; border:1px solid #e5e7eb; padding:6px 16px; border-radius:8px; font-size:14px; color:${v.textColor}; margin-bottom:20px; }
+    .${uid('tcol')}-heading { font-size:clamp(28px,5vw,48px); font-weight:700; color:${v.textColor}; margin-bottom:12px; }
+    .${uid('tcol')}-subheading { font-size:16px; color:${v.textColor}; opacity:0.7; }
+    .${uid('tcol')}-grid { display:flex; justify-content:center; gap:24px; max-height:700px; mask-image:linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-image:linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); }
+    @media(max-width:768px) { .${uid('tcol')}-grid { flex-direction:column; max-height:none; mask-image:none; } .${uid('tcol')}-col { animation:none !important; } }
+    .${uid('tcol')}-col { display:flex; flex-direction:column; gap:20px; animation:${uid('tcol')}-scroll 20s linear infinite; }
+    .${uid('tcol')}-col:nth-child(2) { animation-duration:25s; animation-direction:reverse; }
+    .${uid('tcol')}-col:nth-child(3) { animation-duration:22s; }
+    .${uid('tcol')}-card { background:#f9fafb; border-radius:16px; padding:24px; width:320px; flex-shrink:0; }
+    .${uid('tcol')}-text { font-size:15px; line-height:1.6; color:${v.textColor}; margin-bottom:16px; }
+    .${uid('tcol')}-author { display:flex; align-items:center; gap:12px; }
+    .${uid('tcol')}-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; }
+    .${uid('tcol')}-name { font-size:14px; font-weight:600; color:${v.textColor}; }
+    .${uid('tcol')}-role { font-size:13px; color:${v.textColor}; opacity:0.6; }
+    @keyframes ${uid('tcol')}-scroll { 0% { transform:translateY(0); } 100% { transform:translateY(-50%); } }
+  </style>
+  <div class="${uid('tcol')}-header">
+    <div class="${uid('tcol')}-badge">${v.badge}</div>
+    <h2 class="${uid('tcol')}-heading">${v.heading}</h2>
+    <p class="${uid('tcol')}-subheading">${v.subheading}</p>
+  </div>
+  <div class="${uid('tcol')}-grid">
+    <div class="${uid('tcol')}-col">
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t1text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t1img}" alt="${v.t1name}"/><div><div class="${uid('tcol')}-name">${v.t1name}</div><div class="${uid('tcol')}-role">${v.t1role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t2text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t2img}" alt="${v.t2name}"/><div><div class="${uid('tcol')}-name">${v.t2name}</div><div class="${uid('tcol')}-role">${v.t2role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t3text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t3img}" alt="${v.t3name}"/><div><div class="${uid('tcol')}-name">${v.t3name}</div><div class="${uid('tcol')}-role">${v.t3role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t1text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t1img}" alt="${v.t1name}"/><div><div class="${uid('tcol')}-name">${v.t1name}</div><div class="${uid('tcol')}-role">${v.t1role}</div></div></div></div>
+    </div>
+    <div class="${uid('tcol')}-col">
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t2text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t2img}" alt="${v.t2name}"/><div><div class="${uid('tcol')}-name">${v.t2name}</div><div class="${uid('tcol')}-role">${v.t2role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t3text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t3img}" alt="${v.t3name}"/><div><div class="${uid('tcol')}-name">${v.t3name}</div><div class="${uid('tcol')}-role">${v.t3role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t1text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t1img}" alt="${v.t1name}"/><div><div class="${uid('tcol')}-name">${v.t1name}</div><div class="${uid('tcol')}-role">${v.t1role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t2text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t2img}" alt="${v.t2name}"/><div><div class="${uid('tcol')}-name">${v.t2name}</div><div class="${uid('tcol')}-role">${v.t2role}</div></div></div></div>
+    </div>
+    <div class="${uid('tcol')}-col">
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t3text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t3img}" alt="${v.t3name}"/><div><div class="${uid('tcol')}-name">${v.t3name}</div><div class="${uid('tcol')}-role">${v.t3role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t1text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t1img}" alt="${v.t1name}"/><div><div class="${uid('tcol')}-name">${v.t1name}</div><div class="${uid('tcol')}-role">${v.t1role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t2text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t2img}" alt="${v.t2name}"/><div><div class="${uid('tcol')}-name">${v.t2name}</div><div class="${uid('tcol')}-role">${v.t2role}</div></div></div></div>
+      <div class="${uid('tcol')}-card"><p class="${uid('tcol')}-text">${v.t3text}</p><div class="${uid('tcol')}-author"><img class="${uid('tcol')}-avatar" src="${v.t3img}" alt="${v.t3name}"/><div><div class="${uid('tcol')}-name">${v.t3name}</div><div class="${uid('tcol')}-role">${v.t3role}</div></div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 65. Shuffle Grid (vaib215)
+  {
+    id: 'shuffle-grid-vaib',
+    name: 'Shuffle Grid Hero',
+    category: 'Hero',
+    description: 'Hero section with animated shuffling image grid',
+    thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'badge', label: 'Badge Text', type: 'text', defaultValue: 'Better every day' },
+      { id: 'heading', label: 'Heading', type: 'text', defaultValue: "Let's change it up a bit" },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nam nobis in error repellat voluptatibus ad.' },
+      { id: 'ctaText', label: 'CTA Text', type: 'text', defaultValue: 'Find a class' },
+      { id: 'ctaUrl', label: 'CTA URL', type: 'url', defaultValue: '#' },
+      { id: 'img1', label: 'Image 1', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=200&h=200&fit=crop' },
+      { id: 'img2', label: 'Image 2', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=200&h=200&fit=crop' },
+      { id: 'img3', label: 'Image 3', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=200&h=200&fit=crop' },
+      { id: 'img4', label: 'Image 4', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=200&h=200&fit=crop' },
+      { id: 'img5', label: 'Image 5', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop' },
+      { id: 'img6', label: 'Image 6', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=200&h=200&fit=crop' },
+      { id: 'img7', label: 'Image 7', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=200&h=200&fit=crop' },
+      { id: 'img8', label: 'Image 8', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=200&h=200&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f5f5f5' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'btnColor', label: 'Button Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('shuf')}">
+  <style>
+    .${uid('shuf')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('shuf')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('shuf')}-container { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    @media(max-width:900px) { .${uid('shuf')}-container { grid-template-columns:1fr; } }
+    .${uid('shuf')}-content { }
+    .${uid('shuf')}-badge { font-size:14px; font-weight:500; color:${v.textColor}; opacity:0.6; margin-bottom:16px; }
+    .${uid('shuf')}-heading { font-size:clamp(32px,5vw,52px); font-weight:700; color:${v.textColor}; line-height:1.1; margin-bottom:20px; }
+    .${uid('shuf')}-desc { font-size:16px; line-height:1.6; color:${v.textColor}; opacity:0.7; margin-bottom:28px; max-width:400px; }
+    .${uid('shuf')}-cta { display:inline-block; background:${v.btnColor}; color:#fff; padding:14px 28px; border-radius:8px; font-size:15px; font-weight:600; text-decoration:none; transition:all 0.3s; }
+    .${uid('shuf')}-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+    .${uid('shuf')}-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .${uid('shuf')}-img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; transition:all 0.5s cubic-bezier(0.23,1,0.32,1); }
+    .${uid('shuf')}-img:hover { transform:scale(1.05); z-index:1; }
+  </style>
+  <div class="${uid('shuf')}-container">
+    <div class="${uid('shuf')}-content">
+      <div class="${uid('shuf')}-badge">${v.badge}</div>
+      <h2 class="${uid('shuf')}-heading">${v.heading}</h2>
+      <p class="${uid('shuf')}-desc">${v.description}</p>
+      <a href="${v.ctaUrl}" class="${uid('shuf')}-cta">${v.ctaText}</a>
+    </div>
+    <div class="${uid('shuf')}-grid" id="${uid('shuf')}-grid">
+      <img class="${uid('shuf')}-img" src="${v.img1}" alt="Grid 1"/>
+      <img class="${uid('shuf')}-img" src="${v.img2}" alt="Grid 2"/>
+      <img class="${uid('shuf')}-img" src="${v.img3}" alt="Grid 3"/>
+      <img class="${uid('shuf')}-img" src="${v.img4}" alt="Grid 4"/>
+      <img class="${uid('shuf')}-img" src="${v.img5}" alt="Grid 5"/>
+      <img class="${uid('shuf')}-img" src="${v.img6}" alt="Grid 6"/>
+      <img class="${uid('shuf')}-img" src="${v.img7}" alt="Grid 7"/>
+      <img class="${uid('shuf')}-img" src="${v.img8}" alt="Grid 8"/>
+      <img class="${uid('shuf')}-img" src="${v.img1}" alt="Grid 9"/>
+      <img class="${uid('shuf')}-img" src="${v.img2}" alt="Grid 10"/>
+      <img class="${uid('shuf')}-img" src="${v.img3}" alt="Grid 11"/>
+      <img class="${uid('shuf')}-img" src="${v.img4}" alt="Grid 12"/>
+      <img class="${uid('shuf')}-img" src="${v.img5}" alt="Grid 13"/>
+      <img class="${uid('shuf')}-img" src="${v.img6}" alt="Grid 14"/>
+      <img class="${uid('shuf')}-img" src="${v.img7}" alt="Grid 15"/>
+      <img class="${uid('shuf')}-img" src="${v.img8}" alt="Grid 16"/>
+    </div>
+  </div>
+  <script>(function(){const grid=document.getElementById('${uid('shuf')}-grid');if(!grid)return;const imgs=Array.from(grid.children);function shuffle(){const i=Math.floor(Math.random()*imgs.length);const j=Math.floor(Math.random()*imgs.length);if(i!==j){const temp=imgs[i].src;imgs[i].style.opacity='0';setTimeout(()=>{imgs[i].src=imgs[j].src;imgs[i].style.opacity='1';},250);imgs[j].style.opacity='0';setTimeout(()=>{imgs[j].src=temp;imgs[j].style.opacity='1';},250);}}setInterval(shuffle,2000);})();</script>
+</div>`
+  },
+
+  // 66. Bento Grid (kokonutd)
+  {
+    id: 'bento-grid-kokonutd',
+    name: 'Bento Grid Features',
+    category: 'Features',
+    description: 'Modern bento-style grid with status badges and hover effects',
+    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'item1Title', label: 'Item 1 Title', type: 'text', defaultValue: 'Analytics Dashboard' },
+      { id: 'item1Desc', label: 'Item 1 Description', type: 'textarea', defaultValue: 'Real-time metrics and insights to drive your business decisions' },
+      { id: 'item1Status', label: 'Item 1 Status', type: 'text', defaultValue: 'Live' },
+      { id: 'item1Tag', label: 'Item 1 Tags', type: 'text', defaultValue: 'Statistics, Reports, AI' },
+      { id: 'item2Title', label: 'Item 2 Title', type: 'text', defaultValue: 'Smart Automation' },
+      { id: 'item2Desc', label: 'Item 2 Description', type: 'textarea', defaultValue: 'Automate workflows and save countless hours' },
+      { id: 'item2Status', label: 'Item 2 Status', type: 'text', defaultValue: 'Beta' },
+      { id: 'item3Title', label: 'Item 3 Title', type: 'text', defaultValue: 'Team Collaboration' },
+      { id: 'item3Desc', label: 'Item 3 Description', type: 'textarea', defaultValue: 'Work together seamlessly with built-in tools' },
+      { id: 'item3Status', label: 'Item 3 Status', type: 'text', defaultValue: 'Active' },
+      { id: 'item4Title', label: 'Item 4 Title', type: 'text', defaultValue: 'Security First' },
+      { id: 'item4Desc', label: 'Item 4 Description', type: 'textarea', defaultValue: 'Enterprise-grade security for your data' },
+      { id: 'item4Status', label: 'Item 4 Status', type: 'text', defaultValue: 'Updated' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#f8fafc' },
+      { id: 'cardBg', label: 'Card Background', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#3b82f6' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bento')}">
+  <style>
+    .${uid('bento')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('bento')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('bento')}-grid { max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:auto auto; gap:16px; }
+    @media(max-width:768px) { .${uid('bento')}-grid { grid-template-columns:1fr; } .${uid('bento')}-card.${uid('bento')}-wide { grid-column:span 1; } }
+    .${uid('bento')}-card { background:${v.cardBg}; border-radius:16px; padding:24px; transition:all 0.3s ease; border:1px solid #e5e7eb; cursor:pointer; }
+    .${uid('bento')}-card:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.08); }
+    .${uid('bento')}-wide { grid-column:span 2; }
+    .${uid('bento')}-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+    .${uid('bento')}-icon { width:40px; height:40px; border-radius:10px; background:${v.accentColor}15; display:flex; align-items:center; justify-content:center; color:${v.accentColor}; }
+    .${uid('bento')}-status { font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; background:#dcfce7; color:#166534; }
+    .${uid('bento')}-status.beta { background:#fef3c7; color:#92400e; }
+    .${uid('bento')}-status.updated { background:#dbeafe; color:#1e40af; }
+    .${uid('bento')}-title { font-size:18px; font-weight:600; color:${v.textColor}; margin-bottom:8px; }
+    .${uid('bento')}-desc { font-size:14px; line-height:1.5; color:${v.textColor}; opacity:0.7; margin-bottom:16px; }
+    .${uid('bento')}-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .${uid('bento')}-tag { font-size:11px; padding:4px 10px; border-radius:6px; background:#f3f4f6; color:${v.textColor}; opacity:0.8; }
+  </style>
+  <div class="${uid('bento')}-grid">
+    <div class="${uid('bento')}-card ${uid('bento')}-wide">
+      <div class="${uid('bento')}-header">
+        <div class="${uid('bento')}-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
+        <span class="${uid('bento')}-status">${v.item1Status}</span>
+      </div>
+      <h3 class="${uid('bento')}-title">${v.item1Title}</h3>
+      <p class="${uid('bento')}-desc">${v.item1Desc}</p>
+      <div class="${uid('bento')}-tags">${v.item1Tag.split(',').map(t => `<span class="${uid('bento')}-tag">${t.trim()}</span>`).join('')}</div>
+    </div>
+    <div class="${uid('bento')}-card">
+      <div class="${uid('bento')}-header">
+        <div class="${uid('bento')}-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5"/></svg></div>
+        <span class="${uid('bento')}-status beta">${v.item2Status}</span>
+      </div>
+      <h3 class="${uid('bento')}-title">${v.item2Title}</h3>
+      <p class="${uid('bento')}-desc">${v.item2Desc}</p>
+    </div>
+    <div class="${uid('bento')}-card">
+      <div class="${uid('bento')}-header">
+        <div class="${uid('bento')}-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <span class="${uid('bento')}-status">${v.item3Status}</span>
+      </div>
+      <h3 class="${uid('bento')}-title">${v.item3Title}</h3>
+      <p class="${uid('bento')}-desc">${v.item3Desc}</p>
+    </div>
+    <div class="${uid('bento')}-card">
+      <div class="${uid('bento')}-header">
+        <div class="${uid('bento')}-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <span class="${uid('bento')}-status updated">${v.item4Status}</span>
+      </div>
+      <h3 class="${uid('bento')}-title">${v.item4Title}</h3>
+      <p class="${uid('bento')}-desc">${v.item4Desc}</p>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 67. Feature with Image (tommyjepsen)
+  {
+    id: 'feature-with-image-tommy',
+    name: 'Feature Block with Image',
+    category: 'Features',
+    description: 'Clean two-column feature block with image and text content',
+    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'badge', label: 'Badge Text', type: 'text', defaultValue: 'Platform' },
+      { id: 'heading', label: 'Heading', type: 'text', defaultValue: 'This is the start of something new' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods. Our goal is to streamline SMB trade, making it easier and faster than ever.' },
+      { id: 'image', label: 'Feature Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop' },
+      { id: 'imagePosition', label: 'Image Position (left/right)', type: 'text', defaultValue: 'left' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'badgeColor', label: 'Badge Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fwi')}">
+  <style>
+    .${uid('fwi')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fwi')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fwi')}-container { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    @media(max-width:768px) { .${uid('fwi')}-container { grid-template-columns:1fr; } }
+    .${uid('fwi')}-image-wrap { order:${v.imagePosition === 'right' ? '2' : '1'}; }
+    @media(max-width:768px) { .${uid('fwi')}-image-wrap { order:1; } }
+    .${uid('fwi')}-image { width:100%; border-radius:16px; object-fit:cover; aspect-ratio:4/3; }
+    .${uid('fwi')}-content { order:${v.imagePosition === 'right' ? '1' : '2'}; }
+    @media(max-width:768px) { .${uid('fwi')}-content { order:2; } }
+    .${uid('fwi')}-badge { display:inline-block; background:${v.badgeColor}; color:#fff; padding:6px 14px; border-radius:6px; font-size:13px; font-weight:600; margin-bottom:20px; }
+    .${uid('fwi')}-heading { font-size:clamp(28px,4vw,40px); font-weight:700; color:${v.textColor}; line-height:1.2; margin-bottom:20px; }
+    .${uid('fwi')}-desc { font-size:16px; line-height:1.7; color:${v.textColor}; opacity:0.75; }
+  </style>
+  <div class="${uid('fwi')}-container">
+    <div class="${uid('fwi')}-image-wrap">
+      <img class="${uid('fwi')}-image" src="${v.image}" alt="Feature"/>
+    </div>
+    <div class="${uid('fwi')}-content">
+      <span class="${uid('fwi')}-badge">${v.badge}</span>
+      <h2 class="${uid('fwi')}-heading">${v.heading}</h2>
+      <p class="${uid('fwi')}-desc">${v.description}</p>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 68. Feature Section - Steps (ayushmxxn/Serenity UI)
+  {
+    id: 'feature-steps-serenity',
+    name: 'Feature Steps Section',
+    category: 'Features',
+    description: 'Auto-advancing feature steps with progress indicators and images',
+    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'heading', label: 'Main Heading', type: 'text', defaultValue: 'Your Journey Starts Here' },
+      { id: 'step1Title', label: 'Step 1 Title', type: 'text', defaultValue: 'Learn the Basics' },
+      { id: 'step1Desc', label: 'Step 1 Description', type: 'textarea', defaultValue: 'Start your journey by learning the fundamental concepts and principles.' },
+      { id: 'step1Image', label: 'Step 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop' },
+      { id: 'step2Title', label: 'Step 2 Title', type: 'text', defaultValue: 'Deep Dive' },
+      { id: 'step2Desc', label: 'Step 2 Description', type: 'textarea', defaultValue: 'Dive deep into advanced topics and build your expertise.' },
+      { id: 'step2Image', label: 'Step 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop' },
+      { id: 'step3Title', label: 'Step 3 Title', type: 'text', defaultValue: 'Build Projects' },
+      { id: 'step3Desc', label: 'Step 3 Description', type: 'textarea', defaultValue: 'Apply your knowledge by building real-world projects.' },
+      { id: 'step3Image', label: 'Step 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'accentColor', label: 'Accent Color', type: 'color', defaultValue: '#000000' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fsteps')}" id="${uid('fsteps')}">
+  <style>
+    .${uid('fsteps')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('fsteps')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('fsteps')}-container { max-width:1100px; margin:0 auto; }
+    .${uid('fsteps')}-heading { font-size:clamp(32px,5vw,48px); font-weight:700; color:${v.textColor}; text-align:center; margin-bottom:60px; }
+    .${uid('fsteps')}-content { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:center; }
+    @media(max-width:768px) { .${uid('fsteps')}-content { grid-template-columns:1fr; } }
+    .${uid('fsteps')}-steps { display:flex; flex-direction:column; gap:24px; }
+    .${uid('fsteps')}-step { display:flex; gap:16px; cursor:pointer; padding:16px; border-radius:12px; transition:all 0.3s; }
+    .${uid('fsteps')}-step:hover { background:#f9fafb; }
+    .${uid('fsteps')}-step.active { background:#f3f4f6; }
+    .${uid('fsteps')}-num { width:32px; height:32px; border-radius:50%; border:2px solid #e5e7eb; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; color:${v.textColor}; opacity:0.5; flex-shrink:0; transition:all 0.3s; }
+    .${uid('fsteps')}-step.active .${uid('fsteps')}-num { background:${v.accentColor}; color:#fff; border-color:${v.accentColor}; opacity:1; }
+    .${uid('fsteps')}-step.done .${uid('fsteps')}-num { background:${v.accentColor}; color:#fff; border-color:${v.accentColor}; opacity:0.6; }
+    .${uid('fsteps')}-info { flex:1; }
+    .${uid('fsteps')}-title { font-size:18px; font-weight:600; color:${v.textColor}; margin-bottom:4px; opacity:0.5; transition:opacity 0.3s; }
+    .${uid('fsteps')}-step.active .${uid('fsteps')}-title, .${uid('fsteps')}-step.done .${uid('fsteps')}-title { opacity:1; }
+    .${uid('fsteps')}-desc { font-size:14px; line-height:1.5; color:${v.textColor}; opacity:0.5; transition:opacity 0.3s; }
+    .${uid('fsteps')}-step.active .${uid('fsteps')}-desc { opacity:0.7; }
+    .${uid('fsteps')}-image-wrap { position:relative; border-radius:20px; overflow:hidden; aspect-ratio:4/3; }
+    .${uid('fsteps')}-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.5s ease; }
+    .${uid('fsteps')}-img.active { opacity:1; }
+  </style>
+  <div class="${uid('fsteps')}-container">
+    <h2 class="${uid('fsteps')}-heading">${v.heading}</h2>
+    <div class="${uid('fsteps')}-content">
+      <div class="${uid('fsteps')}-steps">
+        <div class="${uid('fsteps')}-step active" data-step="0">
+          <div class="${uid('fsteps')}-num">1</div>
+          <div class="${uid('fsteps')}-info"><h3 class="${uid('fsteps')}-title">${v.step1Title}</h3><p class="${uid('fsteps')}-desc">${v.step1Desc}</p></div>
+        </div>
+        <div class="${uid('fsteps')}-step" data-step="1">
+          <div class="${uid('fsteps')}-num">2</div>
+          <div class="${uid('fsteps')}-info"><h3 class="${uid('fsteps')}-title">${v.step2Title}</h3><p class="${uid('fsteps')}-desc">${v.step2Desc}</p></div>
+        </div>
+        <div class="${uid('fsteps')}-step" data-step="2">
+          <div class="${uid('fsteps')}-num">3</div>
+          <div class="${uid('fsteps')}-info"><h3 class="${uid('fsteps')}-title">${v.step3Title}</h3><p class="${uid('fsteps')}-desc">${v.step3Desc}</p></div>
+        </div>
+      </div>
+      <div class="${uid('fsteps')}-image-wrap">
+        <img class="${uid('fsteps')}-img active" src="${v.step1Image}" alt="Step 1"/>
+        <img class="${uid('fsteps')}-img" src="${v.step2Image}" alt="Step 2"/>
+        <img class="${uid('fsteps')}-img" src="${v.step3Image}" alt="Step 3"/>
+      </div>
+    </div>
+  </div>
+  <script>(function(){const el=document.getElementById('${uid('fsteps')}');if(!el)return;const steps=el.querySelectorAll('.${uid('fsteps')}-step');const imgs=el.querySelectorAll('.${uid('fsteps')}-img');let current=0;function setActive(i){steps.forEach((s,idx)=>{s.classList.remove('active','done');if(idx<i)s.classList.add('done');if(idx===i)s.classList.add('active');});imgs.forEach((img,idx)=>{img.classList.toggle('active',idx===i);});current=i;}steps.forEach(s=>{s.addEventListener('click',()=>setActive(parseInt(s.dataset.step)));});setInterval(()=>{setActive((current+1)%3);},4000);})();</script>
+</div>`
+  },
+
+  // 69. Features 8 - Bento Style (tailark)
+  {
+    id: 'features-8-tailark',
+    name: 'Features Bento Cards',
+    category: 'Features',
+    description: 'Stunning bento-style features with stats, charts, and user avatars',
+    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'stat', label: 'Big Stat', type: 'text', defaultValue: '100%' },
+      { id: 'statTitle', label: 'Stat Title', type: 'text', defaultValue: 'Customizable' },
+      { id: 'feat1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Secure by default' },
+      { id: 'feat1Desc', label: 'Feature 1 Desc', type: 'textarea', defaultValue: 'Enterprise-grade security with end-to-end encryption and compliance.' },
+      { id: 'feat2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Faster than light' },
+      { id: 'feat2Desc', label: 'Feature 2 Desc', type: 'textarea', defaultValue: 'Optimized performance delivering lightning-fast response times.' },
+      { id: 'feat3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Keep your team connected' },
+      { id: 'feat3Desc', label: 'Feature 3 Desc', type: 'textarea', defaultValue: 'Real-time collaboration tools that keep everyone in sync.' },
+      { id: 'user1', label: 'User 1 Name', type: 'text', defaultValue: 'Likeur' },
+      { id: 'user1Img', label: 'User 1 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop' },
+      { id: 'user2', label: 'User 2 Name', type: 'text', defaultValue: 'M. Irung' },
+      { id: 'user2Img', label: 'User 2 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop' },
+      { id: 'user3', label: 'User 3 Name', type: 'text', defaultValue: 'B. Ng' },
+      { id: 'user3Img', label: 'User 3 Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'cardBg', label: 'Card Background', type: 'color', defaultValue: '#fafafa' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('f8')}">
+  <style>
+    .${uid('f8')} { padding:60px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('f8')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('f8')}-grid { max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:auto auto; gap:16px; }
+    @media(max-width:768px) { .${uid('f8')}-grid { grid-template-columns:1fr; } .${uid('f8')}-card.lg { grid-column:span 1; } }
+    .${uid('f8')}-card { background:${v.cardBg}; border-radius:20px; padding:28px; transition:all 0.3s; }
+    .${uid('f8')}-card:hover { transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.06); }
+    .${uid('f8')}-card.lg { grid-column:span 1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:220px; }
+    .${uid('f8')}-stat { font-size:64px; font-weight:700; color:${v.textColor}; line-height:1; margin-bottom:8px; }
+    .${uid('f8')}-stat-title { font-size:20px; font-weight:600; color:${v.textColor}; }
+    .${uid('f8')}-icon { width:48px; height:48px; margin-bottom:16px; color:${v.textColor}; opacity:0.3; }
+    .${uid('f8')}-title { font-size:18px; font-weight:600; color:${v.textColor}; margin-bottom:8px; }
+    .${uid('f8')}-desc { font-size:14px; line-height:1.5; color:${v.textColor}; opacity:0.65; }
+    .${uid('f8')}-chart { height:80px; margin-top:16px; display:flex; align-items:flex-end; gap:4px; }
+    .${uid('f8')}-bar { flex:1; background:linear-gradient(to top, #e5e7eb, #d1d5db); border-radius:4px; animation:${uid('f8')}-grow 1s ease forwards; }
+    .${uid('f8')}-users { display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+    .${uid('f8')}-user { display:flex; align-items:center; gap:10px; background:#fff; padding:8px 12px; border-radius:20px; }
+    .${uid('f8')}-avatar { width:28px; height:28px; border-radius:50%; object-fit:cover; }
+    .${uid('f8')}-name { font-size:13px; font-weight:500; color:${v.textColor}; }
+    @keyframes ${uid('f8')}-grow { from { height:0; } to { height:var(--h); } }
+  </style>
+  <div class="${uid('f8')}-grid">
+    <div class="${uid('f8')}-card lg">
+      <div class="${uid('f8')}-stat">${v.stat}</div>
+      <div class="${uid('f8')}-stat-title">${v.statTitle}</div>
+    </div>
+    <div class="${uid('f8')}-card">
+      <svg class="${uid('f8')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <h3 class="${uid('f8')}-title">${v.feat1Title}</h3>
+      <p class="${uid('f8')}-desc">${v.feat1Desc}</p>
+    </div>
+    <div class="${uid('f8')}-card">
+      <svg class="${uid('f8')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <h3 class="${uid('f8')}-title">${v.feat2Title}</h3>
+      <p class="${uid('f8')}-desc">${v.feat2Desc}</p>
+      <div class="${uid('f8')}-chart">
+        <div class="${uid('f8')}-bar" style="--h:30%"></div><div class="${uid('f8')}-bar" style="--h:50%"></div><div class="${uid('f8')}-bar" style="--h:40%"></div>
+        <div class="${uid('f8')}-bar" style="--h:70%"></div><div class="${uid('f8')}-bar" style="--h:45%"></div><div class="${uid('f8')}-bar" style="--h:80%"></div>
+        <div class="${uid('f8')}-bar" style="--h:60%"></div><div class="${uid('f8')}-bar" style="--h:90%"></div><div class="${uid('f8')}-bar" style="--h:75%"></div>
+      </div>
+    </div>
+    <div class="${uid('f8')}-card">
+      <svg class="${uid('f8')}-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <h3 class="${uid('f8')}-title">${v.feat3Title}</h3>
+      <p class="${uid('f8')}-desc">${v.feat3Desc}</p>
+      <div class="${uid('f8')}-users">
+        <div class="${uid('f8')}-user"><img class="${uid('f8')}-avatar" src="${v.user1Img}" alt="${v.user1}"/><span class="${uid('f8')}-name">${v.user1}</span></div>
+        <div class="${uid('f8')}-user"><img class="${uid('f8')}-avatar" src="${v.user2Img}" alt="${v.user2}"/><span class="${uid('f8')}-name">${v.user2}</span></div>
+        <div class="${uid('f8')}-user"><img class="${uid('f8')}-avatar" src="${v.user3Img}" alt="${v.user3}"/><span class="${uid('f8')}-name">${v.user3}</span></div>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // 70. Hero Section 5 - Animated Roadmap (ravikatiyar)
+  {
+    id: 'hero-roadmap-ravi',
+    name: 'Hero with Animated Roadmap',
+    category: 'Hero',
+    description: 'Hero section with animated milestone roadmap visualization',
+    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop',
+    fields: [
+      { id: 'headingStart', label: 'Heading Start', type: 'text', defaultValue: 'Stay ahead with a' },
+      { id: 'headingHighlight', label: 'Heading Highlight', type: 'text', defaultValue: 'clear' },
+      { id: 'headingEnd', label: 'Heading End', type: 'text', defaultValue: 'product plan' },
+      { id: 'description', label: 'Description', type: 'textarea', defaultValue: 'Visualize your roadmap, assign tasks, and hit every milestone—faster and smarter.' },
+      { id: 'cta1Text', label: 'CTA 1 Text', type: 'text', defaultValue: "Get started - it's free!" },
+      { id: 'cta1Url', label: 'CTA 1 URL', type: 'url', defaultValue: '#' },
+      { id: 'cta2Text', label: 'CTA 2 Text', type: 'text', defaultValue: 'See how it works' },
+      { id: 'cta2Url', label: 'CTA 2 URL', type: 'url', defaultValue: '#' },
+      { id: 'mile1', label: 'Milestone 1', type: 'text', defaultValue: 'Kick-off' },
+      { id: 'mile2', label: 'Milestone 2', type: 'text', defaultValue: 'Design' },
+      { id: 'mile3', label: 'Milestone 3', type: 'text', defaultValue: 'Development' },
+      { id: 'mile4', label: 'Milestone 4', type: 'text', defaultValue: 'Launch' },
+      { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+      { id: 'textColor', label: 'Text Color', type: 'color', defaultValue: '#1a1a1a' },
+      { id: 'highlightBg', label: 'Highlight Background', type: 'color', defaultValue: '#fef3c7' },
+      { id: 'btnColor', label: 'Button Color', type: 'color', defaultValue: '#1a1a1a' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hrm')}">
+  <style>
+    .${uid('hrm')} { padding:80px 24px; background:${v.bgColor}; font-family:'Inter',-apple-system,sans-serif; }
+    .${uid('hrm')} * { box-sizing:border-box; margin:0; padding:0; }
+    .${uid('hrm')}-container { max-width:1000px; margin:0 auto; text-align:center; }
+    .${uid('hrm')}-heading { font-size:clamp(32px,6vw,56px); font-weight:700; color:${v.textColor}; line-height:1.1; margin-bottom:24px; }
+    .${uid('hrm')}-highlight { background:${v.highlightBg}; padding:4px 12px; border-radius:8px; }
+    .${uid('hrm')}-desc { font-size:18px; line-height:1.6; color:${v.textColor}; opacity:0.7; max-width:600px; margin:0 auto 32px; }
+    .${uid('hrm')}-btns { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:60px; }
+    .${uid('hrm')}-btn { padding:14px 28px; border-radius:8px; font-size:15px; font-weight:600; text-decoration:none; transition:all 0.3s; }
+    .${uid('hrm')}-btn.primary { background:${v.btnColor}; color:#fff; }
+    .${uid('hrm')}-btn.primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+    .${uid('hrm')}-btn.secondary { background:transparent; color:${v.textColor}; border:1px solid #e5e7eb; }
+    .${uid('hrm')}-btn.secondary:hover { border-color:#d1d5db; background:#f9fafb; }
+    .${uid('hrm')}-roadmap { position:relative; max-width:700px; margin:0 auto; padding:40px 0; }
+    .${uid('hrm')}-map { width:100%; max-width:600px; margin:0 auto; display:block; opacity:0.15; }
+    .${uid('hrm')}-path { position:absolute; inset:0; }
+    .${uid('hrm')}-path svg { width:100%; height:100%; }
+    .${uid('hrm')}-mile { position:absolute; display:flex; align-items:center; gap:8px; animation:${uid('hrm')}-pop 0.5s ease forwards; opacity:0; }
+    .${uid('hrm')}-dot { width:14px; height:14px; border-radius:50%; border:3px solid; }
+    .${uid('hrm')}-dot.done { background:#22c55e; border-color:#22c55e; }
+    .${uid('hrm')}-dot.progress { background:#3b82f6; border-color:#3b82f6; }
+    .${uid('hrm')}-dot.pending { background:#fff; border-color:#e5e7eb; }
+    .${uid('hrm')}-label { background:#fff; padding:6px 14px; border-radius:20px; font-size:13px; font-weight:500; color:${v.textColor}; box-shadow:0 2px 8px rgba(0,0,0,0.1); white-space:nowrap; }
+    .${uid('hrm')}-mile:nth-child(1) { left:10%; top:75%; animation-delay:0.1s; }
+    .${uid('hrm')}-mile:nth-child(2) { left:25%; top:20%; animation-delay:0.3s; }
+    .${uid('hrm')}-mile:nth-child(3) { left:60%; top:50%; animation-delay:0.5s; }
+    .${uid('hrm')}-mile:nth-child(4) { right:10%; top:15%; animation-delay:0.7s; }
+    @keyframes ${uid('hrm')}-pop { to { opacity:1; } }
+    .${uid('hrm')}-pin { position:absolute; right:20%; top:35%; width:40px; animation:${uid('hrm')}-bounce 2s ease infinite; }
+    @keyframes ${uid('hrm')}-bounce { 0%, 100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+  </style>
+  <div class="${uid('hrm')}-container">
+    <h1 class="${uid('hrm')}-heading">${v.headingStart} <span class="${uid('hrm')}-highlight">${v.headingHighlight}</span> ${v.headingEnd}</h1>
+    <p class="${uid('hrm')}-desc">${v.description}</p>
+    <div class="${uid('hrm')}-btns">
+      <a href="${v.cta1Url}" class="${uid('hrm')}-btn primary">${v.cta1Text}</a>
+      <a href="${v.cta2Url}" class="${uid('hrm')}-btn secondary">${v.cta2Text}</a>
+    </div>
+    <div class="${uid('hrm')}-roadmap">
+      <svg class="${uid('hrm')}-map" viewBox="0 0 400 200" fill="none"><path d="M20 180 Q100 180 120 100 T220 80 T320 60 T380 40" stroke="#e5e7eb" stroke-width="3" stroke-dasharray="8 4" fill="none"/></svg>
+      <svg class="${uid('hrm')}-pin" viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12zm0 16c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" fill="#ef4444"/></svg>
+      <div class="${uid('hrm')}-mile"><span class="${uid('hrm')}-dot done"></span><span class="${uid('hrm')}-label">${v.mile1}</span></div>
+      <div class="${uid('hrm')}-mile"><span class="${uid('hrm')}-dot done"></span><span class="${uid('hrm')}-label">${v.mile2}</span></div>
+      <div class="${uid('hrm')}-mile"><span class="${uid('hrm')}-dot progress"></span><span class="${uid('hrm')}-label">${v.mile3}</span></div>
+      <div class="${uid('hrm')}-mile"><span class="${uid('hrm')}-dot pending"></span><span class="${uid('hrm')}-label">${v.mile4}</span></div>
     </div>
   </div>
 </div>`

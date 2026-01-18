@@ -2,12 +2,16 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, Copy, Check, Search, LayoutTemplate } from 'lucide-react';
+import { X, Copy, Check, Search, LayoutTemplate, Trash2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
+import { useAdmin } from '@/hooks/useAdmin';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { sectionsData, categories } from './sections-data';
 import { Section, CustomizableField } from './types';
+
+// LocalStorage key for deleted sections
+const DELETED_SECTIONS_KEY = 'quantum-scale-deleted-sections';
 
 // Grid card preview component - renders scaled HTML in iframe (responsive)
 function GridPreview({
@@ -244,11 +248,64 @@ function ModalPreview({ html, isAnnouncement = false }: { html: string; isAnnoun
 export default function CustomSectionsPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const { isAdmin } = useAdmin();
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [deletedSections, setDeletedSections] = useState<string[]>([]);
+  const [sectionToDelete, setSectionToDelete] = useState<Section | null>(null);
+
+  // Load deleted sections from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(DELETED_SECTIONS_KEY);
+      if (stored) {
+        setDeletedSections(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error('Failed to load deleted sections:', e);
+    }
+  }, []);
+
+  // Save deleted sections to localStorage when changed
+  const saveDeletedSections = useCallback((sections: string[]) => {
+    setDeletedSections(sections);
+    try {
+      localStorage.setItem(DELETED_SECTIONS_KEY, JSON.stringify(sections));
+    } catch (e) {
+      console.error('Failed to save deleted sections:', e);
+    }
+  }, []);
+
+  // Handle section deletion
+  const handleDeleteSection = useCallback((section: Section) => {
+    setSectionToDelete(section);
+  }, []);
+
+  // Confirm deletion
+  const confirmDelete = useCallback(() => {
+    if (sectionToDelete) {
+      saveDeletedSections([...deletedSections, sectionToDelete.id]);
+      setSectionToDelete(null);
+    }
+  }, [sectionToDelete, deletedSections, saveDeletedSections]);
+
+  // Cancel deletion
+  const cancelDelete = useCallback(() => {
+    setSectionToDelete(null);
+  }, []);
+
+  // Restore a deleted section
+  const restoreSection = useCallback((sectionId: string) => {
+    saveDeletedSections(deletedSections.filter(id => id !== sectionId));
+  }, [deletedSections, saveDeletedSections]);
+
+  // Restore all deleted sections
+  const restoreAllSections = useCallback(() => {
+    saveDeletedSections([]);
+  }, [saveDeletedSections]);
 
   // Auth bypass for local development
   const isDev = process.env.NODE_ENV === 'development';
@@ -274,9 +331,10 @@ export default function CustomSectionsPage() {
       const matchesSearch = section.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            section.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = activeCategory === 'all' || section.category === activeCategory;
-      return matchesSearch && matchesCategory;
+      const isNotDeleted = !deletedSections.includes(section.id);
+      return matchesSearch && matchesCategory && isNotDeleted;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory, deletedSections]);
 
   const handleFieldChange = useCallback((fieldId: string, value: string) => {
     setFieldValues(prev => ({ ...prev, [fieldId]: value }));
@@ -395,9 +453,23 @@ export default function CustomSectionsPage() {
                 </div>
 
                 {/* Section Info */}
-                <div className="p-4 border-t border-gray-100">
-                  <div className="text-xs font-semibold text-indigo-600 mb-1 uppercase tracking-wide">{section.category}</div>
-                  <h3 className="font-semibold text-gray-900">{section.name}</h3>
+                <div className="p-4 border-t border-gray-100 flex items-start justify-between">
+                  <div>
+                    <div className="text-xs font-semibold text-indigo-600 mb-1 uppercase tracking-wide">{section.category}</div>
+                    <h3 className="font-semibold text-gray-900">{section.name}</h3>
+                  </div>
+                  {isAdmin && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteSection(section);
+                      }}
+                      className="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                      title="Delete section"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
             );
@@ -539,6 +611,93 @@ export default function CustomSectionsPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Delete Confirmation Dialog */}
+      <AnimatePresence>
+        {sectionToDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center"
+            style={{
+              background: 'rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(4px)'
+            }}
+            onClick={cancelDelete}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                  <AlertTriangle className="w-6 h-6 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Delete Section</h3>
+                  <p className="text-sm text-gray-500">This action can be undone</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete <strong>{sectionToDelete.name}</strong>?
+                You can restore it later from the admin panel.
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={cancelDelete}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
+                >
+                  Delete Section
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Admin Panel - Deleted Sections */}
+      {isAdmin && deletedSections.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <div className="bg-gray-900 text-white rounded-2xl p-4 shadow-2xl max-w-sm">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-semibold text-sm">Deleted Sections ({deletedSections.length})</h4>
+              <button
+                onClick={restoreAllSections}
+                className="text-xs text-indigo-400 hover:text-indigo-300 font-medium"
+              >
+                Restore All
+              </button>
+            </div>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {deletedSections.map(sectionId => {
+                const section = sectionsData.find(s => s.id === sectionId);
+                if (!section) return null;
+                return (
+                  <div key={sectionId} className="flex items-center justify-between text-sm bg-gray-800 rounded-lg px-3 py-2">
+                    <span className="text-gray-300 truncate flex-1 mr-2">{section.name}</span>
+                    <button
+                      onClick={() => restoreSection(sectionId)}
+                      className="text-xs text-green-400 hover:text-green-300 font-medium whitespace-nowrap"
+                    >
+                      Restore
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }
