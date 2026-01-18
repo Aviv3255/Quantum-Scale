@@ -1,4 +1,5 @@
 'use client';
+// CRM v2 - Simplified Copywriting Lessons View
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
