@@ -42,14 +42,14 @@ interface BrandSettings {
   supportEmail: string;
 }
 
-// Partner tools data
+// Partner tools data with affiliate links
 const partnerTools = [
   {
     id: 'klaviyo',
     name: 'Klaviyo',
     type: 'Email Marketing',
     description: 'The #1 email platform for eCommerce',
-    url: 'https://www.klaviyo.com/',
+    url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
     recommended: true,
   },
   {
@@ -57,7 +57,7 @@ const partnerTools = [
     name: 'TxtCart',
     type: 'SMS Marketing',
     description: 'AI-powered SMS cart recovery',
-    url: 'https://txtcartapp.com/',
+    url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva',
     recommended: false,
   },
   {
@@ -65,7 +65,7 @@ const partnerTools = [
     name: 'Quiz Kit',
     type: 'Lead Capture',
     description: 'Product recommendation quizzes',
-    url: 'https://www.quizkit.com/',
+    url: 'https://apps.shopify.com/quiz-kit?mref=nasigsuy-4902',
     recommended: false,
   },
   {
@@ -73,7 +73,7 @@ const partnerTools = [
     name: 'Joy Loyalty',
     type: 'Retention',
     description: 'Points & rewards program',
-    url: 'https://joy.so/',
+    url: 'https://partners.avada.io/i/a/LG19U',
     recommended: false,
   },
 ];
