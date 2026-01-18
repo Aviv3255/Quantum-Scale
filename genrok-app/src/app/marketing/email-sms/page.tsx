@@ -270,7 +270,7 @@ export default function EmailSmsPage() {
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
               <Mail size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />
-              <span className="text-sm font-medium text-[var(--text-primary)]">15 Templates</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">{emailTemplates.length} Templates</span>
             </div>
           </div>
         </header>
