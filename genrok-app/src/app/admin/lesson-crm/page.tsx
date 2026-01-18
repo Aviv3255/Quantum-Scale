@@ -1,5 +1,5 @@
 'use client';
-// CRM v2 - Simplified Copywriting Lessons View
+// CRM v2 - Simplified Copywriting Lessons View with Image Upload & Component Previews
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,50 +11,367 @@ import {
   Check,
   ChevronDown,
   ChevronRight,
-  Eye,
   Layers,
   RefreshCw,
   CheckCircle,
   Sparkles,
+  Upload,
+  X,
+  Link as LinkIcon,
 } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { copywritingLessonsConfig, LessonConfig, ComponentSlot } from '@/data/copywriting-lessons-config';
+import { copywritingLessonsConfig, LessonConfig, ComponentSlot, ComponentOption } from '@/data/copywriting-lessons-config';
 
-// Types for saved selections
-interface SavedSelections {
-  [lessonSlug: string]: {
-    [slideIndex: number]: string; // componentId
+// Types for saved data
+interface SavedData {
+  selections: {
+    [lessonSlug: string]: {
+      [slideIndex: number]: string; // componentId
+    };
+  };
+  images: {
+    [key: string]: string; // lessonSlug-slideIndex -> imageUrl
   };
 }
 
-// Load saved selections from localStorage
-const loadSelections = (): SavedSelections => {
-  if (typeof window === 'undefined') return {};
+// Load saved data from localStorage
+const loadSavedData = (): SavedData => {
+  if (typeof window === 'undefined') return { selections: {}, images: {} };
   try {
-    const saved = localStorage.getItem('lesson-crm-selections');
-    return saved ? JSON.parse(saved) : {};
+    const saved = localStorage.getItem('lesson-crm-data-v2');
+    return saved ? JSON.parse(saved) : { selections: {}, images: {} };
   } catch {
-    return {};
+    return { selections: {}, images: {} };
   }
 };
 
-// Save selections to localStorage
-const saveSelections = (selections: SavedSelections) => {
+// Save data to localStorage
+const saveSavedData = (data: SavedData) => {
   if (typeof window === 'undefined') return;
-  localStorage.setItem('lesson-crm-selections', JSON.stringify(selections));
+  localStorage.setItem('lesson-crm-data-v2', JSON.stringify(data));
 };
+
+// ============================================
+// COMPONENT PREVIEW RENDERERS
+// ============================================
+
+const PreviewVennDiagram = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; leftLabel?: string; rightLabel?: string; overlapLabel?: string; leftItems?: string[]; rightItems?: string[]; overlapItems?: string[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold text-center mb-2 text-black">{d.title}</p>
+      <div className="relative h-24 flex items-center justify-center">
+        {/* Left Circle */}
+        <div className="absolute left-2 w-16 h-16 rounded-full bg-[#88da1c]/20 border-2 border-[#88da1c] flex items-center justify-center">
+          <span className="text-[8px] font-medium text-center px-1">{d.leftLabel}</span>
+        </div>
+        {/* Right Circle */}
+        <div className="absolute right-2 w-16 h-16 rounded-full bg-black/10 border-2 border-black flex items-center justify-center">
+          <span className="text-[8px] font-medium text-center px-1">{d.rightLabel}</span>
+        </div>
+        {/* Overlap */}
+        <div className="absolute z-10 bg-[#88da1c] text-black text-[8px] font-bold px-2 py-1 rounded">
+          {d.overlapLabel}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PreviewDonutChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; segments?: { label: string; value: number; color: string }[]; centerLabel?: string; centerValue?: string };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold text-center mb-2 text-black">{d.title}</p>
+      <div className="relative w-20 h-20 mx-auto">
+        <svg viewBox="0 0 36 36" className="w-full h-full">
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#88da1c" strokeWidth="3" strokeDasharray="70, 100" />
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#000" strokeWidth="3" strokeDasharray="30, 100" strokeDashoffset="-70" />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-[10px] font-bold">{d.centerLabel}</span>
+          <span className="text-[8px] text-gray-500">{d.centerValue}</span>
+        </div>
+      </div>
+      <div className="flex justify-center gap-2 mt-2">
+        {d.segments?.map((s, i) => (
+          <div key={i} className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: s.color }} />
+            <span className="text-[7px]">{s.value}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewStatCards = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { stats?: { value: string; label: string; desc?: string }[] };
+  return (
+    <div className="bg-white rounded-lg p-2 h-full">
+      <div className="grid grid-cols-3 gap-1">
+        {d.stats?.slice(0, 3).map((stat, i) => (
+          <div key={i} className="bg-black/5 rounded p-2 text-center">
+            <p className="text-sm font-bold text-[#88da1c]">{stat.value}</p>
+            <p className="text-[7px] font-medium text-black">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewTimeline = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; steps?: { title: string; desc?: string }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="space-y-1">
+        {d.steps?.slice(0, 4).map((step, i) => (
+          <div key={i} className="flex items-start gap-2">
+            <div className="w-4 h-4 rounded-full bg-[#88da1c] flex items-center justify-center flex-shrink-0">
+              <span className="text-[8px] font-bold text-black">{i + 1}</span>
+            </div>
+            <div>
+              <p className="text-[9px] font-semibold text-black">{step.title}</p>
+              <p className="text-[7px] text-gray-500">{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewProcessSteps = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; steps?: { num?: string; title: string; desc?: string }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="grid grid-cols-2 gap-1">
+        {d.steps?.slice(0, 4).map((step, i) => (
+          <div key={i} className="bg-black/5 rounded p-1.5">
+            <span className="text-[10px] font-bold text-[#88da1c]">{step.num || `0${i + 1}`}</span>
+            <p className="text-[8px] font-medium text-black">{step.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewGaugeChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { gauges?: { label: string; value: number; max?: number; color?: string }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <div className="space-y-2">
+        {d.gauges?.slice(0, 3).map((gauge, i) => (
+          <div key={i}>
+            <div className="flex justify-between text-[8px] mb-0.5">
+              <span className="font-medium">{gauge.label}</span>
+              <span className="font-bold">{gauge.value}%</span>
+            </div>
+            <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${(gauge.value / (gauge.max || 100)) * 100}%`,
+                  backgroundColor: gauge.color || '#88da1c',
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewBarChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; bars?: { label: string; value: number }[] };
+  const maxVal = Math.max(...(d.bars?.map(b => b.value) || [1]));
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="space-y-1">
+        {d.bars?.slice(0, 4).map((bar, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <span className="text-[7px] w-16 truncate">{bar.label}</span>
+            <div className="flex-1 h-3 bg-black/10 rounded overflow-hidden">
+              <div
+                className="h-full bg-[#88da1c] rounded"
+                style={{ width: `${(bar.value / maxVal) * 100}%` }}
+              />
+            </div>
+            <span className="text-[8px] font-bold w-8">{bar.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewIconGrid = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; items?: { title: string; text?: string }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="grid grid-cols-2 gap-1">
+        {d.items?.slice(0, 4).map((item, i) => (
+          <div key={i} className="bg-[#88da1c]/10 rounded p-1.5">
+            <p className="text-[8px] font-semibold text-black">{item.title}</p>
+            <p className="text-[6px] text-gray-600 line-clamp-2">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewFunnelChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; stages?: { label: string; value: number }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="space-y-1">
+        {d.stages?.slice(0, 4).map((stage, i) => {
+          const width = 100 - i * 15;
+          return (
+            <div key={i} className="flex items-center justify-center">
+              <div
+                className="h-4 bg-[#88da1c] rounded flex items-center justify-center"
+                style={{ width: `${width}%`, opacity: 1 - i * 0.15 }}
+              >
+                <span className="text-[7px] font-medium text-black">{stage.label}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const PreviewRadarChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; axes?: string[]; data?: number[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold text-center mb-1 text-black">{d.title}</p>
+      <div className="relative w-20 h-20 mx-auto">
+        <svg viewBox="0 0 100 100" className="w-full h-full">
+          {/* Background grid */}
+          <polygon points="50,10 90,35 90,75 50,90 10,75 10,35" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+          <polygon points="50,25 75,40 75,65 50,75 25,65 25,40" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+          {/* Data polygon */}
+          <polygon points="50,15 85,38 80,72 50,85 20,72 15,38" fill="rgba(136,218,28,0.3)" stroke="#88da1c" strokeWidth="2" />
+        </svg>
+      </div>
+      <div className="flex flex-wrap justify-center gap-1 mt-1">
+        {d.axes?.slice(0, 4).map((axis, i) => (
+          <span key={i} className="text-[6px] bg-black/5 px-1 rounded">{axis}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewSlopeChart = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { title?: string; leftLabel?: string; rightLabel?: string; items?: { label: string; leftValue: number; rightValue: number }[] };
+  return (
+    <div className="bg-white rounded-lg p-3 h-full">
+      <p className="text-[10px] font-bold mb-2 text-black">{d.title}</p>
+      <div className="flex justify-between text-[7px] text-gray-500 mb-1">
+        <span>{d.leftLabel}</span>
+        <span>{d.rightLabel}</span>
+      </div>
+      <div className="space-y-1">
+        {d.items?.slice(0, 3).map((item, i) => (
+          <div key={i} className="flex items-center">
+            <span className="text-[8px] font-bold w-6">{item.leftValue}</span>
+            <div className="flex-1 h-0.5 bg-[#88da1c] mx-1" style={{ transform: 'rotate(-10deg)' }} />
+            <span className="text-[8px] font-bold text-[#88da1c] w-6 text-right">{item.rightValue}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const PreviewBeforeAfter = ({ data }: { data: Record<string, unknown> }) => {
+  const d = data as { before?: { title: string; text: string }; after?: { title: string; text: string } };
+  return (
+    <div className="bg-white rounded-lg p-2 h-full">
+      <div className="grid grid-cols-2 gap-2 h-full">
+        <div className="bg-red-50 rounded p-1.5 border border-red-200">
+          <p className="text-[8px] font-bold text-red-600">{d.before?.title}</p>
+          <p className="text-[6px] text-red-800 line-clamp-3">{d.before?.text}</p>
+        </div>
+        <div className="bg-green-50 rounded p-1.5 border border-green-200">
+          <p className="text-[8px] font-bold text-green-600">{d.after?.title}</p>
+          <p className="text-[6px] text-green-800 line-clamp-3">{d.after?.text}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Component preview router
+const ComponentPreview = ({ option }: { option: ComponentOption }) => {
+  const { id, previewData } = option;
+
+  const previewMap: Record<string, React.FC<{ data: Record<string, unknown> }>> = {
+    VennDiagram: PreviewVennDiagram,
+    DonutChart: PreviewDonutChart,
+    StatCard: PreviewStatCards,
+    Timeline: PreviewTimeline,
+    ProcessSteps: PreviewProcessSteps,
+    GaugeChart: PreviewGaugeChart,
+    BarChart: PreviewBarChart,
+    IconGrid: PreviewIconGrid,
+    FunnelChart: PreviewFunnelChart,
+    RadarChart: PreviewRadarChart,
+    SlopeChart: PreviewSlopeChart,
+    BeforeAfter: PreviewBeforeAfter,
+    ComparisonBars: PreviewBarChart,
+    SplitContent: PreviewBeforeAfter,
+    StackedList: PreviewIconGrid,
+  };
+
+  const PreviewComponent = previewMap[id];
+
+  if (PreviewComponent) {
+    return <PreviewComponent data={previewData} />;
+  }
+
+  // Fallback for unknown components
+  return (
+    <div className="bg-white rounded-lg p-3 h-full flex items-center justify-center">
+      <div className="text-center">
+        <Layers size={24} className="mx-auto mb-1 text-[#88da1c]" />
+        <p className="text-[10px] font-bold text-black">{option.name}</p>
+        <p className="text-[7px] text-gray-500">Preview</p>
+      </div>
+    </div>
+  );
+};
+
+// ============================================
+// MAIN COMPONENT
+// ============================================
 
 export default function LessonCRMPage() {
   const [migrationStatus, setMigrationStatus] = useState<{ migrated: number; pending: number; total: number } | null>(null);
   const [isMigrating, setIsMigrating] = useState(false);
   const [expandedLesson, setExpandedLesson] = useState<string | null>(null);
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
-  const [selections, setSelections] = useState<SavedSelections>({});
-  const [previewComponent, setPreviewComponent] = useState<{ lesson: string; slot: ComponentSlot; optionIndex: number } | null>(null);
+  const [savedData, setSavedData] = useState<SavedData>({ selections: {}, images: {} });
+  const [imageInputs, setImageInputs] = useState<Record<string, string>>({});
 
-  // Load selections on mount
+  // Load saved data on mount
   useEffect(() => {
-    setSelections(loadSelections());
+    const data = loadSavedData();
+    setSavedData(data);
+    setImageInputs(data.images);
     checkMigrationStatus();
   }, []);
 
@@ -94,34 +411,54 @@ export default function LessonCRMPage() {
     setTimeout(() => setCopiedPrompt(null), 2000);
   };
 
+  // Save image URL
+  const saveImageUrl = (lessonSlug: string, slideIndex: number, url: string) => {
+    const key = `${lessonSlug}-${slideIndex}`;
+    const newImages = { ...savedData.images, [key]: url };
+    const newData = { ...savedData, images: newImages };
+    setSavedData(newData);
+    setImageInputs({ ...imageInputs, [key]: url });
+    saveSavedData(newData);
+  };
+
+  // Get saved image URL
+  const getSavedImage = (lessonSlug: string, slideIndex: number): string => {
+    return savedData.images[`${lessonSlug}-${slideIndex}`] || '';
+  };
+
   // Select a component for a slide
   const selectComponent = (lessonSlug: string, slideIndex: number, componentId: string) => {
     const newSelections = {
-      ...selections,
+      ...savedData.selections,
       [lessonSlug]: {
-        ...selections[lessonSlug],
+        ...savedData.selections[lessonSlug],
         [slideIndex]: componentId,
       },
     };
-    setSelections(newSelections);
-    saveSelections(newSelections);
+    const newData = { ...savedData, selections: newSelections };
+    setSavedData(newData);
+    saveSavedData(newData);
   };
 
   // Get selected component for a slide
   const getSelectedComponent = (lessonSlug: string, slideIndex: number): string | null => {
-    return selections[lessonSlug]?.[slideIndex] || null;
+    return savedData.selections[lessonSlug]?.[slideIndex] || null;
   };
 
-  // Check if lesson is complete (all slots have selections)
+  // Check if lesson is complete
   const isLessonComplete = (lesson: LessonConfig): boolean => {
-    return lesson.componentSlots.every(slot =>
+    const allComponentsSelected = lesson.componentSlots.every(slot =>
       getSelectedComponent(lesson.slug, slot.slideIndex) !== null
     );
+    const allImagesUploaded = lesson.imagePrompts.every(img =>
+      getSavedImage(lesson.slug, img.slideIndex) !== ''
+    );
+    return allComponentsSelected && (lesson.imagePrompts.length === 0 || allImagesUploaded);
   };
 
   return (
     <DashboardLayout>
-      <div className="page-wrapper max-w-6xl mx-auto">
+      <div className="page-wrapper max-w-7xl mx-auto">
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -236,11 +573,11 @@ export default function LessonCRMPage() {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-sm">
                       <ImageIcon size={14} className="text-[#EC4899]" />
-                      <span>{lesson.imagePrompts.length} images</span>
+                      <span>{lesson.imagePrompts.filter(img => getSavedImage(lesson.slug, img.slideIndex)).length}/{lesson.imagePrompts.length}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Layers size={14} className="text-[#3B82F6]" />
-                      <span>{lesson.componentSlots.length} components</span>
+                      <span>{lesson.componentSlots.filter(slot => getSelectedComponent(lesson.slug, slot.slideIndex)).length}/{lesson.componentSlots.length}</span>
                     </div>
                     {expandedLesson === lesson.slug ? (
                       <ChevronDown size={20} className="text-[var(--text-muted)]" />
@@ -260,7 +597,7 @@ export default function LessonCRMPage() {
                       className="border-t border-black/5"
                     >
                       <div className="p-6 space-y-8">
-                        {/* Image Prompts */}
+                        {/* Image Prompts with Upload */}
                         {lesson.imagePrompts.length > 0 && (
                           <div>
                             <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
@@ -268,56 +605,105 @@ export default function LessonCRMPage() {
                               Image Prompts
                             </h4>
                             <div className="space-y-4">
-                              {lesson.imagePrompts.map((img, imgIdx) => (
-                                <div
-                                  key={imgIdx}
-                                  className={`p-4 rounded-xl border ${
-                                    img.background === 'black'
-                                      ? 'bg-black/5 border-black/10'
-                                      : 'bg-white border-black/10'
-                                  }`}
-                                >
-                                  <div className="flex items-start justify-between mb-2">
-                                    <div className="flex items-center gap-2">
-                                      <span className="px-2 py-1 text-xs font-medium bg-black/5 rounded">
-                                        Slide {img.slideIndex + 1}
-                                      </span>
-                                      <span className={`px-2 py-1 text-xs font-medium rounded ${
-                                        img.background === 'black'
-                                          ? 'bg-black text-white'
-                                          : 'bg-white border border-black/20 text-black'
-                                      }`}>
-                                        {img.background} bg
-                                      </span>
+                              {lesson.imagePrompts.map((img, imgIdx) => {
+                                const imageKey = `${lesson.slug}-${img.slideIndex}`;
+                                const savedUrl = getSavedImage(lesson.slug, img.slideIndex);
+                                return (
+                                  <div
+                                    key={imgIdx}
+                                    className={`p-4 rounded-xl border ${
+                                      img.background === 'black'
+                                        ? 'bg-black/5 border-black/10'
+                                        : 'bg-white border-black/10'
+                                    }`}
+                                  >
+                                    <div className="flex items-start justify-between mb-3">
+                                      <div className="flex items-center gap-2">
+                                        <span className="px-2 py-1 text-xs font-medium bg-black/5 rounded">
+                                          Slide {img.slideIndex + 1}
+                                        </span>
+                                        <span className={`px-2 py-1 text-xs font-medium rounded ${
+                                          img.background === 'black'
+                                            ? 'bg-black text-white'
+                                            : 'bg-white border border-black/20 text-black'
+                                        }`}>
+                                          {img.background} bg
+                                        </span>
+                                        {savedUrl && (
+                                          <span className="px-2 py-1 text-xs font-medium bg-[#88da1c]/20 text-[#88da1c] rounded flex items-center gap-1">
+                                            <Check size={12} /> Uploaded
+                                          </span>
+                                        )}
+                                      </div>
+                                      <button
+                                        onClick={() => copyPrompt(img.prompt, imageKey)}
+                                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium bg-[#88da1c] text-black rounded-lg hover:bg-[#a3e635] transition-colors"
+                                      >
+                                        {copiedPrompt === imageKey ? (
+                                          <>
+                                            <Check size={14} />
+                                            Copied!
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Copy size={14} />
+                                            Copy Prompt
+                                          </>
+                                        )}
+                                      </button>
                                     </div>
-                                    <button
-                                      onClick={() => copyPrompt(img.prompt, `${lesson.slug}-${imgIdx}`)}
-                                      className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium bg-[#88da1c] text-black rounded-lg hover:bg-[#a3e635] transition-colors"
-                                    >
-                                      {copiedPrompt === `${lesson.slug}-${imgIdx}` ? (
-                                        <>
-                                          <Check size={14} />
-                                          Copied!
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Copy size={14} />
-                                          Copy for ChatGPT
-                                        </>
-                                      )}
-                                    </button>
+
+                                    <p className="text-sm text-[var(--text-muted)] mb-2">{img.context}</p>
+                                    <p className="text-xs text-black/60 bg-black/5 p-3 rounded-lg font-mono mb-4">
+                                      {img.prompt}
+                                    </p>
+
+                                    {/* Image URL Input */}
+                                    <div className="flex gap-2">
+                                      <div className="flex-1 relative">
+                                        <LinkIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                                        <input
+                                          type="url"
+                                          placeholder="Paste image URL here..."
+                                          value={imageInputs[imageKey] || ''}
+                                          onChange={(e) => setImageInputs({ ...imageInputs, [imageKey]: e.target.value })}
+                                          className="w-full pl-10 pr-4 py-2 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-[#88da1c]"
+                                        />
+                                      </div>
+                                      <button
+                                        onClick={() => saveImageUrl(lesson.slug, img.slideIndex, imageInputs[imageKey] || '')}
+                                        disabled={!imageInputs[imageKey]}
+                                        className="flex items-center gap-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-black/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                      >
+                                        <Upload size={16} />
+                                        Save
+                                      </button>
+                                    </div>
+
+                                    {/* Image Preview */}
+                                    {savedUrl && (
+                                      <div className="mt-3 relative">
+                                        <img
+                                          src={savedUrl}
+                                          alt={`Slide ${img.slideIndex + 1}`}
+                                          className="w-32 h-32 object-cover rounded-lg border border-black/10"
+                                        />
+                                        <button
+                                          onClick={() => saveImageUrl(lesson.slug, img.slideIndex, '')}
+                                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
+                                        >
+                                          <X size={14} />
+                                        </button>
+                                      </div>
+                                    )}
                                   </div>
-                                  <p className="text-sm text-[var(--text-muted)] mb-2">{img.context}</p>
-                                  <p className="text-xs text-black/60 bg-black/5 p-3 rounded-lg font-mono">
-                                    {img.prompt}
-                                  </p>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         )}
 
-                        {/* Component Slots */}
+                        {/* Component Slots with Visual Previews */}
                         <div>
                           <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
                             <Layers size={18} className="text-[#3B82F6]" />
@@ -333,44 +719,44 @@ export default function LessonCRMPage() {
                                       Slide {slot.slideIndex + 1}
                                     </span>
                                     <span className="text-sm font-medium text-black">{slot.slideTitle}</span>
-                                    <span className="text-xs text-[var(--text-muted)]">
-                                      Current: {slot.currentType}
-                                    </span>
+                                    {selectedId && (
+                                      <span className="px-2 py-1 text-xs font-medium bg-[#88da1c]/20 text-[#88da1c] rounded flex items-center gap-1">
+                                        <Check size={12} /> Selected
+                                      </span>
+                                    )}
                                   </div>
 
-                                  {/* Three Options */}
+                                  {/* Three Options with Visual Previews */}
                                   <div className="grid grid-cols-3 gap-4">
-                                    {slot.options.map((option, optIdx) => {
+                                    {slot.options.map((option) => {
                                       const isSelected = selectedId === option.id;
                                       return (
                                         <button
                                           key={option.id}
                                           onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
-                                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                                          className={`rounded-xl border-2 text-left transition-all overflow-hidden ${
                                             isSelected
-                                              ? 'border-[#88da1c] bg-[#88da1c]/5'
-                                              : 'border-black/10 hover:border-[#88da1c]/50 hover:bg-black/[0.02]'
+                                              ? 'border-[#88da1c] ring-2 ring-[#88da1c]/20'
+                                              : 'border-black/10 hover:border-[#88da1c]/50'
                                           }`}
                                         >
-                                          <div className="flex items-start justify-between mb-2">
-                                            <h5 className="font-semibold text-black text-sm">{option.name}</h5>
-                                            {isSelected && (
-                                              <CheckCircle size={18} className="text-[#88da1c]" />
-                                            )}
+                                          {/* Visual Preview */}
+                                          <div className="h-32 bg-gray-50 p-2">
+                                            <ComponentPreview option={option} />
                                           </div>
-                                          <p className="text-xs text-[var(--text-muted)] mb-3">
-                                            {option.description}
-                                          </p>
-                                          <button
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setPreviewComponent({ lesson: lesson.slug, slot, optionIndex: optIdx });
-                                            }}
-                                            className="flex items-center gap-1 text-xs text-[#3B82F6] hover:underline"
-                                          >
-                                            <Eye size={12} />
-                                            Preview Data
-                                          </button>
+
+                                          {/* Label */}
+                                          <div className={`p-3 ${isSelected ? 'bg-[#88da1c]/5' : 'bg-white'}`}>
+                                            <div className="flex items-center justify-between">
+                                              <h5 className="font-semibold text-black text-sm">{option.name}</h5>
+                                              {isSelected && (
+                                                <CheckCircle size={18} className="text-[#88da1c]" />
+                                              )}
+                                            </div>
+                                            <p className="text-xs text-[var(--text-muted)] mt-1">
+                                              {option.description}
+                                            </p>
+                                          </div>
                                         </button>
                                       );
                                     })}
@@ -388,40 +774,6 @@ export default function LessonCRMPage() {
             ))}
           </div>
         </motion.section>
-
-        {/* Preview Modal */}
-        <AnimatePresence>
-          {previewComponent && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-              onClick={() => setPreviewComponent(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-                className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-              >
-                <h3 className="text-xl font-bold text-black mb-4">
-                  {previewComponent.slot.options[previewComponent.optionIndex].name} Preview
-                </h3>
-                <pre className="bg-black/5 p-4 rounded-xl text-xs overflow-x-auto">
-                  {JSON.stringify(previewComponent.slot.options[previewComponent.optionIndex].previewData, null, 2)}
-                </pre>
-                <button
-                  onClick={() => setPreviewComponent(null)}
-                  className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-black/80"
-                >
-                  Close
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </DashboardLayout>
   );
