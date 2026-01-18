@@ -451,6 +451,99 @@ export function MyComponent({ title, onAction }: MyComponentProps) {
 
 ---
 
+## Interactive Lessons System
+
+### ONGOING TASK: Redesign ALL Lessons with Component Library
+
+**Goal:** Redesign ALL interactive lessons in the 'Lessons V2' page using the 120+ component library.
+
+**CRITICAL RULES:**
+1. **NEVER delete or touch existing images/videos in lessons** - preserve all media
+2. Use **lime green accent color**: `--accent: #88da1c; --accent-dark: #6fb816; --accent-light: #a3e635; --accent-rgb: 136, 218, 28;`
+3. White slide backgrounds, dark blocks only as contained elements
+4. GIF overlay positioning: `zIndex: 50`, `bottom-16`, `maxHeight: '40%'`
+
+### Component Library Location
+
+All lesson components are in `src/components/lessons/`:
+
+```
+src/components/lessons/
+├── slides/           # WelcomeSlide, QuizSlide, CompletionSlide
+├── content/          # SplitContent, FullWidthMedia, TextBlock
+├── charts/           # 104 chart components (see below)
+├── data/             # StatCard, StatRow, MetricDashboard
+├── comparison/       # BeforeAfter, ComparisonBars
+├── sequential/       # Timeline, ProcessSteps
+├── emphasis/         # QuoteBlock, SocialProof, IconGrid
+├── layouts/          # Layout templates
+└── index.ts          # All exports and LESSON_COMPONENTS registry
+```
+
+### Component Categories (120+ total)
+
+**Fixed Slides (3):** WelcomeSlide, QuizSlide, CompletionSlide
+**Content (3):** SplitContent, FullWidthMedia, TextBlock
+**Data Stats (3):** StatCard, StatRow, MetricDashboard
+**Comparison (2):** BeforeAfter, ComparisonBars
+**Sequential (2):** Timeline, ProcessSteps
+**Emphasis (3):** QuoteBlock, SocialProof, IconGrid
+
+**Charts - Basic (13):** LineChart, BarChart, AreaChart, DonutChart, PieChart, FunnelChart, RadarChart, GaugeChart, ProgressRing, Heatmap, StackedBarChart, WaterfallChart, BulletChart
+
+**Charts - Statistical (6):** ScatterPlot, BubbleChart, Histogram, BoxPlot, ViolinPlot, DensityPlot
+
+**Charts - KPI (6):** KPICard, Scorecard, SpeedometerChart, CalendarHeatmap, ParetoChart, WordCloud
+
+**Charts - Business (10):** GanttChart, FlowChart, KanbanBoard, RoadmapDiagram, CustomerJourneyMap, SwimlaneChart, DecisionTree, ProcessMap, EventSequence, TornadoChart
+
+**Charts - Network (6):** NetworkGraph, ChordDiagram, SankeyDiagram, VennDiagram, ForceDirectedGraph, MatrixChart
+
+**Charts - Strategic (10):** TargetChart, PerformanceMatrix, ValueChain, SWOT, RiskMatrix, PriorityMatrix, CompetitorMap, SkillRadar, OKRTracker, QuarterlyTrend
+
+**Charts - Hierarchical (6):** TreeMap, SunburstChart, RadialTree, Dendrogram, IcicleChart, MindMap
+
+...and 50+ more specialty, analysis, technical, and interactive charts.
+
+### Lessons Location
+
+- **Public lessons:** `genrok-app/public/lessons/[slug]/lesson.html`
+- **Dev server:** Port 3006 (http://localhost:3006)
+- **Validation script:** `genrok-app/validate-lessons.js`
+- **Screenshots saved to:** `genrok-app/test-screenshots/[slug]/`
+
+### Lessons Already Redesigned (18)
+
+1. familiar-surprise-secret
+2. 13800-percent-effect
+3. abandoned-cart-recovery
+4. anchor-moments
+5. anti-sell-mastery
+6. architecture-of-belief
+7. architecture-of-influence
+8. ascension-ladder
+9. authority-over-hope
+10. autopilot-sale
+11. blind-spot-effect
+12. borrowed-trust
+13. bottom-up-brand
+14. brand-moat
+15. certainty-transfer
+16. cognitive-load-trap
+17. commodity-escape
+18. conviction-architecture
+
+### How to Use Components in Lessons
+
+When redesigning a lesson:
+1. Use relevant components from the library when they fit the content
+2. Create custom components inline when no existing component fits
+3. Always use the lime green accent color CSS variables
+4. Ensure GIF/video overlays use proper z-index and positioning
+5. Run `node validate-lessons.js` to screenshot all slides for QA
+
+---
+
 ## Support
 
 - **Documentation:** This CLAUDE.md file
@@ -461,4 +554,4 @@ export function MyComponent({ title, onAction }: MyComponentProps) {
 
 ---
 
-*Last updated: December 2024*
+*Last updated: January 2026*

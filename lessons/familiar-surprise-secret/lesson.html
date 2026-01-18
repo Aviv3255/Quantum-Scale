@@ -3,856 +3,723 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The "Familiar Surprise" Secret That Makes Anything Sell</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <title>The Familiar Surprise Secret | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            accent: '#2563eb',
-            'accent-light': '#3b82f6',
-            'accent-dark': '#1d4ed8',
-          },
-          fontSize: {
-            'xs': ['0.64rem', { lineHeight: '1.75' }],
-            'sm': ['0.8rem', { lineHeight: '1.625' }],
-            'base': ['1rem', { lineHeight: '1.625' }],
-            'lg': ['1.25rem', { lineHeight: '1.5' }],
-            'xl': ['1.563rem', { lineHeight: '1.35' }],
-            '2xl': ['1.953rem', { lineHeight: '1.25' }],
-            '3xl': ['2.441rem', { lineHeight: '1.2' }],
-            '4xl': ['3.052rem', { lineHeight: '1.15' }],
-            '5xl': ['3.815rem', { lineHeight: '1.1' }],
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: #FFFFFF; color: #1a1a1a; }
-    ::selection { background: #2563eb; color: #fff; }
-
-    /* Typography refinements */
-    h1, h2, h3 { letter-spacing: -0.025em; }
-    p { letter-spacing: 0; }
-    .caption { letter-spacing: 0.025em; }
-
-    /* Custom slider */
-    input[type="range"] {
-      -webkit-appearance: none;
-      height: 8px;
-      border-radius: 4px;
-      background: linear-gradient(to right, #e5e5e5 0%, #e5e5e5 30%, rgba(37,99,235,0.2) 30%, rgba(37,99,235,0.2) 70%, #e5e5e5 70%);
+    :root {
+      --accent: #88da1c;
+      --accent-dark: #6fb816;
+      --accent-rgb: 136, 218, 28;
+      --error: #EF4444;
     }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #2563eb;
-      cursor: grab;
-      border: 4px solid white;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
     }
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(37,99,235,0.4);
-    }
-    input[type="range"]::-webkit-slider-thumb:active {
-      cursor: grabbing;
-      transform: scale(0.95);
-    }
+    ::selection { background: var(--accent); color: #000; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, useInView, AnimatePresence, useSpring, useTransform, useMotionValue } = window.Motion;
-    const { useState, useRef, useEffect } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Spring config for physics-based animations
-    const springConfig = { stiffness: 400, damping: 25 };
-    const gentleSpring = { stiffness: 300, damping: 20 };
-    const snappySpring = { stiffness: 500, damping: 30 };
+    // ============================================
+    // HELPERS
+    // ============================================
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
 
-    // Icons (Lucide-style)
+    const formatGreeting = (template, replacement) => template.replace('{name}', replacement);
+
+    // ============================================
+    // LESSON CONFIG
+    // ============================================
+    const LESSON_CONFIG = {
+      id: 'familiar-surprise-secret',
+      title: 'The Familiar Surprise Secret',
+      subtitle: 'Why 70% familiar + 30% novel is the formula that makes customers say "I need this."',
+      duration: '5 min',
+      nextLesson: {
+        id: 'red-button-effect',
+        title: 'The Red Button Effect',
+        teaser: 'How to create irresistible CTAs that customers physically cannot ignore.'
+      }
+    };
+
+    // ============================================
+    // VIDEO LIBRARIES
+    // ============================================
+    const celebrationVideos = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+    ];
+    const empathyVideos = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+    ];
+    const getRandomVideo = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    // ============================================
+    // ICONS (Lucide-style)
+    // ============================================
     const Icons = {
-      Lightbulb: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
-          <path d="M9 18h6"/><path d="M10 22h4"/>
-        </svg>
-      ),
-      Brain: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-          <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-          <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
-        </svg>
-      ),
-      Target: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
-        </svg>
-      ),
-      Zap: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
-        </svg>
-      ),
-      ArrowRight: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
-      ),
-      Check: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>
-      ),
-      Music: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-        </svg>
-      ),
-      ChevronDown: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m6 9 6 6 6-6"/>
-        </svg>
-      ),
-      TrendingUp: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
-        </svg>
-      ),
-      AlertCircle: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-      ),
+      Clock: ({ size = 14 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Sparkles: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Brain: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>,
+      Target: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
     };
 
-    // Stagger container for animations
-    const staggerContainer = {
-      hidden: { opacity: 0 },
-      show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.12, delayChildren: 0.1 }
-      }
-    };
+    // ============================================
+    // SLIDE DATA
+    // ============================================
+    const slides = [
+      // 0: Welcome (original format with character)
+      { type: 'welcome', learningGoals: [
+        'The "MAYA Principle" that makes products irresistible',
+        'Why 100% unique products FAIL on Shopify',
+        'The 70/30 formula top stores use to convert browsers'
+      ]},
+      // 1: Hook - Story intro with brand image
+      { type: 'hook', headline: 'Spotify almost killed their biggest feature.', body: 'Their "Discover Weekly" playlist served users 100% new music. Songs they\'d never heard. Artists they\'d never seen.', result: 'Engagement tanked. Users stopped clicking.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Spotify_logo_without_text.svg.png' },
+      // 2: Insight - The fix (Quote style)
+      { type: 'quote', text: 'When Spotify added just 30% familiar songs, engagement skyrocketed 40%. Save rates tripled. Return rates doubled.', highlight: 'Users didn\'t want ALL new. They wanted new wrapped in familiar.' },
+      // 3: Framework - MAYA Principle visual
+      { type: 'maya' },
+      // 4: Application - Why it matters
+      { type: 'split', title: 'Why This Matters for Your Store', body: 'Your Shopify store faces the same challenge. Show customers something TOO familiar - they scroll past. Show them something TOO new - their brain flags it as risky.', highlight: 'The sweet spot? 70% familiar foundation, 30% novel twist.' },
+      // 5: Example 1 - BeforeAfter
+      { type: 'beforeAfter', scenario: 'Posture Corrector Store', before: { title: 'Too Generic', text: 'Fix your posture with our back brace. Comfortable and adjustable.' }, after: { title: 'MAYA Applied', text: 'The posture fix that works while you\'re sitting at your desk - no awkward straps visible under your shirt.' }, insight: 'Familiar problem (posture) + Novel twist (invisible, works while sitting)' },
+      // 6: Process - The 4-Part Formula
+      { type: 'process', title: 'The 4-Part MAYA Formula', steps: [
+        { num: '01', title: 'Their Language', desc: 'Use exact words they use. "My back kills me" not "lumbar discomfort."' },
+        { num: '02', title: 'Known Problems', desc: 'Anchor to struggles they recognize instantly.' },
+        { num: '03', title: 'The Twist', desc: 'Reveal your unique angle once they\'re nodding.' },
+        { num: '04', title: 'Bridge', desc: 'Connect your mechanism to their familiar goal.' }
+      ]},
+      // 7: Example 2 - BeforeAfter (light variant)
+      { type: 'beforeAfterLight', scenario: 'Pet Products Store', before: { title: 'Too Novel', text: 'Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity.' }, after: { title: 'MAYA Applied', text: 'Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms.' }, insight: 'Familiar product (collar) + Familiar concern (vet visits) + Novel benefit (early detection)' },
+      // 8: Stats - Brain Science
+      { type: 'stats', title: 'The Brain Science', stats: [
+        { value: '40%', label: 'Faster Processing', desc: 'Brain handles familiar things faster' },
+        { value: '0', label: 'Dopamine Spike', desc: 'Pure familiarity = no excitement' },
+        { value: '2x', label: 'Engagement', desc: 'Novel-familiar mix doubles attention' }
+      ]},
+      // 9: Application - Order matters
+      { type: 'content', title: 'The Shopify Application', body: 'Your product page needs both anchors. Start with what they KNOW (the problem, the desire, familiar product category). Then reveal what makes YOU different.', emphasis: 'This order matters - familiar first, then novel.' },
+      // 10: Example 3 - BeforeAfter
+      { type: 'beforeAfter', scenario: 'Skincare Store', before: { title: 'Wrong Order', text: 'Our patented CeraMatrix-7 technology uses nano-encapsulation to deliver actives at the cellular level.' }, after: { title: 'MAYA Applied', text: 'That stubborn dark spot that won\'t fade? There\'s a reason - and it\'s not your serum. It\'s the barrier your skin builds at night.' }, insight: 'Lead with familiar frustration, then introduce novel mechanism' },
+      // 11: Checklist
+      { type: 'checklist', title: 'Quick MAYA Checklist', items: [
+        { title: 'Headline', question: 'Does it reference a problem they\'d describe in their own words?' },
+        { title: 'Subheadline', question: 'Does it hint at a fresh angle without being confusing?' },
+        { title: 'Body Copy', question: 'Do you anchor to familiar desires before explaining your mechanism?' },
+        { title: 'CTA', question: 'Does it feel safe enough to click but exciting enough to want to?' }
+      ]},
+      // 12: Quiz
+      { type: 'quiz', question: 'What\'s the optimal balance for the MAYA Principle?', options: [
+        { text: '100% familiar language - comfort is everything', correct: false },
+        { text: '50% familiar / 50% novel - perfect balance', correct: false },
+        { text: '70% familiar / 30% novel - comfort then surprise', correct: true },
+        { text: '30% familiar / 70% novel - mostly unique', correct: false }
+      ], feedback: { correct: 'Exactly! 70% familiar foundation creates trust, 30% novel twist creates desire.', incorrect: 'Not quite. The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement.' }},
+      // 13: Completion
+      { type: 'completion' }
+    ];
 
-    const staggerItem = {
-      hidden: { opacity: 0, y: 30 },
-      show: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 400, damping: 25 }
-      }
-    };
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
 
-    // Fade with spring physics
-    function Fade({ children, delay = 0, className = "" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-80px" });
-      return (
-        <motion.div
-          ref={ref}
-          className={className}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 20,
-            delay
-          }}
-        >
-          {children}
-        </motion.div>
-      );
-    }
-
-    // Animated Counter with spring
-    function Counter({ end, suffix = "", prefix = "", duration = 2 }) {
-      const [count, setCount] = useState(0);
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
+    // Welcome Slide - ORIGINAL FORMAT with character GIF
+    const WelcomeSlide = ({ data, onStart, userName, onShowVideo, onHideVideo }) => {
+      const welcomeData = useMemo(() => typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Welcome back, {name}!', gif: null }, []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
       useEffect(() => {
-        if (isInView) {
-          let start = 0;
-          const increment = end / (duration * 60);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 1000 / 60);
-          return () => clearInterval(timer);
-        }
-      }, [isInView, end, duration]);
-
-      return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
-    }
-
-    // Magnetic hover button
-    function MagneticButton({ children, className = "" }) {
-      const ref = useRef(null);
-      const x = useMotionValue(0);
-      const y = useMotionValue(0);
-      const springX = useSpring(x, { stiffness: 150, damping: 15 });
-      const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-      const handleMouseMove = (e) => {
-        const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        x.set((e.clientX - centerX) * 0.15);
-        y.set((e.clientY - centerY) * 0.15);
-      };
-
-      const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-      };
+        if (welcomeData.gif) onShowVideo(welcomeData.gif, '65%', gifSide);
+        return () => onHideVideo();
+      }, [welcomeData.gif, gifSide, onShowVideo, onHideVideo]);
 
       return (
-        <motion.div
-          ref={ref}
-          className={className}
-          style={{ x: springX, y: springY }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        >
-          {children}
-        </motion.div>
+        <div className="h-full w-full bg-white">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 tracking-tight leading-tight">
+              {LESSON_CONFIG.title}
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-base md:text-lg mb-3 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-semibold text-black">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-4">
+              <Icons.Clock size={12} />
+              <span>{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            {/* Learning Goals - Dark accent block */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-black rounded-2xl p-5 mb-5 max-w-sm w-full">
+              <p className="text-neutral-500 text-[10px] uppercase tracking-widest mb-3">In this lesson</p>
+              <ul className="space-y-2.5">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2.5 text-left">
+                    <span className="w-5 h-5 rounded-md bg-[#88da1c] flex items-center justify-center text-[10px] font-bold text-black flex-shrink-0 mt-0.5">{i + 1}</span>
+                    <span className="text-neutral-300 text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-7 py-3 rounded-xl bg-[#88da1c] text-black font-semibold text-sm">
+              Let's Go
+            </motion.button>
+          </div>
+        </div>
       );
-    }
+    };
 
-    // Interactive MAYA Slider with enhanced physics
-    function MayaSlider() {
-      const [value, setValue] = useState(50);
-      const [isDragging, setIsDragging] = useState(false);
+    // Hook Slide - Story with brand
+    const HookSlide = ({ data }) => (
+      <div className="h-full w-full bg-white">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
+          {/* Brand badge */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+            {data.brandImage && <img src={data.brandImage} alt="" className="w-10 h-10 object-contain" />}
+            <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">Case Study</span>
+          </motion.div>
 
-      const getZone = () => {
-        if (value < 30) return {
-          label: 'Too Familiar',
-          emoji: '😴',
-          desc: 'They scroll past without a second thought. "Seen it. Boring."',
-          color: 'text-neutral-400',
-          bgColor: 'bg-neutral-50',
-          borderColor: 'border-neutral-200'
-        };
-        if (value > 70) return {
-          label: 'Too Novel',
-          emoji: '😰',
-          desc: 'They hesitate and leave. "This seems risky... I\'ll think about it."',
-          color: 'text-neutral-400',
-          bgColor: 'bg-neutral-50',
-          borderColor: 'border-neutral-200'
-        };
-        return {
-          label: 'The MAYA Zone',
-          emoji: '🎯',
-          desc: 'They lean forward, eyes wide. "Wait... this is exactly what I need. Tell me more."',
-          color: 'text-accent',
-          bgColor: 'bg-blue-50',
-          borderColor: 'border-accent'
-        };
-      };
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 leading-tight">
+            {data.headline}
+          </motion.h2>
 
-      const zone = getZone();
-      const isInZone = value >= 30 && value <= 70;
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed mb-6">
+            {data.body}
+          </motion.p>
 
-      return (
-        <div className="py-8">
-          <div className="max-w-xl mx-auto">
-            {/* Visual gauge */}
-            <div className="relative h-4 mb-6 rounded-full overflow-hidden bg-neutral-100">
-              <motion.div
-                className="absolute left-[30%] right-[30%] h-full bg-accent/20"
-                animate={{ opacity: isInZone ? 1 : 0.3 }}
-              />
-              <motion.div
-                className="absolute h-full bg-accent rounded-full"
-                style={{ width: `${value}%` }}
-                animate={{
-                  backgroundColor: isInZone ? '#2563eb' : '#a3a3a3'
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              />
+          {/* Result callout - small dark block */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="inline-flex">
+            <div className="bg-black rounded-xl px-5 py-3">
+              <p className="text-[#EF4444] font-semibold text-sm">{data.result}</p>
             </div>
+          </motion.div>
+        </div>
+      </div>
+    );
 
-            {/* Slider */}
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={value}
-              onChange={(e) => setValue(parseInt(e.target.value))}
-              onMouseDown={() => setIsDragging(true)}
-              onMouseUp={() => setIsDragging(false)}
-              className="w-full relative z-10 cursor-grab active:cursor-grabbing"
-            />
+    // Quote Slide - Insight with highlight
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-8">
+        <div className="h-full flex items-center justify-center">
+          <div className="max-w-3xl">
+            {/* Accent line */}
+            <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ duration: 0.6 }} className="w-1 h-24 bg-[#88da1c] mb-6 origin-top" />
 
-            {/* Labels */}
-            <div className="flex justify-between text-sm mt-4 mb-8">
-              <span className="text-neutral-400 font-medium">Boring</span>
-              <motion.span
-                className="text-accent font-semibold"
-                animate={{ scale: isInZone ? 1.05 : 1 }}
-              >
-                Sweet Spot
-              </motion.span>
-              <span className="text-neutral-400 font-medium">Risky</span>
-            </div>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-2xl md:text-3xl font-medium text-black leading-relaxed mb-6">
+              {data.text}
+            </motion.p>
 
-            {/* Result Card */}
-            <motion.div
-              className={`p-8 rounded-2xl border-2 transition-colors ${zone.bgColor} ${zone.borderColor}`}
-              animate={{
-                scale: isDragging ? 1.02 : 1,
-                y: isInZone ? -4 : 0
-              }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              key={zone.label}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{zone.emoji}</span>
-                <p className={`text-xl font-bold ${zone.color}`}>{zone.label}</p>
-              </div>
-              <p className="text-neutral-600 text-lg leading-relaxed">{zone.desc}</p>
+            {/* Highlight box */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-[#88da1c]/10 border-l-4 border-[#88da1c] rounded-r-xl px-6 py-4">
+              <p className="text-lg font-semibold text-black">{data.highlight}</p>
             </motion.div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
 
-    // Interactive card with spring physics
-    function InteractiveCard({ icon: Icon, title, content, index }) {
-      const [isHovered, setIsHovered] = useState(false);
-
-      return (
-        <motion.div
-          className="relative p-8 rounded-2xl border border-neutral-200 bg-white overflow-hidden cursor-pointer"
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          whileHover={{
-            y: -8,
-            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.1)"
-          }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          variants={staggerItem}
-        >
-          {/* Accent line */}
-          <motion.div
-            className="absolute top-0 left-0 right-0 h-1 bg-accent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isHovered ? 1 : 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          />
-
-          <div className="flex items-start gap-5">
-            <motion.div
-              className="p-3 rounded-xl bg-neutral-100 text-neutral-600"
-              animate={{
-                backgroundColor: isHovered ? '#2563eb' : '#f5f5f5',
-                color: isHovered ? '#ffffff' : '#525252'
-              }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            >
-              <Icon />
+    // MAYA Visual Slide - The framework
+    const MAYASlide = () => (
+      <div className="h-full w-full bg-white p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-5xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#88da1c]/10 text-[#88da1c] mb-3">The Framework</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-black mb-2">The MAYA Principle</h2>
+              <p className="text-neutral-500 text-sm uppercase tracking-widest">Most Advanced Yet Acceptable</p>
             </motion.div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold mb-3">{title}</h3>
-              <p className="text-neutral-600 leading-relaxed">{content}</p>
-            </div>
-          </div>
-        </motion.div>
-      );
-    }
 
-    // Before/After comparison
-    function BeforeAfter({ before, after }) {
-      const [showAfter, setShowAfter] = useState(false);
+            <div className="grid grid-cols-3 gap-4 md:gap-6">
+              {/* Too Familiar - Light card */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-6 text-center">
+                <div className="w-12 h-12 rounded-xl bg-neutral-200 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-neutral-400 text-xl">-</span>
+                </div>
+                <div className="text-neutral-400 text-xs font-semibold uppercase tracking-wide mb-2">Too Familiar</div>
+                <div className="text-2xl font-bold text-neutral-500 mb-2">100% Known</div>
+                <div className="text-neutral-400 text-sm">Boring - They scroll past</div>
+              </motion.div>
 
-      return (
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div
-            className={`p-8 rounded-2xl border-2 cursor-pointer transition-colors ${!showAfter ? 'border-neutral-300 bg-neutral-50' : 'border-neutral-200 bg-white'}`}
-            onClick={() => setShowAfter(false)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            <div className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">Before MAYA</div>
-            <p className="text-lg text-neutral-600">{before}</p>
-          </motion.div>
+              {/* MAYA Zone - Dark accent block */}
+              <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2 }} className="bg-black rounded-2xl p-6 text-center relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#88da1c] text-black text-xs font-bold rounded-full">SWEET SPOT</div>
+                <div className="w-12 h-12 rounded-xl bg-[#88da1c] flex items-center justify-center mx-auto mb-4 mt-2">
+                  <Icons.Target size={24} className="text-black" />
+                </div>
+                <div className="text-[#88da1c] text-xs font-semibold uppercase tracking-wide mb-2">MAYA Zone</div>
+                <div className="text-4xl font-bold text-white mb-2">70/30</div>
+                <div className="text-[#88da1c] font-medium text-sm">Irresistible - They BUY</div>
+              </motion.div>
 
-          <motion.div
-            className={`p-8 rounded-2xl border-2 cursor-pointer transition-colors ${showAfter ? 'border-accent bg-blue-50' : 'border-neutral-200 bg-white'}`}
-            onClick={() => setShowAfter(true)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          >
-            <div className="text-sm font-semibold text-accent uppercase tracking-wider mb-4">After MAYA</div>
-            <p className="text-lg text-neutral-700 font-medium">{after}</p>
-          </motion.div>
-        </div>
-      );
-    }
-
-    // Progress bar with animation
-    function AnimatedProgress({ label, value, color = "bg-accent" }) {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true });
-
-      return (
-        <div ref={ref} className="mb-6">
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium text-neutral-700">{label}</span>
-            <span className="text-sm font-bold text-accent">{value}%</span>
-          </div>
-          <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
-            <motion.div
-              className={`h-full ${color} rounded-full`}
-              initial={{ width: 0 }}
-              animate={isInView ? { width: `${value}%` } : {}}
-              transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
-            />
-          </div>
-        </div>
-      );
-    }
-
-    // Main Lesson
-    function Lesson() {
-      return (
-        <div className="min-h-screen bg-white">
-          {/* Hero Section */}
-          <header className="relative bg-neutral-950 text-white overflow-hidden">
-            {/* Animated background */}
-            <div className="absolute inset-0">
-              <div className="absolute inset-0 opacity-30" style={{
-                backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(37,99,235,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(37,99,235,0.2) 0%, transparent 50%)'
-              }}/>
-              <motion.div
-                className="absolute inset-0"
-                animate={{
-                  backgroundPosition: ['0% 0%', '100% 100%'],
-                }}
-                transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
-                style={{
-                  backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(37,99,235,0.1) 0%, transparent 25%)',
-                  backgroundSize: '100% 100%'
-                }}
-              />
-            </div>
-
-            <div className="relative max-w-5xl mx-auto px-6 py-24 md:py-32">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              >
-                <motion.span
-                  className="inline-block px-4 py-1.5 bg-accent/20 text-accent-light text-sm font-semibold rounded-full mb-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Psychology of Persuasion
-                </motion.span>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-                  The "Familiar Surprise" Secret
-                  <span className="block text-neutral-400 mt-2">That Makes Anything Sell</span>
-                </h1>
-
-                <p className="text-xl md:text-2xl text-neutral-300 max-w-3xl leading-relaxed mb-12">
-                  Why Spotify's engagement tanked with 100% new music discoveries. And the accidental bug that revealed the most powerful persuasion principle in marketing.
-                </p>
-
-                {/* Stats with stagger */}
-                <motion.div
-                  className="flex flex-wrap gap-12 pt-8 border-t border-neutral-800"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                >
-                  {[
-                    { value: 40, suffix: '%', label: 'Engagement increase' },
-                    { value: 8, suffix: ' min', label: 'Read time' },
-                    { value: 3, suffix: '', label: 'Key frameworks' }
-                  ].map((stat, i) => (
-                    <motion.div key={i} variants={staggerItem}>
-                      <p className="text-4xl font-bold text-accent-light">
-                        <Counter end={stat.value} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-sm text-neutral-400 mt-1">{stat.label}</p>
-                    </motion.div>
-                  ))}
-                </motion.div>
+              {/* Too Novel - Light card */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-2xl p-6 text-center">
+                <div className="w-12 h-12 rounded-xl bg-neutral-200 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-neutral-400 text-xl">?</span>
+                </div>
+                <div className="text-neutral-400 text-xs font-semibold uppercase tracking-wide mb-2">Too Novel</div>
+                <div className="text-2xl font-bold text-neutral-500 mb-2">100% New</div>
+                <div className="text-neutral-400 text-sm">Scary - They back away</div>
               </motion.div>
             </div>
-          </header>
+          </div>
+        </div>
+      </div>
+    );
 
-          {/* Content */}
-          <main className="py-20 px-6">
-            <div className="max-w-3xl mx-auto">
+    // Split Content Slide - Text with highlight
+    const SplitSlide = ({ data }) => (
+      <div className="h-full w-full bg-white">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16">
+          <div className="max-w-3xl mx-auto">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-bold text-black mb-6 leading-tight">
+              {data.title}
+            </motion.h2>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg text-neutral-600 leading-relaxed mb-6">
+              {data.body}
+            </motion.p>
+            {data.highlight && (
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex items-start gap-3">
+                <div className="w-1 h-full bg-[#88da1c] rounded-full flex-shrink-0" />
+                <p className="text-xl font-semibold text-black">{data.highlight}</p>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
 
-              {/* The Hook */}
-              <Fade>
-                <div className="mb-20">
-                  <p className="text-2xl leading-relaxed text-neutral-600 mb-8">
-                    Spotify's data scientists thought they had cracked the code.
-                  </p>
-                  <p className="text-2xl leading-relaxed text-neutral-600 mb-8">
-                    Their algorithm could predict with 93% accuracy what songs you'd love—songs you'd never heard before. So they built <span className="font-semibold text-black">"Discover Weekly"</span>: a playlist of 100% fresh, personalized music recommendations.
-                  </p>
-                  <p className="text-2xl leading-relaxed font-semibold text-black">
-                    It should have been a home run.
-                  </p>
-                </div>
-              </Fade>
+    // BeforeAfter Slide - Dark variant
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6 md:p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto w-full">
+            {/* Header */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#88da1c]/10 text-[#88da1c] mb-2">Real Example</span>
+              <h2 className="text-2xl md:text-3xl font-bold text-black">{data.scenario}</h2>
+            </motion.div>
 
-              {/* The Problem */}
-              <Fade delay={0.1}>
-                <motion.div
-                  className="bg-neutral-950 text-white rounded-3xl p-10 md:p-12 mb-20"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <div className="flex items-start gap-5 mb-6">
-                    <div className="p-3 bg-red-500/20 rounded-xl text-red-400">
-                      <Icons.AlertCircle />
+            {/* Dark container with before/after */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-black rounded-2xl p-6 md:p-8">
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                {/* Before */}
+                <div className="bg-white/5 rounded-xl p-5 border-t-2 border-[#EF4444]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-full bg-[#EF4444] flex items-center justify-center">
+                      <Icons.X size={14} className="text-white" />
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-bold mb-4">The Problem</h2>
-                      <p className="text-neutral-300 text-lg leading-relaxed mb-6">
-                        Users weren't engaging. Skip rates were through the roof. People would listen for a few seconds, then abandon the playlist entirely.
-                      </p>
-                      <p className="text-neutral-400 text-lg leading-relaxed">
-                        The algorithm was right about what they'd <em>like</em>—but wrong about what they'd actually <em>listen to</em>.
-                      </p>
-                    </div>
+                    <span className="font-semibold text-white text-sm">{data.before.title}</span>
                   </div>
+                  <p className="text-white/60 text-sm leading-relaxed italic">"{data.before.text}"</p>
+                </div>
 
-                  <AnimatedProgress label="Skip rate on pure discovery" value={67} color="bg-red-500" />
+                {/* After */}
+                <div className="bg-white/5 rounded-xl p-5 border-t-2 border-[#88da1c]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-full bg-[#88da1c] flex items-center justify-center">
+                      <Icons.Check size={14} className="text-black" />
+                    </div>
+                    <span className="font-semibold text-white text-sm">{data.after.title}</span>
+                  </div>
+                  <p className="text-white/60 text-sm leading-relaxed italic">"{data.after.text}"</p>
+                </div>
+              </div>
+
+              {/* Insight */}
+              <div className="bg-[#88da1c]/10 rounded-lg px-4 py-3 flex items-center gap-2">
+                <Icons.Zap size={14} className="text-[#88da1c] flex-shrink-0" />
+                <p className="text-[#88da1c] text-sm font-medium">{data.insight}</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // BeforeAfter Light Slide - Bright variant
+    const BeforeAfterLightSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6 md:p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto w-full">
+            {/* Header */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#88da1c]/10 text-[#88da1c] mb-2">Real Example</span>
+              <h2 className="text-2xl md:text-3xl font-bold text-black">{data.scenario}</h2>
+            </motion.div>
+
+            {/* Light cards */}
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              {/* Before */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-full bg-[#EF4444] flex items-center justify-center">
+                    <Icons.X size={14} className="text-white" />
+                  </div>
+                  <span className="font-semibold text-red-700 text-sm">{data.before.title}</span>
+                </div>
+                <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
+              </motion.div>
+
+              {/* After */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-7 h-7 rounded-full bg-[#88da1c] flex items-center justify-center">
+                    <Icons.Check size={14} className="text-black" />
+                  </div>
+                  <span className="font-semibold text-green-700 text-sm">{data.after.title}</span>
+                </div>
+                <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
+              </motion.div>
+            </div>
+
+            {/* Insight - Dark block */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-black rounded-xl px-5 py-4 flex items-center gap-3">
+              <Icons.Lightbulb size={18} className="text-[#88da1c] flex-shrink-0" />
+              <p className="text-white text-sm">{data.insight}</p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Process Steps Slide - Horizontal
+    const ProcessSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6 md:p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-5xl mx-auto w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-bold text-black text-center mb-8">
+              {data.title}
+            </motion.h2>
+
+            {/* Steps in dark container */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-black rounded-2xl p-6 md:p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {data.steps.map((step, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="text-center">
+                    <div className="w-12 h-12 rounded-xl bg-[#88da1c] flex items-center justify-center mx-auto mb-3">
+                      <span className="text-black font-bold text-sm">{step.num}</span>
+                    </div>
+                    <h4 className="text-white font-semibold text-sm mb-1">{step.title}</h4>
+                    <p className="text-white/50 text-xs leading-relaxed">{step.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Stats Slide - Three metrics
+    const StatsSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6 md:p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#88da1c]/10 text-[#88da1c] mb-3">
+                <Icons.Brain size={12} />
+                Brain Science
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-black">{data.title}</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.stats.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} whileHover={{ y: -4 }} className="bg-black rounded-2xl p-8 text-center">
+                  <div className="text-5xl md:text-6xl font-bold text-[#88da1c] mb-2">{stat.value}</div>
+                  <div className="text-white font-semibold text-sm mb-1">{stat.label}</div>
+                  <div className="text-white/50 text-xs">{stat.desc}</div>
                 </motion.div>
-              </Fade>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
 
-              {/* The Bug */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-6">The Accidental Discovery</h2>
+    // Content Slide - Simple text with emphasis
+    const ContentSlide = ({ data }) => (
+      <div className="h-full w-full bg-white">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-bold text-black mb-6 leading-tight">
+            {data.title}
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg text-neutral-600 leading-relaxed mb-6">
+            {data.body}
+          </motion.p>
+          {data.emphasis && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-[#88da1c]/10 border-l-4 border-[#88da1c] rounded-r-xl px-5 py-4">
+              <p className="text-black font-semibold">{data.emphasis}</p>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    );
 
-                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-3xl p-10 border border-accent/20">
-                    <div className="flex items-start gap-5 mb-8">
-                      <div className="p-3 bg-accent rounded-xl text-white">
-                        <Icons.Music />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold mb-3">The Bug That Changed Everything</h3>
-                        <p className="text-neutral-600 text-lg leading-relaxed">
-                          A coding error accidentally mixed in familiar songs—tracks users had already played and loved. Songs they recognized. Songs that felt like old friends.
-                        </p>
-                      </div>
-                    </div>
+    // Checklist Slide
+    const ChecklistSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6 md:p-8">
+        <div className="h-full flex flex-col justify-center">
+          <div className="max-w-2xl mx-auto w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-bold text-black text-center mb-8">
+              {data.title}
+            </motion.h2>
 
-                    <motion.div
-                      className="p-6 bg-white rounded-2xl border-2 border-accent shadow-lg shadow-accent/10"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <p className="text-xl font-semibold text-center">
-                        Engagement jumped <span className="text-accent">40%</span> overnight.
-                      </p>
-                      <p className="text-neutral-500 text-center mt-2">The "bug" became the feature.</p>
-                    </motion.div>
+            <div className="space-y-3">
+              {data.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 flex items-start gap-4 hover:border-[#88da1c]/30 transition-colors">
+                  <div className="w-6 h-6 rounded-md bg-[#88da1c]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Icons.Check size={12} className="text-[#88da1c]" />
                   </div>
-                </div>
-              </Fade>
-
-              {/* The Science */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">The Science Behind The Magic</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    What Spotify accidentally discovered has a name. It's called the <span className="font-semibold text-black">MAYA principle</span>—and it explains why some products become instant hits while others die in obscurity.
-                  </p>
-
-                  <motion.div
-                    className="space-y-6"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, margin: "-100px" }}
-                  >
-                    <InteractiveCard
-                      icon={Icons.Lightbulb}
-                      title="Neophilia: The Pull Toward New"
-                      content="Part of your brain craves novelty. It's the voice that says 'Ooh, that looks interesting!' This force drives curiosity, exploration, and the thrill of discovery. Without it, nothing new would ever capture attention."
-                      index={0}
-                    />
-                    <InteractiveCard
-                      icon={Icons.Brain}
-                      title="Neophobia: The Fear of Unknown"
-                      content="But another part screams 'Wait—this seems risky.' This ancient survival mechanism protects you from bad decisions. Too much novelty triggers anxiety, hesitation, and the urge to stick with what's safe."
-                      index={1}
-                    />
-                  </motion.div>
-
-                  <motion.p
-                    className="text-center text-xl font-semibold text-neutral-700 mt-10 p-6 bg-neutral-50 rounded-2xl"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    These two forces are at war in every customer's brain.
-                    <br />
-                    <span className="text-neutral-400 font-normal">The winner decides whether they buy or bounce.</span>
-                  </motion.p>
-                </div>
-              </Fade>
-
-              {/* MAYA Principle */}
-              <Fade delay={0.1}>
-                <div className="mb-20 py-16 border-t border-b border-neutral-200">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-6 text-center">The Sweet Spot</h2>
-
-                  <motion.div
-                    className="text-center mb-8"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  >
-                    <p className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
-                      <span className="text-accent">M</span>ost{' '}
-                      <span className="text-accent">A</span>dvanced{' '}
-                      <span className="text-accent">Y</span>et{' '}
-                      <span className="text-accent">A</span>cceptable
-                    </p>
-                    <p className="text-lg text-neutral-500 max-w-xl mx-auto">
-                      Industrial designer Raymond Loewy discovered this in the 1940s. The principle that made him design everything from Lucky Strike packaging to Air Force One.
-                    </p>
-                  </motion.div>
-
-                  <MayaSlider />
-
-                  <motion.blockquote
-                    className="max-w-2xl mx-auto mt-10 p-8 bg-neutral-50 rounded-2xl border-l-4 border-accent"
-                    whileHover={{ x: 4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  >
-                    <p className="text-xl italic text-neutral-700 mb-4 leading-relaxed">
-                      "To sell something surprising, make it familiar. To sell something familiar, make it surprising."
-                    </p>
-                    <cite className="text-sm text-neutral-500 font-medium">— Derek Thompson, Hit Makers</cite>
-                  </motion.blockquote>
-                </div>
-              </Fade>
-
-              {/* The Formula */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">The Formula In Action</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    Here's what this means for your marketing: <span className="font-semibold text-black">Every winning product wraps something NEW in something FAMILIAR.</span> Let's break down how the biggest brands do it.
-                  </p>
-
-                  <div className="space-y-4 mb-12">
-                    {[
-                      {
-                        familiar: "Water bottle",
-                        surprise: "Tracks your hydration via app",
-                        result: "HidrateSpark",
-                        metric: "+2M units sold"
-                      },
-                      {
-                        familiar: "Wallet",
-                        surprise: "Built-in phone charger",
-                        result: "Bellroy Power",
-                        metric: "$100M company"
-                      },
-                      {
-                        familiar: "Yoga mat",
-                        surprise: "Alignment guide system",
-                        result: "Liforme",
-                        metric: "Cult following"
-                      },
-                      {
-                        familiar: "Notebook",
-                        surprise: "Syncs to cloud automatically",
-                        result: "Rocketbook",
-                        metric: "$30M+ revenue"
-                      }
-                    ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        className="group flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-2xl border border-neutral-200 bg-white hover:border-accent hover:shadow-lg hover:shadow-accent/5 transition-all"
-                        whileHover={{ y: -4, x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 text-base">
-                            <span className="px-3 py-1 bg-neutral-100 rounded-lg text-neutral-500 font-medium">{item.familiar}</span>
-                            <span className="text-accent font-bold">+</span>
-                            <span className="text-neutral-700">{item.surprise}</span>
-                          </div>
-                        </div>
-                        <motion.div
-                          className="flex items-center gap-4"
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 8 }}
-                        >
-                          <Icons.ArrowRight />
-                          <div className="text-right">
-                            <span className="font-bold text-lg">{item.result}</span>
-                            <span className="text-accent text-sm ml-3 font-medium">{item.metric}</span>
-                          </div>
-                        </motion.div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </Fade>
-
-              {/* Your Ad Copy */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">Apply It To Your Copy</h2>
-
-                  <p className="text-xl text-neutral-600 leading-relaxed mb-10">
-                    The MAYA principle isn't just for products. It's the secret behind every high-converting ad, email, and landing page. Watch how it transforms bland copy into magnetic messaging:
-                  </p>
-
-                  <BeforeAfter
-                    before="Introducing our revolutionary new skincare system that uses advanced peptide technology to reduce wrinkles."
-                    after="Remember how your skin felt at 25? This little bottle brings it back. (Using the same peptides dermatologists have used for decades—just finally affordable.)"
-                  />
-
-                  <p className="text-neutral-500 text-center mt-8 text-lg">
-                    Click each card to compare. Notice how the "After" version anchors in something familiar (how your skin felt) before introducing the new solution.
-                  </p>
-                </div>
-              </Fade>
-
-              {/* Key Insight */}
-              <Fade delay={0.1}>
-                <MagneticButton className="mb-20">
-                  <div className="bg-accent text-white rounded-3xl p-10 md:p-14 text-center cursor-pointer">
-                    <p className="text-2xl md:text-3xl font-bold leading-relaxed">
-                      Stop asking "How do I make this seem new?"
-                    </p>
-                    <p className="text-xl md:text-2xl text-blue-100 mt-4 leading-relaxed">
-                      Start asking "What familiar thing can I connect this to?"
-                    </p>
-                  </div>
-                </MagneticButton>
-              </Fade>
-
-              {/* Takeaways */}
-              <Fade delay={0.1}>
-                <div className="mb-20">
-                  <h2 className="text-sm uppercase tracking-widest text-accent font-semibold mb-8">Key Takeaways</h2>
-
-                  <motion.div
-                    className="space-y-4"
-                    variants={staggerContainer}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                  >
-                    {[
-                      { text: "Too NEW = Fear", desc: "Your audience won't trust what they don't recognize. Pure novelty triggers the brain's threat response." },
-                      { text: "Too FAMILIAR = Invisible", desc: "They'll scroll past without a second thought. You blend into the noise of everything else." },
-                      { text: "MAYA = Magnetic", desc: "Wrap your innovation in something they already understand. New enough to intrigue, familiar enough to trust." },
-                      { text: "Lead with familiar, reveal the new", desc: "Anchor your pitch in what they know. Then show them the surprising twist that makes you different." }
-                    ].map((item, i) => (
-                      <motion.div
-                        key={i}
-                        className="flex items-start gap-5 p-6 rounded-2xl bg-neutral-50 hover:bg-blue-50 transition-colors"
-                        variants={staggerItem}
-                        whileHover={{ x: 8 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      >
-                        <div className="p-1.5 bg-accent text-white rounded-full flex-shrink-0 mt-0.5">
-                          <Icons.Check />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg text-neutral-800">{item.text}</p>
-                          <p className="text-neutral-600 mt-1">{item.desc}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </Fade>
-
-              {/* Action Step */}
-              <Fade delay={0.1}>
-                <motion.div
-                  className="p-10 rounded-3xl border-2 border-accent bg-gradient-to-br from-blue-50 to-white"
-                  whileHover={{ scale: 1.01, y: -4 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="p-3 bg-accent rounded-xl text-white">
-                      <Icons.Target />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold mb-4">Your Action Step</h2>
-                      <p className="text-lg text-neutral-600 leading-relaxed mb-6">
-                        Open your best-performing ad or product page. Ask yourself:
-                      </p>
-                      <div className="space-y-3">
-                        <p className="text-lg font-semibold text-black">
-                          "What's the familiar thing my customer already knows and trusts?"
-                        </p>
-                        <p className="text-neutral-600">
-                          Lead with that. Anchor them in comfort. <em>Then</em> reveal the surprising twist that makes your offer irresistible.
-                        </p>
-                      </div>
-                    </div>
+                  <div>
+                    <h3 className="text-black font-semibold mb-1">{item.title}</h3>
+                    <p className="text-neutral-500 text-sm">{item.question}</p>
                   </div>
                 </motion.div>
-              </Fade>
-
+              ))}
             </div>
-          </main>
+          </div>
+        </div>
+      </div>
+    );
 
-          {/* Footer */}
-          <footer className="py-16 border-t border-neutral-200">
-            <div className="max-w-3xl mx-auto px-6 text-center">
-              <p className="text-sm text-neutral-400 font-medium">Quantum Scale Learning Center</p>
+    // Quiz Slide
+    const QuizSlideComponent = ({ data, onShowVideo, onHideVideo }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationVideo = useMemo(() => getRandomVideo(celebrationVideos), []);
+      const empathyVideo = useMemo(() => getRandomVideo(empathyVideos), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      const isCorrect = selected !== null && data.options[selected]?.correct;
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setTimeout(() => {
+          setShowFeedback(true);
+          onShowVideo(data.options[index]?.correct ? celebrationVideo : empathyVideo, '55%', gifSide);
+        }, 300);
+      };
+
+      useEffect(() => () => onHideVideo(), [onHideVideo]);
+
+      return (
+        <div className="h-full w-full bg-white p-6 md:p-8">
+          <div className="h-full flex flex-col justify-center">
+            <div className="max-w-2xl mx-auto w-full">
+              {/* Header */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#88da1c]/10 text-[#88da1c] mb-3">
+                  <Icons.Sparkles size={12} />
+                  Knowledge Check
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-black">{data.question}</h2>
+              </motion.div>
+
+              {/* Options */}
+              <div className="space-y-3 mb-6">
+                {data.options.map((option, i) => {
+                  const isSelected = selected === i;
+                  const isOptionCorrect = option.correct;
+                  let optionClass = 'bg-neutral-50 border-neutral-200 text-black hover:border-neutral-300';
+
+                  if (showFeedback) {
+                    if (isSelected && isOptionCorrect) optionClass = 'bg-[#88da1c] border-[#88da1c] text-black';
+                    else if (isSelected && !isOptionCorrect) optionClass = 'bg-[#EF4444] border-[#EF4444] text-white';
+                    else if (isOptionCorrect) optionClass = 'bg-[#88da1c]/20 border-[#88da1c] text-black';
+                    else optionClass = 'bg-neutral-50 border-neutral-200 text-neutral-400';
+                  }
+
+                  return (
+                    <motion.button key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-5 rounded-xl text-left border-2 transition-all ${optionClass} ${!showFeedback ? 'cursor-pointer' : ''}`}>
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{option.text}</span>
+                        {showFeedback && isSelected && (
+                          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                            {isOptionCorrect ? <Icons.Check size={20} /> : <Icons.X size={20} />}
+                          </motion.span>
+                        )}
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {/* Feedback */}
+              <AnimatePresence>
+                {showFeedback && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-[#88da1c]/10 border border-[#88da1c]/30' : 'bg-amber-50 border border-amber-200'}`}>
+                    <p className={`text-sm leading-relaxed ${isCorrect ? 'text-black' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </footer>
+          </div>
         </div>
       );
-    }
+    };
 
-    ReactDOM.render(<Lesson />, document.getElementById('root'));
+    // Completion Slide - Bright
+    const CompletionSlide = () => (
+      <div className="h-full w-full bg-white flex flex-col items-center justify-center px-8">
+        <div className="max-w-lg text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-2xl bg-[#88da1c] flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <Icons.Check size={32} className="text-black" />
+          </motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-3xl md:text-4xl font-bold text-black mb-4">
+            Lesson Complete
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-lg mb-8 leading-relaxed">
+            You now know the secret: <span className="text-black font-semibold">70% familiar + 30% novel</span>. Use this ratio in every product page, every ad, every email.
+          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-black rounded-2xl p-6 text-left">
+            <p className="text-neutral-500 text-xs uppercase tracking-widest mb-2">Up Next</p>
+            <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const [isAnimating, setIsAnimating] = useState(false);
+      const [videoConfig, setVideoConfig] = useState(null);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
+
+      const showVideo = useCallback((url, height, side) => setVideoConfig({ url, height, side }), []);
+      const hideVideo = useCallback(() => setVideoConfig(null), []);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowVideo={showVideo} onHideVideo={hideVideo} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'quote': return <QuoteSlide data={slide} />;
+          case 'maya': return <MAYASlide />;
+          case 'split': return <SplitSlide data={slide} />;
+          case 'beforeAfter': return <BeforeAfterSlide data={slide} />;
+          case 'beforeAfterLight': return <BeforeAfterLightSlide data={slide} />;
+          case 'process': return <ProcessSlide data={slide} />;
+          case 'stats': return <StatsSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'checklist': return <ChecklistSlide data={slide} />;
+          case 'quiz': return <QuizSlideComponent data={slide} onShowVideo={showVideo} onHideVideo={hideVideo} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative overflow-hidden">
+          <div className="flex-1 relative overflow-hidden">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+
+            {showPrev && (
+              <button onClick={prevSlide} className="absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-400 hover:text-black hover:shadow-xl transition-all z-20">
+                <Icons.ArrowLeft size={18} />
+              </button>
+            )}
+            {showNext && (
+              <button onClick={nextSlide} className="absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-400 hover:text-black hover:shadow-xl transition-all z-20">
+                <Icons.ArrowRight size={18} />
+              </button>
+            )}
+          </div>
+
+          <div className="py-5 border-t border-neutral-100 flex-shrink-0 bg-white">
+            <div className="flex items-center justify-center gap-2">
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => goToSlide(i)} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-[#88da1c] scale-125' : 'bg-neutral-300 hover:bg-neutral-400'}`} />
+              ))}
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {videoConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${videoConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-20 pointer-events-none`} style={{ zIndex: 50, height: videoConfig.height, maxHeight: '50%' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                  <source src={videoConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>

@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #0d9488; --accent-dark: #0f766e; --accent-light: #14b8a6; --accent-rgb: 13, 148, 136; }
+    :root { --accent: #88da1c; --accent-dark: #6fb816; --accent-light: #a3e635; --accent-rgb: 136, 218, 28; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -35,97 +32,53 @@
     const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
-    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'borrowed-trust',
       title: 'Borrowed Trust',
       description: 'Why strangers in white coats sell better than your best sales copy.',
-      accentColor: '#0d9488',
+      accentColor: '#88da1c',
       duration: '8 min',
       nextLesson: { id: 'herd-instinct', title: 'The Herd Instinct', teaser: 'Why 1,000 strangers are more convincing than your best ad copy.' }
     };
 
-    // Tool configuration
-    const TOOL_CONFIG = {
-      name: 'Trust Badges Bear',
-      logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png',
-      link: 'https://apps.shopify.com/trust-badge-bear',
-      tagline: 'One-click visual authority badges'
-    };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    let __isAdmin = false;
-    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
-    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      const handleReport = (e) => {
-        e.stopPropagation();
-        if (window.parent !== window) {
-          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
-        }
-      };
-      return (
-        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
-          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
-        </button>
-      );
-    };
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      // ========== PART 1: THE PSYCHOLOGY (Theory) ==========
-      { type: 'welcome', learningGoals: ['Why strangers in uniforms get instant trust (and you don\'t)', 'The psychology of borrowed authority and liking', 'How to ethically borrow credibility for your Shopify store'] },
-      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you to move. You ignore them.', subtext: 'Same command. Same situation. Different uniform. Why does the uniform win? Because your brain has a shortcut: Authority = Trust. And trust = sales. The question is: How do you borrow that trust when you\'re nobody in your market yet?' },
-      { type: 'content', title: 'The Uniform Study That Changes Everything', body: 'Psychologist Leonard Bickman ran a simple experiment. A researcher asked people on the street to do something trivial - pick up a bag, give money for parking, move away from a bus stop. Same person. Same request. Only one thing changed: what they wore. In street clothes, 42% complied. In a security guard uniform? 92% complied. The uniform alone increased compliance by 119%. The person had ZERO actual authority. But the symbol of authority was enough.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'left'},
-      { type: 'uniform-study', title: 'The Power of Borrowed Authority' },
-      { type: 'content', title: 'Why This Works (And Why It Matters)', body: 'We are conditioned from birth to defer to authority. Doctors. Police. Scientists. Experts. Not because we verify their credentials every time - we don\'t have time for that. We use mental shortcuts. Lab coat = trust the medical advice. Badge = obey the command. "As Seen In Forbes" = trust the product. Your customers use the same shortcuts. If your brand LOOKS credible, they assume it IS credible. This is borrowed trust.' },
-      { type: 'cards', title: '3 Ways to Borrow Authority in Ecommerce', items: [
-        { title: '1. Media Mentions', description: '"As Seen In..." badges from reputable sources (Forbes, TechCrunch, NYT). Even if it was a tiny mention. The logo alone signals credibility to your brain\'s shortcut system.' },
-        { title: '2. Expert Endorsements', description: 'Dermatologist-tested. Certified organic. Trainer-recommended. The expert\'s credibility transfers to your product. You borrow their authority.' },
-        { title: '3. Credentials & Awards', description: 'Industry awards, certifications, professional affiliations. "Winner of 2024 Innovation Award" - even if only 12 people entered. The award EXISTS. That\'s what matters to the shortcut brain.' }
+      { type: 'welcome', learningGoals: ['Why strangers in uniforms get instant trust (and you don\'t)', 'The psychology of borrowed authority and liking', 'How to ethically borrow credibility for your store'] },
+      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you? You ignore them.', subtext: 'Same command. Same situation. Different uniform. The uniform alone changes everything. Because your brain has a shortcut: Authority = Trust. And trust = sales.' },
+      { type: 'bar-chart' },
+      { type: 'split-content', title: 'Why This Matters For Your Store', content: 'We are conditioned from birth to defer to authority. Doctors. Police. Scientists. We don\'t verify credentials every time - we use shortcuts.\n\n"Lab coat = trust the advice"\n"Badge = obey the command"\n"As Seen In Forbes = trust the product"\n\nIf your brand LOOKS credible, customers assume it IS credible.', media: { type: 'video', src: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4' }, reversed: false },
+      { type: 'customer-journey' },
+      { type: 'icon-grid', title: '3 Ways to Borrow Authority', items: [
+        { icon: 'Award', title: 'Media Mentions', description: '"As Seen In..." badges from reputable sources. Even a tiny mention. The logo alone signals credibility.' },
+        { icon: 'Shield', title: 'Expert Endorsements', description: 'Dermatologist-tested. Certified organic. The expert\'s credibility transfers to your product.' },
+        { icon: 'Star', title: 'Credentials & Awards', description: 'Industry awards, certifications. "Winner of 2024 Innovation Award" - the award EXISTS. That\'s what matters.' }
       ]},
-      { type: 'example', scenario: 'Coffee Brand Ad', before: { label: 'No Authority Signal', text: '"Premium Organic Coffee Beans - Ethically Sourced, Expertly Roasted"' }, after: { label: 'Authority Borrowed', text: '"As Seen In: Forbes | TechCrunch | Food & Wine. Certified Organic. Award-Winning Roasters Since 2018."' }, insight: 'Same coffee. Different trust level. The logos do the heavy lifting your copy can\'t.' },
-      { type: 'content', title: 'The Liking Principle: We Buy From People Like Us', body: 'A 1970s insurance study tracked what made customers more likely to buy. Turns out, it wasn\'t the pitch. It was similarity. Customers bought more from salespeople who were like them - same age, religion, politics, even smoking habits. Why? Because similarity = safety = trust. "If they\'re like me, they GET me. They won\'t screw me over." This is the Liking Principle. And it\'s lethal in ecommerce.' },
-      { type: 'borrowing-grid', title: 'The Trust Borrowing Playbook' },
-      { type: 'example', scenario: 'Fashion Brand Instagram Ad', before: { label: 'Polished, No Similarity', text: 'Professional model (age 23) in perfect lighting, flawless makeup, studio background' }, after: { label: 'Relatable UGC', text: 'Real customer (age 38) in her kitchen, natural lighting, wearing the outfit while making breakfast for kids' }, insight: 'Target audience is 30-45 moms. Who do they trust more? The influencer? Or someone who looks EXACTLY like them?' },
-      { type: 'trust-stack', title: 'Authority + Liking = Maximum Trust' },
-      { type: 'content', title: 'Combine Them: Authority + Liking', body: 'Here\'s the magic: Use Authority to get them to stop. Use Liking to get them to stay. "As Seen In Forbes" stops the scroll (authority). Real customer testimonial from someone exactly like them keeps them reading (liking). Dermatologist-tested serum (authority). UGC video from 40-year-old using it in her bathroom (liking). Stack them. Don\'t choose. Both work better together than either alone.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
-      { type: 'example', scenario: 'Skincare Brand Product Page', before: { label: 'Missing Both', text: 'Product photo, generic description, "Add to Cart" button' }, after: { label: 'Authority + Liking Stacked', text: '"Dermatologist-Tested | As Featured in Vogue" (authority) + UGC review video from 45-year-old customer showing real results (liking)' }, insight: 'The authority badge stops them. The relatable video converts them. One-two punch.' },
-      { type: 'quiz', question: 'Which Shopify ad combines Authority + Liking most effectively?', options: ['"Premium Yoga Mats - Free Shipping Today Only!"', '"As Seen In Women\'s Health | Yoga Journal - Trusted by 10,000+ Instructors"', '"Meet Sarah, 52, Who Does Yoga Daily on Our Mat (As Seen In Yoga Journal)"', '"Top-Rated Yoga Mats - Check Our 5-Star Reviews"'], correctIndex: 2, feedback: { correct: 'Exactly! It stacks Authority ("As Seen In Yoga Journal") with Liking (Sarah, 52 - a real, relatable person). The media logo stops the scroll. Sarah keeps them engaged. Both working together = maximum trust.', incorrect: 'Close, but not quite. The winning answer stacks BOTH principles: Authority (media mention) + Liking (relatable person). Authority stops the scroll. Liking keeps them reading. You need both for maximum trust.' }},
-      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
-      { type: 'section-divider' },
-      { type: 'step-identify-authority' },
-      { type: 'step-visual-badges' },
-      { type: 'step-stack-ugc' },
-      { type: 'step-results' },
+      { type: 'heatmap' },
+      { type: 'before-after', scenario: 'Coffee Brand Product Description', before: { label: 'No Authority', text: '"Premium Organic Coffee Beans - Ethically Sourced, Expertly Roasted"' }, after: { label: 'Authority Borrowed', text: '"As Seen In: Forbes | TechCrunch | Food & Wine. Certified Organic. Award-Winning Roasters Since 2018."' }, insight: 'Same coffee. Different trust level. The logos do the heavy lifting.' },
+      { type: 'quote', quote: 'People don\'t buy from companies they understand. They buy from companies they trust.', author: 'Robert Cialdini', role: 'Author of Influence' },
+      { type: 'radar-chart' },
+      { type: 'split-content', title: 'The Liking Principle', content: 'A 1970s insurance study found customers bought more from salespeople who were LIKE them - same age, hobbies, even smoking habits.\n\nWhy? Because similarity = safety = trust.\n\n"If they\'re like me, they GET me. They won\'t screw me over."\n\nThis is the Liking Principle. And it\'s lethal in ecommerce.', media: { type: 'video', src: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4' }, reversed: true },
+      { type: 'funnel-chart' },
+      { type: 'before-after', scenario: 'Fashion Brand Ad', before: { label: 'Polished, No Similarity', text: 'Professional model (age 23) in perfect lighting, flawless makeup, studio background' }, after: { label: 'Relatable UGC', text: 'Real customer (age 38) in her kitchen, natural lighting, wearing the outfit while making breakfast' }, insight: 'Target is 30-45 moms. Who do they trust more? The model or someone exactly like them?' },
+      { type: 'sankey-diagram' },
+      { type: 'process-steps', title: 'Stack Authority + Liking Together', steps: [
+        { title: 'Authority First', description: '"As Seen In Forbes" stops the scroll' },
+        { title: 'Liking Second', description: 'Real customer testimonial keeps them reading' },
+        { title: 'Stack Them', description: 'Dermatologist-tested + UGC video = maximum trust' },
+        { title: 'Convert', description: 'Both work better together than either alone' }
+      ]},
+      { type: 'performance-matrix' },
+      { type: 'quiz', question: 'Which ad combines Authority + Liking most effectively?', options: ['"Premium Yoga Mats - Free Shipping Today Only!"', '"As Seen In Women\'s Health | Yoga Journal - Trusted by 10,000+ Instructors"', '"Meet Sarah, 52, Who Does Yoga Daily on Our Mat (As Seen In Yoga Journal)"', '"Top-Rated Yoga Mats - Check Our 5-Star Reviews"'], correctIndex: 2, feedback: { correct: 'Exactly! It stacks Authority ("As Seen In Yoga Journal") with Liking (Sarah, 52 - a real, relatable person). Both working together = maximum trust.', incorrect: 'The winner stacks BOTH principles: Authority (media mention) + Liking (relatable person). Authority stops the scroll. Liking keeps them reading. You need both.' }},
       { type: 'completion' }
     ];
 
@@ -135,773 +88,997 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowDown: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      User: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
       Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
       Award: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
       Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-      Plus: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
-      Camera: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+      Quote: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
     };
 
-    // ============ CUSTOM SLIDE COMPONENTS ============
+    // ============ BAR CHART - HORIZONTAL (FROM LIBRARY) ============
+    const BarChartSlide = ({ data }) => {
+      const barData = [
+        { label: 'Security Guard', value: 92, color: '#88da1c' },
+        { label: 'Doctor in Lab Coat', value: 88, color: '#22C55E' },
+        { label: 'Business Executive', value: 76, color: '#3B82F6' },
+        { label: 'Regular Person', value: 34, color: '#6B7280' },
+        { label: 'Casual Clothes', value: 28, color: '#6B7280' },
+      ];
 
-    // UniformStudySlide - 42% vs 92% compliance visualization
-    const UniformStudySlide = ({ data }) => {
+      const max = Math.max(...barData.map(d => d.value)) * 1.1;
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
-            {data.title}
-          </motion.h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>The Bickman Study</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Compliance Rate by Appearance</h2>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Street Clothes */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl p-6 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: '#94a3b820', border: '2px dashed #94a3b8' }}>
-                  <div style={{ color: '#94a3b8' }}><Icons.User /></div>
-                </div>
-                <div className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Street Clothes</div>
-                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#94a3b8' }}>42%</div>
-                <div className="text-neutral-500 text-sm">Compliance rate</div>
-                <div className="mt-4 h-3 rounded-full bg-neutral-800">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '42%' }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    className="h-full rounded-full"
-                    style={{ background: '#94a3b8' }}
-                  />
-                </div>
-              </div>
-            </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
-            {/* Guard Uniform */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="rounded-2xl p-6 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #0d9488, transparent)' }} />
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: '#0d948820', border: '2px solid #0d9488' }}>
-                  <div style={{ color: '#0d9488' }}><Icons.Shield /></div>
-                </div>
-                <div className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Guard Uniform</div>
-                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#0d9488' }}>92%</div>
-                <div className="text-neutral-500 text-sm">Compliance rate</div>
-                <div className="mt-4 h-3 rounded-full bg-neutral-800">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '92%' }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="h-full rounded-full"
-                    style={{ background: '#0d9488' }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            <div className="space-y-5">
+              {barData.map((item, index) => {
+                const percentage = (item.value / max) * 100;
+                return (
+                  <motion.div key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-white">{item.label}</span>
+                      <motion.span className="text-sm font-bold text-white"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.1 }}>
+                        {item.value}%
+                      </motion.span>
+                    </div>
+                    <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                      <motion.div className="h-full rounded-full" style={{ backgroundColor: item.color }}
+                        initial={{ width: 0 }} animate={{ width: `${percentage}%` }}
+                        transition={{ duration: 0.8, delay: 0.2 + index * 0.1, ease: [0.22, 1, 0.36, 1] }} />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="text-center mt-6"
-          >
-            <span className="inline-block px-4 py-2 rounded-lg text-sm font-bold" style={{ background: '#0d948830', color: '#0d9488' }}>
-              +119% Lift - Same person, different uniform
-            </span>
+            <motion.p className="text-center text-white/60 text-sm mt-6"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+              Same request. Different uniform. Compliance triples with authority signals.
+            </motion.p>
           </motion.div>
         </div>
       );
     };
 
-    // TrustStackSlide - Authority + Liking = 3.7x trust multiplier
-    const TrustStackSlide = ({ data }) => {
+    // ============ CUSTOMER JOURNEY MAP (FROM LIBRARY) ============
+    const CustomerJourneySlide = ({ data }) => {
+      const stages = [
+        { id: 'discover', name: 'Discover', touchpoints: [
+          { id: 'd1', label: 'Sees Ad', emotion: 'neutral' },
+          { id: 'd2', label: 'No Trust Signals', emotion: 'negative' },
+        ]},
+        { id: 'research', name: 'Research', touchpoints: [
+          { id: 'r1', label: 'Checks Reviews', emotion: 'neutral' },
+          { id: 'r2', label: 'Sees "As Seen In"', emotion: 'positive' },
+        ]},
+        { id: 'consider', name: 'Consider', touchpoints: [
+          { id: 'c1', label: 'Expert Endorsement', emotion: 'positive' },
+          { id: 'c2', label: 'UGC Testimonial', emotion: 'positive' },
+        ]},
+        { id: 'decide', name: 'Purchase', touchpoints: [
+          { id: 'p1', label: 'Trust Established', emotion: 'positive' },
+          { id: 'p2', label: 'Converts!', emotion: 'positive' },
+        ]},
+      ];
+
+      const emotionColors = { positive: '#22C55E', neutral: '#F59E0B', negative: '#EF4444' };
+      const stageColors = ['#88da1c', '#22C55E', '#3B82F6', '#A855F7'];
+
+      const emotionLevels = { positive: 2, neutral: 1, negative: 0 };
+      let allPoints = [];
+      stages.forEach((stage, stageIndex) => {
+        stage.touchpoints.forEach((tp, tpIndex) => {
+          const emotion = tp.emotion || 'neutral';
+          const x = (stageIndex + (tpIndex + 1) / (stage.touchpoints.length + 1)) / stages.length;
+          const y = emotionLevels[emotion];
+          allPoints.push({ x, y, emotion });
+        });
+      });
+
+      const curvePoints = allPoints.map(p => ({ x: 50 + p.x * 500, y: 30 + (2 - p.y) * 35 }));
+      const pathD = curvePoints.length > 0 ? `M ${curvePoints.map(p => `${p.x},${p.y}`).join(' L ')}` : '';
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
-            {data.title}
-          </motion.h2>
-
-          <div className="rounded-2xl p-6 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #0d9488, transparent)' }} />
-
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
-              {/* Authority */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-center flex-1"
-              >
-                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#3b82f620', color: '#3b82f6' }}>
-                  <Icons.Award />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">Authority</div>
-                <div className="text-3xl md:text-4xl font-bold" style={{ color: '#3b82f6' }}>2.1x</div>
-                <div className="text-neutral-500 text-xs">Trust Lift</div>
-              </motion.div>
-
-              {/* Plus sign */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ background: '#ffffff10', color: '#ffffff' }}
-              >
-                <Icons.Plus />
-              </motion.div>
-
-              {/* Liking */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-center flex-1"
-              >
-                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#f59e0b20', color: '#f59e0b' }}>
-                  <Icons.Heart />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">Liking</div>
-                <div className="text-3xl md:text-4xl font-bold" style={{ color: '#f59e0b' }}>1.8x</div>
-                <div className="text-neutral-500 text-xs">Trust Lift</div>
-              </motion.div>
-
-              {/* Equals sign */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-3xl font-bold text-white"
-              >
-                =
-              </motion.div>
-
-              {/* Combined */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
-                className="text-center flex-1 rounded-xl p-4"
-                style={{ background: '#0d948820', border: '2px solid #0d9488' }}
-              >
-                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#0d9488', color: 'white' }}>
-                  <Icons.Star />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">Combined</div>
-                <div className="text-4xl md:text-5xl font-bold" style={{ color: '#0d9488' }}>3.7x</div>
-                <div className="text-neutral-400 text-xs">Trust Multiplier</div>
-              </motion.div>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Journey Map</span>
             </div>
-          </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Buyer's Trust Journey</h2>
+          </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="text-center text-sm text-neutral-500 mt-6"
-          >
-            Authority stops the scroll. Liking converts them. Stack both.
-          </motion.p>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            {/* Emotion curve */}
+            <div className="mb-4">
+              <svg viewBox="0 0 600 100" className="w-full h-20">
+                {[0, 1, 2].map(level => (
+                  <motion.line key={level} initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} transition={{ delay: 0.2 }}
+                    x1="50" y1={30 + (2 - level) * 35} x2="550" y2={30 + (2 - level) * 35}
+                    stroke="rgba(255,255,255,0.15)" strokeDasharray="4,4" />
+                ))}
+                {pathD && (
+                  <motion.path initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.4, duration: 1.5 }}
+                    d={pathD} stroke="#88da1c" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                )}
+                {curvePoints.map((point, i) => (
+                  <motion.circle key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6 + i * 0.1, type: 'spring' }}
+                    cx={point.x} cy={point.y} r="5"
+                    fill={allPoints[i].emotion === 'positive' ? '#22C55E' : allPoints[i].emotion === 'negative' ? '#EF4444' : '#F59E0B'} />
+                ))}
+              </svg>
+            </div>
+
+            {/* Stages */}
+            <div className="flex gap-2">
+              {stages.map((stage, stageIndex) => (
+                <motion.div key={stage.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + stageIndex * 0.1 }} className="flex-1">
+                  <div className="p-2 rounded-t-lg text-center" style={{ backgroundColor: `${stageColors[stageIndex]}20` }}>
+                    <div className="text-xs font-bold" style={{ color: stageColors[stageIndex] }}>{stage.name}</div>
+                  </div>
+                  <div className="p-2 rounded-b-lg space-y-1" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                    {stage.touchpoints.map((tp, tpIndex) => (
+                      <motion.div key={tp.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + stageIndex * 0.1 + tpIndex * 0.05 }}
+                        className="flex items-center gap-1.5 p-1.5 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: emotionColors[tp.emotion] }} />
+                        <p className="text-xs font-medium text-white">{tp.label}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       );
     };
 
-    // BorrowingGridSlide - 3 Authority + 3 Liking methods (NO tool mention)
-    const BorrowingGridSlide = ({ data }) => {
-      const methods = [
-        { category: 'Authority', items: [
-          { name: 'Media Mentions', desc: 'As Seen In logos' },
-          { name: 'Expert Endorsements', desc: 'Tested by professionals' },
-          { name: 'Credentials', desc: 'Awards & certifications' }
-        ], color: '#3b82f6', icon: <Icons.Award /> },
-        { category: 'Liking', items: [
-          { name: 'Similarity', desc: 'Mirror their language' },
-          { name: 'Familiarity', desc: 'Relatable UGC' },
-          { name: 'Association', desc: 'Shared values' }
-        ], color: '#f59e0b', icon: <Icons.Heart /> }
+    // ============ HEATMAP (FROM LIBRARY) ============
+    const HeatmapSlide = ({ data }) => {
+      const rows = ['Media Badge', 'Expert Quote', 'UGC Video', 'Certification'];
+      const cols = ['Awareness', 'Interest', 'Desire', 'Action'];
+      const heatmapData = [
+        { row: 'Media Badge', col: 'Awareness', value: 95 },
+        { row: 'Media Badge', col: 'Interest', value: 75 },
+        { row: 'Media Badge', col: 'Desire', value: 55 },
+        { row: 'Media Badge', col: 'Action', value: 40 },
+        { row: 'Expert Quote', col: 'Awareness', value: 70 },
+        { row: 'Expert Quote', col: 'Interest', value: 85 },
+        { row: 'Expert Quote', col: 'Desire', value: 80 },
+        { row: 'Expert Quote', col: 'Action', value: 65 },
+        { row: 'UGC Video', col: 'Awareness', value: 50 },
+        { row: 'UGC Video', col: 'Interest', value: 70 },
+        { row: 'UGC Video', col: 'Desire', value: 90 },
+        { row: 'UGC Video', col: 'Action', value: 85 },
+        { row: 'Certification', col: 'Awareness', value: 60 },
+        { row: 'Certification', col: 'Interest', value: 65 },
+        { row: 'Certification', col: 'Desire', value: 75 },
+        { row: 'Certification', col: 'Action', value: 70 },
       ];
 
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">
-            {data.title}
-          </motion.h2>
+      const values = heatmapData.map(d => d.value);
+      const maxValue = Math.max(...values);
+      const minValue = Math.min(...values);
+      const valueRange = maxValue - minValue || 1;
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {methods.map((method, mi) => (
-              <motion.div
-                key={mi}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + mi * 0.1 }}
-                className="rounded-2xl p-5 relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
-              >
-                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${method.color}, transparent)` }} />
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${method.color}20`, color: method.color }}>
-                    {method.icon}
-                  </div>
-                  <div className="text-white font-bold">{method.category}</div>
-                </div>
-                <div className="space-y-3">
-                  {method.items.map((item, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + mi * 0.1 + i * 0.1 }}
-                      className="flex items-center gap-3"
-                    >
-                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: `${method.color}20`, color: method.color }}>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <div className="text-white text-sm font-semibold">{item.name}</div>
-                        <div className="text-neutral-500 text-xs">{item.desc}</div>
-                      </div>
+      const getValue = (row, col) => {
+        const cell = heatmapData.find(d => d.row === row && d.col === col);
+        return cell?.value || 0;
+      };
+
+      const getColor = (value) => {
+        const normalized = (value - minValue) / valueRange;
+        const r = Math.round(26 + (136 - 26) * normalized);
+        const g = Math.round(26 + (218 - 26) * normalized);
+        const b = Math.round(26 + (28 - 26) * normalized);
+        return `rgb(${r}, ${g}, ${b})`;
+      };
+
+      const getTextColor = (value) => {
+        const normalized = (value - minValue) / valueRange;
+        return normalized > 0.5 ? '#000000' : '#ffffff';
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Trust Matrix</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Trust Tactics Effectiveness</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="overflow-x-auto">
+              <div className="inline-block">
+                <div className="flex" style={{ marginLeft: 100 }}>
+                  {cols.map((col, i) => (
+                    <motion.div key={col} className="flex items-center justify-center text-xs font-medium text-white/50"
+                      style={{ width: 70, height: 32 }}
+                      initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                      {col}
                     </motion.div>
                   ))}
                 </div>
-              </motion.div>
-            ))}
-          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-center text-sm text-neutral-500 mt-6"
-          >
-            Master both principles. Stack them for maximum conversion.
-          </motion.p>
-        </div>
-      );
-    };
-
-    // ============ PART 2: PRACTICAL SLIDES ============
-
-    // Section Divider Slide
-    const SectionDividerSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
-            <Icons.Zap />
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to borrow trust for your store</motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
-                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-    );
-
-    // Step 1: Identify Your Authority Sources
-    const StepIdentifyAuthoritySlide = ({ data }) => {
-      const sources = [
-        { type: 'Media', examples: 'Forbes, TechCrunch, local news, podcasts', action: 'List any mentions (even small ones)' },
-        { type: 'Certifications', examples: 'Organic, FDA, ISO, industry-specific', action: 'Check if your product qualifies' },
-        { type: 'Awards', examples: 'Industry awards, competitions, recognition', action: 'Enter relevant competitions' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Identify Your Authority Sources</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-3 mb-6">
-            {sources.map((source, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-                <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-                <div className="text-white font-bold text-sm mb-2">{source.type}</div>
-                <div className="text-neutral-400 text-xs mb-3">{source.examples}</div>
-                <div className="px-2 py-1 rounded text-xs" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>{source.action}</div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Write down every possible authority source - media mentions, certifications, awards, expert connections. Even small ones count.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Step 2: Add Visual Trust Badges
-    const StepVisualBadgesSlide = ({ data }) => {
-      const badgeTypes = [
-        { icon: Icons.Shield, label: 'Security Seals', examples: 'SSL, Safe Checkout, Encrypted' },
-        { icon: Icons.Award, label: 'Certifications', examples: 'Organic, Cruelty-Free, FDA' },
-        { icon: Icons.Star, label: 'Payment Trust', examples: 'Visa, PayPal, Apple Pay logos' },
-        { icon: Icons.Users, label: 'Social Proof', examples: '10,000+ Happy Customers' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Visual Trust Badges</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            {badgeTypes.map((badge, i) => {
-              const Icon = badge.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
-                    <Icon />
+                {rows.map((row, rowIndex) => (
+                  <div key={row} className="flex items-center">
+                    <motion.div className="text-xs font-medium text-white/50 pr-3" style={{ width: 100 }}
+                      initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: rowIndex * 0.05 }}>
+                      {row}
+                    </motion.div>
+                    {cols.map((col, colIndex) => {
+                      const value = getValue(row, col);
+                      const color = getColor(value);
+                      const textColor = getTextColor(value);
+                      return (
+                        <motion.div key={`${row}-${col}`}
+                          className="flex items-center justify-center rounded-md m-0.5 font-semibold text-sm"
+                          style={{ width: 66, height: 52, backgroundColor: color, color: textColor }}
+                          initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.1 + rowIndex * 0.05 + colIndex * 0.03, type: 'spring', stiffness: 200 }}>
+                          {value}
+                        </motion.div>
+                      );
+                    })}
                   </div>
-                  <div className="text-white font-bold text-xs mb-1">{badge.label}</div>
-                  <div className="text-neutral-500 text-[10px]">{badge.examples}</div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Tool recommendation */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-12 h-12 rounded-xl" />
-            <div className="flex-1">
-              <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
-              <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
-            </div>
-            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105" style={{ background: 'var(--accent)', color: 'white' }}>
-              Get App
-            </a>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="p-4 rounded-xl mt-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Add trust badges below your Add to Cart button - payment icons, security seals, and guarantee badges.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Step 3: Stack Authority + UGC
-    const StepStackUGCSlide = ({ data }) => {
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
-              <div>
-                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
-                <h2 className="slide-title text-2xl md:text-3xl text-black">Stack Authority + Relatable UGC</h2>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#3b82f620', color: '#3b82f6' }}>
-                  <Icons.Award />
-                </div>
-                <span className="text-white font-bold text-sm">Authority (Stops Scroll)</span>
-              </div>
-              <ul className="space-y-2 text-sm text-neutral-400">
-                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "As Seen In Forbes"</li>
-                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "Dermatologist Tested"</li>
-                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "2024 Award Winner"</li>
-              </ul>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#f59e0b20', color: '#f59e0b' }}>
-                  <Icons.Camera />
-                </div>
-                <span className="text-white font-bold text-sm">UGC (Converts)</span>
-              </div>
-              <ul className="space-y-2 text-sm text-neutral-400">
-                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Real customer photos</li>
-                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Video testimonials</li>
-                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Before/after results</li>
-              </ul>
-            </motion.div>
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> On your product page, place authority badges above the fold. Add UGC reviews (photos/videos from customers who match your target audience) below.</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // Results Slide
-    const StepResultsSlide = ({ data }) => {
-      const results = [
-        { metric: '+32%', label: 'Conversion Lift', desc: 'With trust badges', icon: Icons.TrendingUp, color: '#0d9488' },
-        { metric: '2.1x', label: 'Authority Effect', desc: 'Media logos alone', icon: Icons.Award, color: '#3b82f6' },
-        { metric: '3.7x', label: 'Combined Stack', desc: 'Authority + UGC together', icon: Icons.Star, color: '#f59e0b' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            {results.map((result, i) => {
-              const Icon = result.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
-                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
-                    <Icon />
-                  </div>
-                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
-                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
-                  <div className="text-neutral-400 text-xs">{result.desc}</div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
-            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">1-2 weeks</span> of implementation</p>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // ============ STANDARD SLIDES ============
-
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
-      return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
                 ))}
-              </ul>
+              </div>
+            </div>
+
+            <motion.div className="mt-6 flex items-center justify-center gap-3"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
+              <span className="text-xs text-white/50">Low Impact</span>
+              <div className="w-32 h-3 rounded-full" style={{ background: 'linear-gradient(90deg, #1a1a1a, #88da1c)' }} />
+              <span className="text-xs text-white/50">High Impact</span>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
-          </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ RADAR CHART (FROM LIBRARY) ============
+    const RadarChartSlide = ({ data }) => {
+      const radarData = [
+        { axis: 'Trust Speed', value: 95 },
+        { axis: 'Conversion', value: 85 },
+        { axis: 'Retention', value: 70 },
+        { axis: 'Referrals', value: 65 },
+        { axis: 'Price Tolerance', value: 80 },
+        { axis: 'Brand Recall', value: 90 },
+      ];
+
+      const size = 300;
+      const center = size / 2;
+      const radius = (size / 2) - 50;
+      const levels = 5;
+      const angleSlice = (Math.PI * 2) / radarData.length;
+      const maxValue = 100;
+      const accentColor = '#88da1c';
+
+      const calculatePoint = (value, index) => {
+        const normalizedValue = value / maxValue;
+        const angle = angleSlice * index - Math.PI / 2;
+        return { x: center + radius * normalizedValue * Math.cos(angle), y: center + radius * normalizedValue * Math.sin(angle) };
+      };
+
+      const dataPoints = radarData.map((d, i) => calculatePoint(d.value, i));
+      const polygonPath = dataPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
+
+      const labelPoints = radarData.map((_, i) => {
+        const angle = angleSlice * i - Math.PI / 2;
+        const labelRadius = radius + 30;
+        return { x: center + labelRadius * Math.cos(angle), y: center + labelRadius * Math.sin(angle) };
+      });
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Multi-Factor Analysis</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Authority + Liking Impact</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="flex justify-center">
+              <svg width={size} height={size} className="overflow-visible">
+                <defs>
+                  <radialGradient id="radarGradientTrust" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor={accentColor} stopOpacity="0.4" />
+                    <stop offset="100%" stopColor={accentColor} stopOpacity="0.1" />
+                  </radialGradient>
+                  <filter id="radarGlowTrust">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                    <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                </defs>
+
+                {Array.from({ length: levels }).map((_, levelIndex) => {
+                  const levelRadius = (radius / levels) * (levelIndex + 1);
+                  const levelPoints = radarData.map((_, i) => {
+                    const angle = angleSlice * i - Math.PI / 2;
+                    return { x: center + levelRadius * Math.cos(angle), y: center + levelRadius * Math.sin(angle) };
+                  });
+                  const levelPath = levelPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
+                  return (
+                    <motion.path key={levelIndex} d={levelPath} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={1}
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: levelIndex * 0.1 }} />
+                  );
+                })}
+
+                {radarData.map((_, i) => {
+                  const angle = angleSlice * i - Math.PI / 2;
+                  const endX = center + radius * Math.cos(angle);
+                  const endY = center + radius * Math.sin(angle);
+                  return (
+                    <motion.line key={i} x1={center} y1={center} x2={endX} y2={endY} stroke="rgba(255,255,255,0.1)" strokeWidth={1}
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.05 }} />
+                  );
+                })}
+
+                <motion.path d={polygonPath} fill="url(#radarGradientTrust)"
+                  initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.6, ease: 'backOut' }} style={{ transformOrigin: 'center' }} />
+
+                <motion.path d={polygonPath} fill="none" stroke={accentColor} strokeWidth={2.5} strokeLinejoin="round" filter="url(#radarGlowTrust)"
+                  initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }} />
+
+                {dataPoints.map((point, i) => (
+                  <motion.circle key={i} cx={point.x} cy={point.y} r={5} fill={accentColor} stroke="#000" strokeWidth={2}
+                    initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8 + i * 0.08, type: 'spring', stiffness: 200 }} />
+                ))}
+
+                {labelPoints.map((point, i) => (
+                  <motion.text key={i} x={point.x} y={point.y} textAnchor="middle" dominantBaseline="middle"
+                    className="text-xs font-medium" style={{ fill: '#fff' }}
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 + i * 0.05 }}>
+                    {radarData[i].axis}
+                  </motion.text>
+                ))}
+              </svg>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ FUNNEL CHART (FROM LIBRARY) ============
+    const FunnelChartSlide = ({ data }) => {
+      const funnelData = [
+        { label: 'See Your Ad', value: 10000, color: '#6B7280' },
+        { label: 'Without Trust Signals', value: 2000, color: '#EF4444' },
+        { label: 'With Authority + Liking', value: 6500, color: '#88da1c' },
+        { label: 'Purchase', value: 1950, color: '#22C55E' },
+      ];
+
+      const maxValue = funnelData[0].value;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Trust Conversion</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Trust Signals Triple Conversions</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="max-w-md mx-auto space-y-2">
+              {funnelData.map((stage, index) => {
+                const widthPercent = (stage.value / maxValue) * 100;
+                const prevValue = index > 0 ? funnelData[index - 1].value : stage.value;
+                const conversionRate = ((stage.value / prevValue) * 100).toFixed(1);
+
+                return (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.15 }} className="relative">
+                    <div className="flex justify-center">
+                      <motion.div className="relative h-14 rounded-lg flex items-center justify-center overflow-hidden"
+                        style={{ backgroundColor: stage.color }}
+                        initial={{ width: 0 }} animate={{ width: `${widthPercent}%` }}
+                        transition={{ duration: 0.8, delay: 0.2 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}>
+                        <div className="absolute inset-0 opacity-30" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)' }} />
+                        <motion.div className="relative z-10 flex items-center gap-3 px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.15 }}>
+                          <span className="text-white font-bold text-lg drop-shadow-sm">{stage.value.toLocaleString()}</span>
+                          <span className="text-white/90 text-sm font-medium drop-shadow-sm">{stage.label}</span>
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                    {index > 0 && (
+                      <motion.div className="flex justify-center items-center gap-2 py-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 + index * 0.15 }}>
+                        <Icons.ArrowDown />
+                        <span className={`text-xs font-medium ${stage.color === '#88da1c' ? 'text-[#88da1c]' : 'text-amber-500'}`}>
+                          {conversionRate}%
+                        </span>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ SANKEY DIAGRAM (FROM LIBRARY) ============
+    const SankeyDiagramSlide = ({ data }) => {
+      const nodes = [
+        { id: 'visitor', label: 'Visitor', color: '#6B7280' },
+        { id: 'authority', label: 'Authority Signals', color: '#3B82F6' },
+        { id: 'liking', label: 'Liking Signals', color: '#F59E0B' },
+        { id: 'trust', label: 'Trust Built', color: '#88da1c' },
+        { id: 'convert', label: 'Purchase', color: '#22C55E' },
+      ];
+
+      const links = [
+        { source: 'visitor', target: 'authority', value: 50 },
+        { source: 'visitor', target: 'liking', value: 50 },
+        { source: 'authority', target: 'trust', value: 45 },
+        { source: 'liking', target: 'trust', value: 45 },
+        { source: 'trust', target: 'convert', value: 80 },
+      ];
+
+      const width = 550;
+      const height = 300;
+      const padding = 40;
+      const nodeWidth = 20;
+
+      const sourceIds = new Set(links.map(l => l.source));
+      const targetIds = new Set(links.map(l => l.target));
+      const leftNodes = nodes.filter(n => sourceIds.has(n.id) && !targetIds.has(n.id));
+      const middleNodes = nodes.filter(n => sourceIds.has(n.id) && targetIds.has(n.id));
+      const rightNodes = nodes.filter(n => !sourceIds.has(n.id) && targetIds.has(n.id));
+
+      const nodePositions = new Map();
+
+      const positionColumn = (columnNodes, xPos) => {
+        const totalValue = columnNodes.reduce((sum, node) => {
+          const nodeValue = links.filter(l => l.source === node.id || l.target === node.id).reduce((s, l) => s + l.value, 0);
+          return sum + nodeValue;
+        }, 0);
+        let currentY = padding;
+        const availableHeight = height - 2 * padding;
+        columnNodes.forEach((node) => {
+          const nodeValue = links.filter(l => l.source === node.id || l.target === node.id).reduce((s, l) => s + l.value, 0);
+          const nodeHeight = (nodeValue / totalValue) * availableHeight * 0.8;
+          nodePositions.set(node.id, { x: xPos, y: currentY, height: nodeHeight });
+          currentY += nodeHeight + 15;
+        });
+      };
+
+      positionColumn(leftNodes, padding);
+      positionColumn(middleNodes, width / 2 - nodeWidth / 2);
+      positionColumn(rightNodes, width - padding - nodeWidth);
+
+      const createLinkPath = (link) => {
+        const sourcePos = nodePositions.get(link.source);
+        const targetPos = nodePositions.get(link.target);
+        if (!sourcePos || !targetPos) return '';
+
+        const sourceLinks = links.filter(l => l.source === link.source);
+        const targetLinks = links.filter(l => l.target === link.target);
+        const sourceLinkIndex = sourceLinks.findIndex(l => l === link);
+        const targetLinkIndex = targetLinks.findIndex(l => l === link);
+        const sourceTotal = sourceLinks.reduce((s, l) => s + l.value, 0);
+        const targetTotal = targetLinks.reduce((s, l) => s + l.value, 0);
+        const sourceOffset = sourceLinks.slice(0, sourceLinkIndex).reduce((s, l) => s + l.value, 0);
+        const targetOffset = targetLinks.slice(0, targetLinkIndex).reduce((s, l) => s + l.value, 0);
+        const linkHeight = (link.value / sourceTotal) * sourcePos.height;
+        const targetLinkHeight = (link.value / targetTotal) * targetPos.height;
+
+        const x0 = sourcePos.x + nodeWidth;
+        const y0 = sourcePos.y + (sourceOffset / sourceTotal) * sourcePos.height;
+        const x1 = targetPos.x;
+        const y1 = targetPos.y + (targetOffset / targetTotal) * targetPos.height;
+        const xi = (x0 + x1) * 0.5;
+
+        return `M ${x0} ${y0} C ${xi} ${y0}, ${xi} ${y1}, ${x1} ${y1} L ${x1} ${y1 + targetLinkHeight} C ${xi} ${y1 + targetLinkHeight}, ${xi} ${y0 + linkHeight}, ${x0} ${y0 + linkHeight} Z`;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Flow Visualization</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How Trust Flows to Conversions</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+              {links.map((link, i) => {
+                const sourceNode = nodes.find(n => n.id === link.source);
+                const color = sourceNode?.color || '#888';
+                return (
+                  <motion.path key={`link-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ delay: 0.3 + i * 0.05 }}
+                    d={createLinkPath(link)} fill={color} />
+                );
+              })}
+
+              {nodes.map((node, i) => {
+                const pos = nodePositions.get(node.id);
+                if (!pos) return null;
+                return (
+                  <motion.g key={node.id}>
+                    <motion.rect initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 0.1 + i * 0.03 }}
+                      x={pos.x} y={pos.y} width={nodeWidth} height={pos.height} fill={node.color} rx="4"
+                      style={{ transformOrigin: `${pos.x}px ${pos.y}px` }} />
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.03 }}
+                      x={pos.x < width / 2 ? pos.x - 5 : pos.x + nodeWidth + 5} y={pos.y + pos.height / 2 + 4}
+                      textAnchor={pos.x < width / 2 ? 'end' : 'start'} fill="rgba(255,255,255,0.8)" fontSize="11">
+                      {node.label}
+                    </motion.text>
+                  </motion.g>
+                );
+              })}
+            </svg>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ PERFORMANCE MATRIX (FROM LIBRARY) ============
+    const PerformanceMatrixSlide = ({ data }) => {
+      const items = [
+        { label: 'Media Badge', x: 85, y: 85, size: 22, color: '#88da1c' },
+        { label: 'UGC Video', x: 75, y: 90, size: 20, color: '#22C55E' },
+        { label: 'Expert Quote', x: 60, y: 70, size: 18, color: '#3B82F6' },
+        { label: 'Certification', x: 45, y: 55, size: 16, color: '#A855F7' },
+        { label: 'Stock Photos', x: 25, y: 30, size: 14, color: '#6B7280' },
+      ];
+
+      const size = 320;
+      const padding = 40;
+      const chartSize = size - padding * 2;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Strategic Matrix</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Trust Tactics: Impact vs Effort</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333', boxShadow: '0 0 60px rgba(136, 218, 28, 0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="flex justify-center">
+              <svg width={size} height={size} className="overflow-visible">
+                <rect x={padding} y={padding} width={chartSize} height={chartSize} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={1} />
+                <line x1={padding + chartSize / 2} y1={padding} x2={padding + chartSize / 2} y2={padding + chartSize} stroke="rgba(255,255,255,0.3)" strokeWidth={1} strokeDasharray="4 4" />
+                <line x1={padding} y1={padding + chartSize / 2} x2={padding + chartSize} y2={padding + chartSize / 2} stroke="rgba(255,255,255,0.3)" strokeWidth={1} strokeDasharray="4 4" />
+
+                {['Low Priority', 'Quick Wins', 'Avoid', 'Major Projects'].map((label, i) => {
+                  const positions = [
+                    { x: padding + chartSize * 0.25, y: padding + chartSize * 0.25 },
+                    { x: padding + chartSize * 0.75, y: padding + chartSize * 0.25 },
+                    { x: padding + chartSize * 0.25, y: padding + chartSize * 0.75 },
+                    { x: padding + chartSize * 0.75, y: padding + chartSize * 0.75 },
+                  ];
+                  return (
+                    <motion.text key={i} x={positions[i].x} y={positions[i].y} textAnchor="middle" dominantBaseline="middle"
+                      className="text-xs" style={{ fill: 'rgba(255,255,255,0.3)' }}
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }}>
+                      {label}
+                    </motion.text>
+                  );
+                })}
+
+                {items.map((item, i) => {
+                  const cx = padding + (item.x / 100) * chartSize;
+                  const cy = padding + ((100 - item.y) / 100) * chartSize;
+                  return (
+                    <motion.g key={i}>
+                      <motion.circle cx={cx} cy={cy} r={item.size} fill={item.color} fillOpacity={0.3}
+                        stroke={item.color} strokeWidth={2}
+                        initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.5 + i * 0.1, type: 'spring', stiffness: 200 }} />
+                      <motion.text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle"
+                        className="text-xs font-medium" style={{ fill: '#fff' }}
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 + i * 0.1 }}>
+                        {item.label}
+                      </motion.text>
+                    </motion.g>
+                  );
+                })}
+
+                <motion.text x={size / 2} y={size - 5} textAnchor="middle" className="text-sm" style={{ fill: '#fff' }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                  Effort Required →
+                </motion.text>
+                <motion.text x={15} y={size / 2} textAnchor="middle" className="text-sm" style={{ fill: '#fff' }}
+                  transform={`rotate(-90, 15, ${size / 2})`}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                  Trust Impact →
+                </motion.text>
+              </svg>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDE COMPONENTS ============
+    const WelcomeSlide = ({ data }) => {
+      const userName = getUserName();
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>{LESSON_CONFIG.duration} lesson</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl text-black mb-4 title-font">{LESSON_CONFIG.title}</h1>
+            <p className="text-lg text-gray-600">{window.getGreeting ? window.getGreeting(userName) : `Hey ${userName}!`}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-2xl p-6 md:p-8" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Icons.Star />
+              <span>What you'll learn</span>
+            </h3>
+            <ul className="space-y-3">
+              {data.learningGoals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3 text-white/80">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center mt-0.5" style={{ background: 'var(--accent)' }}>
+                    <Icons.Check />
+                  </div>
+                  <span>{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            className="text-3xl md:text-4xl lg:text-5xl text-black mb-6 title-font leading-tight">
+            {data.headline}
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            {data.subtext}
+          </motion.p>
         </motion.div>
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    const SplitContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <h2 className="text-2xl md:text-3xl text-black title-font">{data.title}</h2>
+        </motion.div>
+        <div className={`grid md:grid-cols-2 gap-6 ${data.reversed ? 'md:flex-row-reverse' : ''}`}>
+          <motion.div initial={{ opacity: 0, x: data.reversed ? 20 : -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+            <p className="text-white/90 text-sm leading-relaxed whitespace-pre-line">{data.content}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: data.reversed ? -20 : 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-2xl overflow-hidden aspect-video">
+            {data.media?.type === 'video' && (
+              <video src={data.media.src} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            )}
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const IconGridSlide = ({ data }) => {
+      const iconMap = { Award: Icons.Award, Shield: Icons.Shield, Star: Icons.Star };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl text-black title-font">{data.title}</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.items.map((item, i) => {
+              const IconComponent = iconMap[item.icon] || Icons.Zap;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)' }}>
+                    <div style={{ color: 'var(--accent)' }}><IconComponent /></div>
+                  </div>
+                  <h3 className="text-white font-semibold mb-2">{item.title}</h3>
+                  <p className="text-white/70 text-sm">{item.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+            <Icons.Zap />
+            <span>Real Example</span>
+          </div>
+          <h2 className="text-2xl md:text-3xl text-black title-font">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+            <div className="text-red-400 font-semibold mb-3 flex items-center gap-2">
+              <Icons.X />
+              <span>{data.before.label}</span>
+            </div>
+            <p className="text-white/80">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid var(--accent)' }}>
+            <div className="font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+              <Icons.Check />
+              <span>{data.after.label}</span>
+            </div>
+            <p className="text-white/80">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 text-center">
+          <p className="text-gray-600 italic">💡 {data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto py-6 text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="rounded-2xl p-8 md:p-12" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+          <div className="mb-6" style={{ color: 'var(--accent)' }}><Icons.Quote /></div>
+          <blockquote className="text-xl md:text-2xl text-white font-medium mb-6 italic">"{data.quote}"</blockquote>
+          <div className="text-white/60">
+            <p className="font-semibold text-white">{data.author}</p>
+            <p className="text-sm">{data.role}</p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    const ProcessStepsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="text-2xl md:text-3xl text-black title-font">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-4 gap-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-4 text-center relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-3 text-sm font-bold text-black" style={{ background: 'var(--accent)' }}>
+                {i + 1}
+              </div>
+              <h3 className="text-white font-semibold mb-2">{step.title}</h3>
+              <p className="text-white/70 text-sm">{step.description}</p>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+    const QuizSlide = ({ data, onAnswer }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setShowFeedback(true);
+        setTimeout(() => onAnswer?.(index === data.correctIndex), 2000);
+      };
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
-            </motion.div>
-            <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
-                  <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
-                  </div>
-                </motion.button>
-              ))}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(136, 218, 28, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Quick Check</span>
             </div>
-            <AnimatePresence>
-              {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <h2 className="text-xl md:text-2xl text-black title-font">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3">
+            {data.options.map((option, i) => {
+              let borderColor = '#333';
+              let bg = 'linear-gradient(135deg, #1a1a1a, #2d2d2d)';
+              if (showFeedback && i === data.correctIndex) {
+                borderColor = '#22C55E';
+                bg = 'linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1))';
+              } else if (showFeedback && i === selected && !isCorrect) {
+                borderColor = '#EF4444';
+                bg = 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1))';
+              }
+              return (
+                <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }} onClick={() => handleSelect(i)}
+                  className="w-full text-left rounded-xl p-4 text-white transition-all"
+                  style={{ background: bg, border: `2px solid ${borderColor}` }}>
+                  <span className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-sm">{option}</span>
+                  </span>
+                </motion.button>
+              );
+            })}
           </div>
+          {showFeedback && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="mt-6 rounded-xl p-4" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                border: `1px solid ${isCorrect ? '#22C55E' : '#EF4444'}` }}>
+              <p className={`text-sm ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+              </p>
+            </motion.div>
+          )}
         </div>
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand borrowed trust. Authority stops the scroll. Liking converts them. Stack both for maximum credibility.</motion.p>
+    const CompletionSlide = ({ data }) => {
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto py-6 text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200 }}
+            className="w-32 h-32 rounded-full flex items-center justify-center mb-6" style={{ background: 'var(--accent)' }}>
+            <Icons.Check />
+          </motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="text-3xl md:text-4xl text-black title-font mb-4">
+            Lesson Complete!
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-gray-600 mb-8">
+            You now understand how to ethically borrow authority and liking for your store.
+          </motion.p>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
+            className="w-48 h-48 rounded-2xl overflow-hidden">
+            <video src={celebrationGif} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+          </motion.div>
+        </div>
+      );
+    };
 
-        {/* Key Takeaways */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
-          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
-          <div className="space-y-2 text-left">
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
-              </span>
-              <span className="text-sm text-neutral-600">Authority signals (badges, logos, credentials) trigger instant trust</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
-              </span>
-              <span className="text-sm text-neutral-600">Liking (relatable UGC) keeps them engaged and converts</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
-              </span>
-              <span className="text-sm text-neutral-600">Stack both principles for 3.7x trust multiplier</span>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
-          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
-          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-      </div>
-    );
-
+    // ============ MAIN APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
-      const [direction, setDirection] = useState(1);
-      const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
-      const [gifConfig, setGifConfig] = useState(null);
-      const [isAnimating, setIsAnimating] = useState(false);
+      const [currentSlide, setCurrentSlide] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return parseInt(params.get('slide')) || 0;
+      });
 
-      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
-      const hideGif = useCallback(() => setGifConfig(null), []);
-
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          totalSlides: slides.length,
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+      const goNext = useCallback(() => {
+        if (currentSlide < slides.length - 1) setCurrentSlide(prev => prev + 1);
       }, [currentSlide]);
 
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
-        setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
-      }, [isAnimating]);
-
-      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
-      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+      const goPrev = useCallback(() => {
+        if (currentSlide > 0) setCurrentSlide(prev => prev - 1);
+      }, [currentSlide]);
 
       useEffect(() => {
         const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+          if (e.key === 'ArrowRight' || e.key === ' ') goNext();
+          if (e.key === 'ArrowLeft') goPrev();
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [nextSlide, prevSlide]);
+      }, [goNext, goPrev]);
 
-      const slideVariants = {
-        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      const renderSlide = (slide, index) => {
+        const slideComponents = {
+          'welcome': WelcomeSlide,
+          'hook': HookSlide,
+          'split-content': SplitContentSlide,
+          'icon-grid': IconGridSlide,
+          'before-after': BeforeAfterSlide,
+          'quote': QuoteSlide,
+          'process-steps': ProcessStepsSlide,
+          'quiz': QuizSlide,
+          'completion': CompletionSlide,
+          'bar-chart': BarChartSlide,
+          'customer-journey': CustomerJourneySlide,
+          'heatmap': HeatmapSlide,
+          'radar-chart': RadarChartSlide,
+          'funnel-chart': FunnelChartSlide,
+          'sankey-diagram': SankeyDiagramSlide,
+          'performance-matrix': PerformanceMatrixSlide,
+        };
+        const Component = slideComponents[slide.type];
+        return Component ? <Component data={slide} onAnswer={goNext} /> : null;
       };
 
-      const renderSlide = (slide) => {
-        switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
-          case 'uniform-study': return <UniformStudySlide data={slide} />;
-          case 'trust-stack': return <TrustStackSlide data={slide} />;
-          case 'borrowing-grid': return <BorrowingGridSlide data={slide} />;
-          // Part 2: Practical slides
-          case 'section-divider': return <SectionDividerSlide data={slide} />;
-          case 'step-identify-authority': return <StepIdentifyAuthoritySlide data={slide} />;
-          case 'step-visual-badges': return <StepVisualBadgesSlide data={slide} />;
-          case 'step-stack-ugc': return <StepStackUGCSlide data={slide} />;
-          case 'step-results': return <StepResultsSlide data={slide} />;
-          default: return null;
-        }
-      };
-
-      const showPrev = currentSlide > 0;
-      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+      const slide = slides[currentSlide];
+      const progress = ((currentSlide + 1) / slides.length) * 100;
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
-            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
-                {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
+        <div className="h-screen flex flex-col bg-white relative">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 z-50">
+            <motion.div className="h-full" style={{ background: 'var(--accent)' }}
+              initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+          </div>
+
+          <div className="flex-1 overflow-auto slide-scroll relative">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="h-full">
+                {renderSlide(slide, currentSlide)}
               </motion.div>
             </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
-            </div>
+
+          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+            <button onClick={goPrev} disabled={currentSlide === 0}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all disabled:opacity-30"
+              style={{ background: currentSlide > 0 ? 'rgba(136, 218, 28, 0.1)' : 'transparent' }}>
+              <Icons.ArrowLeft />
+              <span className="text-sm font-medium">Back</span>
+            </button>
+            <span className="text-sm text-gray-400">{currentSlide + 1} / {slides.length}</span>
+            <button onClick={goNext} disabled={currentSlide === slides.length - 1}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all disabled:opacity-30"
+              style={{ background: 'var(--accent)', color: 'black' }}>
+              <span className="text-sm font-medium">Next</span>
+              <Icons.ArrowRight />
+            </button>
           </div>
-          <AnimatePresence>
-            {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

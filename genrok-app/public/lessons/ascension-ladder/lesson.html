@@ -58,25 +58,19 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
 
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
 
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -166,6 +160,9 @@
       link: 'https://apps.shopify.com/reconvert-post-purchase-upsell'
     };
 
+    // ============================================
+    // SLIDE DATA
+    // ============================================
     const slides = [
       // ========== PART 1: THE STRATEGY (Theory) ==========
       { type: 'welcome', learningGoals: [
@@ -173,33 +170,41 @@
         'The "Missing Piece Effect" that makes accessories feel essential',
         'How to implement this in your store step-by-step'
       ]},
-      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
+      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'content', title: 'The iPad Trap: A Masterclass', body: 'Here\'s how it works: Entry iPad at $329 looks perfect. Until you see it has the old Lightning port (outdated) and only 64GB storage (fills fast). For $120 more, you get USB-C and peace of mind. Now you\'re at $449. But wait - for $150 more you get 256GB storage. That\'s future-proofing. You\'re at $599. Suddenly, the $599 base iPad and $599 iPad Air are the same price. One\'s a "base" model, one\'s "Air". Which sounds better? You upgrade to Air. Now you\'re at $749 - more than double where you started.' },
-      { type: 'visual', title: 'The Ladder In Action', visualType: 'ladder', data: [
+      { type: 'ladder-visual', data: [
         { price: '$329', label: 'Entry iPad', feature: 'Lightning port, 64GB', color: '#94a3b8', concern: 'Outdated port, low storage' },
         { price: '$449', label: 'Step 1', feature: 'USB-C upgrade', color: '#8b5cf6', concern: 'Only 64GB still...' },
         { price: '$599', label: 'Step 2', feature: '256GB storage', color: '#88da1c', concern: 'Wait, same as Air?' },
         { price: '$749', label: 'iPad Air', feature: 'Premium model', color: '#10b981', isBest: true }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
       { type: 'content', title: 'Why Your Brain Climbs Willingly', body: 'Each step feels logical. You\'re not being upsold - you\'re making smart decisions. $120 for future-proof port? Reasonable. $150 for 4x storage? Math checks out. Same price for better model? No-brainer. By the time you\'re at $749, you\'ve justified every increase. You\'re not spending more. You\'re buying better.' },
-      { type: 'cards', title: 'The Two Deadly Mistakes', items: [
-        { title: 'Mistake 1: Single Product', description: 'Selling one thing at one price forces a yes/no decision. Half your traffic says no. You\'ve lost them forever. No second chance, no ladder to climb.' },
-        { title: 'Mistake 2: Random Bundles', description: 'Throwing products together without logic. "Buy these 3 random things!" doesn\'t work. Customers need to see the progression, feel the upgrade path.' }
+      { type: 'icon-grid', title: 'The Two Deadly Mistakes', items: [
+        { icon: 'X', label: 'Single Product', description: 'Selling one thing at one price forces a yes/no decision. Half your traffic says no. You\'ve lost them forever.' },
+        { icon: 'X', label: 'Random Bundles', description: 'Throwing products together without logic. "Buy these 3 random things!" doesn\'t work. Customers need progression.' }
       ]},
-      { type: 'example', scenario: 'DTC Skincare Brand', before: { label: 'Single Product Trap', text: 'Product: Anti-aging serum - $89\n\nResult:\n- 3% conversion rate\n- $89 average order value\n- One-time buyers\n- No clear upsell path' }, after: { label: 'With Ascension Ladder', text: 'Entry: Starter serum - $49\nStep 1: Complete trio - $129\nStep 2: Full regimen (6 items) - $249\nPremium: Subscription + coaching - $149/mo\n\nResult:\n- 11% conversion (+267%)\n- $178 average order value (+100%)\n- 34% subscribe to premium tier' }, insight: 'Same brand, same products. Structured ladder made the difference.' },
-      { type: 'content', title: 'Strategy 1: The Missing Piece Effect', body: 'Apple sells iPhone without charger. AirPods without case. iPad without keyboard. Each product whispers: "You need the next thing to complete this." The base purchase isn\'t broken - it\'s just incomplete. And completion is always one more purchase away. Your customer doesn\'t feel tricked. They feel smart for "optimizing" their setup.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Missing Piece Psychology', visualType: 'stats', data: [
-        { value: '67%', label: 'buy accessories', subtext: 'Within 30 days of main purchase' },
+      { type: 'before-after', headline: 'DTC Skincare Brand',
+        before: { title: 'Single Product Trap', items: ['Product: Anti-aging serum - $89', '3% conversion rate', '$89 average order value', 'One-time buyers', 'No clear upsell path'] },
+        after: { title: 'With Ascension Ladder', items: ['Entry: Starter serum - $49', 'Step 1: Complete trio - $129', 'Step 2: Full regimen (6 items) - $249', 'Premium: Subscription + coaching - $149/mo', '11% conversion (+267%), $178 AOV (+100%)'] },
+        insight: 'Same brand, same products. Structured ladder made the difference.' },
+      { type: 'content', title: 'Strategy 1: The Missing Piece Effect', body: 'Apple sells iPhone without charger. AirPods without case. iPad without keyboard. Each product whispers: "You need the next thing to complete this." The base purchase isn\'t broken - it\'s just incomplete. And completion is always one more purchase away. Your customer doesn\'t feel tricked. They feel smart for "optimizing" their setup.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
+      { type: 'stat-row', title: 'The Missing Piece Psychology', stats: [
+        { value: '67%', label: 'buy accessories', subtext: 'Within 30 days of main purchase', accent: true },
         { value: '2.8x', label: 'higher LTV', subtext: 'Customers who climb the ladder' },
         { value: '43%', label: 'never stop', subtext: 'Continue buying ecosystem products' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'right'},
-      { type: 'content', title: 'Strategy 2: The Ecosystem Prison', body: 'Once you\'re in, leaving hurts. iMessage only works with iPhone. iCloud syncs seamlessly. AirPods connect instantly. Switching to Android means losing all of this. The pain of leaving exceeds the pain of paying. So you stay. And you upgrade. And you buy more accessories. You\'re not trapped - you\'re invested.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'Where To Use Ladders', visualType: 'comparison', data: {
-        left: { label: 'Physical Products', value: 'Starter → Bundle → Complete', result: 'Each tier completes the setup', color: '#8b5cf6' },
-        right: { label: 'Digital Products', value: 'Basic → Pro → Enterprise', result: 'Features unlock at each level', color: '#88da1c' },
-        center: { label: 'Services', value: 'DIY → Done-With-You → Done-For-You', result: 'Support increases with price', color: '#10b981' }
-      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Golden Rules', body: 'Rule 1: Never have just one price point. Give them a ladder to climb. Rule 2: Each step must feel logical, not forced. They should want to climb. Rule 3: Make the gaps small enough to justify, big enough to profit. Rule 4: Show them what they\'re missing, not what they\'re spending. Rule 5: Build an ecosystem - make leaving painful, staying rewarding.' },
+      { type: 'content', title: 'Strategy 2: The Ecosystem Prison', body: 'Once you\'re in, leaving hurts. iMessage only works with iPhone. iCloud syncs seamlessly. AirPods connect instantly. Switching to Android means losing all of this. The pain of leaving exceeds the pain of paying. So you stay. And you upgrade. And you buy more accessories. You\'re not trapped - you\'re invested.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
+      { type: 'comparison-grid', title: 'Where To Use Ladders', items: [
+        { label: 'Physical Products', value: 'Starter → Bundle → Complete', result: 'Each tier completes the setup', color: '#8b5cf6' },
+        { label: 'Services', value: 'DIY → Done-With-You → Done-For-You', result: 'Support increases with price', color: '#88da1c', featured: true },
+        { label: 'Digital Products', value: 'Basic → Pro → Enterprise', result: 'Features unlock at each level', color: '#10b981' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
+      { type: 'icon-grid', title: 'The Golden Rules', items: [
+        { icon: 'Star', label: 'Multiple Prices', description: 'Never have just one price point. Give them a ladder to climb.' },
+        { icon: 'Zap', label: 'Logical Steps', description: 'Each step must feel logical, not forced. They should want to climb.' },
+        { icon: 'TrendingUp', label: 'Strategic Gaps', description: 'Make gaps small enough to justify, big enough to profit.' },
+        { icon: 'Check', label: 'Show Missing', description: 'Show them what they\'re missing, not what they\'re spending.' }
+      ]},
       { type: 'quiz', question: 'Why does the $599 iPad base model exist when the $599 iPad Air is clearly better?', options: ['To give budget-conscious customers an option at that price', 'To make the Air look like an obvious upgrade at the same price', 'Because manufacturing costs are identical', 'To fill shelf space in Apple stores'], correctIndex: 1, feedback: { correct: 'Exactly! The base $599 iPad exists only to create a "same price, better model" moment. When you see identical prices but different tiers, your brain screams "upgrade!" Apple engineered this comparison to push you up the ladder.', incorrect: 'Not quite. The $599 base model is a strategic bridge - it exists to make the $599 Air look like a no-brainer upgrade. Same price, better tier = instant psychological trigger to climb higher.' }},
       // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
       { type: 'section-divider' },
@@ -211,7 +216,24 @@
     ];
 
     // ============================================
-    // ANIMATED COUNTER (Elite Pattern)
+    // ICONS
+    // ============================================
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Layers: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+    };
+
+    // ============================================
+    // ANIMATED COUNTER
     // ============================================
     const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
@@ -238,7 +260,7 @@
     };
 
     // ============================================
-    // ANIMATED PROGRESS BAR (Elite Pattern)
+    // ANIMATED PROGRESS BAR
     // ============================================
     const AnimatedProgressBar = ({ percent, color, delay = 0, glowColor }) => {
       const [width, setWidth] = useState(0);
@@ -264,17 +286,9 @@
       );
     };
 
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-    };
-
+    // ============================================
+    // FIXED TEMPLATE: WELCOME SLIDE
+    // ============================================
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -307,6 +321,9 @@
       );
     };
 
+    // ============================================
+    // HOOK SLIDE
+    // ============================================
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -334,12 +351,14 @@
       </div>
     );
 
-    
+    // ============================================
+    // CONTENT SLIDE
+    // ============================================
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -355,39 +374,145 @@
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
+    // ============================================
+    // LIBRARY PATTERN: BEFORE/AFTER
+    // ============================================
+    const BeforeAfter = ({ data }) => {
+      const CardSection = ({ type, title, items }) => {
+        const isBefore = type === 'before';
+        return (
+          <motion.div
+            initial={{ opacity: 0, x: isBefore ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: isBefore ? 0.1 : 0.2 }}
+            className={`rounded-xl p-5 ${isBefore ? 'bg-red-50 border-2 border-red-200' : 'bg-green-50 border-2 border-green-200'}`}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${isBefore ? 'bg-red-500' : 'bg-green-500'}`}>
+                {isBefore ? <Icons.X /> : <Icons.Check />}
+              </div>
+              <span className={`font-bold text-sm ${isBefore ? 'text-red-700' : 'text-green-700'}`}>{title}</span>
+            </div>
+            <ul className="space-y-2">
+              {items.map((item, i) => (
+                <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${isBefore ? 'bg-red-400' : 'bg-green-400'}`}></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+        );
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.headline}</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <CardSection type="before" title={data.before.title} items={data.before.items} />
+            <CardSection type="after" title={data.after.title} items={data.after.items} />
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
+    // ============================================
+    // LIBRARY PATTERN: STAT ROW
+    // ============================================
+    const StatRow = ({ data }) => {
+      const parseStatValue = (value) => {
+        if (value.includes('%')) return { num: parseInt(value), suffix: '%' };
+        if (value.includes('x')) return { num: parseFloat(value), suffix: 'x', decimals: 1 };
+        return { num: parseInt(value), suffix: '' };
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.stats.map((stat, i) => {
+              const parsed = parseStatValue(stat.value);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="rounded-xl p-6 text-center"
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: stat.accent ? '0 4px 24px rgba(var(--accent-rgb), 0.2)' : '0 4px 24px rgba(0,0,0,0.3)' }}>
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.accent ? 'var(--accent)' : '#fff', textShadow: stat.accent ? '0 0 30px rgba(var(--accent-rgb), 0.4)' : 'none' }}>
+                    <AnimatedCounter target={parsed.num} suffix={parsed.suffix} decimals={parsed.decimals || 0} />
+                  </div>
+                  <div className="text-sm font-semibold text-white mb-2">{stat.label}</div>
+                  <div className="text-xs text-neutral-500">{stat.subtext}</div>
+                  <div className="mt-3">
+                    <AnimatedProgressBar percent={parsed.num > 10 ? parsed.num : parsed.num * 30} color={stat.accent ? 'var(--accent)' : '#6b7280'} delay={0.3 + i * 0.1} glowColor={stat.accent ? 'rgba(var(--accent-rgb), 0.5)' : null} />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+          {data.characterVideo && (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+              style={{ height: '35%', maxHeight: '280px' }}>
+              <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                <source src={data.characterVideo} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // ============================================
+    // LIBRARY PATTERN: ICON GRID
+    // ============================================
+    const IconGrid = ({ data }) => {
+      const getIcon = (iconName) => {
+        const iconMap = { Check: Icons.Check, X: Icons.X, Star: Icons.Star, Zap: Icons.Zap, TrendingUp: Icons.TrendingUp, Target: Icons.Target, DollarSign: Icons.DollarSign, Layers: Icons.Layers };
+        const IconComponent = iconMap[iconName] || Icons.Check;
+        return <IconComponent />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-4 ${data.items.length <= 2 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: item.icon === 'X' ? 'rgba(239, 68, 68, 0.1)' : `rgba(var(--accent-rgb), 0.1)`, color: item.icon === 'X' ? '#ef4444' : 'var(--accent)' }}>
+                  {getIcon(item.icon)}
+                </div>
+                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.label}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============================================
+    // LESSON-SPECIFIC: LADDER VISUAL
+    // ============================================
     const LadderVisual = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">The Ladder In Action</motion.h2>
-        <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(var(--accent-rgb), 0.1)' }}>
+        <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 relative z-10" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(var(--accent-rgb), 0.1)' }}>
           <div className="flex flex-col items-center gap-4 relative">
-            {data.map((step, i) => (
+            {data.data.map((step, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                {i < data.length - 1 && (
+                {i < data.data.length - 1 && (
                   <motion.div initial={{ height: 0 }} animate={{ height: 16 }} transition={{ delay: 0.3 + i * 0.15, duration: 0.3 }}
                     className="absolute left-1/2 -translate-x-1/2 top-full w-1 rounded-full"
-                    style={{ background: `linear-gradient(to bottom, ${step.color}, ${data[i+1].color})`, boxShadow: `0 0 8px ${step.color}50` }} />
+                    style={{ background: `linear-gradient(to bottom, ${step.color}, ${data.data[i+1].color})`, boxShadow: `0 0 8px ${step.color}50` }} />
                 )}
                 <div className={`rounded-xl p-4 md:p-5 min-w-[280px] md:min-w-[360px] border-2 ${step.isBest ? 'ring-4 ring-offset-2 ring-offset-[#0a0a0a]' : ''}`}
                   style={{ background: step.isBest ? `linear-gradient(135deg, ${step.color}, ${step.color}dd)` : '#1a1a1a', borderColor: step.color, ringColor: step.isBest ? step.color : 'transparent', boxShadow: step.isBest ? `0 4px 24px ${step.color}60` : `0 2px 12px ${step.color}20` }}>
@@ -399,7 +524,7 @@
                     <span className="text-2xl font-bold" style={{ color: step.isBest ? 'white' : step.color }}>{step.price}</span>
                   </div>
                   <p className={`text-sm mb-1 ${step.isBest ? 'text-white/90' : 'text-neutral-400'}`}>{step.feature}</p>
-                  {step.concern && !step.isBest && <p className="text-xs text-red-400 italic mt-2">⚠️ {step.concern}</p>}
+                  {step.concern && !step.isBest && <p className="text-xs text-red-400 italic mt-2">Warning: {step.concern}</p>}
                   {step.isBest && <div className="mt-2 px-3 py-1 bg-white/20 rounded-lg text-white text-xs font-bold text-center uppercase tracking-wider">Best Value</div>}
                 </div>
               </motion.div>
@@ -412,85 +537,58 @@
             </div>
           </motion.div>
         </div>
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'ladder') {
-        return <LadderVisual data={data.data} />;
-      }
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        const parseStatValue = (value) => {
-          if (value.includes('%')) return { num: parseInt(value), suffix: '%' };
-          if (value.includes('x')) return { num: parseFloat(value), suffix: 'x', decimals: 1 };
-          return { num: parseInt(value), suffix: '' };
-        };
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => {
-                const parsed = parseStatValue(stat.value);
-                return (
-                  <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
-                    className="bg-[#0a0a0a] rounded-xl p-6 text-center"
-                    style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(var(--accent-rgb), 0.1)' }}>
-                    <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(var(--accent-rgb), 0.4)' }}>
-                      <AnimatedCounter target={parsed.num} suffix={parsed.suffix} decimals={parsed.decimals || 0} />
-                    </div>
-                    <div className="text-sm font-semibold text-white mb-2">{stat.label}</div>
-                    <div className="text-xs text-neutral-500">{stat.subtext}</div>
-                    <div className="mt-3">
-                      <AnimatedProgressBar percent={parsed.num > 10 ? parsed.num : parsed.num * 30} color="var(--accent)" delay={0.3 + i * 0.1} glowColor="rgba(var(--accent-rgb), 0.5)" />
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3 relative z-10">
+    // ============================================
+    // COMPARISON GRID
+    // ============================================
+    const ComparisonGrid = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid grid-cols-3 gap-3 md:gap-6">
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className={`rounded-xl p-4 md:p-6 text-center ${item.featured ? 'transform scale-105 shadow-lg' : 'bg-neutral-100'}`}
+              style={item.featured ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' } : {}}>
+              <div className={`text-2xl md:text-3xl font-bold mb-2 ${item.featured ? 'text-white' : ''}`} style={!item.featured ? { color: item.color } : {}}>
+                {item.value}
+              </div>
+              <div className={`text-xs md:text-sm font-semibold mb-2 ${item.featured ? 'text-white/90' : 'text-neutral-700'}`}>{item.label}</div>
+              <div className={`text-[10px] md:text-xs ${item.featured ? 'text-white/70' : 'text-neutral-500'}`}>{item.result}</div>
             </motion.div>
           ))}
         </div>
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
+    // ============================================
+    // FIXED TEMPLATE: QUIZ SLIDE
+    // ============================================
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -592,7 +690,7 @@
                 <div className="text-lg font-bold mb-2" style={{ color: step.color }}>{step.price}</div>
                 <div className="text-neutral-400 text-xs">{step.desc}</div>
                 {i < steps.length - 1 && (
-                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 text-neutral-600 hidden md:block">→</div>
+                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 text-neutral-600 hidden md:block">-</div>
                 )}
               </motion.div>
             ))}
@@ -687,9 +785,9 @@
                 </div>
               </div>
               <div className="space-y-2 text-sm text-neutral-300">
-                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Entry buyer → Show Core upgrade</span></div>
-                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Core buyer → Show Premium bundle</span></div>
-                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>One-click accept on thank-you page</span></div>
+                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span>Entry buyer - Show Core upgrade</span></div>
+                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span>Core buyer - Show Premium bundle</span></div>
+                <div className="flex items-center gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span>One-click accept on thank-you page</span></div>
               </div>
             </motion.div>
 
@@ -715,7 +813,7 @@
           </div>
 
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install ReConvert and create 1 upsell: Entry → next tier on your thank-you page.</p>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install ReConvert and create 1 upsell: Entry - next tier on your thank-you page.</p>
           </motion.div>
         </div>
       );
@@ -761,13 +859,16 @@
       );
     };
 
+    // ============================================
+    // FIXED TEMPLATE: COMPLETION SLIDE
+    // ============================================
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Ascension Ladder. Build your pricing tiers. Create logical upgrade paths. Make each step feel like the smart choice.</motion.p>
 
-        {/* Key Takeaways - Clean summary */}
+        {/* Key Takeaways */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
           <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
@@ -801,6 +902,9 @@
       </div>
     );
 
+    // ============================================
+    // MAIN APP
+    // ============================================
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -855,9 +959,11 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'before-after': return <BeforeAfter data={slide} />;
+          case 'stat-row': return <StatRow data={slide} />;
+          case 'icon-grid': return <IconGrid data={slide} />;
+          case 'ladder-visual': return <LadderVisual data={slide} />;
+          case 'comparison-grid': return <ComparisonGrid data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           // Part 2: Practical slides
           case 'section-divider': return <SectionDividerSlide data={slide} />;

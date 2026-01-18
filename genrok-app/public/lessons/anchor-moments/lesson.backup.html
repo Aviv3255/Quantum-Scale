@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ralph Lauren's Anchor Moments | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0ea5e9;
+      --accent-dark: #0284c7;
+      --accent-light: #38bdf8;
+      --accent-rgb: 14, 165, 233;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
+    const getInitialSlide = () => {
+      const params = new URLSearchParams(window.location.search);
+      const slide = params.get('slide');
+      return slide ? parseInt(slide, 10) : 0;
+    };
+
+    const LESSON_CONFIG = {
+      id: 'anchor-moments',
+      title: 'Ralph Lauren\'s Anchor Moments',
+      description: 'A $20,000 handbag nobody buys. But it makes $200 polos feel like steals.',
+      accentColor: '#0ea5e9',
+      duration: '4 min',
+      nextLesson: {
+        id: 'irrational-loyalty',
+        title: 'The Pizza Test & Sock Test',
+        teaser: 'Once identity forms, logic doesn\'t matter. They\'ll defend you forever.'
+      }
+    };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why Ralph Lauren displays $20,000 handbags nobody buys',
+        'How luxury anchors make mid-tier products feel affordable',
+        'Creating anchor products that sell everything else'
+      ]},
+      { type: 'hook', headline: 'Ralph Lauren puts a $20,000 handbag in the window.', subtext: 'Nobody buys it. That\'s not the point. The handbag exists to make the $200 polo shirt feel like a bargain. Price anchoring is the invisible force that changes how customers perceive value across your entire catalog.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/polo_ralph_lauren-logo_brandlogos.net_9uyue-512x1003.png', brandName: 'Ralph Lauren' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'left'},
+      { type: 'content', title: 'The Anchor Effect', body: 'When you see a $20,000 handbag first, your brain creates a reference point. Everything else is compared to that anchor. Suddenly, $200 for a polo doesn\'t feel expensive. It feels reasonable. Even cheap. The anchor isn\'t meant to sell. The anchor reframes everything around it.' },
+      { type: 'luxury-window', title: 'The Ralph Lauren Window Display' },
+      { type: 'content', title: 'The Luxury Anchor Strategy', body: 'Ralph Lauren doesn\'t hide the $20,000 handbag in a back room. It\'s front and center. Window display. First thing you see. Your brain absorbs that price point before you even walk in. When you browse the store, every price is subconsciously compared to $20,000. A $500 jacket? That\'s only 2.5% of the handbag. Suddenly affordable.' },
+      { type: 'cards', title: 'How Anchors Change Buying Behavior', items: [
+        { title: 'First Price Sets the Frame', description: 'The first price customers see becomes their reference point. Show high first, and everything else feels reasonable by comparison.' },
+        { title: 'Anchors Don\'t Need to Sell', description: 'The $20K handbag rarely sells. That\'s fine. Its job is to make the $200 polo feel accessible. Anchor products justify everything below them.' },
+        { title: 'Context Is Everything', description: 'Same $200 shirt. Different anchor. Without context, it\'s "expensive." Next to $20K, it\'s "affordable." Perception shifts based on what they saw first.' },
+        { title: 'Anchors Build Brand Perception', description: 'Luxury anchors signal quality across the catalog. "If they sell $20K bags, their $200 shirts must be exceptional too."' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
+      { type: 'example', scenario: 'eCommerce Product Page', before: { label: 'No Anchor', text: 'Product: Premium Leather Wallet - $180. Customer thinks: "That\'s a lot for a wallet."' }, after: { label: 'With Anchor', text: 'Page shows: Luxury Edition Wallet - $850 (displayed first). Below: Classic Leather Wallet - $180. Customer thinks: "The $180 one is the smart choice."' }, insight: 'Same wallet. Same price. Different perception. The anchor made $180 feel reasonable instead of expensive.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_scratching_his_chin_deep_in_thought_100_pure_w_9e857f88-67b4-4496-9988-57dd621c97fe_3.mp4', characterPosition: 'right'},
+      { type: 'content', title: 'The Three-Tier Anchor System', body: 'Most stores use a three-tier pricing strategy: Premium (the anchor), Mid-Tier (the seller), and Entry (the backup). Premium anchors the category. Mid-tier becomes the "smart choice." Entry catches budget buyers. The majority buy mid-tier because it feels like a deal compared to premium.' },
+      { type: 'brain-perception', title: 'Same $200, Different Brain Response' },
+      { type: 'three-tier-pyramid', title: 'The Three-Tier Buyer Pyramid' },
+      { type: 'cards', title: 'Creating Anchors in Your Store', items: [
+        { title: 'For Physical Products', description: 'Create a luxury tier that\'s 3-5x your main product. Display it prominently. Example: $500 headphones make $150 headphones feel affordable.' },
+        { title: 'For Digital Products', description: 'Offer a premium tier with extras nobody needs but signals value. Example: $2,000 "VIP Package" makes $499 "Pro Plan" feel reasonable.' },
+        { title: 'For Services', description: 'Display premium packages first. Example: "$15,000 Full Service" anchors "$3,000 Standard Package" as the smart middle choice.' },
+        { title: 'For Bundles', description: 'Show full-price individual items first, then bundle discount. Example: "$450 if bought separately, $299 bundled" uses anchor math.' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'right'},
+      { type: 'content', title: 'Why Anchors Work Better Than Discounts', body: 'Discounts train customers to wait for sales. Anchors train customers to see value. A 50% off sale says "This wasn\'t worth full price." An anchor says "You\'re making a smart decision by choosing mid-tier." Same purchase, different psychology. Anchors preserve brand value. Discounts erode it.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_listening_carefully_hand_cupped_to_ear_100_pur_01938e87-bc4d-4e54-8675-cf6bdcd739c2_3.mp4', characterPosition: 'right'},
+      { type: 'quiz', question: 'Why does Ralph Lauren display the $20,000 handbag even though almost nobody buys it?', options: ['To show off their craftsmanship', 'To create a price anchor that makes $200 polos feel affordable by comparison', 'To attract wealthy customers', 'Because they have leftover inventory'], correctIndex: 1, feedback: { correct: 'Exactly. The $20K handbag is a strategic anchor. It reframes every other price in the store. When customers see $200 after seeing $20,000, their brain processes it as "only 1% of the luxury item." The anchor makes mid-tier products feel like smart, affordable choices.', incorrect: 'Not quite. The handbag\'s purpose is psychological, not promotional. It anchors customer price perception. After seeing $20,000, a $200 polo feels reasonable instead of expensive. The anchor doesn\'t need to sell - it just needs to reframe everything else.' }},
+      { type: 'completion' }
+    ];
+
+    // AnimatedCounter component for elite stats
+    const AnimatedCounter = ({ value, prefix = '', suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+
+      useEffect(() => {
+        let startTime;
+        let animationFrame;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(numericValue * easeOut);
+          if (progress < 1) animationFrame = requestAnimationFrame(animate);
+        };
+        animationFrame = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(animationFrame);
+      }, [numericValue, duration]);
+
+      const formatNumber = (num) => {
+        if (numericValue >= 1000) return Math.round(num).toLocaleString();
+        if (Number.isInteger(numericValue)) return Math.round(num);
+        return num.toFixed(numericValue < 10 ? 1 : 0);
+      };
+
+      return <span>{prefix}{formatNumber(count)}{suffix}</span>;
+    };
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      ShoppingBag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Tag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Sparkles: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+    };
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '65%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
+      </div>
+    );
+
+    
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid grid-cols-3 gap-3 md:gap-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-4 md:p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(239, 68, 68, 0.1)' }}>
+                <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#ef4444', textShadow: '0 0 20px rgba(239, 68, 68, 0.3)' }}>{data.data.left.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white mb-2">{data.data.left.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-400">{data.data.left.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.4)' }}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
+                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 md:p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(16, 185, 129, 0.1)' }}>
+                <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#10b981', textShadow: '0 0 20px rgba(16, 185, 129, 0.3)' }}>{data.data.right.value}</div>
+                <div className="text-xs md:text-sm font-semibold text-white mb-2">{data.data.right.label}</div>
+                <div className="text-[10px] md:text-xs text-neutral-400">{data.data.right.result}</div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.15 }} className="rounded-xl p-5 md:p-6 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+                  <div className="h-1 w-full absolute top-0 left-0 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="text-3xl md:text-5xl font-bold mb-2 title-font" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(var(--accent-rgb),0.5)' }}>
+                    <AnimatedCounter value={stat.value} prefix="$" duration={2000} />
+                  </div>
+                  <div className="text-xs md:text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                  <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.5 + i * 0.2, duration: 1.5 }} className="h-1 rounded-full mt-3" style={{ background: `linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb), 0.3))` }} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full relative flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-3 relative z-10">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="rounded-xl p-4 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.2)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+              <div className="h-0.5 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</div>
+                <h3 className="font-bold text-white text-sm md:text-base">{item.title}</h3>
+              </div>
+              <p className="text-neutral-400 text-xs md:text-sm leading-relaxed pl-8">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    // Elite AnchorScaleSlide - Visual representation of anchor pricing
+    const AnchorScaleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Anchor Scale</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="flex items-end justify-center gap-4 md:gap-8 mb-6">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} transition={{ delay: 0.2 + i * 0.2, duration: 0.8, ease: 'easeOut' }} className="flex flex-col items-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4 + i * 0.2, type: 'spring' }}
+                className="rounded-xl p-3 md:p-4 text-center mb-2"
+                style={{
+                  background: item.isAnchor ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  border: `1px solid ${item.isAnchor ? 'var(--accent)' : 'rgba(255,255,255,0.1)'}`,
+                  boxShadow: item.isAnchor ? '0 8px 32px rgba(var(--accent-rgb), 0.4)' : '0 4px 20px rgba(0,0,0,0.3)',
+                  minWidth: item.isAnchor ? '140px' : '100px'
+                }}>
+                <div className="text-xl md:text-3xl font-bold mb-1" style={{ color: item.isAnchor ? 'white' : 'var(--accent)' }}>
+                  <AnimatedCounter value={item.price} prefix="$" suffix="" duration={1500 + i * 500} />
+                </div>
+                <div className="text-[10px] md:text-xs text-white/80">{item.label}</div>
+              </motion.div>
+              <motion.div
+                initial={{ height: 0 }}
+                animate={{ height: item.height }}
+                transition={{ delay: 0.3 + i * 0.15, duration: 1, ease: 'easeOut' }}
+                className="w-3 md:w-4 rounded-full"
+                style={{
+                  background: item.isAnchor ? 'linear-gradient(180deg, var(--accent), var(--accent-dark))' : 'linear-gradient(180deg, #3d3d3d, #1a1a1a)',
+                  boxShadow: item.isAnchor ? '0 0 20px rgba(var(--accent-rgb), 0.5)' : 'none'
+                }}
+              />
+              <span className="text-[10px] text-neutral-500 mt-2">{item.buyerPercent}</span>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <p className="text-neutral-300 text-sm">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ GENIUS-LEVEL CUSTOM SLIDES ============
+
+    // Animated Spotlight SVG for luxury window
+    const AnimatedSpotlight = ({ animated }) => (
+      <svg viewBox="0 0 400 300" className="absolute inset-0 w-full h-full" style={{ opacity: 0.6 }}>
+        <defs>
+          <radialGradient id="spotlightGradient" cx="50%" cy="0%" r="80%">
+            <stop offset="0%" stopColor="rgba(251, 191, 36, 0.4)" />
+            <stop offset="40%" stopColor="rgba(251, 191, 36, 0.1)" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+        </defs>
+        <motion.ellipse
+          cx="200" cy="150" rx="120" ry="180"
+          fill="url(#spotlightGradient)"
+          initial={{ opacity: 0, scaleY: 0 }}
+          animate={animated ? { opacity: 1, scaleY: 1 } : {}}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          style={{ transformOrigin: '200px 0px' }}
+        />
+        {[0, 1, 2].map((i) => (
+          <motion.circle
+            key={i}
+            cx="200" cy="50"
+            r={4 + i * 2}
+            fill="rgba(251, 191, 36, 0.8)"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={animated ? { opacity: [0.4, 0.8, 0.4], scale: [0.8, 1.2, 0.8] } : {}}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+          />
+        ))}
+      </svg>
+    );
+
+    // LuxuryWindowSlide - Store window with $20K anchor handbag
+    const LuxuryWindowSlide = ({ data, animated = true }) => {
+      const surroundingProducts = [
+        { name: 'Polo Shirt', price: '$200', position: { top: '15%', left: '8%' }, delay: 0.8 },
+        { name: 'Leather Belt', price: '$150', position: { top: '65%', left: '5%' }, delay: 1.0 },
+        { name: 'Sunglasses', price: '$280', position: { top: '20%', right: '8%' }, delay: 0.9 },
+        { name: 'Dress Shoes', price: '$450', position: { top: '70%', right: '5%' }, delay: 1.1 },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(251, 191, 36, 0.15)', color: '#FBBF24' }}>
+              <Icons.Sparkles />
+              <span>The Luxury Window</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="relative rounded-2xl overflow-hidden" style={{ background: '#0a0a0a', height: '340px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(251, 191, 36, 0.1)' }}>
+            <AnimatedSpotlight animated={animated} />
+
+            {/* Center Anchor - $20K Handbag */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5, y: 50 }}
+              animate={animated ? { opacity: 1, scale: 1, y: 0 } : {}}
+              transition={{ delay: 0.3, duration: 0.8, type: 'spring' }}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10"
+            >
+              <motion.div
+                animate={animated ? { y: [0, -8, 0] } : {}}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative"
+              >
+                <div className="w-28 h-28 md:w-36 md:h-36 mx-auto rounded-2xl flex items-center justify-center mb-3" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid rgba(251, 191, 36, 0.5)', boxShadow: '0 0 40px rgba(251, 191, 36, 0.3)' }}>
+                  <Icons.ShoppingBag />
+                  <div className="absolute -top-2 -right-2 px-2 py-1 rounded-full text-[10px] font-bold" style={{ background: 'linear-gradient(135deg, #FBBF24, #F59E0B)', color: '#000' }}>ANCHOR</div>
+                </div>
+                <div className="text-4xl md:text-5xl font-bold mb-1" style={{ color: '#FBBF24', textShadow: '0 0 30px rgba(251, 191, 36, 0.5)' }}>
+                  <AnimatedCounter value="20000" prefix="$" suffix="" duration={2000} />
+                </div>
+                <div className="text-xs text-white/60">Luxury Handbag</div>
+              </motion.div>
+            </motion.div>
+
+            {/* Surrounding Products - Feel Cheap by Comparison */}
+            {surroundingProducts.map((product, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={animated ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: product.delay, type: 'spring' }}
+                className="absolute text-center"
+                style={{ ...product.position }}
+              >
+                <motion.div
+                  animate={animated ? { scale: [1, 0.95, 1] } : {}}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
+                  className="px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                >
+                  <div className="text-lg md:text-xl font-bold text-white/80">{product.price}</div>
+                  <div className="text-[9px] text-white/40">{product.name}</div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={animated ? { opacity: 1 } : {}}
+                    transition={{ delay: product.delay + 0.5 }}
+                    className="text-[8px] mt-1 px-1.5 py-0.5 rounded" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10B981' }}
+                  >
+                    Feels cheap
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            ))}
+
+            {/* Store Window Frame */}
+            <div className="absolute inset-0 pointer-events-none" style={{ border: '8px solid #1a1a1a', borderRadius: '16px' }} />
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="text-center text-neutral-500 text-sm mt-4">
+            The $20,000 handbag reframes everything. $200 suddenly feels like nothing.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // BrainPerceptionSlide - Same price, different perception based on anchor
+    const BrainPerceptionSlide = ({ data, animated = true }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#8B5CF6' }}>
+            <Icons.Brain />
+            <span>Price Psychology</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Without Anchor */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={animated ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 relative overflow-hidden"
+            style={{ background: '#0a0a0a', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 10px 40px rgba(0,0,0,0.4)' }}
+          >
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
+
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                <Icons.Brain />
+              </div>
+              <span className="text-white font-semibold">Without Anchor</span>
+            </div>
+
+            {/* Brain visualization */}
+            <div className="relative h-32 mb-4 flex items-center justify-center">
+              <motion.div
+                animate={animated ? { scale: [1, 1.05, 1] } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-20 h-20 rounded-full flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #374151, #1F2937)', border: '2px solid #EF4444', boxShadow: '0 0 30px rgba(239, 68, 68, 0.3)' }}
+              >
+                <Icons.Brain />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={animated ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.6 }}
+                className="absolute -right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg"
+                style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+              >
+                <div className="text-2xl font-bold text-red-400">$200</div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={animated ? { opacity: 1 } : {}}
+              transition={{ delay: 0.8 }}
+              className="text-center"
+            >
+              <div className="text-lg font-bold text-red-400 mb-1">"That's expensive!"</div>
+              <div className="text-xs text-neutral-400">Brain has no reference point</div>
+            </motion.div>
+          </motion.div>
+
+          {/* With $20K Anchor */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={animated ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.4 }}
+            className="rounded-2xl p-6 relative overflow-hidden"
+            style={{ background: '#0a0a0a', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: '0 10px 40px rgba(0,0,0,0.4)' }}
+          >
+            <div className="h-1 w-full absolute top-0 left-0" style={{ background: 'linear-gradient(90deg, transparent, #10B981, transparent)' }} />
+
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+                <Icons.Brain />
+              </div>
+              <span className="text-white font-semibold">With $20K Anchor</span>
+            </div>
+
+            {/* Brain visualization with anchor */}
+            <div className="relative h-32 mb-4 flex items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={animated ? { opacity: 0.4, scale: 1 } : {}}
+                transition={{ delay: 0.5 }}
+                className="absolute left-0 px-2 py-1 rounded text-xs"
+                style={{ background: 'rgba(251, 191, 36, 0.2)', color: '#FBBF24' }}
+              >
+                $20,000
+              </motion.div>
+              <motion.div
+                animate={animated ? { scale: [1, 1.1, 1], boxShadow: ['0 0 20px rgba(16, 185, 129, 0.3)', '0 0 40px rgba(16, 185, 129, 0.5)', '0 0 20px rgba(16, 185, 129, 0.3)'] } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-20 h-20 rounded-full flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #065F46, #047857)', border: '2px solid #10B981' }}
+              >
+                <Icons.Brain />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={animated ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.8 }}
+                className="absolute -right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg"
+                style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)' }}
+              >
+                <div className="text-2xl font-bold text-green-400">$200</div>
+                <div className="text-[9px] text-green-400/60">only 1%</div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={animated ? { opacity: 1 } : {}}
+              transition={{ delay: 1.0 }}
+              className="text-center"
+            >
+              <div className="text-lg font-bold text-green-400 mb-1">"That's a steal!"</div>
+              <div className="text-xs text-neutral-400">Brain compares to $20K anchor</div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={animated ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 1.2 }}
+          className="text-center mt-6 py-3 px-4 rounded-xl"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}
+        >
+          <p className="text-neutral-300 text-sm">Same $200. Same product. Different anchor = Different perception.</p>
+        </motion.div>
+      </div>
+    );
+
+    // ThreeTierPyramidSlide - Visual pyramid showing buyer flow
+    const ThreeTierPyramidSlide = ({ data, animated = true }) => {
+      const tiers = [
+        { label: 'PREMIUM', price: '$850', percent: '5%', buyers: 'Status Buyers', color: '#FBBF24', width: '40%', isAnchor: true },
+        { label: 'MID-TIER', price: '$180', percent: '70%', buyers: 'Sweet Spot', color: '#10B981', width: '65%', isAnchor: false },
+        { label: 'ENTRY', price: '$45', percent: '25%', buyers: 'Budget Buyers', color: '#6B7280', width: '90%', isAnchor: false },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10B981' }}>
+              <Icons.Users />
+              <span>Buyer Psychology</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="flex flex-col items-center gap-3 mb-6">
+            {tiers.map((tier, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={animated ? { opacity: 1, scaleX: 1 } : {}}
+                transition={{ delay: 0.3 + i * 0.2, duration: 0.6, ease: 'easeOut' }}
+                className="relative rounded-xl py-4 px-6"
+                style={{
+                  width: tier.width,
+                  background: tier.isAnchor ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  border: `2px solid ${tier.color}40`,
+                  boxShadow: tier.label === 'MID-TIER' ? `0 0 30px ${tier.color}30` : 'none',
+                }}
+              >
+                <div className="h-1 w-full absolute top-0 left-0 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }} />
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {tier.isAnchor && (
+                      <div className="px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: `${tier.color}20`, color: tier.color }}>ANCHOR</div>
+                    )}
+                    <div>
+                      <div className="text-xs font-semibold" style={{ color: tier.color }}>{tier.label}</div>
+                      <div className="text-2xl font-bold text-white">{tier.price}</div>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={animated ? { scale: 1 } : {}}
+                      transition={{ delay: 0.6 + i * 0.2, type: 'spring' }}
+                      className="text-2xl font-bold"
+                      style={{ color: tier.color, textShadow: tier.label === 'MID-TIER' ? `0 0 20px ${tier.color}50` : 'none' }}
+                    >
+                      {tier.percent}
+                    </motion.div>
+                    <div className="text-[10px] text-neutral-400">{tier.buyers}</div>
+                  </div>
+                </div>
+
+                {tier.label === 'MID-TIER' && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={animated ? { opacity: 1 } : {}}
+                    transition={{ delay: 1.2 }}
+                    className="absolute -right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded-lg text-[9px] font-bold"
+                    style={{ background: '#10B981', color: '#000' }}
+                  >
+                    WINNER
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Animated flow arrows */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={animated ? { opacity: 1 } : {}}
+            transition={{ delay: 1.4 }}
+            className="flex justify-center gap-8 mb-4"
+          >
+            <div className="text-center">
+              <motion.div
+                animate={animated ? { y: [0, -5, 0] } : {}}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="text-3xl font-bold text-green-400"
+              >
+                70%
+              </motion.div>
+              <div className="text-xs text-neutral-400">choose mid-tier</div>
+            </div>
+            <div className="w-px bg-neutral-700" />
+            <div className="text-center">
+              <div className="text-sm text-neutral-500">because premium</div>
+              <div className="text-sm text-neutral-500">makes it feel</div>
+              <div className="text-sm font-bold text-green-400">"smart"</div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={animated ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 1.6 }}
+            className="rounded-xl p-4 text-center"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}
+          >
+            <p className="text-neutral-300 text-sm">The anchor justifies everything below it. Premium exists to sell mid-tier.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ END GENIUS-LEVEL CUSTOM SLIDES ============
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">Anchors reframe value. Display the luxury tier first. Make mid-tier feel like the smart choice. The anchor doesn't need to sell.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
+
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          totalSlides: slides.length,
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
+
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
+
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'anchor-scale': return <AnchorScaleSlide data={slide} />;
+          case 'luxury-window': return <LuxuryWindowSlide data={slide} />;
+          case 'brain-perception': return <BrainPerceptionSlide data={slide} />;
+          case 'three-tier-pyramid': return <ThreeTierPyramidSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>
