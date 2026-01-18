@@ -1,25 +1,25 @@
 // Copywriting Lessons Configuration for CRM
-// Each lesson has: image prompts (0-2) and component slots (2-4 slides with 3 options each)
+// Each lesson has: image prompts (0-2, ONLY when truly relevant) and component slots (2-4 slides with 3 options each)
 
 export interface ImagePrompt {
   slideIndex: number;
   background: 'white' | 'black';
   prompt: string;
-  context: string; // What the image should represent
+  context: string;
 }
 
 export interface ComponentOption {
   id: string;
   name: string;
   description: string;
-  previewData: Record<string, unknown>; // Pre-filled data for this lesson
+  previewData: Record<string, unknown>;
 }
 
 export interface ComponentSlot {
   slideIndex: number;
   slideTitle: string;
-  currentType: string; // Current slide type
-  options: [ComponentOption, ComponentOption, ComponentOption]; // Always 3 options
+  currentType: string;
+  options: [ComponentOption, ComponentOption, ComponentOption];
 }
 
 export interface LessonConfig {
@@ -30,19 +30,6 @@ export interface LessonConfig {
   componentSlots: ComponentSlot[];
 }
 
-// Helper to create professional image prompts
-const createImagePrompt = (
-  slideIndex: number,
-  background: 'white' | 'black',
-  subject: string,
-  style: string = 'minimalist'
-): ImagePrompt => ({
-  slideIndex,
-  background,
-  prompt: `Professional ${style} illustration on pure ${background === 'white' ? 'white (#FFFFFF)' : 'black (#000000)'} background. ${subject}. Ultra-clean, no text, no watermarks. Sharp edges, high contrast. Editorial quality, suitable for premium SaaS. 1024x1024.`,
-  context: subject,
-});
-
 // ============================================
 // COPYWRITING LESSONS CONFIGURATION
 // ============================================
@@ -52,10 +39,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
     slug: 'familiar-surprise-secret',
     title: 'The Familiar Surprise Secret',
     description: 'Master the MAYA principle - 70% familiar + 30% novel',
-    imagePrompts: [
-      createImagePrompt(3, 'white', 'A brain split in two halves - one side showing comfortable familiar patterns, other side with exciting new neural pathways lighting up. Metaphor for MAYA principle'),
-      createImagePrompt(6, 'black', 'Golden ratio spiral transitioning from solid to innovative - representing the 70/30 balance of familiar to novel'),
-    ],
+    imagePrompts: [], // No images needed - the lesson already has Spotify logo and the concepts are abstract ratios best shown with charts
     componentSlots: [
       {
         slideIndex: 3,
@@ -65,7 +49,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           {
             id: 'VennDiagram',
             name: 'Venn Diagram',
-            description: 'Two overlapping circles showing Familiar vs Novel',
+            description: 'Two overlapping circles showing the sweet spot',
             previewData: {
               title: 'The MAYA Sweet Spot',
               leftLabel: 'Familiar (70%)',
@@ -77,24 +61,9 @@ export const copywritingLessonsConfig: LessonConfig[] = [
             },
           },
           {
-            id: 'SlopeChart',
-            name: 'Slope Chart',
-            description: 'Show engagement difference between approaches',
-            previewData: {
-              title: 'Engagement by Approach',
-              leftLabel: '100% Novel',
-              rightLabel: '70/30 MAYA',
-              items: [
-                { label: 'Click Rate', leftValue: 2.1, rightValue: 6.8 },
-                { label: 'Trust Score', leftValue: 35, rightValue: 78 },
-                { label: 'Conversion', leftValue: 0.8, rightValue: 3.2 },
-              ],
-            },
-          },
-          {
             id: 'DonutChart',
             name: 'Donut Chart',
-            description: 'Visual ratio of 70% familiar / 30% novel',
+            description: 'Visual 70/30 ratio with center label',
             previewData: {
               title: 'The Perfect Balance',
               segments: [
@@ -103,6 +72,21 @@ export const copywritingLessonsConfig: LessonConfig[] = [
               ],
               centerLabel: 'MAYA',
               centerValue: 'Principle',
+            },
+          },
+          {
+            id: 'SlopeChart',
+            name: 'Slope Chart',
+            description: 'Before/after engagement comparison',
+            previewData: {
+              title: 'Spotify Discovery Weekly Results',
+              leftLabel: '100% Novel',
+              rightLabel: '70/30 MAYA',
+              items: [
+                { label: 'Engagement', leftValue: 2.1, rightValue: 6.8 },
+                { label: 'Save Rate', leftValue: 12, rightValue: 36 },
+                { label: 'Return Rate', leftValue: 23, rightValue: 46 },
+              ],
             },
           },
         ],
@@ -118,9 +102,23 @@ export const copywritingLessonsConfig: LessonConfig[] = [
             description: 'Three key metrics in card format',
             previewData: {
               stats: [
-                { value: '40%', label: 'Faster Processing', desc: 'Brain handles familiar things faster' },
-                { value: '0', label: 'Dopamine for Pure Familiar', desc: 'No excitement = no action' },
+                { value: '40%', label: 'Faster Processing', desc: 'Brain handles familiar faster' },
+                { value: '0', label: 'Dopamine Spike', desc: 'Pure familiar = no excitement' },
                 { value: '2x', label: 'Engagement Boost', desc: 'Novel-familiar mix doubles attention' },
+              ],
+            },
+          },
+          {
+            id: 'BarChart',
+            name: 'Comparison Bars',
+            description: 'Side-by-side metric comparison',
+            previewData: {
+              title: 'Brain Response by Approach',
+              bars: [
+                { label: 'Processing Speed (Familiar)', value: 85 },
+                { label: 'Attention (Novel)', value: 90 },
+                { label: 'Trust (Familiar)', value: 95 },
+                { label: 'Excitement (Novel)', value: 88 },
               ],
             },
           },
@@ -136,68 +134,6 @@ export const copywritingLessonsConfig: LessonConfig[] = [
               ],
             },
           },
-          {
-            id: 'BarChart',
-            name: 'Comparison Bars',
-            description: 'Side-by-side comparison of metrics',
-            previewData: {
-              title: 'Brain Response Metrics',
-              bars: [
-                { label: 'Processing Speed', familiar: 85, novel: 45 },
-                { label: 'Attention Capture', familiar: 30, novel: 90 },
-                { label: 'Trust Level', familiar: 95, novel: 20 },
-              ],
-            },
-          },
-        ],
-      },
-      {
-        slideIndex: 11,
-        slideTitle: 'MAYA Checklist',
-        currentType: 'checklist',
-        options: [
-          {
-            id: 'IconGrid',
-            name: 'Icon Grid',
-            description: 'Checklist with visual icons',
-            previewData: {
-              title: 'Quick MAYA Checklist',
-              items: [
-                { icon: 'MessageSquare', title: 'Headline', text: 'References a problem in their words?' },
-                { icon: 'Lightbulb', title: 'Subheadline', text: 'Hints at fresh angle without confusion?' },
-                { icon: 'FileText', title: 'Body Copy', text: 'Anchors to familiar before mechanism?' },
-                { icon: 'MousePointer', title: 'CTA', text: 'Safe enough to click, exciting enough to want?' },
-              ],
-            },
-          },
-          {
-            id: 'Timeline',
-            name: 'Vertical Timeline',
-            description: 'Step-by-step checklist flow',
-            previewData: {
-              title: 'MAYA Page Audit',
-              steps: [
-                { title: 'Headline', desc: 'Problem in their words', status: 'check' },
-                { title: 'Subheadline', desc: 'Fresh angle hinted', status: 'check' },
-                { title: 'Body', desc: 'Familiar → mechanism', status: 'check' },
-                { title: 'CTA', desc: 'Safe + exciting', status: 'check' },
-              ],
-            },
-          },
-          {
-            id: 'ProcessSteps',
-            name: 'Process Steps',
-            description: 'Numbered process flow',
-            previewData: {
-              title: 'Page Review Process',
-              steps: [
-                { num: '01', title: 'Check Headline', desc: 'Their words, their problem' },
-                { num: '02', title: 'Check Subhead', desc: 'Novel angle, not confusing' },
-                { num: '03', title: 'Check Body', desc: 'Familiar anchors first' },
-                { num: '04', title: 'Check CTA', desc: 'Balanced appeal' },
-              ],
-            },
-          },
         ],
       },
     ],
@@ -207,9 +143,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
     slug: 'red-button-effect',
     title: 'The Red Button Effect',
     description: 'Why "don\'t click this" makes people click 3x more',
-    imagePrompts: [
-      createImagePrompt(2, 'black', 'A glowing red button with "DO NOT PRESS" label, surrounded by magnetic force lines pulling a hand toward it. Forbidden fruit psychology visualization'),
-    ],
+    imagePrompts: [], // No images - the lesson is about psychological reactance, best conveyed through text and the interactive demo
     componentSlots: [
       {
         slideIndex: 4,
@@ -219,36 +153,36 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           {
             id: 'StatCard',
             name: 'Stat Cards',
-            description: 'Three reactance metrics',
+            description: 'Three key reactance metrics',
             previewData: {
               stats: [
-                { value: '200ms', label: 'Trigger Time', desc: 'Instant brain response to restriction' },
-                { value: '3x', label: 'Desire Boost', desc: 'Restricted items feel more valuable' },
-                { value: '47%', label: 'More Clicks', desc: 'Forbidden CTAs outperform standard' },
-              ],
-            },
-          },
-          {
-            id: 'GaugeChart',
-            name: 'Gauge Meters',
-            description: 'Visual meters showing psychological response',
-            previewData: {
-              gauges: [
-                { label: 'Reaction Speed', value: 95, max: 100 },
-                { label: 'Desire Increase', value: 300, max: 400 },
-                { label: 'CTR Boost', value: 47, max: 100 },
+                { value: '200ms', label: 'Trigger Time', desc: 'Instant brain response' },
+                { value: '3x', label: 'Desire Boost', desc: 'Restricted = more valuable' },
+                { value: '+47%', label: 'CTR Increase', desc: 'Forbidden CTAs win' },
               ],
             },
           },
           {
             id: 'BarChart',
-            name: 'Comparison Bars',
-            description: 'Standard vs Forbidden CTA comparison',
+            name: 'CTR Comparison',
+            description: 'Standard vs Forbidden CTA performance',
             previewData: {
-              title: 'CTA Performance',
+              title: 'Click-Through Rate Comparison',
               bars: [
-                { label: 'Standard CTA', value: 2.1 },
-                { label: 'Forbidden CTA', value: 6.8 },
+                { label: '"Add to Cart"', value: 2.1 },
+                { label: '"Don\'t click unless..."', value: 6.8 },
+              ],
+            },
+          },
+          {
+            id: 'GaugeChart',
+            name: 'Response Meters',
+            description: 'Psychological response intensity',
+            previewData: {
+              gauges: [
+                { label: 'Reactance Trigger', value: 95, max: 100, color: '#ef4444' },
+                { label: 'Desire Amplification', value: 300, max: 400, color: '#f97316' },
+                { label: 'Action Likelihood', value: 78, max: 100, color: '#22c55e' },
               ],
             },
           },
@@ -256,31 +190,32 @@ export const copywritingLessonsConfig: LessonConfig[] = [
       },
       {
         slideIndex: 3,
-        slideTitle: 'Brain Response',
+        slideTitle: 'Brain Response Cascade',
         currentType: 'brain-response',
         options: [
           {
             id: 'Timeline',
             name: 'Timeline Flow',
-            description: 'Step-by-step brain response',
+            description: 'Step-by-step brain response sequence',
             previewData: {
               title: 'The Reactance Cascade',
               steps: [
                 { title: 'Restriction Detected', desc: '"Don\'t click this"' },
                 { title: 'Freedom Threatened', desc: 'Brain rebels instantly' },
-                { title: 'Must Restore Control', desc: 'Tension builds' },
-                { title: 'CLICK', desc: 'Action taken' },
+                { title: 'Tension Builds', desc: 'Must restore control' },
+                { title: 'Action Taken', desc: 'CLICK' },
               ],
             },
           },
           {
             id: 'ProcessSteps',
-            name: 'Process Flow',
-            description: 'Numbered cascade steps',
+            name: 'Process Steps',
+            description: 'Numbered cascade visualization',
             previewData: {
+              title: 'Psychological Cascade',
               steps: [
-                { num: '01', title: 'Detect', desc: 'Brain spots the restriction' },
-                { num: '02', title: 'Rebel', desc: 'Freedom response triggers' },
+                { num: '01', title: 'Detect', desc: 'Brain spots restriction' },
+                { num: '02', title: 'Rebel', desc: 'Freedom response fires' },
                 { num: '03', title: 'Build', desc: 'Tension and desire grow' },
                 { num: '04', title: 'Act', desc: 'Click to restore control' },
               ],
@@ -288,65 +223,15 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           },
           {
             id: 'FunnelChart',
-            name: 'Funnel',
+            name: 'Response Funnel',
             description: 'Psychological funnel to action',
             previewData: {
-              title: 'Reactance Funnel',
+              title: 'Reactance to Action',
               stages: [
                 { label: 'See Restriction', value: 100 },
                 { label: 'Feel Threatened', value: 85 },
                 { label: 'Build Tension', value: 70 },
                 { label: 'Take Action', value: 47 },
-              ],
-            },
-          },
-        ],
-      },
-      {
-        slideIndex: 6,
-        slideTitle: 'The 5 Triggers',
-        currentType: 'five-triggers',
-        options: [
-          {
-            id: 'IconGrid',
-            name: 'Trigger Cards',
-            description: 'Five trigger patterns with examples',
-            previewData: {
-              items: [
-                { title: '"Don\'t buy this if..."', text: 'Forces them to prove they ARE ready' },
-                { title: '"This isn\'t for everyone"', text: 'Triggers need to qualify as exception' },
-                { title: '"Warning: May cause..."', text: 'Positions product as powerful' },
-                { title: '"Skip this if..."', text: 'Nobody wants to admit that' },
-                { title: '"Only click if..."', text: 'Creates exclusive identity' },
-              ],
-            },
-          },
-          {
-            id: 'StackedList',
-            name: 'Stacked List',
-            description: 'Expandable trigger examples',
-            previewData: {
-              items: [
-                { trigger: '"Don\'t buy if..."', example: '"Don\'t buy if you\'re not ready for compliments."' },
-                { trigger: '"Not for everyone"', example: '"This product isn\'t for casual shoppers."' },
-                { trigger: '"Warning..."', example: '"Warning: May cause neighbors to ask where you got that."' },
-                { trigger: '"Skip if..."', example: '"Skip if you\'re happy with slow results."' },
-                { trigger: '"Only if..."', example: '"Only click if you\'re serious about transformation."' },
-              ],
-            },
-          },
-          {
-            id: 'ComparisonBars',
-            name: 'Trigger Effectiveness',
-            description: 'Bar chart of each trigger\'s CTR boost',
-            previewData: {
-              title: 'Trigger Effectiveness',
-              bars: [
-                { label: 'Don\'t buy if...', value: 224 },
-                { label: 'Not for everyone', value: 187 },
-                { label: 'Warning...', value: 156 },
-                { label: 'Skip if...', value: 142 },
-                { label: 'Only if...', value: 198 },
               ],
             },
           },
@@ -359,10 +244,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
     slug: 'fred-method',
     title: 'The F.R.E.D. Method',
     description: 'The 4-letter framework for audience psychology',
-    imagePrompts: [
-      createImagePrompt(4, 'white', 'Four interconnected gears labeled F, R, E, D - each gear driving the next. Clean mechanical metaphor for the framework'),
-      createImagePrompt(8, 'black', 'A detective magnifying glass revealing hidden customer fears, reactions, emotions, and desires - glowing text elements'),
-    ],
+    imagePrompts: [], // No images - the framework is abstract and best shown with component visualizations
     componentSlots: [
       {
         slideIndex: 4,
@@ -372,7 +254,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           {
             id: 'ProcessSteps',
             name: 'Process Steps',
-            description: 'Four-step framework visualization',
+            description: 'Four-step framework with descriptions',
             previewData: {
               title: 'The F.R.E.D. Method',
               steps: [
@@ -388,18 +270,19 @@ export const copywritingLessonsConfig: LessonConfig[] = [
             name: 'Icon Grid',
             description: 'Four quadrants with icons',
             previewData: {
+              title: 'Customer Psychology Map',
               items: [
-                { icon: 'AlertTriangle', title: 'F - Fears', text: 'Their deepest worries and concerns' },
-                { icon: 'Zap', title: 'R - Reactions', text: 'How they respond to problems' },
-                { icon: 'Heart', title: 'E - Emotions', text: 'What they feel about the situation' },
-                { icon: 'Target', title: 'D - Desires', text: 'What they secretly want most' },
+                { icon: 'AlertTriangle', title: 'F - Fears', text: 'Their deepest worries' },
+                { icon: 'Zap', title: 'R - Reactions', text: 'How they respond' },
+                { icon: 'Heart', title: 'E - Emotions', text: 'What they feel' },
+                { icon: 'Target', title: 'D - Desires', text: 'What they want' },
               ],
             },
           },
           {
             id: 'RadarChart',
             name: 'Radar Chart',
-            description: 'Customer psychology radar',
+            description: 'Customer psychology profile visualization',
             previewData: {
               title: 'Customer Psychology Profile',
               axes: ['Fears', 'Reactions', 'Emotions', 'Desires'],
@@ -410,36 +293,41 @@ export const copywritingLessonsConfig: LessonConfig[] = [
       },
       {
         slideIndex: 7,
-        slideTitle: 'Application Example',
+        slideTitle: 'F.R.E.D. Application',
         currentType: 'example',
         options: [
           {
             id: 'BeforeAfter',
             name: 'Before/After',
-            description: 'Without vs With F.R.E.D.',
+            description: 'Generic vs F.R.E.D. copy comparison',
             previewData: {
-              before: { title: 'Generic Copy', text: 'Our product solves your problems effectively.' },
+              before: { title: 'Generic Copy', text: 'Our product solves your problems effectively and efficiently.' },
               after: { title: 'F.R.E.D. Applied', text: 'Tired of lying awake worrying about bills? Join 10,000+ who finally breathe easy.' },
             },
           },
           {
-            id: 'SplitContent',
-            name: 'Split Comparison',
-            description: 'Side-by-side comparison',
-            previewData: {
-              left: { title: 'Before F.R.E.D.', items: ['Generic benefits', 'Feature lists', 'No emotional hook'] },
-              right: { title: 'After F.R.E.D.', items: ['Speaks to fears', 'Triggers reactions', 'Taps desires'] },
-            },
-          },
-          {
-            id: 'ComparisonBars',
+            id: 'BarChart',
             name: 'Results Comparison',
-            description: 'Conversion improvement',
+            description: 'Conversion rate improvement',
             previewData: {
-              title: 'Conversion Rate',
+              title: 'Conversion Rate Impact',
               bars: [
                 { label: 'Generic Copy', value: 1.2 },
                 { label: 'F.R.E.D. Applied', value: 4.7 },
+              ],
+            },
+          },
+          {
+            id: 'IconGrid',
+            name: 'Checklist Grid',
+            description: 'F.R.E.D. audit checklist',
+            previewData: {
+              title: 'F.R.E.D. Copy Audit',
+              items: [
+                { title: 'Fears Addressed?', text: 'Does it acknowledge their worries?' },
+                { title: 'Reactions Predicted?', text: 'Does it meet their objections?' },
+                { title: 'Emotions Triggered?', text: 'Does it create feeling?' },
+                { title: 'Desires Connected?', text: 'Does it promise what they want?' },
               ],
             },
           },
@@ -451,95 +339,97 @@ export const copywritingLessonsConfig: LessonConfig[] = [
   {
     slug: 'emotion-decides',
     title: 'Emotion Decides, Logic Justifies',
-    description: 'How emotions drive purchases',
-    imagePrompts: [
-      createImagePrompt(3, 'white', 'A heart and brain connected by arrows - heart labeled "DECIDES" in bold, brain labeled "justifies" in smaller text. Shows emotional dominance in decision-making'),
-    ],
+    description: 'How 95% of buying decisions are made emotionally',
+    imagePrompts: [], // No images - the concept is best shown through the donut/stats showing 95% emotional
     componentSlots: [
       {
         slideIndex: 4,
-        slideTitle: 'The Decision Process',
-        currentType: 'process',
+        slideTitle: 'The Decision Split',
+        currentType: 'stats',
         options: [
           {
-            id: 'Timeline',
-            name: 'Decision Timeline',
-            description: 'Sequential decision flow',
+            id: 'DonutChart',
+            name: 'Decision Donut',
+            description: '95% emotional vs 5% logical split',
             previewData: {
-              steps: [
-                { title: 'Emotional Trigger', desc: 'Heart responds first (0.5s)' },
-                { title: 'Desire Forms', desc: '"I want this"' },
-                { title: 'Logic Activates', desc: 'Brain seeks justification' },
-                { title: 'Purchase', desc: 'Action taken with "reasons"' },
+              title: 'How Decisions Are Actually Made',
+              segments: [
+                { label: 'Emotional (Subconscious)', value: 95, color: '#88da1c' },
+                { label: 'Logical (Conscious)', value: 5, color: '#666' },
+              ],
+              centerLabel: '95%',
+              centerValue: 'Emotion',
+            },
+          },
+          {
+            id: 'StatCard',
+            name: 'Key Stats',
+            description: 'Three decision-making metrics',
+            previewData: {
+              stats: [
+                { value: '95%', label: 'Emotional', desc: 'Decisions made subconsciously' },
+                { value: '0.5s', label: 'Response Time', desc: 'Emotion triggers first' },
+                { value: '3x', label: 'Conversion Lift', desc: 'Emotion-first copy wins' },
               ],
             },
           },
           {
-            id: 'FunnelChart',
-            name: 'Decision Funnel',
-            description: 'Emotional to logical flow',
+            id: 'GaugeChart',
+            name: 'Influence Gauges',
+            description: 'Emotion vs Logic influence meters',
             previewData: {
-              stages: [
-                { label: 'Emotional Response', value: 100 },
-                { label: 'Desire Created', value: 85 },
-                { label: 'Logic Justifies', value: 70 },
-                { label: 'Purchase', value: 45 },
-              ],
-            },
-          },
-          {
-            id: 'ProcessSteps',
-            name: 'Process Flow',
-            description: 'Four-step decision process',
-            previewData: {
-              steps: [
-                { num: '01', title: 'Feel', desc: 'Emotion triggers in 0.5 seconds' },
-                { num: '02', title: 'Want', desc: 'Desire forms unconsciously' },
-                { num: '03', title: 'Justify', desc: 'Logic finds supporting reasons' },
-                { num: '04', title: 'Buy', desc: 'Action feels "rational"' },
+              gauges: [
+                { label: 'Emotional Influence', value: 95, max: 100, color: '#88da1c' },
+                { label: 'Logical Influence', value: 5, max: 100, color: '#666' },
               ],
             },
           },
         ],
       },
       {
-        slideIndex: 7,
-        slideTitle: 'Stats & Data',
-        currentType: 'stats',
+        slideIndex: 6,
+        slideTitle: 'The Decision Sequence',
+        currentType: 'process',
         options: [
           {
-            id: 'DonutChart',
-            name: 'Decision Split',
-            description: 'Emotion vs Logic ratio',
+            id: 'Timeline',
+            name: 'Decision Timeline',
+            description: 'Sequential emotion-to-logic flow',
             previewData: {
-              segments: [
-                { label: 'Emotional Decision', value: 95, color: '#88da1c' },
-                { label: 'Logical Decision', value: 5, color: '#000' },
-              ],
-              centerLabel: '95%',
-              centerValue: 'Emotion-Driven',
-            },
-          },
-          {
-            id: 'StatCard',
-            name: 'Key Stats',
-            description: 'Research-backed numbers',
-            previewData: {
-              stats: [
-                { value: '95%', label: 'Emotional', desc: 'Decisions made subconsciously' },
-                { value: '0.5s', label: 'Response Time', desc: 'Emotion triggers before logic' },
-                { value: '3x', label: 'Conversion Lift', desc: 'Emotion-first copy performance' },
+              title: 'The Real Decision Process',
+              steps: [
+                { title: 'Emotional Trigger', desc: 'Heart responds first (0.5s)' },
+                { title: 'Desire Forms', desc: '"I want this"' },
+                { title: 'Logic Activates', desc: 'Brain seeks justification' },
+                { title: 'Purchase Made', desc: 'With "rational" reasons' },
               ],
             },
           },
           {
-            id: 'GaugeChart',
-            name: 'Decision Gauge',
-            description: 'Visual emotion vs logic meter',
+            id: 'ProcessSteps',
+            name: 'Process Steps',
+            description: 'Four-step decision process',
             previewData: {
-              gauges: [
-                { label: 'Emotion Influence', value: 95, max: 100, color: '#88da1c' },
-                { label: 'Logic Influence', value: 5, max: 100, color: '#666' },
+              title: 'How Customers Really Buy',
+              steps: [
+                { num: '01', title: 'Feel', desc: 'Emotion fires in 0.5 seconds' },
+                { num: '02', title: 'Want', desc: 'Desire forms unconsciously' },
+                { num: '03', title: 'Justify', desc: 'Logic finds reasons' },
+                { num: '04', title: 'Buy', desc: 'Action feels "rational"' },
+              ],
+            },
+          },
+          {
+            id: 'FunnelChart',
+            name: 'Decision Funnel',
+            description: 'Emotional to logical conversion',
+            previewData: {
+              title: 'Decision Journey',
+              stages: [
+                { label: 'Emotional Response', value: 100 },
+                { label: 'Desire Created', value: 85 },
+                { label: 'Logic Justifies', value: 70 },
+                { label: 'Purchase', value: 45 },
               ],
             },
           },
@@ -552,45 +442,43 @@ export const copywritingLessonsConfig: LessonConfig[] = [
     slug: 'gatekeeper-method',
     title: 'The Gatekeeper Method',
     description: 'Bypass the brain\'s attention filter',
-    imagePrompts: [
-      createImagePrompt(3, 'black', 'A brain with a bouncer/gatekeeper at the entrance, letting only certain messages through a velvet rope. VIP access metaphor for attention'),
-      createImagePrompt(7, 'white', 'A flood of messages hitting a filter, with only a few golden messages passing through. Shows attention scarcity'),
-    ],
+    imagePrompts: [], // No images - the filtering concept is abstract and better shown with funnel/stats
     componentSlots: [
       {
         slideIndex: 4,
-        slideTitle: 'The Gatekeeper Stats',
+        slideTitle: 'The Attention Filter',
         currentType: 'stats',
         options: [
           {
+            id: 'FunnelChart',
+            name: 'Attention Funnel',
+            description: 'Information filtering visualization',
+            previewData: {
+              title: 'What Gets Through',
+              stages: [
+                { label: 'Sensory Input (11M bits/sec)', value: 100 },
+                { label: 'Subconscious Processing', value: 10 },
+                { label: 'Attention Threshold', value: 1 },
+                { label: 'Conscious Awareness', value: 0.0005 },
+              ],
+            },
+          },
+          {
             id: 'StatCard',
-            name: 'Attention Stats',
+            name: 'Filter Stats',
             description: 'Key gatekeeper metrics',
             previewData: {
               stats: [
                 { value: '11M', label: 'Bits/Second', desc: 'Sensory input to brain' },
-                { value: '50', label: 'Bits Processed', desc: 'What conscious mind handles' },
+                { value: '50', label: 'Bits Processed', desc: 'Conscious mind handles' },
                 { value: '99.9%', label: 'Filtered Out', desc: 'Messages never seen' },
               ],
             },
           },
           {
-            id: 'FunnelChart',
-            name: 'Attention Funnel',
-            description: 'Information filtering funnel',
-            previewData: {
-              stages: [
-                { label: 'Sensory Input', value: 11000000 },
-                { label: 'Subconscious Processing', value: 100000 },
-                { label: 'Attention Threshold', value: 1000 },
-                { label: 'Conscious Awareness', value: 50 },
-              ],
-            },
-          },
-          {
             id: 'GaugeChart',
-            name: 'Filter Gauge',
-            description: 'Visual filtering representation',
+            name: 'Filter Gauges',
+            description: 'Blocked vs through rates',
             previewData: {
               gauges: [
                 { label: 'Messages Blocked', value: 99.9, max: 100, color: '#ef4444' },
@@ -608,8 +496,9 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           {
             id: 'IconGrid',
             name: 'Technique Cards',
-            description: 'Four bypass methods',
+            description: 'Four bypass methods with icons',
             previewData: {
+              title: 'The 4 Gatekeeper Keys',
               items: [
                 { icon: 'AlertTriangle', title: 'Threat Detection', text: 'Danger signals bypass filter' },
                 { icon: 'User', title: 'Self-Reference', text: 'Their name, their problem' },
@@ -623,6 +512,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
             name: 'Bypass Protocol',
             description: 'Step-by-step bypass method',
             previewData: {
+              title: 'Gatekeeper Bypass Protocol',
               steps: [
                 { num: '01', title: 'Pattern Break', desc: 'Stop the scroll with unexpected' },
                 { num: '02', title: 'Self-Reference', desc: 'Make it about THEM' },
@@ -633,10 +523,10 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           },
           {
             id: 'RadarChart',
-            name: 'Bypass Radar',
-            description: 'Effectiveness of each technique',
+            name: 'Effectiveness Radar',
+            description: 'Technique effectiveness comparison',
             previewData: {
-              title: 'Bypass Effectiveness',
+              title: 'Bypass Technique Effectiveness',
               axes: ['Threat', 'Self-Ref', 'Pattern Break', 'Emotion'],
               data: [95, 88, 76, 92],
             },
@@ -650,9 +540,7 @@ export const copywritingLessonsConfig: LessonConfig[] = [
     slug: 'three-second-rule',
     title: 'The 3-Second Rule',
     description: 'The critical window to capture attention',
-    imagePrompts: [
-      createImagePrompt(2, 'black', 'A stopwatch showing exactly 3 seconds, with sand falling through an hourglass in the background. Urgency visualization'),
-    ],
+    imagePrompts: [], // No images - timing concept best shown with timeline/gauge components
     componentSlots: [
       {
         slideIndex: 3,
@@ -660,37 +548,38 @@ export const copywritingLessonsConfig: LessonConfig[] = [
         currentType: 'stats',
         options: [
           {
-            id: 'GaugeChart',
-            name: 'Time Gauge',
-            description: 'Visual 3-second countdown',
-            previewData: {
-              gauges: [
-                { label: 'Attention Window', value: 3, max: 10, color: '#88da1c' },
-                { label: 'Decision Made', value: 100, max: 100, color: '#ef4444' },
-              ],
-            },
-          },
-          {
             id: 'Timeline',
-            name: 'Critical Timeline',
-            description: 'What happens in 3 seconds',
+            name: 'Second-by-Second',
+            description: 'What happens each second',
             previewData: {
+              title: 'The Critical 3 Seconds',
               steps: [
-                { title: 'Second 1', desc: 'Eyes land, brain scans' },
-                { title: 'Second 2', desc: 'Relevance assessment' },
-                { title: 'Second 3', desc: 'Stay or scroll decision' },
+                { title: 'Second 1', desc: 'Eyes land, brain scans for relevance' },
+                { title: 'Second 2', desc: 'Subconscious asks "Is this for me?"' },
+                { title: 'Second 3', desc: 'Decision made: Stay or scroll' },
               ],
             },
           },
           {
             id: 'StatCard',
-            name: 'Stat Cards',
+            name: 'Timing Stats',
             description: 'Key timing metrics',
             previewData: {
               stats: [
-                { value: '3s', label: 'Decision Time', desc: 'Average attention window' },
-                { value: '80%', label: 'Leave', desc: 'Visitors who bounce' },
+                { value: '3s', label: 'Decision Window', desc: 'Average attention span' },
+                { value: '80%', label: 'Bounce Rate', desc: 'Visitors who leave' },
                 { value: '50ms', label: 'First Impression', desc: 'Visual judgment formed' },
+              ],
+            },
+          },
+          {
+            id: 'GaugeChart',
+            name: 'Time Pressure',
+            description: 'Visual countdown pressure',
+            previewData: {
+              gauges: [
+                { label: 'Time Remaining', value: 3, max: 10, color: '#ef4444' },
+                { label: 'Decision Certainty', value: 100, max: 100, color: '#88da1c' },
               ],
             },
           },
@@ -704,21 +593,23 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           {
             id: 'IconGrid',
             name: 'Checklist Grid',
-            description: 'What must happen in 3 seconds',
+            description: 'Four requirements in 3 seconds',
             previewData: {
+              title: 'The 3-Second Checklist',
               items: [
-                { icon: 'Eye', title: 'Clear Value Prop', text: 'What you get, instantly' },
-                { icon: 'Target', title: 'Relevance Signal', text: '"This is for ME"' },
-                { icon: 'Zap', title: 'Curiosity Hook', text: 'Reason to stay' },
-                { icon: 'ArrowRight', title: 'Clear Next Step', text: 'What to do next' },
+                { icon: 'Eye', title: 'Clear Value', text: 'What you get, instantly visible' },
+                { icon: 'Target', title: 'Relevance', text: '"This is for ME" signal' },
+                { icon: 'Zap', title: 'Curiosity', text: 'Reason to stay and learn more' },
+                { icon: 'ArrowRight', title: 'Next Step', text: 'Obvious action to take' },
               ],
             },
           },
           {
             id: 'ProcessSteps',
-            name: 'Process Steps',
-            description: 'Sequential requirements',
+            name: 'Sequential Check',
+            description: 'Ordered requirements',
             previewData: {
+              title: 'Page Review Checklist',
               steps: [
                 { num: '01', title: 'Hook', desc: 'Stop the scroll instantly' },
                 { num: '02', title: 'Relevance', desc: 'Show it\'s for them' },
@@ -729,13 +620,14 @@ export const copywritingLessonsConfig: LessonConfig[] = [
           },
           {
             id: 'Timeline',
-            name: 'Timeline Check',
-            description: 'Second-by-second breakdown',
+            name: 'Timed Checklist',
+            description: 'Second-by-second requirements',
             previewData: {
+              title: 'What Must Happen',
               steps: [
-                { title: '0-1s', desc: 'Eye-catching visual or headline' },
-                { title: '1-2s', desc: 'Relevance confirmation' },
-                { title: '2-3s', desc: 'Value prop + next step clear' },
+                { title: '0-1 second', desc: 'Eye-catching visual or headline' },
+                { title: '1-2 seconds', desc: 'Relevance confirmed' },
+                { title: '2-3 seconds', desc: 'Value clear, action obvious' },
               ],
             },
           },
