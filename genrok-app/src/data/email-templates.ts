@@ -71,7 +71,8 @@ const commonBrandFields: TemplateField[] = [
   { key: 'cta_url', label: 'Button URL', type: 'url', defaultValue: 'https://yourstore.com', placeholder: 'https://yourstore.com' },
 ];
 
-// Premium email wrapper - billion dollar brand quality
+// Premium email wrapper - $10,000 elite designer level
+// Based on top-tier brands like GOED, ARCADY - magazine-style emails that sell
 const premiumWrapper = (content: string) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,42 +95,56 @@ const premiumWrapper = (content: string) => `<!DOCTYPE html>
   </style>
   <![endif]-->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
     @media only screen and (max-width: 600px) {
       .email-container { width: 100% !important; }
       .fluid { max-width: 100% !important; height: auto !important; }
       .stack-column { display: block !important; width: 100% !important; }
       .mobile-padding { padding: 20px !important; }
+      .mobile-headline { font-size: 32px !important; }
+      .mobile-subhead { font-size: 16px !important; }
     }
   </style>
 </head>
-<body style="margin:0; padding:0; background-color:#f8f8f8; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+<body style="margin:0; padding:0; background-color:#ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
   <!-- Preview Text -->
-  <div style="display:none; font-size:1px; color:#f8f8f8; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">
+  <div style="display:none; font-size:1px; color:#ffffff; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">
     {{preview_text}}
   </div>
 
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#f8f8f8;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#ffffff;">
     <tr>
-      <td align="center" style="padding:40px 16px;">
-        <!-- Email Container -->
-        <table role="presentation" class="email-container" width="600" cellspacing="0" cellpadding="0" border="0" style="background:#ffffff; border-radius:16px; overflow:hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
+      <td align="center">
+        <!-- Email Container - No border radius for edge-to-edge design -->
+        <table role="presentation" class="email-container" width="600" cellspacing="0" cellpadding="0" border="0" style="background:#ffffff;">
+
+          <!-- FULL WIDTH LOGO HEADER -->
+          <tr>
+            <td style="padding:0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:24px 0; text-align:center; border-bottom:1px solid #f0f0f0;">
+                    <img src="{{logo_url}}" alt="{{brand_name}}" style="max-width:100%; width:600px; height:auto; display:block;" />
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
           ${content}
         </table>
 
-        <!-- Footer -->
-        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin-top:24px;">
+        <!-- MINIMAL FOOTER -->
+        <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            <td style="padding:24px 40px; text-align:center;">
-              <p style="margin:0 0 12px; color:#9ca3af; font-size:13px; line-height:1.6; letter-spacing:0.01em;">
-                &copy; 2026 {{brand_name}}. Crafted with care.
+            <td style="padding:32px 24px; text-align:center; border-top:1px solid #f0f0f0;">
+              <p style="margin:0 0 8px; color:#666666; font-size:12px; line-height:1.5; letter-spacing:0.02em; text-transform:uppercase;">
+                &copy; 2026 {{brand_name}}
               </p>
-              <p style="margin:0; font-size:12px;">
-                <a href="#" style="color:#6b7280; text-decoration:none; margin:0 8px;">Unsubscribe</a>
-                <span style="color:#d1d5db;">|</span>
-                <a href="#" style="color:#6b7280; text-decoration:none; margin:0 8px;">View Online</a>
-                <span style="color:#d1d5db;">|</span>
-                <a href="#" style="color:#6b7280; text-decoration:none; margin:0 8px;">Privacy</a>
+              <p style="margin:0; font-size:11px;">
+                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">Unsubscribe</a>
+                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">View Online</a>
+                <a href="#" style="color:#999999; text-decoration:underline; margin:0 12px;">Privacy</a>
               </p>
             </td>
           </tr>
@@ -149,52 +164,69 @@ const abandonedCart1: EmailTemplate = {
   name: 'Immediate Recovery',
   category: 'abandoned-cart',
   timing: '2 hours after abandonment',
-  subjectLine: "Your cart is waiting for you",
-  description: 'First touchpoint - reassuring and elegant',
+  subjectLine: "You left something behind",
+  description: 'First touchpoint - editorial style with full-bleed hero',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your selection', placeholder: 'e.g., The Linen Collection' },
-    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'We saved your favorites. Complete your order today.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Complete My Order' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'STILL YOURS', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Your cart is waiting', placeholder: 'Secondary text' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Complete your order before it sells out.', placeholder: 'Email preview text' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'COMPLETE ORDER', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <!-- Hero Image -->
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
+
+                <!-- Text Overlay -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:14px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Don't miss out
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:600; color:#ffffff; line-height:1.1; letter-spacing:-0.02em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p class="mobile-subhead" style="margin:0 0 32px; font-size:18px; color:#ffffff; line-height:1.5; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{subheadline}}
+                      </p>
+
+                      <!-- CTA Button - Pill style -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- CONTENT SECTION -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:32px; font-weight:600; color:{{primary_color}}; line-height:1.2; letter-spacing:-0.02em;">
-                Your cart is waiting
-              </h1>
-              <p style="margin:0 0 32px; font-size:17px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we noticed you left {{product_name}} behind. No worries—we've kept everything safe for you.
+            <td style="padding:48px 40px; text-align:center; background:#fafafa;">
+              <h2 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:28px; font-weight:500; color:#1a1a1a; line-height:1.3;">
+                Cart Mode: Activated
+              </h2>
+              <p style="margin:0 0 24px; font-size:16px; color:#666666; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Hey {{customer_name}}, your curated selection is ready and waiting. Complete your order before these items sell out.
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <a href="{{cta_url}}" style="display:inline-block; font-size:14px; font-weight:600; color:#000000; text-decoration:underline; letter-spacing:0.05em;">
+                View My Cart →
+              </a>
             </td>
           </tr>
   `),
@@ -205,67 +237,68 @@ const abandonedCart2: EmailTemplate = {
   name: 'Gentle Reminder',
   category: 'abandoned-cart',
   timing: '24 hours after abandonment',
-  subjectLine: 'Still thinking about it?',
-  description: 'Soft nudge with social proof element',
+  subjectLine: 'Good things come to those who click.',
+  description: 'Bold color block style with compelling copy',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your favorites', placeholder: 'e.g., Summer Essentials' },
-    { key: 'review_count', label: 'Review Count', type: 'text', defaultValue: '2,500+', placeholder: 'e.g., 1,000+' },
-    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your items are selling fast. Don\'t miss out.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Return to Cart' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Good things come to those who click.', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FF6B5B' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your cart is getting lonely. Complete your order today.', placeholder: 'Email preview text' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Complete my order' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
-          <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- COLOR BLOCK HERO - ARCADY STYLE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
+              <!-- Coral/Orange Color Block -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:60px 40px 50px; background:{{block_color}}; text-align:center;">
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:42px; font-weight:500; color:#ffffff; line-height:1.15; letter-spacing:-0.01em; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 32px; font-size:16px; color:#ffffff; line-height:1.7; opacity:0.9; max-width:400px; margin-left:auto; margin-right:auto;">
+                      We're holding your items, but they won't wait forever. Complete your order and make them yours.
+                    </p>
+
+                    <!-- CTA Button - White pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#ffffff;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:14px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.02em;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- HERO IMAGE -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.1em; font-weight:500;">
-                Still on your mind?
-              </p>
-              <h1 style="margin:0 0 20px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your {{product_name}} await
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, great taste! These items have {{review_count}} five-star reviews from customers who love them.
-              </p>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
 
-              <!-- Social Proof -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:20px 24px; background:#fafafa; border-radius:12px;">
-                    <p style="margin:0; font-size:14px; color:#6b7280; font-style:italic; line-height:1.6;">
-                      "Absolutely love the quality. Worth every penny!" — Verified Buyer ⭐⭐⭐⭐⭐
-                    </p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+          <!-- BOTTOM CONTENT -->
+          <tr>
+            <td style="padding:48px 40px; text-align:center; background:#fafafa;">
+              <p style="margin:0 0 8px; font-size:12px; color:#999999; text-transform:uppercase; letter-spacing:0.15em; font-weight:500;">
+                Your cart summary
+              </p>
+              <h2 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:24px; font-weight:500; color:#1a1a1a;">
+                Ready when you are
+              </h2>
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, your curated selection is saved and waiting.
+              </p>
             </td>
           </tr>
   `),
@@ -277,88 +310,93 @@ const abandonedCart3: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '48 hours after abandonment',
   subjectLine: 'There\'s more to love than you think',
-  description: 'Highlight product value and benefits',
+  description: 'Split design with sage green accent - editorial style',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(11).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Worth the wait.', placeholder: 'Main headline' },
     { key: 'benefit_1', label: 'Benefit 1', type: 'text', defaultValue: 'Premium materials that last', placeholder: 'e.g., Fast shipping' },
     { key: 'benefit_2', label: 'Benefit 2', type: 'text', defaultValue: 'Free shipping on all orders', placeholder: 'e.g., Easy returns' },
     { key: 'benefit_3', label: 'Benefit 3', type: 'text', defaultValue: '30-day hassle-free returns', placeholder: 'e.g., Warranty' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#86EFAC' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Here\'s why you\'ll love your purchase.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'View My Cart' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'COMPLETE ORDER' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- SAGE GREEN COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:12px; color:#166534; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      Why you'll love it
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:46px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:380px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:380px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- BENEFITS SECTION -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                More than meets the eye
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, here's why you'll love your purchase:
-              </p>
-
-              <!-- Benefits List -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:48px 40px; background:#fafafa;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:16px 0; border-bottom:1px solid #f3f4f6;">
+                  <td style="padding:20px 0; border-bottom:1px solid #e5e5e5;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="width:32px; vertical-align:top;">
-                          <span style="display:inline-block; width:24px; height:24px; background:{{accent_color}}; border-radius:50%; color:#fff; font-size:14px; line-height:24px; text-align:center;">✓</span>
+                        <td style="width:40px; vertical-align:top;">
+                          <span style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#166534; font-style:italic;">01</span>
                         </td>
-                        <td style="padding-left:12px; font-size:15px; color:#374151; line-height:1.5;">{{benefit_1}}</td>
+                        <td style="padding-left:16px; font-size:16px; color:#1a1a1a; line-height:1.5; font-weight:500;">{{benefit_1}}</td>
                       </tr>
                     </table>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:16px 0; border-bottom:1px solid #f3f4f6;">
+                  <td style="padding:20px 0; border-bottom:1px solid #e5e5e5;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="width:32px; vertical-align:top;">
-                          <span style="display:inline-block; width:24px; height:24px; background:{{accent_color}}; border-radius:50%; color:#fff; font-size:14px; line-height:24px; text-align:center;">✓</span>
+                        <td style="width:40px; vertical-align:top;">
+                          <span style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#166534; font-style:italic;">02</span>
                         </td>
-                        <td style="padding-left:12px; font-size:15px; color:#374151; line-height:1.5;">{{benefit_2}}</td>
+                        <td style="padding-left:16px; font-size:16px; color:#1a1a1a; line-height:1.5; font-weight:500;">{{benefit_2}}</td>
                       </tr>
                     </table>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:16px 0;">
+                  <td style="padding:20px 0;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="width:32px; vertical-align:top;">
-                          <span style="display:inline-block; width:24px; height:24px; background:{{accent_color}}; border-radius:50%; color:#fff; font-size:14px; line-height:24px; text-align:center;">✓</span>
+                        <td style="width:40px; vertical-align:top;">
+                          <span style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#166534; font-style:italic;">03</span>
                         </td>
-                        <td style="padding-left:12px; font-size:15px; color:#374151; line-height:1.5;">{{benefit_3}}</td>
+                        <td style="padding-left:16px; font-size:16px; color:#1a1a1a; line-height:1.5; font-weight:500;">{{benefit_3}}</td>
                       </tr>
                     </table>
                   </td>
                 </tr>
               </table>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+              <!-- CTA Button - Dark pill -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:32px auto 0;">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:50px; background:#1a1a1a;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -375,80 +413,74 @@ const abandonedCart4: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '72 hours after abandonment',
   subjectLine: 'A little something for you: {{discount_percent}}% OFF',
-  description: 'First discount offer - creates urgency',
+  description: 'Peach/blush color block with bold discount - magazine style',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'A gift, just for you.', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '10', placeholder: 'e.g., 15' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'SAVE10', placeholder: 'e.g., WELCOME15' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FECACA' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'We have a special offer just for you.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Claim My Discount' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM OFFER' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- BLUSH/PEACH COLOR BLOCK WITH DISCOUNT -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Discount Banner -->
-          <tr>
-            <td style="padding:0;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:{{primary_color}};">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:40px 56px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.15em; font-weight:500;">
-                      Exclusive Offer
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:72px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em; line-height:1;">
+                      {{discount_percent}}%
                     </p>
-                    <p style="margin:0; font-size:56px; font-weight:700; color:#ffffff; letter-spacing:-0.03em;">
-                      {{discount_percent}}% OFF
+                    <p style="margin:0 0 20px; font-size:14px; color:#991b1b; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      OFF YOUR ORDER
                     </p>
+                    <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:38px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
+
+                    <!-- CODE PILL -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px;">
+                      <tr>
+                        <td style="padding:12px 32px; background:#ffffff; border-radius:50px;">
+                          <span style="font-size:16px; font-weight:700; color:#1a1a1a; letter-spacing:0.15em;">{{discount_code}}</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:300px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:360px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- BOTTOM CONTENT -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                A gift, just for you
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we really want you to have this. Use code <strong style="color:{{primary_color}};">{{discount_code}}</strong> at checkout.
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, we really want you to have this.
               </p>
-
-              <!-- Code Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:#f9fafb; border:2px dashed #e5e7eb; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:12px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.1em;">Your Code</p>
-                    <p style="margin:0; font-size:28px; font-weight:700; color:{{primary_color}}; letter-spacing:0.05em;">{{discount_code}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -460,53 +492,62 @@ const abandonedCart5: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '3 days after abandonment',
   subjectLine: 'See what others are loving',
-  description: 'Social proof with popular products',
+  description: 'Full-bleed hero with text overlay - GOED style social proof',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'CUSTOMER FAVORITES', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'What everyone\'s talking about', placeholder: 'Secondary text' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Our most-loved items are waiting for you.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Best Sellers' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP BEST SELLERS' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <!-- Hero Image -->
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:480px; object-fit:cover;">
+
+                <!-- Text Overlay -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:12px; color:#ffffff; text-transform:uppercase; letter-spacing:0.25em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Trending Now
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:600; color:#ffffff; line-height:1.1; letter-spacing:-0.02em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p class="mobile-subhead" style="margin:0 0 32px; font-size:18px; color:#ffffff; line-height:1.5; text-shadow:0 1px 3px rgba(0,0,0,0.3); font-style:italic;">
+                        {{subheadline}}
+                      </p>
+
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- CONTENT SECTION -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:450px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:#9ca3af; text-transform:uppercase; letter-spacing:0.1em; font-weight:500;">
-                Customer Favorites
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, these are what everyone's loving this season.
               </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                What everyone's talking about
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, curious what others are buying? These are our most-loved items this season.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -518,55 +559,71 @@ const abandonedCart6: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '4 days after abandonment',
   subjectLine: 'Your discount is still waiting',
-  description: 'Reminder about expiring discount',
+  description: 'Urgency red color block - time-sensitive offer',
   suggestedImages: imageLibrary.beauty.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Time is ticking.', placeholder: 'Main headline' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'SAVE10', placeholder: 'e.g., WELCOME15' },
     { key: 'hours_left', label: 'Hours Left', type: 'text', defaultValue: '24', placeholder: 'e.g., 48' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEE2E2' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Don\'t let your discount expire.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Use My Discount' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'USE MY DISCOUNT' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- URGENCY COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:#dc2626; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                ⏰ Expires in {{hours_left}} hours
-              </p>
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your discount is waiting
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, just a friendly reminder that your code <strong style="color:{{primary_color}};">{{discount_code}}</strong> is about to expire. Don't miss out!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:14px; color:#991b1b; text-transform:uppercase; letter-spacing:0.2em; font-weight:700;">
+                      Expires in {{hours_left}} hours
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+
+                    <!-- CODE PILL -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px;">
+                      <tr>
+                        <td style="padding:12px 32px; background:#ffffff; border-radius:50px; border:2px solid #991b1b;">
+                          <span style="font-size:16px; font-weight:700; color:#991b1b; letter-spacing:0.15em;">{{discount_code}}</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- CTA Button - Red pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#991b1b;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- HERO IMAGE -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
+            </td>
+          </tr>
+
+          <!-- BOTTOM CONTENT -->
+          <tr>
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, your discount is about to expire. Don't miss out!
+              </p>
             </td>
           </tr>
   `),
@@ -578,47 +635,48 @@ const abandonedCart7: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '5 days after abandonment',
   subjectLine: 'No worries, we\'ll be here',
-  description: 'Final touchpoint - respectful close',
+  description: 'Minimal editorial with muted tones - respectful close',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Solitary%20Cabin%20on%20Hill.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'No rush, we\'ll be here.', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#F5F5F4' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'We\'re here whenever you\'re ready.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Maybe Later' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE LATER' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
-          <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- HERO IMAGE FIRST -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:380px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- MUTED COLOR BLOCK -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                No pressure at all
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Hey {{customer_name}}, we understand—timing isn't always right. We'll be here whenever you're ready. No hard feelings. 💛
-              </p>
-
-              <!-- Secondary CTA -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; border:2px solid {{primary_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:14px 32px; font-size:14px; font-weight:600; color:{{primary_color}}; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:40px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 28px; font-size:16px; color:#666666; line-height:1.7; max-width:380px; margin-left:auto; margin-right:auto;">
+                      Hey {{customer_name}}, we understand—timing isn't always right. Your cart will be waiting whenever you're ready. No pressure.
+                    </p>
+
+                    <!-- CTA Button - Outline pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; border:2px solid #1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:14px 40px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -636,71 +694,93 @@ const welcome1: EmailTemplate = {
   name: 'The Warm Welcome',
   category: 'welcome',
   timing: 'Immediately after signup',
-  subjectLine: 'Welcome to {{brand_name}} ✨',
-  description: 'First impression - brand introduction with discount',
+  subjectLine: 'Welcome to {{brand_name}}',
+  description: 'Full-bleed hero with text overlay - impactful first impression',
   suggestedImages: imageLibrary.beauty.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'WELCOME', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'You\'re one of us now.', placeholder: 'Secondary text' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '15', placeholder: 'e.g., 10' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'WELCOME15', placeholder: 'e.g., WELCOME10' },
     { key: 'brand_tagline', label: 'Brand Tagline', type: 'text', defaultValue: 'Crafted for those who appreciate the finer things.', placeholder: 'Your brand tagline' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Welcome to the family. Here\'s a gift for you.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Start Shopping' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START SHOPPING' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <!-- Hero Image -->
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:500px; object-fit:cover;">
+
+                <!-- Text Overlay -->
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:56px; font-weight:600; color:#ffffff; line-height:1.0; letter-spacing:0.1em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p class="mobile-subhead" style="margin:0 0 32px; font-size:20px; color:#ffffff; line-height:1.5; text-shadow:0 1px 3px rgba(0,0,0,0.3); font-style:italic;">
+                        {{subheadline}}
+                      </p>
+
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- WELCOME GIFT SECTION -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Welcome to {{brand_name}}" style="display:block; width:100%; height:auto; max-height:450px; object-fit:cover;">
+            <td style="padding:0; background:#1a1a1a;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:48px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:12px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; opacity:0.7;">
+                      Your Welcome Gift
+                    </p>
+                    <p style="margin:0 0 16px; font-size:64px; font-weight:700; color:#ffffff; letter-spacing:-0.02em; line-height:1;">
+                      {{discount_percent}}%
+                    </p>
+                    <p style="margin:0 0 20px; font-size:14px; color:#ffffff; text-transform:uppercase; letter-spacing:0.15em;">
+                      OFF YOUR FIRST ORDER
+                    </p>
+
+                    <!-- CODE PILL -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="padding:12px 32px; background:#ffffff; border-radius:50px;">
+                          <span style="font-size:16px; font-weight:700; color:#1a1a1a; letter-spacing:0.15em;">{{discount_code}}</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- TAGLINE -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Welcome to the family
-              </p>
-              <h1 style="margin:0 0 16px; font-size:32px; font-weight:600; color:{{primary_color}}; line-height:1.2; letter-spacing:-0.02em;">
-                We're so glad you're here
-              </h1>
-              <p style="margin:0 0 8px; font-size:17px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, welcome to {{brand_name}}.
-              </p>
-              <p style="margin:0 0 32px; font-size:16px; color:#6b7280; line-height:1.7; font-style:italic;">
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:18px; color:#666666; line-height:1.6; font-style:italic;">
                 {{brand_tagline}}
               </p>
-
-              <!-- Discount Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:32px; background:{{primary_color}}; border-radius:16px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.1em;">Your Welcome Gift</p>
-                    <p style="margin:0 0 16px; font-size:48px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">{{discount_percent}}% OFF</p>
-                    <p style="margin:0; font-size:18px; color:#ffffff; letter-spacing:0.1em; font-weight:600;">{{discount_code}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -715,58 +795,57 @@ const postPurchase1: EmailTemplate = {
   name: 'Order Confirmation',
   category: 'post-purchase',
   timing: 'Immediately after purchase',
-  subjectLine: 'Order confirmed! 🎉',
-  description: 'Order confirmation with excitement',
+  subjectLine: 'Order confirmed',
+  description: 'Elegant order confirmation - mint green color block',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
     { key: 'order_number', label: 'Order Number', type: 'text', defaultValue: '#12345', placeholder: 'e.g., #67890' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Thank You', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Your order is confirmed', placeholder: 'Secondary text' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1FAE5' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your order is confirmed and on its way!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Track My Order' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'TRACK ORDER', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- MINT GREEN COLOR BLOCK - ORDER CONFIRMED -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Success Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:48px;">✓</p>
-              <h1 style="margin:0 0 8px; font-size:28px; font-weight:600; color:#ffffff; letter-spacing:-0.01em;">
-                Order Confirmed!
-              </h1>
-              <p style="margin:0; font-size:15px; color:rgba(255,255,255,0.9);">
-                Order {{order_number}}
-              </p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 24px; font-size:17px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, great news! Your order has been confirmed and we're getting it ready for you.
-              </p>
-
-              <p style="margin:0 0 32px; font-size:15px; color:#6b7280; line-height:1.7;">
-                You'll receive another email with tracking information once your order ships. We can't wait for you to receive it!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#059669; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Order {{order_number}}
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p class="mobile-subhead" style="margin:0 0 32px; font-size:18px; color:#374151; line-height:1.5;">
+                      {{subheadline}}
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Content Section -->
+          <tr>
+            <td class="mobile-padding" style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 16px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
+                Hey {{customer_name}}, we're getting your order ready. You'll receive tracking info once it ships.
+              </p>
             </td>
           </tr>
   `),
@@ -777,54 +856,56 @@ const postPurchase2: EmailTemplate = {
   name: 'Shipping Notification',
   category: 'post-purchase',
   timing: 'When order ships',
-  subjectLine: 'Your order is on its way! 📦',
-  description: 'Shipping notification with tracking',
+  subjectLine: 'Your order is on its way',
+  description: 'Elegant shipping notification - lavender color block',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
     { key: 'delivery_date', label: 'Estimated Delivery', type: 'text', defaultValue: 'January 25-27', placeholder: 'e.g., March 15-17' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'On Its Way', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#E9D5FF' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your package is on its way!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Track Package' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'TRACK PACKAGE', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LAVENDER COLOR BLOCK - SHIPPING -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Shipping Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:{{primary_color}}; text-align:center;">
-              <p style="margin:0 0 8px; font-size:40px;">📦</p>
-              <h1 style="margin:0 0 8px; font-size:26px; font-weight:600; color:#ffffff; letter-spacing:-0.01em;">
-                Your order is on its way!
-              </h1>
-              <p style="margin:0; font-size:15px; color:rgba(255,255,255,0.8);">
-                Estimated delivery: {{delivery_date}}
-              </p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 32px; font-size:17px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, exciting news! Your package has shipped and is headed your way. Track it below to see exactly where it is.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#7c3aed; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Shipping Update
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p class="mobile-subhead" style="margin:0 0 32px; font-size:16px; color:#374151; line-height:1.5;">
+                      Arriving {{delivery_date}}
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Content Section -->
+          <tr>
+            <td class="mobile-padding" style="padding:40px; text-align:center;">
+              <p style="margin:0; font-size:15px; color:#6b7280; line-height:1.7; max-width:380px; display:inline-block;">
+                Hey {{customer_name}}, your package has shipped and is on its way to you.
+              </p>
             </td>
           </tr>
   `),
@@ -835,61 +916,59 @@ const postPurchase3: EmailTemplate = {
   name: 'Review Request',
   category: 'post-purchase',
   timing: '7 days after delivery',
-  subjectLine: 'How are you enjoying your purchase?',
-  description: 'Request for product review',
+  subjectLine: 'How are you enjoying it?',
+  description: 'Elegant review request - full-bleed hero with overlay',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your recent purchase', placeholder: 'e.g., The Linen Dress' },
-    { key: 'review_incentive', label: 'Review Incentive', type: 'text', defaultValue: '10% off your next order', placeholder: 'e.g., Free shipping' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Share Your Story', placeholder: 'Main headline' },
+    { key: 'review_incentive', label: 'Review Incentive', type: 'text', defaultValue: '10% off', placeholder: 'e.g., Free shipping' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'We\'d love to hear your thoughts!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Write a Review' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'LEAVE REVIEW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Your Opinion Matters
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- Incentive Section -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                How are you loving it?
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, we hope you're enjoying {{product_name}}! Your feedback helps others discover what they'll love.
+            <td style="padding:40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0 0 4px; font-size:13px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.15em;">
+                As a thank you
               </p>
-
-              <!-- Stars -->
-              <p style="margin:0 0 24px; font-size:32px; letter-spacing:8px;">⭐⭐⭐⭐⭐</p>
-
-              <!-- Incentive -->
-              <p style="margin:0 0 32px; font-size:14px; color:#6b7280;">
-                Leave a review and get <strong style="color:{{accent_color}};">{{review_incentive}}</strong>
+              <p style="margin:0; font-size:24px; font-weight:600; color:#ffffff; letter-spacing:-0.02em;">
+                Get {{review_incentive}} after your review
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -1165,60 +1244,64 @@ const welcome2: EmailTemplate = {
   category: 'welcome',
   timing: '2 days after signup',
   subjectLine: 'The story behind {{brand_name}}',
-  description: 'Brand origin story and values',
+  description: 'Warm beige color block - brand storytelling',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Solitary%20Cabin%20on%20Hill.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Our story begins with you.', placeholder: 'Main headline' },
     { key: 'founder_name', label: 'Founder Name', type: 'text', defaultValue: 'Sarah', placeholder: 'e.g., John' },
     { key: 'founding_year', label: 'Founding Year', type: 'text', defaultValue: '2020', placeholder: 'e.g., 2018' },
     { key: 'brand_mission', label: 'Brand Mission', type: 'text', defaultValue: 'to create products that make everyday moments extraordinary', placeholder: 'Your mission statement' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEF3C7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'How it all began...', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Explore Our Collection' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- WARM BEIGE COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:12px; color:#92400E; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      Our Story
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:42px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Our Story" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- STORY CONTENT -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Our Story
+            <td style="padding:48px 40px; background:#fafafa;">
+              <p style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:18px; color:#1a1a1a; line-height:1.8; font-style:italic;">
+                "Back in {{founding_year}}, I started {{brand_name}} with a simple belief: {{brand_mission}}."
               </p>
-              <h1 style="margin:0 0 24px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                How it all began
-              </h1>
-              <p style="margin:0 0 20px; font-size:16px; color:#4b5563; line-height:1.8;">
-                Hey {{customer_name}},
-              </p>
-              <p style="margin:0 0 20px; font-size:16px; color:#4b5563; line-height:1.8;">
-                Back in {{founding_year}}, I started {{brand_name}} with a simple belief: {{brand_mission}}.
-              </p>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.8;">
+              <p style="margin:0 0 28px; font-size:16px; color:#666666; line-height:1.7;">
                 Every product we create is a reflection of that vision. We're not just building a brand—we're building something meaningful, one customer at a time.
               </p>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.8; font-style:italic;">
+              <p style="margin:0 0 32px; font-size:16px; color:#1a1a1a; font-weight:500;">
                 — {{founder_name}}, Founder
               </p>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+              <!-- CTA Button - Dark pill -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:50px; background:#1a1a1a;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -1235,75 +1318,76 @@ const welcome3: EmailTemplate = {
   category: 'welcome',
   timing: '4 days after signup',
   subjectLine: 'Our customers\' favorites',
-  description: 'Social proof with top products',
+  description: 'Full-bleed hero with text overlay - social proof',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'BEST SELLERS', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'What everyone\'s loving', placeholder: 'Secondary text' },
     { key: 'product_1', label: 'Best Seller #1', type: 'text', defaultValue: 'The Classic Collection', placeholder: 'Product name' },
     { key: 'product_2', label: 'Best Seller #2', type: 'text', defaultValue: 'Summer Essentials', placeholder: 'Product name' },
     { key: 'product_3', label: 'Best Seller #3', type: 'text', defaultValue: 'Limited Edition Set', placeholder: 'Product name' },
     { key: 'review_count', label: 'Total Reviews', type: 'text', defaultValue: '10,000+', placeholder: 'e.g., 5,000+' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See what everyone is loving right now.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Best Sellers' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:420px; object-fit:cover;">
+
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:50px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:12px; color:#ffffff; text-transform:uppercase; letter-spacing:0.25em; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{review_count}} Five-Star Reviews
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:600; color:#ffffff; letter-spacing:0.05em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p class="mobile-subhead" style="margin:0 0 28px; font-size:18px; color:#ffffff; font-style:italic; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{subheadline}}
+                      </p>
+
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- PRODUCTS LIST -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Best Sellers" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Customer Favorites
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                What everyone's loving
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, with {{review_count}} five-star reviews, these are the products our customers can't stop talking about.
-              </p>
-
-              <!-- Products List -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:40px; background:#fafafa;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:12px; margin-bottom:12px;">
-                    <p style="margin:0; font-size:15px; color:{{primary_color}}; font-weight:600;">⭐ {{product_1}}</p>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:50px; text-align:center; margin-bottom:12px;">
+                    <span style="font-family:'Playfair Display',Georgia,serif; font-size:16px; color:#1a1a1a; font-style:italic;">{{product_1}}</span>
                   </td>
                 </tr>
                 <tr><td style="height:12px;"></td></tr>
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:12px;">
-                    <p style="margin:0; font-size:15px; color:{{primary_color}}; font-weight:600;">⭐ {{product_2}}</p>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:50px; text-align:center;">
+                    <span style="font-family:'Playfair Display',Georgia,serif; font-size:16px; color:#1a1a1a; font-style:italic;">{{product_2}}</span>
                   </td>
                 </tr>
                 <tr><td style="height:12px;"></td></tr>
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:12px;">
-                    <p style="margin:0; font-size:15px; color:{{primary_color}}; font-weight:600;">⭐ {{product_3}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:50px; text-align:center;">
+                    <span style="font-family:'Playfair Display',Georgia,serif; font-size:16px; color:#1a1a1a; font-style:italic;">{{product_3}}</span>
                   </td>
                 </tr>
               </table>
@@ -1318,60 +1402,65 @@ const welcome4: EmailTemplate = {
   category: 'welcome',
   timing: '5 days after signup',
   subjectLine: 'A personal note from our founder',
-  description: 'Personal connection from founder',
+  description: 'Elegant cream color block - personal letter style',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'A note, just for you.', placeholder: 'Main headline' },
     { key: 'founder_name', label: 'Founder Name', type: 'text', defaultValue: 'Sarah', placeholder: 'e.g., John' },
     { key: 'personal_message', label: 'Personal Message', type: 'text', defaultValue: 'I started this company because I believed everyone deserves access to quality products that make them feel confident and inspired.', placeholder: 'Your personal message' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FFFBEB' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'A message from our founder, just for you.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Get to Know Us' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CREAM COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                From the Founder
-              </p>
-              <h1 style="margin:0 0 32px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                A personal note for you
-              </h1>
-
-              <div style="padding:32px; background:#fafafa; border-radius:16px; border-left:4px solid {{accent_color}};">
-                <p style="margin:0 0 20px; font-size:17px; color:#4b5563; line-height:1.8; font-style:italic;">
-                  "Hey {{customer_name}},
-                </p>
-                <p style="margin:0 0 20px; font-size:17px; color:#4b5563; line-height:1.8; font-style:italic;">
-                  {{personal_message}}
-                </p>
-                <p style="margin:0 0 20px; font-size:17px; color:#4b5563; line-height:1.8; font-style:italic;">
-                  Thank you for being here. You're not just a customer—you're part of our story now.
-                </p>
-                <p style="margin:0; font-size:17px; color:#4b5563; line-height:1.8; font-style:italic;">
-                  With gratitude,<br>
-                  {{founder_name}}"
-                </p>
-              </div>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:32px;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:12px; color:#92400E; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      From the Founder
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:42px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- LETTER CONTENT -->
+          <tr>
+            <td style="padding:48px 40px; background:#ffffff;">
+              <div style="max-width:480px; margin:0 auto;">
+                <p style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:18px; color:#1a1a1a; line-height:1.8; font-style:italic;">
+                  "Hey {{customer_name}},
+                </p>
+                <p style="margin:0 0 24px; font-size:16px; color:#666666; line-height:1.8;">
+                  {{personal_message}}
+                </p>
+                <p style="margin:0 0 24px; font-size:16px; color:#666666; line-height:1.8;">
+                  Thank you for being here. You're not just a customer—you're part of our story now.
+                </p>
+                <p style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:18px; color:#1a1a1a; font-style:italic;">
+                  With gratitude,<br>{{founder_name}}"
+                </p>
+
+                <!-- CTA Button - Dark pill -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                  <tr>
+                    <td style="border-radius:50px; background:#1a1a1a;">
+                      <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                        {{cta_text}}
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
   `),
@@ -1383,69 +1472,73 @@ const welcome5: EmailTemplate = {
   category: 'welcome',
   timing: '6 days after signup',
   subjectLine: 'Your guide to shopping with us',
-  description: 'Education and category walkthrough',
+  description: 'Light blue color block - educational style',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(14).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Your guide to shopping.', placeholder: 'Main headline' },
     { key: 'category_1', label: 'Category 1', type: 'text', defaultValue: 'New Arrivals', placeholder: 'e.g., Dresses' },
     { key: 'category_2', label: 'Category 2', type: 'text', defaultValue: 'Best Sellers', placeholder: 'e.g., Accessories' },
     { key: 'category_3', label: 'Category 3', type: 'text', defaultValue: 'Sale', placeholder: 'e.g., Shoes' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#DBEAFE' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Everything you need to know about shopping with us.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Start Exploring' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START EXPLORING' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LIGHT BLUE COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:12px; color:#1e40af; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      Shopping Guide
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:42px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="How to Shop" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- CATEGORIES -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your shopping guide
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, let us show you around! Here's how to find exactly what you're looking for.
-              </p>
-
-              <!-- Categories -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:40px; background:#fafafa;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:20px; background:{{primary_color}}; border-radius:12px; text-align:center; margin-bottom:12px;">
-                    <p style="margin:0; font-size:16px; color:#ffffff; font-weight:600;">{{category_1}}</p>
+                  <td style="padding:20px 24px; background:#1a1a1a; border-radius:50px; text-align:center; margin-bottom:12px;">
+                    <span style="font-size:15px; color:#ffffff; font-weight:600; letter-spacing:0.05em;">{{category_1}}</span>
                   </td>
                 </tr>
                 <tr><td style="height:12px;"></td></tr>
                 <tr>
-                  <td style="padding:20px; background:{{primary_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0; font-size:16px; color:#ffffff; font-weight:600;">{{category_2}}</p>
+                  <td style="padding:20px 24px; background:#1a1a1a; border-radius:50px; text-align:center;">
+                    <span style="font-size:15px; color:#ffffff; font-weight:600; letter-spacing:0.05em;">{{category_2}}</span>
                   </td>
                 </tr>
                 <tr><td style="height:12px;"></td></tr>
                 <tr>
-                  <td style="padding:20px; background:{{accent_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0; font-size:16px; color:#ffffff; font-weight:600;">{{category_3}}</p>
+                  <td style="padding:20px 24px; background:#1e40af; border-radius:50px; text-align:center;">
+                    <span style="font-size:15px; color:#ffffff; font-weight:600; letter-spacing:0.05em;">{{category_3}}</span>
                   </td>
                 </tr>
               </table>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:32px auto 0;">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:50px; border:2px solid #1a1a1a;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:14px 40px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -1462,52 +1555,53 @@ const welcome6: EmailTemplate = {
   category: 'welcome',
   timing: '7 days after signup',
   subjectLine: 'Find your perfect match',
-  description: 'Product quiz invitation',
+  description: 'Purple color block - personalized quiz invitation',
   suggestedImages: imageLibrary.beauty.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Find your perfect match.', placeholder: 'Main headline' },
     { key: 'product_type', label: 'Product Type', type: 'text', defaultValue: 'products', placeholder: 'e.g., skincare routine' },
     { key: 'quiz_time', label: 'Quiz Duration', type: 'text', defaultValue: '2 minutes', placeholder: 'e.g., 60 seconds' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#E9D5FF' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Take our quick quiz to find your perfect match.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Take the Quiz' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'TAKE THE QUIZ' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
-          <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Find Your Match" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- PURPLE COLOR BLOCK -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Personalized For You
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Find your perfect {{product_type}}
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, not sure where to start? Take our {{quiz_time}} quiz and we'll recommend the perfect {{product_type}} just for you.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:50px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:18px 48px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}} →
-                    </a>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:12px; color:#7c3aed; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      Personalized for you
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:42px; font-weight:400; color:#1a1a1a; line-height:1.2; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 28px; font-size:16px; color:#666666; line-height:1.7; max-width:380px; margin-left:auto; margin-right:auto;">
+                      Not sure where to start? Take our {{quiz_time}} quiz and we'll recommend the perfect {{product_type}} just for you.
+                    </p>
+
+                    <!-- CTA Button - Purple pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#7c3aed;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -1522,56 +1616,65 @@ const welcome7: EmailTemplate = {
   category: 'welcome',
   timing: '8 days after signup',
   subjectLine: 'Join our community',
-  description: 'Social media and UGC invitation',
+  description: 'Full-bleed hero with text overlay - community invitation',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Farmer%20in%20Strawberry%20Field.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'JOIN THE FAMILY', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'You\'re part of something bigger.', placeholder: 'Secondary text' },
     { key: 'instagram_handle', label: 'Instagram Handle', type: 'text', defaultValue: '@yourbrand', placeholder: '@yourbrand' },
     { key: 'hashtag', label: 'Brand Hashtag', type: 'text', defaultValue: '#YourBrandName', placeholder: '#YourBrandName' },
     { key: 'community_size', label: 'Community Size', type: 'text', defaultValue: '50,000+', placeholder: 'e.g., 25,000+' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Join thousands of others in our community.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Follow Us' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'FOLLOW US' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
+
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:12px; color:#ffffff; text-transform:uppercase; letter-spacing:0.25em; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{community_size}} Strong
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:50px; font-weight:600; color:#ffffff; letter-spacing:0.05em; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p class="mobile-subhead" style="margin:0 0 28px; font-size:18px; color:#ffffff; font-style:italic; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{subheadline}}
+                      </p>
+
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#000000; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- SOCIAL INFO -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Join Our Community" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                {{community_size}} Strong
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0 0 8px; font-size:16px; color:#1a1a1a; font-weight:600;">
+                {{instagram_handle}}
               </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You're part of something bigger
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, join {{community_size}} others who share their style with {{hashtag}}. Follow us at {{instagram_handle}} for inspiration, behind-the-scenes, and exclusive drops.
+              <p style="margin:0; font-size:14px; color:#666666;">
+                Share your style with {{hashtag}}
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -1582,73 +1685,79 @@ const welcome8: EmailTemplate = {
   name: 'Last Chance First-Timer',
   category: 'welcome',
   timing: '10 days after signup',
-  subjectLine: 'Your welcome discount expires soon ⏰',
-  description: 'Urgency for expiring welcome discount',
+  subjectLine: 'Your welcome discount expires soon',
+  description: 'Red urgency color block - expiring discount',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Last chance.', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '15', placeholder: 'e.g., 10' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'WELCOME15', placeholder: 'e.g., WELCOME10' },
     { key: 'hours_left', label: 'Hours Left', type: 'text', defaultValue: '24', placeholder: 'e.g., 48' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEE2E2' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Don\'t miss your welcome discount!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Use My Discount' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'USE MY DISCOUNT' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- RED URGENCY COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 12px; font-size:14px; color:#991b1b; text-transform:uppercase; letter-spacing:0.2em; font-weight:700;">
+                      Expires in {{hours_left}} hours
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:46px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:48px; font-weight:700; color:#1a1a1a; line-height:1;">
+                      {{discount_percent}}%
+                    </p>
+                    <p style="margin:0 0 24px; font-size:14px; color:#991b1b; text-transform:uppercase; letter-spacing:0.15em; font-weight:600;">
+                      OFF YOUR FIRST ORDER
+                    </p>
+
+                    <!-- CODE PILL -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px;">
+                      <tr>
+                        <td style="padding:12px 32px; background:#ffffff; border-radius:50px; border:2px solid #991b1b;">
+                          <span style="font-size:16px; font-weight:700; color:#991b1b; letter-spacing:0.15em;">{{discount_code}}</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- CTA Button - Red pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#991b1b;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Urgency Banner -->
-          <tr>
-            <td style="padding:16px 40px; background:#fef2f2; text-align:center;">
-              <p style="margin:0; font-size:14px; color:#dc2626; font-weight:600;">
-                ⏰ Only {{hours_left}} hours left!
-              </p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Last Chance" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- BOTTOM CONTENT -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your {{discount_percent}}% off is expiring
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, this is your last chance to use your welcome discount. Don't let it slip away!
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, this is your last chance. Don't let it slip away!
               </p>
-
-              <!-- Code Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:#fef2f2; border:2px solid #fecaca; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:12px; color:#dc2626; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">Expiring Soon</p>
-                    <p style="margin:0; font-size:28px; font-weight:700; color:#dc2626; letter-spacing:0.05em;">{{discount_code}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:#dc2626; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -1664,72 +1773,75 @@ const abandonedCart8: EmailTemplate = {
   category: 'abandoned-cart',
   timing: '7 days after abandonment',
   subjectLine: 'Good news: Price dropped on your cart!',
-  description: 'Notify about price reduction on cart items',
+  description: 'Mint green color block with price comparison - celebration style',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Lucky you.', placeholder: 'Main headline' },
     { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your favorites', placeholder: 'e.g., The Classic Tee' },
     { key: 'old_price', label: 'Original Price', type: 'text', defaultValue: '$89', placeholder: 'e.g., $79' },
     { key: 'new_price', label: 'New Price', type: 'text', defaultValue: '$69', placeholder: 'e.g., $59' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1FAE5' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The items in your cart just went on sale!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Get It Now' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET IT NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- MINT GREEN COLOR BLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:12px; color:#059669; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                      Price Drop Alert
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 28px; font-family:'Playfair Display',Georgia,serif; font-size:46px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+
+                    <!-- PRICE COMPARISON PILLS -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px;">
+                      <tr>
+                        <td style="padding:12px 24px; background:#ffffff; border-radius:50px 0 0 50px;">
+                          <span style="font-size:16px; color:#9ca3af; text-decoration:line-through;">{{old_price}}</span>
+                        </td>
+                        <td style="padding:12px 24px; background:#059669; border-radius:0 50px 50px 0;">
+                          <span style="font-size:18px; font-weight:700; color:#ffffff;">{{new_price}}</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- CTA Button - Dark green pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#166534;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Price Drop Banner -->
-          <tr>
-            <td style="padding:24px 40px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); text-align:center;">
-              <p style="margin:0; font-size:18px; color:#ffffff; font-weight:600;">
-                💰 Price Drop Alert!
-              </p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- HERO IMAGE -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Price Drop" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:360px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- BOTTOM CONTENT -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Good news about your cart!
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, {{product_name}} you were looking at just dropped in price!
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Hey {{customer_name}}, {{product_name}} just dropped in price. Don't miss out!
               </p>
-
-              <!-- Price Comparison -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:#f0fdf4; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:14px; color:#6b7280; text-decoration:line-through;">Was {{old_price}}</p>
-                    <p style="margin:0; font-size:36px; font-weight:700; color:#059669;">Now {{new_price}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:#059669; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -1744,53 +1856,56 @@ const postPurchase4: EmailTemplate = {
   name: 'Delivery Celebration',
   category: 'post-purchase',
   timing: 'On delivery',
-  subjectLine: 'It\'s here! Your order has arrived 🎉',
-  description: 'Celebrate package arrival',
+  subjectLine: 'It has arrived',
+  description: 'Elegant delivery celebration - coral color block',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'It\'s Here', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Your order has been delivered', placeholder: 'Secondary text' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FECACA' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your package has arrived!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Share Your Unboxing' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHARE YOUR MOMENT', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CORAL COLOR BLOCK - DELIVERED -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Celebration Banner -->
-          <tr>
-            <td style="padding:56px; background:linear-gradient(135deg, {{accent_color}} 0%, {{primary_color}} 100%); text-align:center;">
-              <p style="margin:0 0 16px; font-size:56px;">🎉</p>
-              <h1 style="margin:0 0 8px; font-size:32px; font-weight:600; color:#ffffff; letter-spacing:-0.01em;">
-                It's here!
-              </h1>
-              <p style="margin:0; font-size:16px; color:rgba(255,255,255,0.9);">
-                Your order has been delivered
-              </p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 32px; font-size:17px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, your package has arrived! We hope you love everything. Share your unboxing moment with us!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Delivered
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p class="mobile-subhead" style="margin:0 0 32px; font-size:16px; color:#374151; line-height:1.5;">
+                      {{subheadline}}
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Content Section -->
+          <tr>
+            <td class="mobile-padding" style="padding:40px; text-align:center;">
+              <p style="margin:0; font-size:15px; color:#6b7280; line-height:1.7; max-width:380px; display:inline-block;">
+                Hey {{customer_name}}, we hope you love it. Share your unboxing moment with us.
+              </p>
             </td>
           </tr>
   `),
@@ -1801,74 +1916,81 @@ const postPurchase5: EmailTemplate = {
   name: 'How to Use Guide',
   category: 'post-purchase',
   timing: '+2 days after delivery',
-  subjectLine: 'Get the most out of your purchase',
-  description: 'Product education and tips',
+  subjectLine: 'Get the most from your purchase',
+  description: 'Elegant care guide - cream color block with tips',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(15).png', placeholder: 'https://...' },
     { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your new purchase', placeholder: 'e.g., The Classic Tee' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Care Guide', placeholder: 'Main headline' },
     { key: 'tip_1', label: 'Tip 1', type: 'text', defaultValue: 'Machine wash cold, tumble dry low', placeholder: 'Care tip' },
     { key: 'tip_2', label: 'Tip 2', type: 'text', defaultValue: 'Store in a cool, dry place', placeholder: 'Care tip' },
     { key: 'tip_3', label: 'Tip 3', type: 'text', defaultValue: 'Pair with your favorite accessories', placeholder: 'Style tip' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEF3C7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Tips to get the most from your purchase.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'View Full Guide' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'VIEW FULL GUIDE', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CREAM COLOR BLOCK - CARE GUIDE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#92400e; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      For You
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- Tips Section -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="How to Use" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Pro Tips
-              </p>
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Get the most from {{product_name}}
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, here are some tips to help you love your purchase even more:
-              </p>
-
-              <!-- Tips List -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td class="mobile-padding" style="padding:40px;">
+              <!-- Numbered Tips -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:8px; margin-bottom:8px;">
-                    <p style="margin:0; font-size:15px; color:#374151;">💡 {{tip_1}}</p>
+                  <td style="padding:20px 24px; border-bottom:1px solid #f0f0f0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="40" style="font-family:'Playfair Display',Georgia,serif; font-size:28px; color:#d4a574; font-weight:400; vertical-align:top;">1</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.6;">{{tip_1}}</td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
-                <tr><td style="height:8px;"></td></tr>
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#374151;">💡 {{tip_2}}</p>
+                  <td style="padding:20px 24px; border-bottom:1px solid #f0f0f0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="40" style="font-family:'Playfair Display',Georgia,serif; font-size:28px; color:#d4a574; font-weight:400; vertical-align:top;">2</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.6;">{{tip_2}}</td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
-                <tr><td style="height:8px;"></td></tr>
                 <tr>
-                  <td style="padding:16px 20px; background:#fafafa; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#374151;">💡 {{tip_3}}</p>
+                  <td style="padding:20px 24px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="40" style="font-family:'Playfair Display',Georgia,serif; font-size:28px; color:#d4a574; font-weight:400; vertical-align:top;">3</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.6;">{{tip_3}}</td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+              <!-- CTA Button - Dark pill centered -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:32px auto 0;">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:50px; background:#1a1a1a;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -1885,71 +2007,67 @@ const postPurchase6: EmailTemplate = {
   category: 'post-purchase',
   timing: '+10 days after delivery',
   subjectLine: 'Share the love, get rewarded',
-  description: 'Referral program invitation',
+  description: 'Elegant referral - full-bleed hero + dark rewards section',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Farmer%20in%20Strawberry%20Field.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'referral_reward', label: 'Your Reward', type: 'text', defaultValue: '$20 credit', placeholder: 'e.g., 15% off' },
-    { key: 'friend_reward', label: 'Friend Gets', type: 'text', defaultValue: '$20 off', placeholder: 'e.g., $10 off' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Share & Earn', placeholder: 'Main headline' },
+    { key: 'referral_reward', label: 'Your Reward', type: 'text', defaultValue: '$20', placeholder: 'e.g., 15%' },
+    { key: 'friend_reward', label: 'Friend Gets', type: 'text', defaultValue: '$20', placeholder: 'e.g., $10' },
     { key: 'referral_code', label: 'Referral Code', type: 'text', defaultValue: 'FRIEND20', placeholder: 'e.g., SHARE10' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Refer a friend and you both get rewarded.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Share My Link' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHARE NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:400px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Referral Program
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- Dark Rewards Section -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Share & Earn" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Referral Program
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Share the love, get rewarded
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, love your purchase? Share with friends and you'll both get rewarded!
-              </p>
-
-              <!-- Rewards Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:40px; background:#1a1a1a; text-align:center;">
+              <!-- Side by side rewards -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:24px;">
                 <tr>
-                  <td width="48%" style="padding:24px; background:{{primary_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:12px; color:rgba(255,255,255,0.7); text-transform:uppercase;">You Get</p>
-                    <p style="margin:0; font-size:20px; font-weight:700; color:#ffffff;">{{referral_reward}}</p>
+                  <td width="48%" style="text-align:center;">
+                    <p style="margin:0 0 4px; font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.15em;">You Get</p>
+                    <p style="margin:0; font-size:32px; font-weight:600; color:#ffffff;">{{referral_reward}}</p>
                   </td>
-                  <td width="4%"></td>
-                  <td width="48%" style="padding:24px; background:{{accent_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:12px; color:rgba(255,255,255,0.7); text-transform:uppercase;">They Get</p>
-                    <p style="margin:0; font-size:20px; font-weight:700; color:#ffffff;">{{friend_reward}}</p>
+                  <td width="4%" style="text-align:center;">
+                    <p style="margin:0; font-size:24px; color:rgba(255,255,255,0.3);">+</p>
+                  </td>
+                  <td width="48%" style="text-align:center;">
+                    <p style="margin:0 0 4px; font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.15em;">They Get</p>
+                    <p style="margin:0; font-size:32px; font-weight:600; color:#ffffff;">{{friend_reward}}</p>
                   </td>
                 </tr>
               </table>
-
-              <!-- Referral Code -->
-              <p style="margin:0 0 24px; font-size:14px; color:#6b7280;">
-                Your code: <strong style="color:{{primary_color}};">{{referral_code}}</strong>
+              <p style="margin:0 0 24px; font-size:13px; color:rgba(255,255,255,0.6);">
+                Code: <span style="color:#ffffff; font-weight:600;">{{referral_code}}</span>
               </p>
-
-              <!-- CTA Button -->
+              <!-- CTA Button - White pill -->
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:50px; background:#ffffff;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -2492,61 +2610,85 @@ const flashSale1: EmailTemplate = {
   name: 'Flash Sale Announcement',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Sale start',
-  subjectLine: '⚡ Flash Sale: {{discount_percent}}% OFF Everything',
-  description: 'Announce a flash sale',
+  subjectLine: 'The moment you\'ve waited for.',
+  description: 'Lavender color block style - elegant flash sale',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
+    { key: 'hero_image_2', label: 'Second Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '30', placeholder: 'e.g., 25' },
-    { key: 'sale_duration', label: 'Sale Duration', type: 'text', defaultValue: '24 hours only', placeholder: 'e.g., 48 hours' },
-    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Flash sale is LIVE! Don\'t miss out.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop the Sale' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'More essential than ever', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#C4B5FD' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Our biggest sale of the season is here.', placeholder: 'Email preview text' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP THE SALE' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LAVENDER COLOR BLOCK - ARCADY WELLNESS STYLE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Flash Sale Banner -->
-          <tr>
-            <td style="padding:56px; background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:18px; color:rgba(255,255,255,0.9);">⚡ FLASH SALE ⚡</p>
-              <p style="margin:0 0 8px; font-size:64px; font-weight:700; color:#ffffff; letter-spacing:-0.03em;">{{discount_percent}}% OFF</p>
-              <p style="margin:0; font-size:16px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.1em;">{{sale_duration}}</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Flash Sale" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                The sale you've been waiting for
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Everything you love is {{discount_percent}}% off. But hurry—this sale ends soon!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:#dc2626;">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:18px 48px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:50px 40px 40px; text-align:center;">
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.15; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 28px; font-size:16px; color:#374151; line-height:1.7; max-width:380px; margin-left:auto; margin-right:auto;">
+                      Our biggest sale just dropped. {{discount_percent}}% off everything you love, for a limited time only.
+                    </p>
+
+                    <!-- CTA Button - Dark green pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#166534;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- TWO-COLUMN IMAGE GRID -->
+          <tr>
+            <td style="padding:0;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td width="50%" valign="top" style="padding:0;">
+                    <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:320px; object-fit:cover;">
+                  </td>
+                  <td width="50%" valign="top" style="padding:0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td style="padding:0;">
+                          <img src="{{hero_image_2}}" alt="" style="display:block; width:100%; height:160px; object-fit:cover;">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:0; background:#f5f5f5;">
+                          <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:160px; object-fit:cover; opacity:0.9;">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BOTTOM CONTENT -->
+          <tr>
+            <td style="padding:40px; text-align:center; background:#fafafa;">
+              <p style="margin:0 0 4px; font-size:12px; color:#999999; text-transform:uppercase; letter-spacing:0.15em; font-weight:500;">
+                Limited time only
+              </p>
+              <p style="margin:0; font-size:15px; color:#666666; line-height:1.6;">
+                Sale ends soon. Don't miss your chance.
+              </p>
             </td>
           </tr>
   `),
