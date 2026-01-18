@@ -355,6 +355,40 @@ const ComponentPreviewContent = ({ option }: { option: ComponentOption }) => {
   );
 };
 
+// Layout types for different component placements
+type SlideLayout = 'centered' | 'split-left' | 'split-right' | 'full-width' | 'bottom-stats' | 'top-title-centered';
+
+// Determine the best layout for each component type
+const getComponentLayout = (componentId: string): SlideLayout => {
+  const layoutMap: Record<string, SlideLayout> = {
+    // Centered layouts - diagrams and charts that need space
+    VennDiagram: 'centered',
+    DonutChart: 'centered',
+    RadarChart: 'centered',
+    GaugeChart: 'centered',
+    FunnelChart: 'centered',
+
+    // Split layouts - content with explanation
+    Timeline: 'split-right',
+    ProcessSteps: 'split-right',
+    IconGrid: 'split-right',
+    StackedList: 'split-right',
+
+    // Full width - comparisons and bars
+    BeforeAfter: 'full-width',
+    ComparisonBars: 'full-width',
+    BarChart: 'full-width',
+    SlopeChart: 'full-width',
+
+    // Stats at bottom
+    StatCard: 'bottom-stats',
+
+    // Default
+    SplitContent: 'split-left',
+  };
+  return layoutMap[componentId] || 'top-title-centered';
+};
+
 // Slide frame that shows the component inside the actual slide layout
 const SlidePreview = ({
   option,
@@ -365,46 +399,141 @@ const SlidePreview = ({
   slideTitle: string;
   slideIndex: number;
 }) => {
+  const layout = getComponentLayout(option.id);
+
+  // Render different slide layouts based on component type
+  const renderSlideContent = () => {
+    switch (layout) {
+      case 'centered':
+        // Large centered component (diagrams, charts)
+        return (
+          <div className="flex-1 p-1.5 flex flex-col">
+            <div className="text-center mb-1">
+              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-[85%] h-[90%]">
+                <ComponentPreviewContent option={option} />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'split-right':
+        // Title + text on left, component on right
+        return (
+          <div className="flex-1 p-1.5 flex gap-1.5">
+            <div className="w-[35%] flex flex-col justify-center">
+              <h3 className="text-[7px] font-bold text-black leading-tight mb-1">{slideTitle}</h3>
+              <div className="space-y-0.5">
+                <div className="h-1 bg-black/10 rounded w-full" />
+                <div className="h-1 bg-black/10 rounded w-4/5" />
+                <div className="h-1 bg-black/10 rounded w-3/5" />
+              </div>
+            </div>
+            <div className="w-[65%] flex items-center justify-center">
+              <div className="w-full h-full">
+                <ComponentPreviewContent option={option} />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'split-left':
+        // Component on left, text on right
+        return (
+          <div className="flex-1 p-1.5 flex gap-1.5">
+            <div className="w-[60%] flex items-center justify-center">
+              <div className="w-full h-full">
+                <ComponentPreviewContent option={option} />
+              </div>
+            </div>
+            <div className="w-[40%] flex flex-col justify-center">
+              <h3 className="text-[7px] font-bold text-black leading-tight mb-1">{slideTitle}</h3>
+              <div className="space-y-0.5">
+                <div className="h-1 bg-black/10 rounded w-full" />
+                <div className="h-1 bg-black/10 rounded w-4/5" />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'full-width':
+        // Small title, full-width component below
+        return (
+          <div className="flex-1 p-1.5 flex flex-col">
+            <div className="mb-1">
+              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
+            </div>
+            <div className="flex-1">
+              <ComponentPreviewContent option={option} />
+            </div>
+          </div>
+        );
+
+      case 'bottom-stats':
+        // Title and content on top, stats row at bottom
+        return (
+          <div className="flex-1 p-1.5 flex flex-col">
+            <div className="mb-1">
+              <h3 className="text-[7px] font-bold text-black leading-tight text-center">{slideTitle}</h3>
+            </div>
+            <div className="flex-1 flex flex-col justify-center">
+              <div className="space-y-0.5 mb-2 px-2">
+                <div className="h-1 bg-black/10 rounded w-full" />
+                <div className="h-1 bg-black/10 rounded w-4/5 mx-auto" />
+              </div>
+              <div className="h-[60%]">
+                <ComponentPreviewContent option={option} />
+              </div>
+            </div>
+          </div>
+        );
+
+      default: // top-title-centered
+        return (
+          <div className="flex-1 p-1.5 flex flex-col">
+            <div className="text-center mb-1">
+              <h3 className="text-[7px] font-bold text-black leading-tight">{slideTitle}</h3>
+              <div className="w-4 h-0.5 bg-[#88da1c] mx-auto mt-0.5 rounded-full" />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-[90%] h-[85%]">
+                <ComponentPreviewContent option={option} />
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg overflow-hidden h-full border border-gray-200 shadow-sm">
       {/* Mini slide frame - mimics actual lesson slide */}
-      <div className="relative aspect-[16/10] bg-white flex flex-col">
+      <div className="relative aspect-[16/10] bg-white flex flex-col h-full">
         {/* Top navigation bar mockup */}
-        <div className="h-3 bg-black/5 flex items-center justify-between px-1.5">
+        <div className="h-2.5 bg-black/5 flex items-center justify-between px-1.5 flex-shrink-0">
           <div className="flex items-center gap-0.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
-            <span className="text-[5px] text-black/40 font-medium">Slide {slideIndex + 1}</span>
+            <div className="w-1 h-1 rounded-full bg-black/20" />
+            <span className="text-[4px] text-black/40 font-medium">Slide {slideIndex + 1}</span>
           </div>
           <div className="flex gap-0.5">
             {[1,2,3,4,5].map(i => (
               <div
                 key={i}
-                className={`w-1 h-1 rounded-full ${i === slideIndex + 1 ? 'bg-[#88da1c]' : 'bg-black/20'}`}
+                className={`w-0.5 h-0.5 rounded-full ${i === slideIndex + 1 ? 'bg-[#88da1c]' : 'bg-black/20'}`}
               />
             ))}
           </div>
         </div>
 
-        {/* Slide content area */}
-        <div className="flex-1 p-2 flex flex-col">
-          {/* Slide title */}
-          <div className="text-center mb-1.5">
-            <h3 className="text-[8px] font-bold text-black leading-tight">{slideTitle}</h3>
-            <div className="w-6 h-0.5 bg-[#88da1c] mx-auto mt-0.5 rounded-full" />
-          </div>
-
-          {/* Component area - where the component appears */}
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-full max-w-[90%] h-full max-h-[85%]">
-              <ComponentPreviewContent option={option} />
-            </div>
-          </div>
-        </div>
+        {/* Slide content - layout varies by component */}
+        {renderSlideContent()}
 
         {/* Bottom navigation mockup */}
-        <div className="h-3 bg-black/5 flex items-center justify-center gap-2 px-2">
-          <div className="w-4 h-1.5 rounded-sm bg-black/10" />
-          <div className="w-6 h-1.5 rounded-sm bg-[#88da1c]" />
+        <div className="h-2.5 bg-black/5 flex items-center justify-center gap-1.5 px-2 flex-shrink-0">
+          <div className="w-3 h-1 rounded-sm bg-black/10" />
+          <div className="w-4 h-1 rounded-sm bg-[#88da1c]" />
         </div>
       </div>
     </div>
