@@ -315,8 +315,8 @@ const PreviewBeforeAfter = ({ data }: { data: Record<string, unknown> }) => {
   );
 };
 
-// Component preview router
-const ComponentPreview = ({ option }: { option: ComponentOption }) => {
+// Component preview router (returns just the component)
+const ComponentPreviewContent = ({ option }: { option: ComponentOption }) => {
   const { id, previewData } = option;
 
   const previewMap: Record<string, React.FC<{ data: Record<string, unknown> }>> = {
@@ -350,6 +350,62 @@ const ComponentPreview = ({ option }: { option: ComponentOption }) => {
         <Layers size={24} className="mx-auto mb-1 text-[#88da1c]" />
         <p className="text-[10px] font-bold text-black">{option.name}</p>
         <p className="text-[7px] text-gray-500">Preview</p>
+      </div>
+    </div>
+  );
+};
+
+// Slide frame that shows the component inside the actual slide layout
+const SlidePreview = ({
+  option,
+  slideTitle,
+  slideIndex
+}: {
+  option: ComponentOption;
+  slideTitle: string;
+  slideIndex: number;
+}) => {
+  return (
+    <div className="bg-white rounded-lg overflow-hidden h-full border border-gray-200 shadow-sm">
+      {/* Mini slide frame - mimics actual lesson slide */}
+      <div className="relative aspect-[16/10] bg-white flex flex-col">
+        {/* Top navigation bar mockup */}
+        <div className="h-3 bg-black/5 flex items-center justify-between px-1.5">
+          <div className="flex items-center gap-0.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-black/20" />
+            <span className="text-[5px] text-black/40 font-medium">Slide {slideIndex + 1}</span>
+          </div>
+          <div className="flex gap-0.5">
+            {[1,2,3,4,5].map(i => (
+              <div
+                key={i}
+                className={`w-1 h-1 rounded-full ${i === slideIndex + 1 ? 'bg-[#88da1c]' : 'bg-black/20'}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Slide content area */}
+        <div className="flex-1 p-2 flex flex-col">
+          {/* Slide title */}
+          <div className="text-center mb-1.5">
+            <h3 className="text-[8px] font-bold text-black leading-tight">{slideTitle}</h3>
+            <div className="w-6 h-0.5 bg-[#88da1c] mx-auto mt-0.5 rounded-full" />
+          </div>
+
+          {/* Component area - where the component appears */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-[90%] h-full max-h-[85%]">
+              <ComponentPreviewContent option={option} />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom navigation mockup */}
+        <div className="h-3 bg-black/5 flex items-center justify-center gap-2 px-2">
+          <div className="w-4 h-1.5 rounded-sm bg-black/10" />
+          <div className="w-6 h-1.5 rounded-sm bg-[#88da1c]" />
+        </div>
       </div>
     </div>
   );
@@ -726,7 +782,7 @@ export default function LessonCRMPage() {
                                     )}
                                   </div>
 
-                                  {/* Three Options with Visual Previews */}
+                                  {/* Three Options - Slide Previews showing component inside actual slide */}
                                   <div className="grid grid-cols-3 gap-4">
                                     {slot.options.map((option) => {
                                       const isSelected = selectedId === option.id;
@@ -740,9 +796,13 @@ export default function LessonCRMPage() {
                                               : 'border-black/10 hover:border-[#88da1c]/50'
                                           }`}
                                         >
-                                          {/* Visual Preview */}
-                                          <div className="h-32 bg-gray-50 p-2">
-                                            <ComponentPreview option={option} />
+                                          {/* Slide Preview - shows component inside actual slide mockup */}
+                                          <div className="h-40 bg-gray-100">
+                                            <SlidePreview
+                                              option={option}
+                                              slideTitle={slot.slideTitle}
+                                              slideIndex={slot.slideIndex}
+                                            />
                                           </div>
 
                                           {/* Label */}
